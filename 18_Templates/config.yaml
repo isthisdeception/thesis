@@ -1,0 +1,25 @@
+<!--
+================================================================================
+TEMPLATE NAME: Template 8 — Configuration
+PURPOSE: Single source of truth for experiment parameters.
+WHEN USED: Before running an experiment (Phase M4).
+OWNER: Configuration Agent
+INPUTS: Hyperparameters
+OUTPUTS: config.yaml
+REQUIRED SECTIONS: Experiment ID, Dataset Version, Split Version, Model Version, FastAI Settings, Image Size, Batch Size, Epochs, Optimizer, Learning Rate, Loss Function, Metrics, Random Seed, Augmentations, Hardware, Git Commit, Timestamp, Research Question, Purpose, Expected Outcome
+OPTIONAL SECTIONS: None
+VALIDATION RULES: YAML must parse cleanly.
+NAMING CONVENTION: config.yaml
+FOLDER LOCATION: 06_Experiments/EXPxxxx
+DEFINITION OF DONE: Config saved and never edited post-training.
+COMMON MISTAKES: Hardcoding parameters in notebooks instead of config.
+RELATED TEMPLATES: Template 7
+================================================================================
+-->
+
+# Template 8 - Configuration
+# Required fields:
+# Experiment ID, Dataset Version, Split Version, Model Version, FastAI Settings,
+# Image Size, Batch Size, Epochs, Optimizer, Learning Rate, Loss Function,
+# Metrics, Random Seed, Augmentations, Hardware, Git Commit, Timestamp,
+# Research Question, Purpose, Expected Outcome
