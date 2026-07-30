@@ -1,0 +1,42 @@
+# Python caches
+__pycache__/
+*.pyc
+.venv/
+env/
+*.egg-info/
+
+# Node modules
+node_modules/
+dist/
+.vite/
+
+# FastAI / Training outputs (tracked explicitly via LFS if necessary)
+models/
+*.pth
+*.pkl
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Caches
+.cache/
+.pytest_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+*.key
+credentials*.json
+
+# Media
+13_Backend/media/
+uploads/
+
+# Raw / Processed data
+03_Datasets/raw/*
+03_Datasets/processed/*
+!03_Datasets/raw/.gitkeep
+!03_Datasets/processed/.gitkeep
