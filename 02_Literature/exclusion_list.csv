@@ -1,0 +1,7 @@
+excluded_topic,reason
+Video deepfakes,Temporal analysis deferred to future versions
+Audio deepfakes,Voice cloning deferred to future versions
+Text generation,LLM forensics deferred to future versions
+Non-face image generation,Out of scope; focus is strictly on human faces
+Deepfake generation methods,We are building a detector not novel generators
+Multimodal deepfakes,Audio-visual combined models deferred to future versions
