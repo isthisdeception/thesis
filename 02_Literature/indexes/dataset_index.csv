@@ -1,0 +1,32 @@
+Dataset,Paper Count,Paper IDs
+1070 identities),1,P0023
+2500+2500 for testing),1,P0015
+960 fake),1,P0011
+AI-Face-FairnessBench,1,P0016
+AttGAN,1,P0005
+Augmented Real and Fake Face Detection dataset,1,P0002
+CelebA (real),2,P0005; P0015
+CelebA-HQ (25000 real + 25000 fake for training,1,P0015
+CelebDF-V2,1,P0007
+Challenge-specific dataset (multiple GAN architectures),1,P0014
+Custom dataset: 83000 images (balanced real/fake) from 9 GAN architectures + 4 diffusion models,1,P0018
+Custom industrial defect dataset,1,P0001
+Custom multiclass dataset (28802 training + 7198 validation) from Kaggle + Stable Diffusion + StyleGAN2,1,P0021
+DFDC,1,P0007
+DiFF dataset (500000+ images from 13 generation methods across 4 conditions,1,P0023
+FaceForensics++,2,P0005; P0007
+FakeAVCeleb,1,P0007
+GDWCT,1,P0005
+Multiple GAN architectures (tested across various generators),1,P0010
+Real and Fake Face Detection dataset (2041 images: 1081 real,1,P0011
+real images from VoxCeleb2 + CelebA: 23661 images,1,P0023
+StarGAN,1,P0005
+StyleGAN,1,P0005
+StyleGAN2 (fake),1,P0005
+Survey paper (reviews detection datasets),1,P0028
+Survey paper (reviews face manipulation datasets),1,P0027
+Survey paper (reviews major deepfake datasets),1,P0026
+Survey paper (reviews multiple datasets),1,P0024
+Survey paper (reviews StyleGAN-related datasets),1,P0025
+Survey/review paper covering FaceForensics++ and other benchmarks,1,P0022
+Synthbuster dataset (9000 synthetic images from 9 diffusion models + RAISE-1k real images),1,P0003

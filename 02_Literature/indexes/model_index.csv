@@ -1,0 +1,45 @@
+Model,Paper Count,Paper IDs
+2 transformer-based models,1,P0007
+8 supervised CNN architectures,1,P0007
+compared with VGG16,1,P0011
+Custom CNN,1,P0002
+DCT-based frequency analysis + beta statistics classifier (lightweight,1,P0010
+DenseNet-121,1,P0002
+Diffusion reconstruction error feature extraction,1,P0006
+DINO and CLIP self-supervised pre-training,1,P0007
+Edge graph regularization approach,1,P0023
+EfficientNet-B4,1,P0016
+Ensemble model (multiple classifiers combined for robustness),1,P0013
+Expectation-Maximization (EM) algorithm for convolutional trace extraction,1,P0005
+frequency-domain methods,1,P0022
+GAN + blockchain integration,1,P0012
+GAN fingerprint removal + detection evaluation,1,P0019
+GAN inversion + biometric trait analysis,1,P0008
+GAN-based detection model,1,P0017
+GAN-based face generation + blockchain,1,P0004
+GAN-based visible watermarking for proactive detection,1,P0020
+GLFNet: dual-branch (local iris/pupil analysis + global ResNeSt residual extraction) with fusion classifier,1,P0015
+Hierarchical multi-level pipeline based on ResNet-101 (Level 1: real/fake,1,P0018
+Hybrid GAN + ResNet (GAN for feature learning,1,P0011
+IC-DGAN (latent diffusion + GAN hybrid),1,P0009
+Inpainting diffusion model + context-aware mask generation,1,P0001
+Level 2: GAN/DM,1,P0018
+Level 3: specific architecture attribution),1,P0018
+Multiple submitted detection methods (competition format),1,P0014
+no deep learning,1,P0003
+non-DL),1,P0010
+PCA/SVM,1,P0002
+ResNet for classification),1,P0011
+ResNet-101,1,P0016
+ResNet-50,1,P0011
+Review: covers CNN-based detectors,1,P0022
+spatial-domain methods,1,P0022
+Spectral analysis (high-pass residual + Fourier transform),1,P0003
+Survey: covers CNN/RNN/GAN/Transformer/Hybrid approaches,1,P0024
+Survey: covers creation and detection methods for digital face manipulation,1,P0027
+Survey: covers deepfake detection methods for images and video,1,P0028
+Survey: covers generation and detection architectures,1,P0026
+Survey: StyleGAN family (StyleGAN/2/3/ADA and variants),1,P0025
+VGG19,1,P0002
+Vision Transformer (ViT) with patch-wise processing,1,P0021
+Xception,1,P0016

@@ -1,0 +1,105 @@
+Keyword,Paper Count,Paper IDs
+ACM Multimedia,1,P0023
+adversarial robustness,1,P0019
+anti-forensics,1,P0019
+architecture,1,P0026
+benchmark,1,P0014
+beta statistics,1,P0010
+bias,1,P0016
+biometric traits,1,P0008
+blockchain,2,P0004; P0012
+CelebA,1,P0005
+CelebA-HQ,1,P0015
+CelebDF,1,P0007
+challenge,1,P0014
+CLIP,1,P0007
+CNN,3,P0002; P0022; P0024
+competition,1,P0014
+content authentication,1,P0020
+context-aware mask,1,P0001
+convolutional traces,1,P0005
+cross-dataset,1,P0007
+data augmentation,1,P0002
+dataset,1,P0026
+DCT,1,P0010
+deep learning,6,P0002; P0011; P0017; P0024; P0025; P0028
+deepfake,4,P0006; P0023; P0026; P0027
+deepfake detection,14,P0002; P0005; P0007; P0010; P0011; P0013; P0014; P0017; P0018; P0019; P0020; P0021; P0024; P0028
+defect detection,1,P0001
+DenseNet,1,P0002
+detection,2,P0026; P0027
+DFDC,1,P0007
+DiFF dataset,1,P0023
+diffusion model,6,P0001; P0006; P0009; P0018; P0021; P0023
+diffusion model detection,2,P0003; P0016
+digital forensics,1,P0027
+DINO,1,P0007
+distributed systems,1,P0004
+edge graph regularization,1,P0023
+EM algorithm,1,P0005
+ensemble model,1,P0013
+evaluation,1,P0014
+explainability,2,P0010; P0016
+expression manipulation,1,P0009
+face detection,12,P0002; P0006; P0011; P0013; P0014; P0016; P0017; P0020; P0021; P0023; P0024; P0028
+face editing,1,P0025
+face forensics,1,P0015
+face generation,2,P0009; P0025
+face manipulation,1,P0027
+face recognition,1,P0004
+FaceForensics++,2,P0005; P0007
+facial analysis,1,P0008
+facial forgery,1,P0023
+facial recognition,1,P0012
+fairness,1,P0016
+fingerprint removal,1,P0019
+Fourier transform,1,P0003
+frequency domain,3,P0003; P0010; P0022
+GAN,13,P0004; P0009; P0011; P0012; P0013; P0014; P0017; P0018; P0020; P0021; P0024; P0025; P0026
+GAN detection,3,P0015; P0016; P0022
+GAN fingerprint,3,P0005; P0010; P0019
+GAN inversion,1,P0008
+generalization,1,P0007
+GLFNet,1,P0015
+global-local fusion,1,P0015
+Grad-CAM,1,P0016
+hierarchical classification,1,P0018
+high-resolution,1,P0009
+hybrid model,1,P0011
+IEEE Access,1,P0026
+image forensics,8,P0003; P0005; P0006; P0008; P0010; P0018; P0022; P0028
+image generation,1,P0001
+inpainting,1,P0001
+iris analysis,1,P0015
+latent diffusion,1,P0009
+multiclass classification,1,P0021
+patch-wise,1,P0021
+privacy,2,P0004; P0012
+proactive detection,1,P0020
+reconstruction error,1,P0006
+residual features,1,P0015
+ResNet,1,P0011
+ResNet-101,1,P0018
+review,2,P0022; P0026
+RNN,1,P0024
+robustness,3,P0013; P0016; P0018
+security,2,P0004; P0012
+self-supervised learning,1,P0007
+social media,2,P0013; P0017
+source attribution,1,P0018
+spatial domain,1,P0022
+spectral analysis,1,P0003
+StyleGAN,1,P0025
+survey,6,P0022; P0024; P0025; P0026; P0027; P0028
+Synthbuster,1,P0003
+synthetic face detection,2,P0008; P0022
+synthetic faces,1,P0012
+systematic review,2,P0024; P0027
+TPAMI,1,P0025
+transfer learning,1,P0007
+Transformer,1,P0024
+VGG19,1,P0002
+video forensics,1,P0028
+Vision Transformer,1,P0021
+ViT,1,P0021
+watermarking,1,P0020

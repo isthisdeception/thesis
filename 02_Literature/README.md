@@ -15,7 +15,16 @@ Literature Agents / Human
 09_Writing_Operating_System
 
 ## Expected Outputs
-papers.csv, claim_database.csv, summaries/Pxxxx_summary.md
+papers.csv, claim_database.csv, summaries/Pxxxx_summary.md, indexes/*.csv
+
+## Searchable Indexes & Relationship Graph
+Generated deterministically via `python 17_Automation/literature_indexer.py`:
+- `indexes/keyword_index.csv`: 104 indexed keywords mapped to paper IDs
+- `indexes/author_index.csv`: 108 indexed authors mapped to paper IDs
+- `indexes/venue_index.csv`: 22 publication venues mapped to paper IDs
+- `indexes/dataset_index.csv`: 31 datasets mapped to paper IDs
+- `indexes/model_index.csv`: 44 model architectures mapped to paper IDs
+- `indexes/citation_network.csv`: 118 relationship edges (`cross_reference`, `same_research_group`, `same_dataset`)
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*
 
