@@ -10,7 +10,7 @@
 
 **Results:**
 - **Total Result Count:** Unknown (stopped at page 17)
-- **Papers Selected for Intake:** 28 (P001 - P028)
+- **Papers Selected for Intake:** 28 (P0001 - P0028)
 
 **Papers Selected (Title & DOI):**
 *(Metadata currently being mapped in STEP-011)*
