@@ -40,3 +40,7 @@ uploads/
 03_Datasets/processed/*
 !03_Datasets/raw/.gitkeep
 !03_Datasets/processed/.gitkeep
+
+# Literature PDFs (Keep Local)
+02_Literature/papers/*.pdf
+
