@@ -1,0 +1,29 @@
+Paper ID,Title,Priority Batch,Reading Order,Date Read,Summary File,Status,Notes
+P0018,Mastering Deepfake Detection: GAN and Diffusion-Model Images,1-Critical,1,2026-07-31,02_Literature/summaries/P0018_summary.md,complete,Hierarchical GAN+DM detection pipeline
+P0007,Deepfake Detection: Analyzing Model Generalization,1-Critical,2,2026-07-31,02_Literature/summaries/P0007_summary.md,complete,Comprehensive cross-dataset generalization analysis
+P0023,Diffusion Facial Forgery Detection,1-Critical,3,2026-07-31,02_Literature/summaries/P0023_summary.md,complete,DiFF dataset + edge graph regularization
+P0016,Comparative Detection of GAN and Diffusion Model Generated Faces,1-Critical,4,2026-07-31,02_Literature/summaries/P0016_summary.md,complete,Bias/robustness/explainability analysis
+P0003,Synthbuster: Detection of Diffusion Model Generated Images,2-High,5,2026-07-31,02_Literature/summaries/P0003_summary.md,complete,Spectral analysis (no DL) for diffusion detection
+P0005,Fighting Deepfake by Exposing Convolutional Traces,2-High,6,2026-07-31,02_Literature/summaries/P0005_summary.md,complete,EM-based GAN fingerprint extraction
+P0010,Fighting Deepfakes by Detecting GAN DCT Anomalies,2-High,7,2026-07-31,02_Literature/summaries/P0010_summary.md,complete,DCT beta statistics for GAN detection
+P0024,Deepfake detection using deep learning: Systematic Review,2-High,8,2026-07-31,02_Literature/summaries/P0024_summary.md,complete,Comprehensive DL detection survey (285 citations)
+P0025,Face Generation and Editing With StyleGAN: A Survey,2-High,9,2026-07-31,02_Literature/summaries/P0025_summary.md,complete,StyleGAN family survey (TPAMI)
+P0014,The Face Deepfake Detection Challenge,2-High,10,2026-07-31,02_Literature/summaries/P0014_summary.md,complete,Detection challenge/benchmark
+P0021,Multiclass AI-Generated Deepfake Face Detection,2-High,11,2026-07-31,02_Literature/summaries/P0021_summary.md,complete,ViT patch-wise multiclass detection
+P0022,Detection of AI-Generated Synthetic Faces,2-High,12,2026-07-31,02_Literature/summaries/P0022_summary.md,complete,Synthetic face detection survey (Springer)
+P0028,DeepFake Detection for Human Face Images and Videos: Survey,2-High,13,2026-07-31,02_Literature/summaries/P0028_summary.md,complete,Comprehensive image+video detection survey
+P0002,Comparison of Deepfake Detection Techniques,3-Medium,14,2026-07-31,02_Literature/summaries/P0002_summary.md,complete,Architecture comparison study
+P0011,Hybrid Deep Learning Model Based on GAN and RESNET,3-Medium,15,2026-07-31,02_Literature/summaries/P0011_summary.md,complete,Hybrid GAN+ResNet approach
+P0015,Global-Local Facial Fusion Based GAN Detection,3-Medium,16,2026-07-31,02_Literature/summaries/P0015_summary.md,complete,Dual-branch global+local fusion
+P0026,A Review of Deepfake Techniques,3-Medium,17,2026-07-31,02_Literature/summaries/P0026_summary.md,complete,2024 review of deepfake techniques
+P0006,Diffusion-generated face image identification,3-Medium,18,2026-07-31,02_Literature/summaries/P0006_summary.md,complete,Reconstruction error for diffusion detection
+P0008,Identifying Synthetic Faces through GAN Inversion,3-Medium,19,2026-07-31,02_Literature/summaries/P0008_summary.md,complete,GAN inversion + biometric traits
+P0013,A robust ensemble model for Deepfake detection,3-Medium,20,2026-07-31,02_Literature/summaries/P0013_summary.md,complete,Ensemble model for social media robustness
+P0019,Evaluating Effectiveness of GAN Fingerprint Removal,3-Medium,21,2026-07-31,02_Literature/summaries/P0019_summary.md,complete,Adversarial fingerprint removal evaluation
+P0027,Digital Face Manipulation Creation and Detection,3-Medium,22,2026-07-31,02_Literature/summaries/P0027_summary.md,complete,Face manipulation systematic review
+P0020,ProActive DeepFake Detection Using Watermarking,4-Low,23,2026-07-31,02_Literature/summaries/P0020_summary.md,complete,Proactive watermarking approach
+P0001,Synthetic Defect Image Generation,4-Low,24,2026-07-31,02_Literature/summaries/P0001_summary.md,complete,Industrial (non-face) diffusion application
+P0004,Enhancing Security via Blockchain and GAN,4-Low,25,2026-07-31,02_Literature/summaries/P0004_summary.md,complete,Blockchain+GAN privacy (peripheral)
+P0009,Improved latent diffusion-based IC-DGAN framework,4-Low,26,2026-07-31,02_Literature/summaries/P0009_summary.md,complete,Diffusion+GAN hybrid generation
+P0012,Securing Synthetic Faces: GAN-blockchain,4-Low,27,2026-07-31,02_Literature/summaries/P0012_summary.md,complete,GAN-blockchain privacy (peripheral)
+P0017,A GAN-Based Model of Deepfake Detection in Social Media,4-Low,28,2026-07-31,02_Literature/summaries/P0017_summary.md,complete,Social media detection (superseded by P0013)
