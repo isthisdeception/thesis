@@ -162,6 +162,9 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
     for base in candidates:
         zips = _find_all_zips(base)
         layout.archives.extend(_filter_archives(dataset_id, zips))
+        # Always keep every zip under a DSxxxx path for zip-packaged sets
+        if dataset_id in {"DS0002", "DS0004"}:
+            layout.archives.extend(zips)
         layout.label_csvs.extend(_find_label_csvs(base, dataset_id))
 
         if dataset_id == "DS0001":
@@ -196,22 +199,33 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                 for d in base.rglob(name):
                     if not d.is_dir():
                         continue
-                    has_img = (
-                        list(d.glob("*.jpg"))[:1]
-                        or list(d.glob("*.png"))[:1]
-                        or list(d.glob("*.jpeg"))[:1]
+                    try:
+                        kids = list(d.iterdir())
+                    except OSError:
+                        continue
+                    has_img = any(
+                        x.is_file() and x.suffix.lower() in {".jpg", ".jpeg", ".png"}
+                        for x in kids[:50]
                     )
-                    # generator subfolders (dalle2, glide, ...)
-                    has_sub = any(x.is_dir() for x in d.iterdir()) if any(d.iterdir()) else False
+                    has_sub = any(x.is_dir() for x in kids)
                     if has_img or has_sub:
                         layout.roots.append(d)
             for p in base.rglob("DS0004"):
                 if p.is_dir():
                     layout.roots.append(p)
-            # Keep any leftover zips under DS0004 even if hints miss
-            for z in zips:
-                if "DS0004" in z.as_posix() or "synthbuster" in z.as_posix().lower():
-                    layout.archives.append(z)
+            # Fallback: any directory under the dataset that contains images
+            if not layout.archives and not layout.roots:
+                for d in base.rglob("*"):
+                    if not d.is_dir():
+                        continue
+                    try:
+                        probe = next(d.glob("*.jpg"), None) or next(d.glob("*.png"), None)
+                    except OSError:
+                        probe = None
+                    if probe is not None:
+                        layout.roots.append(d)
+                        if len(layout.roots) >= 20:
+                            break
         elif dataset_id == "DS0005":
             if (base / "train").is_dir() or (base / "val").is_dir():
                 layout.roots.append(base)
