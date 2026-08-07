@@ -15,7 +15,7 @@
 - **Phases D4–D5 — Dataset Download & Raw-Lock (STEP-021):** `COMPLETE` (hosting)
   - DS0001/2/4/5 on private Kaggle (`isthisdeception/…`); DS0003 = [`xhlulu/140k-real-and-fake-faces`](https://www.kaggle.com/datasets/xhlulu/140k-real-and-fake-faces).
   - Pointers + archive SHA-256 recorded for project uploads; DS0003 marked access-confirmed.
-  - **Next:** STEP-022 Dataset Validation (`Validated` still `no` for all).
+  - **Next:** STEP-022 Dataset Validation — module in `17_Automation/dataset_validation/`; full run on Kaggle per `04_Preprocessing/notebooks/STEP022_KAGGLE_VALIDATION.md` (`Validated` still `no`).
 
 ## Contents
 Raw immutable originals (`raw/`), processed datasets (`processed/`), splits (`splits/`), metadata (`metadata/`), reports (`reports/`), licenses (`licenses/`).
