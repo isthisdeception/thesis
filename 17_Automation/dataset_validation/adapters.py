@@ -137,12 +137,17 @@ def _find_label_csvs(base: Path, dataset_id: str) -> list[Path]:
         for p in base.rglob("*.csv"):
             if not p.is_file():
                 continue
+            # Never treat pack manifests as label tables
+            if "manifests" in p.as_posix().lower():
+                continue
             n = p.name.lower()
-            if dataset_id == "DS0005" and "fairface_label" in n:
-                csvs.append(p)
-            elif dataset_id == "DS0001" and (n == "metadata.csv" or "metadata" in n):
-                csvs.append(p)
-            elif "label" in n:
+            if dataset_id == "DS0005":
+                if n.startswith("fairface_label_"):
+                    csvs.append(p)
+            elif dataset_id == "DS0001":
+                if n == "metadata.csv":
+                    csvs.append(p)
+            elif "label" in n and n not in {"label_summary.csv"}:
                 csvs.append(p)
     except OSError:
         pass

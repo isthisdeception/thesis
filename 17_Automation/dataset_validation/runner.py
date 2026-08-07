@@ -153,8 +153,17 @@ def evaluate_thresholds(
         reasons.append(f"corrupt_rate={corrupt_rate:.6f}>{thresholds['max_corrupt_rate']}")
     if acc.empty > thresholds["max_empty_files"]:
         reasons.append(f"empty_files={acc.empty}")
-    missing_labels = sum(1 for r in findings_rows if r["Issue Code"] == "MISSING_LABEL")
-    missing_files = sum(1 for r in findings_rows if r["Issue Code"] == "MISSING_FILE_FOR_LABEL")
+    # Only error-severity findings fail the gate (warnings e.g. wrong CSV type are noise)
+    missing_labels = sum(
+        1
+        for r in findings_rows
+        if r["Issue Code"] == "MISSING_LABEL" and r.get("Severity") == "error"
+    )
+    missing_files = sum(
+        1
+        for r in findings_rows
+        if r["Issue Code"] == "MISSING_FILE_FOR_LABEL" and r.get("Severity") == "error"
+    )
     if missing_labels > thresholds["max_missing_labels"]:
         reasons.append(f"missing_labels={missing_labels}")
     if missing_files > thresholds["max_missing_files_for_labels"]:
