@@ -2,14 +2,18 @@
 
 ## Active Phase
 - Current Phase: Dataset Operating System (PART 4)
-- Active Step: STEP-022 — Dataset Validation
-- Registered Datasets: DS0001 (Artifact Face Subset), DS0002 (DiFF), DS0003 (140k Real/Fake), DS0004 (Synthbuster), DS0005 (FairnessBench)
-- Completed Steps: STEP-001…021 (Foundation, Literature, Discovery, Evaluation, Registration, Download/Pointers)
+- Active Step: STEP-021 closing → **STEP-022 — Dataset Validation** (next)
+- Registered Datasets: DS0001–DS0005
+- Kaggle (private): `isthisdeception/ds0001-artifact-face-subset`, `…/ds0002-diff-official-test`, `…/ds0004-synthbuster`, `…/ds0005-fairface`
+- Completed Steps: STEP-001…020; **STEP-021 data hosting complete** for DS0001–DS0005
+- Next: **STEP-022 — Dataset Validation** (`Validated` still `no`)
 
 ## Progress
-- Deferred Decisions Resolved: DEC0001 (Handbook Ratified), DEC0002 (Keyword Scope), DEC0003 (Research Direction 1), DEC0004 (Public-Only Dataset Strategy — DEF-003 Resolved)
+- Deferred Decisions Resolved: DEC0001–DEC0005
 - Literature Gate (Checklist 2): PASS
 - Current Milestone: v0.1 Prototype
+- `Downloaded=yes`: DS0001–DS0005
+- `Validated=yes`: none yet (STEP-022)
 
 ## Health
 - Risk Indicators: Green

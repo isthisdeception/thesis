@@ -44,3 +44,6 @@ uploads/
 # Literature PDFs (Keep Local)
 02_Literature/papers/*.pdf
 
+# Local dataset staging (never commit images / archives)
+_staging/
+

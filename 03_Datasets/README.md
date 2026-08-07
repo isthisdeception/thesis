@@ -12,14 +12,10 @@
   - Registered `DS0001`–`DS0005` in `03_Datasets/metadata/datasets.csv` with metadata.
   - License files saved in `03_Datasets/licenses/DS0001_license.txt` ... `DS0005_license.txt`.
   - **DS0005 reassigned** from AI-Face-FairnessBench (EULA-restricted) to FairFace (CC BY 4.0) per `DEC0005.md`.
-- **Phases D4–D5 — Dataset Download & Raw-Lock (STEP-021):** `IN PROGRESS`
-  - **Status:** Planning artifacts completed; data download NOT yet executed.
-  - Remote dataset storage pointers corrected in `03_Datasets/metadata/dataset_pointers.md`.
-  - Download priority: DS0003 (Kaggle-native) → DS0001 → DS0004 → DS0002 → DS0005.
-  - `03_Datasets/reports/download_instructions.md` — Human Task instructions per A.8.
-  - Integrity module upgraded in `17_Automation/dataset_checksum_verifier.py` (3 modes: full/sample/archive).
-  - `03_Datasets/reports/integrity_report.csv` — header-only (awaiting real checksums from Kaggle).
-  - **Next action:** Human downloads datasets per `download_instructions.md`, then runs checksum verifier on Kaggle.
+- **Phases D4–D5 — Dataset Download & Raw-Lock (STEP-021):** `COMPLETE` (hosting)
+  - DS0001/2/4/5 on private Kaggle (`isthisdeception/…`); DS0003 = [`xhlulu/140k-real-and-fake-faces`](https://www.kaggle.com/datasets/xhlulu/140k-real-and-fake-faces).
+  - Pointers + archive SHA-256 recorded for project uploads; DS0003 marked access-confirmed.
+  - **Next:** STEP-022 Dataset Validation (`Validated` still `no` for all).
 
 ## Contents
 Raw immutable originals (`raw/`), processed datasets (`processed/`), splits (`splits/`), metadata (`metadata/`), reports (`reports/`), licenses (`licenses/`).
