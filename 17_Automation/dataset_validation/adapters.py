@@ -73,6 +73,26 @@ def _dedup_paths(paths: list[Path]) -> list[Path]:
     return out
 
 
+def _drop_ancestor_roots(paths: list[Path]) -> list[Path]:
+    """Keep only leaf directories so parent+child pairs are not double-scanned."""
+    resolved: list[tuple[Path, str]] = []
+    for p in paths:
+        try:
+            resolved.append((p, str(p.resolve())))
+        except OSError:
+            resolved.append((p, str(p)))
+    keep: list[Path] = []
+    for p, key in resolved:
+        if any(
+            other != key and (other.startswith(key.rstrip("/\\") + "/") or other.startswith(key.rstrip("/\\") + "\\"))
+            for _, other in resolved
+        ):
+            # p is an ancestor of another root — skip
+            continue
+        keep.append(p)
+    return keep
+
+
 def _collect_candidates(dataset_id: str, search_roots: list[Path]) -> list[Path]:
     """Aggressively find every plausible mount point under search roots."""
     slugs = KAGGLE_SLUG_DIRS.get(dataset_id, [])
@@ -196,22 +216,25 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                         layout.roots.append(base)
                         break
         elif dataset_id == "DS0004":
-            # Kaggle extracts images onto disk (no zips left). Always scan candidate
-            # directories; scan_directory rglob's *.jpg/*.png underneath.
-            # Do NOT gate on Path.glob — it can return empty on some Kaggle mounts
-            # even when files exist (find/listdir still work).
-            layout.roots.append(base)
+            # Kaggle extracts images onto disk (no zips left).
+            # Prefer LEAF roots only — nested parents would re-scan the same images
+            # and explode duplicate-hash findings.
+            leaf_roots = []
             for rel in (
-                "raw/DS0004",
-                "raw/DS0004/real",
                 "raw/DS0004/real/raise_1k_jpeg",
-                "raw/DS0004/synthetic",
-                "raw/DS0004/synthetic/synthbuster",
                 "raw/DS0004/synthetic/synthbuster/synthbuster",
             ):
                 hard = base / rel
                 if hard.is_dir():
-                    layout.roots.append(hard)
+                    leaf_roots.append(hard)
+            # If search_root itself is already a leaf, keep it
+            if base.name in {"raise_1k_jpeg", "synthbuster"} and base.is_dir():
+                leaf_roots.append(base)
+            if leaf_roots:
+                layout.roots.extend(leaf_roots)
+            else:
+                # Fallback: whole dataset tree once
+                layout.roots.append(base)
             layout.archives.extend(zips)
         elif dataset_id == "DS0005":
             if (base / "train").is_dir() or (base / "val").is_dir():
@@ -223,6 +246,7 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                         break
 
     layout.roots = _dedup_paths(layout.roots)
+    layout.roots = _drop_ancestor_roots(layout.roots)
     layout.archives = _dedup_paths(layout.archives)
     layout.label_csvs = _dedup_paths(layout.label_csvs)
     layout.notes = (
