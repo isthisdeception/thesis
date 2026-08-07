@@ -57,14 +57,17 @@ def _find_named_dirs(base: Path, names: list[str]) -> list[Path]:
 
 
 def _dedup_paths(paths: list[Path]) -> list[Path]:
-    seen: set[Path] = set()
+    seen: set[str] = set()
     out: list[Path] = []
     for p in paths:
         try:
-            key = p.resolve()
+            key = str(p.resolve())
         except OSError:
-            key = p
-        if key not in seen and p.exists():
+            key = str(p)
+        if key in seen:
+            continue
+        # Prefer is_dir/is_file over exists() — more reliable on Kaggle input mounts
+        if p.is_dir() or p.is_file():
             seen.add(key)
             out.append(p)
     return out
@@ -193,61 +196,23 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                         layout.roots.append(base)
                         break
         elif dataset_id == "DS0004":
-            # Kaggle extracts to:
-            #   raw/DS0004/real/raise_1k_jpeg/*.jpg
-            #   raw/DS0004/synthetic/synthbuster/synthbuster/<generator>/*.png
-            # Avoid list(iterdir()) on huge image dirs — use glob probes only.
-            named = ("real", "synthetic", "synthbuster", "raise_1k_jpeg", "DS0004")
-
-            def _usable_image_dir(d: Path) -> bool:
-                if not d.is_dir():
-                    return False
-                try:
-                    if next(d.glob("*.jpg"), None):
-                        return True
-                    if next(d.glob("*.jpeg"), None):
-                        return True
-                    if next(d.glob("*.png"), None):
-                        return True
-                    # Generator / split folders (dirs only — do not list all files)
-                    return any(child.is_dir() for child in d.iterdir())
-                except OSError:
-                    return False
-
-            if base.name in named and _usable_image_dir(base):
-                layout.roots.append(base)
-            for name in named:
-                for d in base.rglob(name):
-                    if _usable_image_dir(d):
-                        layout.roots.append(d)
-
-            # Hard Kaggle paths (bypass brittle discovery)
+            # Kaggle extracts images onto disk (no zips left). Always scan candidate
+            # directories; scan_directory rglob's *.jpg/*.png underneath.
+            # Do NOT gate on Path.glob — it can return empty on some Kaggle mounts
+            # even when files exist (find/listdir still work).
+            layout.roots.append(base)
             for rel in (
-                "raw/DS0004/real/raise_1k_jpeg",
-                "raw/DS0004/synthetic/synthbuster/synthbuster",
-                "raw/DS0004/synthetic/synthbuster",
+                "raw/DS0004",
                 "raw/DS0004/real",
+                "raw/DS0004/real/raise_1k_jpeg",
+                "raw/DS0004/synthetic",
+                "raw/DS0004/synthetic/synthbuster",
+                "raw/DS0004/synthetic/synthbuster/synthbuster",
             ):
                 hard = base / rel
-                if _usable_image_dir(hard):
+                if hard.is_dir():
                     layout.roots.append(hard)
-                # also from dataset root one level up
-                hard2 = base.parent / rel if base.name == "DS0004" else None
-                if hard2 and _usable_image_dir(hard2):
-                    layout.roots.append(hard2)
-
             layout.archives.extend(zips)
-            if not layout.roots and not layout.archives:
-                for d in base.rglob("*"):
-                    if not d.is_dir():
-                        continue
-                    try:
-                        if next(d.glob("*.jpg"), None) or next(d.glob("*.png"), None):
-                            layout.roots.append(d)
-                    except OSError:
-                        continue
-                    if len(layout.roots) >= 30:
-                        break
         elif dataset_id == "DS0005":
             if (base / "train").is_dir() or (base / "val").is_dir():
                 layout.roots.append(base)

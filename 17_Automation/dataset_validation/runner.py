@@ -181,6 +181,11 @@ def validate_dataset(
 ) -> dict:
     thresholds = thresholds or DEFAULT_THRESHOLDS
     layout = discover_layout(dataset_id, list(search_roots))
+    # Hard fallback: if discovery found nothing, scan the search roots themselves
+    if not layout.roots and not layout.archives:
+        forced = [Path(p) for p in search_roots if Path(p).is_dir()]
+        layout.roots.extend(forced)
+        print(f"  FALLBACK using search_roots as scan roots: {forced}", flush=True)
     acc = ScanAccumulator()
 
     # Prefer directories if present; else scan archives

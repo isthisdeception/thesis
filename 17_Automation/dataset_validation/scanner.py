@@ -137,9 +137,22 @@ def inspect_image_bytes(data: bytes) -> ImageStats | str:
 
 
 def iter_dir_images(root: Path) -> Iterator[tuple[str, Path]]:
-    for path in sorted(root.rglob("*")):
-        if path.is_file() and _is_image_name(path.name):
-            yield path.relative_to(root).as_posix(), path
+    """Yield image files under root.
+
+    Uses os.walk — more reliable than Path.rglob on some Kaggle dataset mounts.
+    """
+    import os
+
+    root = Path(root)
+    for dirpath, _dirnames, filenames in os.walk(root):
+        for name in sorted(filenames):
+            if _is_image_name(name):
+                full = Path(dirpath) / name
+                try:
+                    rel = full.relative_to(root).as_posix()
+                except ValueError:
+                    rel = name
+                yield rel, full
 
 
 def iter_zip_images(
