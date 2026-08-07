@@ -32,7 +32,17 @@ def _find_named_dirs(base: Path, names: list[str]) -> list[Path]:
         direct = base / name
         if direct.is_dir():
             found.append(direct)
-    # also search one level deeper (Kaggle sometimes nests)
+    # Kaggle layout: /kaggle/input/datasets/<owner>/<slug>/
+    datasets_root = base / "datasets"
+    if datasets_root.is_dir():
+        for owner_dir in sorted(datasets_root.iterdir()):
+            if not owner_dir.is_dir():
+                continue
+            for name in names:
+                slug_dir = owner_dir / name
+                if slug_dir.is_dir() and slug_dir not in found:
+                    found.append(slug_dir)
+    # also search one level deeper (legacy flat layout)
     for child in sorted(base.iterdir()) if base.is_dir() else []:
         if child.is_dir() and child.name in names and child not in found:
             found.append(child)
@@ -139,6 +149,13 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                 d = base / split
                 if d.is_dir():
                     layout.roots.append(base)
+            # Kaggle pack: raw/DS0005/*.zip
+            for p in base.rglob("DS0005"):
+                if p.is_dir():
+                    ff_zip = list(p.glob("*fairface*.zip")) + list(p.glob("*margin025*.zip"))
+                    layout.archives.extend(ff_zip)
+                    for c in p.glob("fairface_label_*.csv"):
+                        layout.label_csvs.append(c)
 
     # Dedup lists
     def dedup(paths: list[Path]) -> list[Path]:
