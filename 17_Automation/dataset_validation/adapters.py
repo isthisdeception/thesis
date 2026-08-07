@@ -23,6 +23,15 @@ KAGGLE_SLUG_DIRS = {
     "DS0005": ["ds0005-fairface"],
 }
 
+# Filename hints when slug folder layout differs on Kaggle.
+ARCHIVE_NAME_HINTS = {
+    "DS0001": ["artifact", "50k"],
+    "DS0002": [],  # use path contains /test/
+    "DS0003": [],
+    "DS0004": ["synthbuster", "raise"],
+    "DS0005": ["fairface", "margin025", "ds0005"],
+}
+
 
 def _find_named_dirs(base: Path, names: list[str]) -> list[Path]:
     found: list[Path] = []
@@ -32,7 +41,6 @@ def _find_named_dirs(base: Path, names: list[str]) -> list[Path]:
         direct = base / name
         if direct.is_dir():
             found.append(direct)
-    # Kaggle layout: /kaggle/input/datasets/<owner>/<slug>/
     datasets_root = base / "datasets"
     if datasets_root.is_dir():
         for owner_dir in sorted(datasets_root.iterdir()):
@@ -42,137 +50,166 @@ def _find_named_dirs(base: Path, names: list[str]) -> list[Path]:
                 slug_dir = owner_dir / name
                 if slug_dir.is_dir() and slug_dir not in found:
                     found.append(slug_dir)
-    # also search one level deeper (legacy flat layout)
     for child in sorted(base.iterdir()) if base.is_dir() else []:
         if child.is_dir() and child.name in names and child not in found:
             found.append(child)
     return found
 
 
-def _rglob_limited(root: Path, pattern: str, limit: int = 50) -> list[Path]:
+def _dedup_paths(paths: list[Path]) -> list[Path]:
+    seen: set[Path] = set()
     out: list[Path] = []
-    for p in root.rglob(pattern):
-        out.append(p)
-        if len(out) >= limit:
-            break
-    return sorted(out)
+    for p in paths:
+        try:
+            key = p.resolve()
+        except OSError:
+            key = p
+        if key not in seen and p.exists():
+            seen.add(key)
+            out.append(p)
+    return out
 
 
-def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
-    """Discover archives, image roots, and label CSVs for a dataset ID."""
-    layout = DatasetLayout(dataset_id=dataset_id)
+def _collect_candidates(dataset_id: str, search_roots: list[Path]) -> list[Path]:
+    """Aggressively find every plausible mount point under search roots."""
+    slugs = KAGGLE_SLUG_DIRS.get(dataset_id, [])
     candidates: list[Path] = []
 
     for root in search_roots:
         root = Path(root)
         if not root.exists():
             continue
-        # Prefer slug-named folders under /kaggle/input
-        for slug_dir in _find_named_dirs(root, KAGGLE_SLUG_DIRS.get(dataset_id, [])):
-            candidates.append(slug_dir)
-        # Explicit DS folder
-        ds_dir = root / "raw" / dataset_id
-        if ds_dir.is_dir():
-            candidates.append(ds_dir)
-        # Local staging shorthand
-        if root.name.upper().startswith(dataset_id) or dataset_id.lower() in root.name.lower():
-            candidates.append(root)
         candidates.append(root)
+        candidates.extend(_find_named_dirs(root, slugs))
+        # Any folder named like the Kaggle slug anywhere under root
+        for slug in slugs:
+            try:
+                for hit in root.rglob(slug):
+                    if hit.is_dir():
+                        candidates.append(hit)
+            except OSError:
+                pass
+        # raw/DSxxxx folders
+        try:
+            for hit in root.rglob(f"raw/{dataset_id}"):
+                if hit.is_dir():
+                    candidates.append(hit)
+            for hit in root.rglob(dataset_id):
+                if hit.is_dir():
+                    candidates.append(hit)
+        except OSError:
+            pass
+        ds_direct = root / "raw" / dataset_id
+        if ds_direct.is_dir():
+            candidates.append(ds_direct)
 
-    # Deduplicate while preserving order
-    seen: set[Path] = set()
-    uniq: list[Path] = []
-    for c in candidates:
-        rp = c.resolve() if c.exists() else c
-        if rp not in seen and c.exists():
-            seen.add(rp)
-            uniq.append(c)
+    return _dedup_paths(candidates)
 
-    for base in uniq:
-        zips = _rglob_limited(base, "*.zip", limit=80)
-        csvs = [
-            p
-            for p in _rglob_limited(base, "*.csv", limit=40)
-            if "label" in p.name.lower()
-            or p.name.lower() == "metadata.csv"
-            or "fairface_label" in p.name.lower()
+
+def _find_all_zips(base: Path) -> list[Path]:
+    try:
+        return sorted(p for p in base.rglob("*.zip") if p.is_file())
+    except OSError:
+        return []
+
+
+def _filter_archives(dataset_id: str, zips: list[Path]) -> list[Path]:
+    if not zips:
+        return []
+    hints = ARCHIVE_NAME_HINTS.get(dataset_id, [])
+    if dataset_id == "DS0002":
+        matched = [
+            z
+            for z in zips
+            if "/test/" in z.as_posix() or "\\test\\" in str(z)
         ]
-        # Image directories (contain many jpg/png)
-        img_dirs: list[Path] = []
-        for dname in ("real", "fake", "train", "val", "valid", "test", "synthetic"):
-            for d in base.rglob(dname):
-                if d.is_dir():
-                    # quick probe
-                    probe = list(d.glob("*.jpg"))[:1] + list(d.glob("*.png"))[:1]
-                    if probe or any(d.iterdir()):
-                        img_dirs.append(d)
+        return matched or zips
+    if hints:
+        matched = [z for z in zips if any(h in z.name.lower() for h in hints)]
+        if matched:
+            return matched
+    return zips
+
+
+def _find_label_csvs(base: Path, dataset_id: str) -> list[Path]:
+    csvs: list[Path] = []
+    try:
+        for p in base.rglob("*.csv"):
+            if not p.is_file():
+                continue
+            n = p.name.lower()
+            if dataset_id == "DS0005" and "fairface_label" in n:
+                csvs.append(p)
+            elif dataset_id == "DS0001" and (n == "metadata.csv" or "metadata" in n):
+                csvs.append(p)
+            elif "label" in n:
+                csvs.append(p)
+    except OSError:
+        pass
+    return sorted(set(csvs))
+
+
+def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
+    """Discover archives, image roots, and label CSVs for a dataset ID."""
+    layout = DatasetLayout(dataset_id=dataset_id)
+    candidates = _collect_candidates(dataset_id, search_roots)
+
+    for base in candidates:
+        zips = _find_all_zips(base)
+        layout.archives.extend(_filter_archives(dataset_id, zips))
+        layout.label_csvs.extend(_find_label_csvs(base, dataset_id))
 
         if dataset_id == "DS0001":
-            layout.archives.extend(
-                [z for z in zips if "artifact" in z.name.lower() or "50k" in z.name.lower()]
-                or zips
-            )
-            layout.label_csvs.extend([c for c in csvs if "metadata" in c.name.lower()] or csvs)
-            # Prefer extracted raw/DS0001 if present
             for p in base.rglob("DS0001"):
-                if p.is_dir() and (p / "real").exists():
+                if p.is_dir() and (p / "real").is_dir():
                     layout.roots.append(p)
-            # Local staging: incoming/Artifact with real/ + fake/
             if (base / "real").is_dir() and (base / "fake").is_dir():
                 layout.roots.append(base)
-            meta = base / "metadata.csv"
-            if meta.is_file():
-                layout.label_csvs.append(meta)
-        elif dataset_id == "DS0002":
-            layout.archives.extend(
-                [z for z in zips if "/test/" in z.as_posix() or "\\test\\" in str(z)] or zips
-            )
         elif dataset_id == "DS0003":
-            # Usually already extracted on Kaggle
             for p in base.rglob("real_vs_fake"):
                 if p.is_dir():
                     layout.roots.append(p)
-            if not layout.roots:
-                layout.roots.append(base)
-            layout.archives.extend(zips)
-        elif dataset_id == "DS0004":
-            layout.archives.extend(zips)
+            if not any(r.name == "real_vs_fake" for r in layout.roots):
+                # train/valid folders with images
+                for probe in base.rglob("train"):
+                    if probe.is_dir() and list(probe.glob("*.jpg"))[:1]:
+                        layout.roots.append(base)
+                        break
         elif dataset_id == "DS0005":
-            layout.archives.extend(
-                [z for z in zips if "fairface" in z.name.lower() or "margin025" in z.name.lower()]
-                or zips
-            )
-            layout.label_csvs.extend(
-                [c for c in csvs if "fairface_label" in c.name.lower()] or csvs
-            )
+            if (base / "train").is_dir() or (base / "val").is_dir():
+                layout.roots.append(base)
             for split in ("train", "val"):
-                d = base / split
-                if d.is_dir():
-                    layout.roots.append(base)
-            # Kaggle pack: raw/DS0005/*.zip
-            for p in base.rglob("DS0005"):
-                if p.is_dir():
-                    ff_zip = list(p.glob("*fairface*.zip")) + list(p.glob("*margin025*.zip"))
-                    layout.archives.extend(ff_zip)
-                    for c in p.glob("fairface_label_*.csv"):
-                        layout.label_csvs.append(c)
+                for d in base.rglob(split):
+                    if d.is_dir() and list(d.glob("*.jpg"))[:1]:
+                        layout.roots.append(d.parent)
+                        break
 
-    # Dedup lists
-    def dedup(paths: list[Path]) -> list[Path]:
-        s: set[Path] = set()
-        out: list[Path] = []
-        for p in paths:
-            try:
-                r = p.resolve()
-            except OSError:
-                r = p
-            if r not in s:
-                s.add(r)
-                out.append(p)
-        return out
-
-    layout.roots = dedup(layout.roots)
-    layout.archives = dedup(layout.archives)
-    layout.label_csvs = dedup(layout.label_csvs)
-    layout.notes = f"search_roots={[str(p) for p in search_roots]}"
+    layout.roots = _dedup_paths(layout.roots)
+    layout.archives = _dedup_paths(layout.archives)
+    layout.label_csvs = _dedup_paths(layout.label_csvs)
+    layout.notes = (
+        f"search_roots={[str(p) for p in search_roots]}; "
+        f"candidates={[str(p) for p in candidates]}"
+    )
     return layout
+
+
+def debug_layout(dataset_id: str, search_roots: list[Path]) -> dict:
+    """Human-readable discovery debug (for Kaggle smoke tests)."""
+    roots = [Path(r) for r in search_roots]
+    layout = discover_layout(dataset_id, roots)
+    return {
+        "dataset_id": dataset_id,
+        "search_roots_exist": {str(r): r.exists() for r in roots},
+        "candidates": layout.notes,
+        "roots": [str(p) for p in layout.roots],
+        "archives": [str(p) for p in layout.archives],
+        "label_csvs": [str(p) for p in layout.label_csvs],
+        "all_zips_under_input": [
+            str(p)
+            for p in sorted(Path("/kaggle/input").rglob("*.zip"))
+            if "fairface" in p.name.lower() or "margin" in p.name.lower() or "ds0005" in p.name.lower()
+        ][:30]
+        if Path("/kaggle/input").exists()
+        else [],
+    }

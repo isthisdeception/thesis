@@ -9,7 +9,7 @@ from pathlib import Path
 from statistics import mean
 from typing import Sequence
 
-from .adapters import DatasetLayout, discover_layout
+from .adapters import DatasetLayout, debug_layout, discover_layout
 from .schemas import (
     DEFAULT_THRESHOLDS,
     INTEGRITY_COLUMNS,
@@ -331,7 +331,14 @@ def run_validation(
             "scanned_images": result["scanned_images"],
             "archives": [str(p) for p in result["layout"].archives],
             "roots": [str(p) for p in result["layout"].roots],
+            "layout_notes": result["layout"].notes,
         }
+        if result["scanned_images"] == 0:
+            print(f"  DEBUG {result['layout'].notes}", flush=True)
+            print(
+                f"  DEBUG archives={summary[ds]['archives']} roots={summary[ds]['roots']}",
+                flush=True,
+            )
         print(
             f"  scanned={result['scanned_images']} passed={result['passed']} "
             f"findings={len(result['findings'])}",

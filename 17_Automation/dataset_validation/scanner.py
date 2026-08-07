@@ -142,16 +142,35 @@ def iter_dir_images(root: Path) -> Iterator[tuple[str, Path]]:
             yield path.relative_to(root).as_posix(), path
 
 
-def iter_zip_images(zip_path: Path) -> Iterator[tuple[str, bytes]]:
+def iter_zip_images(
+    zip_path: Path, *, _depth: int = 0, _max_depth: int = 3
+) -> Iterator[tuple[str, bytes]]:
+    """Yield (relative_name, bytes) for images; descends into nested zip entries."""
+    if _depth > _max_depth:
+        return
     with zipfile.ZipFile(zip_path, "r") as zf:
         for info in sorted(zf.infolist(), key=lambda i: i.filename):
             if info.is_dir():
                 continue
             name = info.filename.replace("\\", "/")
-            if not _is_image_name(name):
-                continue
             with zf.open(info, "r") as fh:
-                yield name, fh.read()
+                data = fh.read()
+            if name.lower().endswith(".zip"):
+                try:
+                    with zipfile.ZipFile(io.BytesIO(data), "r") as inner:
+                        for i2 in sorted(inner.infolist(), key=lambda x: x.filename):
+                            if i2.is_dir():
+                                continue
+                            n2 = i2.filename.replace("\\", "/")
+                            if not _is_image_name(n2):
+                                continue
+                            with inner.open(i2, "r") as fh2:
+                                yield f"{zip_path.name}::{name}::{n2}", fh2.read()
+                except zipfile.BadZipFile:
+                    continue
+            elif _is_image_name(name):
+                prefix = f"{zip_path.name}::" if _depth else ""
+                yield f"{prefix}{name}", data
 
 
 def scan_directory(
