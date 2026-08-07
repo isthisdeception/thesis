@@ -170,6 +170,15 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                     layout.roots.append(p)
             if (base / "real").is_dir() and (base / "fake").is_dir():
                 layout.roots.append(base)
+        elif dataset_id == "DS0002":
+            # Prefer remaining test/*.zip archives; also accept extracted generator trees
+            for cond in ("FE", "FS", "I2I", "T2I"):
+                for d in base.rglob(cond):
+                    if d.is_dir() and any(d.iterdir()):
+                        layout.roots.append(d)
+            for p in base.rglob("test"):
+                if p.is_dir():
+                    layout.roots.append(p)
         elif dataset_id == "DS0003":
             for p in base.rglob("real_vs_fake"):
                 if p.is_dir():
@@ -180,6 +189,29 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                     if probe.is_dir() and list(probe.glob("*.jpg"))[:1]:
                         layout.roots.append(base)
                         break
+        elif dataset_id == "DS0004":
+            # Pack layout: raw/DS0004/real/*.zip + synthetic/*.zip
+            # After Kaggle auto-extract: folders of images / generator trees
+            for name in ("real", "synthetic", "synthbuster", "raise_1k_jpeg"):
+                for d in base.rglob(name):
+                    if not d.is_dir():
+                        continue
+                    has_img = (
+                        list(d.glob("*.jpg"))[:1]
+                        or list(d.glob("*.png"))[:1]
+                        or list(d.glob("*.jpeg"))[:1]
+                    )
+                    # generator subfolders (dalle2, glide, ...)
+                    has_sub = any(x.is_dir() for x in d.iterdir()) if any(d.iterdir()) else False
+                    if has_img or has_sub:
+                        layout.roots.append(d)
+            for p in base.rglob("DS0004"):
+                if p.is_dir():
+                    layout.roots.append(p)
+            # Keep any leftover zips under DS0004 even if hints miss
+            for z in zips:
+                if "DS0004" in z.as_posix() or "synthbuster" in z.as_posix().lower():
+                    layout.archives.append(z)
         elif dataset_id == "DS0005":
             if (base / "train").is_dir() or (base / "val").is_dir():
                 layout.roots.append(base)
@@ -213,8 +245,11 @@ def debug_layout(dataset_id: str, search_roots: list[Path]) -> dict:
         "all_zips_under_input": [
             str(p)
             for p in sorted(Path("/kaggle/input").rglob("*.zip"))
-            if "fairface" in p.name.lower() or "margin" in p.name.lower() or "ds0005" in p.name.lower()
-        ][:30]
+            if any(
+                k in p.as_posix().lower()
+                for k in ("fairface", "margin", "ds0005", "synthbuster", "raise", "ds0004", "diff", "artifact")
+            )
+        ][:40]
         if Path("/kaggle/input").exists()
         else [],
     }
