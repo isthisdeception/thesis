@@ -1,0 +1,24 @@
+{
+  "built_utc": "2026-08-11T11:34:58.546895+00:00",
+  "dataset_ids": [
+    "DS0002"
+  ],
+  "max_images": null,
+  "results": {
+    "DS0002": {
+      "passed": false,
+      "fail_reasons": [
+        "corrupt_rate=0.027918>0.001"
+      ],
+      "scanned_images": 57059,
+      "archives": [],
+      "roots": [
+        "/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/FE",
+        "/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/FS",
+        "/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/I2I",
+        "/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/T2I"
+      ],
+      "layout_notes": "search_roots=['/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test']; candidates=['/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test', '/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002']"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+Dataset ID,Metric,Value,Notes
+DS0002,scanned_images,57059,
+DS0002,corrupt_count,1593,
+DS0002,corrupt_rate,0.027918,corrupt / scanned_images
+DS0002,empty_files,0,
+DS0002,unsupported_format,0,
+DS0002,duplicate_hash_groups,300,
+DS0002,width_min,94,
+DS0002,width_max,1024,
+DS0002,width_mean,424.72,
+DS0002,height_min,101,
+DS0002,height_max,1024,
+DS0002,height_mean,421.98,
+DS0002,aspect_ratio_min,0.5948,width/height
+DS0002,aspect_ratio_max,1.5409,width/height
+DS0002,aspect_ratio_mean,1.0061,width/height
+DS0002,format_histogram,"{""PNG"": 52430, ""JPEG"": 4629}",
+DS0002,mode_histogram,"{""RGB"": 57059}",
+DS0002,archives_scanned,0,
+DS0002,roots_scanned,4,/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/FE;/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/FS;/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/I2I;/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/T2I
+DS0002,label_csvs,0,
+DS0002,built_utc,2026-08-11T11:34:58.496164+00:00,Phase D6
+DS0002,threshold_pass,no,corrupt_rate=0.027918>0.001

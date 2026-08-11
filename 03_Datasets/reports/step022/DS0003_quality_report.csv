@@ -1,0 +1,23 @@
+Dataset ID,Metric,Value,Notes
+DS0003,scanned_images,140000,
+DS0003,corrupt_count,0,
+DS0003,corrupt_rate,0.000000,corrupt / scanned_images
+DS0003,empty_files,0,
+DS0003,unsupported_format,0,
+DS0003,duplicate_hash_groups,0,
+DS0003,width_min,256,
+DS0003,width_max,256,
+DS0003,width_mean,256.00,
+DS0003,height_min,256,
+DS0003,height_max,256,
+DS0003,height_mean,256.00,
+DS0003,aspect_ratio_min,1.0000,width/height
+DS0003,aspect_ratio_max,1.0000,width/height
+DS0003,aspect_ratio_mean,1.0000,width/height
+DS0003,format_histogram,"{""JPEG"": 140000}",
+DS0003,mode_histogram,"{""RGB"": 140000}",
+DS0003,archives_scanned,0,
+DS0003,roots_scanned,1,/kaggle/input/datasets/xhlulu/140k-real-and-fake-faces/real_vs_fake
+DS0003,label_csvs,0,
+DS0003,built_utc,2026-08-10T09:50:39.283583+00:00,Phase D6
+DS0003,threshold_pass,yes,ok

@@ -1,1 +1,111 @@
 Dataset ID,Metric,Value,Notes
+DS0001,scanned_images,50000,
+DS0001,corrupt_count,0,
+DS0001,corrupt_rate,0.000000,corrupt / scanned_images
+DS0001,empty_files,0,
+DS0001,unsupported_format,0,
+DS0001,duplicate_hash_groups,0,
+DS0001,width_min,200,
+DS0001,width_max,200,
+DS0001,width_mean,200.00,
+DS0001,height_min,200,
+DS0001,height_max,200,
+DS0001,height_mean,200.00,
+DS0001,aspect_ratio_min,1.0000,width/height
+DS0001,aspect_ratio_max,1.0000,width/height
+DS0001,aspect_ratio_mean,1.0000,width/height
+DS0001,format_histogram,"{""JPEG"": 50000}",
+DS0001,mode_histogram,"{""RGB"": 50000}",
+DS0001,archives_scanned,0,
+DS0001,roots_scanned,1,/kaggle/input/datasets/isthisdeception/ds0001-artifact-face-subset/raw/DS0001/artifact_face_subset_50k/raw/DS0001
+DS0001,label_csvs,2,"metadata.csv,metadata.csv"
+DS0001,built_utc,2026-08-07T15:38:58.109053+00:00,Phase D6
+DS0001,threshold_pass,yes,ok
+DS0002,scanned_images,57059,
+DS0002,corrupt_count,1593,
+DS0002,corrupt_rate,0.027918,corrupt / scanned_images
+DS0002,empty_files,0,
+DS0002,unsupported_format,0,
+DS0002,duplicate_hash_groups,300,
+DS0002,width_min,94,
+DS0002,width_max,1024,
+DS0002,width_mean,424.72,
+DS0002,height_min,101,
+DS0002,height_max,1024,
+DS0002,height_mean,421.98,
+DS0002,aspect_ratio_min,0.5948,width/height
+DS0002,aspect_ratio_max,1.5409,width/height
+DS0002,aspect_ratio_mean,1.0061,width/height
+DS0002,format_histogram,"{""PNG"": 52430, ""JPEG"": 4629}",
+DS0002,mode_histogram,"{""RGB"": 57059}",
+DS0002,archives_scanned,0,
+DS0002,roots_scanned,4,/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/FE;/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/FS;/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/I2I;/kaggle/input/datasets/isthisdeception/ds0002-diff-official-test/raw/DS0002/test/T2I
+DS0002,label_csvs,0,
+DS0002,built_utc,2026-08-11T11:34:58.496164+00:00,Phase D6
+DS0002,threshold_pass,no,corrupt_rate=0.027918>0.001
+DS0003,scanned_images,140000,
+DS0003,corrupt_count,0,
+DS0003,corrupt_rate,0.000000,corrupt / scanned_images
+DS0003,empty_files,0,
+DS0003,unsupported_format,0,
+DS0003,duplicate_hash_groups,0,
+DS0003,width_min,256,
+DS0003,width_max,256,
+DS0003,width_mean,256.00,
+DS0003,height_min,256,
+DS0003,height_max,256,
+DS0003,height_mean,256.00,
+DS0003,aspect_ratio_min,1.0000,width/height
+DS0003,aspect_ratio_max,1.0000,width/height
+DS0003,aspect_ratio_mean,1.0000,width/height
+DS0003,format_histogram,"{""JPEG"": 140000}",
+DS0003,mode_histogram,"{""RGB"": 140000}",
+DS0003,archives_scanned,0,
+DS0003,roots_scanned,1,/kaggle/input/datasets/xhlulu/140k-real-and-fake-faces/real_vs_fake
+DS0003,label_csvs,0,
+DS0003,built_utc,2026-08-10T09:50:39.283583+00:00,Phase D6
+DS0003,threshold_pass,yes,ok
+DS0004,scanned_images,48996,
+DS0004,corrupt_count,0,
+DS0004,corrupt_rate,0.000000,corrupt / scanned_images
+DS0004,empty_files,0,
+DS0004,unsupported_format,0,
+DS0004,duplicate_hash_groups,9989,
+DS0004,width_min,256,
+DS0004,width_max,4928,
+DS0004,width_mean,1283.29,
+DS0004,height_min,256,
+DS0004,height_max,4928,
+DS0004,height_mean,1126.89,
+DS0004,aspect_ratio_min,0.5000,width/height
+DS0004,aspect_ratio_max,3.0000,width/height
+DS0004,aspect_ratio_mean,1.1533,width/height
+DS0004,format_histogram,"{""PNG"": 40000, ""JPEG"": 8996}",
+DS0004,mode_histogram,"{""RGB"": 43996, ""RGBA"": 5000}",
+DS0004,archives_scanned,0,
+DS0004,roots_scanned,7,/kaggle/input/datasets/isthisdeception/ds0004-synthbuster;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/real;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/real/raise_1k_jpeg;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic/synthbuster;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic/synthbuster/synthbuster
+DS0004,label_csvs,0,
+DS0004,built_utc,2026-08-07T17:32:29.698350+00:00,Phase D6
+DS0004,threshold_pass,yes,ok
+DS0005,scanned_images,97698,
+DS0005,corrupt_count,0,
+DS0005,corrupt_rate,0.000000,corrupt / scanned_images
+DS0005,empty_files,0,
+DS0005,unsupported_format,0,
+DS0005,duplicate_hash_groups,158,
+DS0005,width_min,224,
+DS0005,width_max,224,
+DS0005,width_mean,224.00,
+DS0005,height_min,224,
+DS0005,height_max,224,
+DS0005,height_mean,224.00,
+DS0005,aspect_ratio_min,1.0000,width/height
+DS0005,aspect_ratio_max,1.0000,width/height
+DS0005,aspect_ratio_mean,1.0000,width/height
+DS0005,format_histogram,"{""JPEG"": 97698}",
+DS0005,mode_histogram,"{""RGB"": 97698}",
+DS0005,archives_scanned,0,
+DS0005,roots_scanned,1,/kaggle/input/datasets/isthisdeception/ds0005-fairface/raw/DS0005/fairface-img-margin025-trainval
+DS0005,label_csvs,2,"fairface_label_train.csv,fairface_label_val.csv"
+DS0005,built_utc,2026-08-07T15:13:34.016693+00:00,Phase D6
+DS0005,threshold_pass,yes,ok

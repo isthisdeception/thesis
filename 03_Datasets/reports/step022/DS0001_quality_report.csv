@@ -1,0 +1,23 @@
+Dataset ID,Metric,Value,Notes
+DS0001,scanned_images,50000,
+DS0001,corrupt_count,0,
+DS0001,corrupt_rate,0.000000,corrupt / scanned_images
+DS0001,empty_files,0,
+DS0001,unsupported_format,0,
+DS0001,duplicate_hash_groups,0,
+DS0001,width_min,200,
+DS0001,width_max,200,
+DS0001,width_mean,200.00,
+DS0001,height_min,200,
+DS0001,height_max,200,
+DS0001,height_mean,200.00,
+DS0001,aspect_ratio_min,1.0000,width/height
+DS0001,aspect_ratio_max,1.0000,width/height
+DS0001,aspect_ratio_mean,1.0000,width/height
+DS0001,format_histogram,"{""JPEG"": 50000}",
+DS0001,mode_histogram,"{""RGB"": 50000}",
+DS0001,archives_scanned,0,
+DS0001,roots_scanned,1,/kaggle/input/datasets/isthisdeception/ds0001-artifact-face-subset/raw/DS0001/artifact_face_subset_50k/raw/DS0001
+DS0001,label_csvs,2,"metadata.csv,metadata.csv"
+DS0001,built_utc,2026-08-07T15:38:58.109053+00:00,Phase D6
+DS0001,threshold_pass,yes,ok

@@ -1,0 +1,19 @@
+{
+  "built_utc": "2026-08-07T15:38:58.131001+00:00",
+  "dataset_ids": [
+    "DS0001"
+  ],
+  "max_images": null,
+  "results": {
+    "DS0001": {
+      "passed": true,
+      "fail_reasons": [],
+      "scanned_images": 50000,
+      "archives": [],
+      "roots": [
+        "/kaggle/input/datasets/isthisdeception/ds0001-artifact-face-subset/raw/DS0001/artifact_face_subset_50k/raw/DS0001"
+      ],
+      "layout_notes": "search_roots=['/kaggle/input/datasets/isthisdeception/ds0001-artifact-face-subset']; candidates=['/kaggle/input/datasets/isthisdeception/ds0001-artifact-face-subset', '/kaggle/input/datasets/isthisdeception/ds0001-artifact-face-subset/raw/DS0001', '/kaggle/input/datasets/isthisdeception/ds0001-artifact-face-subset/raw/DS0001/artifact_face_subset_50k/raw/DS0001']"
+    }
+  }
+}

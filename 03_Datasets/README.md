@@ -12,10 +12,13 @@
   - Registered `DS0001`–`DS0005` in `03_Datasets/metadata/datasets.csv` with metadata.
   - License files saved in `03_Datasets/licenses/DS0001_license.txt` ... `DS0005_license.txt`.
   - **DS0005 reassigned** from AI-Face-FairnessBench (EULA-restricted) to FairFace (CC BY 4.0) per `DEC0005.md`.
-- **Phases D4–D5 — Dataset Download & Raw-Lock (STEP-021):** `COMPLETE` (hosting)
-  - DS0001/2/4/5 on private Kaggle (`isthisdeception/…`); DS0003 = [`xhlulu/140k-real-and-fake-faces`](https://www.kaggle.com/datasets/xhlulu/140k-real-and-fake-faces).
-  - Pointers + archive SHA-256 recorded for project uploads; DS0003 marked access-confirmed.
-  - **Next:** STEP-022 Dataset Validation — module in `17_Automation/dataset_validation/`; full run on Kaggle per `04_Preprocessing/notebooks/STEP022_KAGGLE_VALIDATION.md` (`Validated` still `no`).
+- **Phases D4–D5 — Dataset Download & Raw-Lock (STEP-021):** `COMPLETE`
+- **Phase D6 — Dataset Validation (STEP-022):** `COMPLETE`
+  - Reports: `03_Datasets/reports/validation_report.csv`, `quality_report.csv`, `integrity_report.csv`, `validation_summary.json`
+  - Per-dataset artifacts: `03_Datasets/reports/step022/`
+  - DS0002: issues logged + filter plan `reports/step022/DS0002_issues_plan.md` (corrupt filter in STEP-025)
+  - Local Kaggle dumps (gitignored): `_staging_dataset_validation/`
+  - **Next:** STEP-023 Exploratory Dataset Analysis
 
 ## Contents
 Raw immutable originals (`raw/`), processed datasets (`processed/`), splits (`splits/`), metadata (`metadata/`), reports (`reports/`), licenses (`licenses/`).
