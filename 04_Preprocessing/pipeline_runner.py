@@ -18,7 +18,11 @@ from modules.cropping import CroppingParams, crop_face
 from modules.face_alignment import FaceAlignmentParams, align_face
 from modules.face_detection import FaceDetectionParams, detect_faces
 from modules.format_conversion import FormatConversionParams, save_processed_image
-from modules.image_verification import ImageVerificationParams, verify_path
+from modules.image_verification import (
+    ImageVerificationParams,
+    verify_image_bytes,
+    verify_path,
+)
 from modules.metadata_extraction import MetadataExtractionParams, extract_metadata, to_index_row
 from modules.normalization import (
     NormalizationParams,
@@ -27,8 +31,10 @@ from modules.normalization import (
     write_stats_json,
 )
 from modules.quality_filtering import QualityFilteringParams, filter_quality, load_exclude_paths
+from modules.report_writer import write_preprocessing_report
 from modules.resize import ResizeParams, resize_image
 from modules.types import ErrorRow, ExcludeRow, ModuleError
+import zipfile
 
 
 @dataclass
@@ -109,24 +115,46 @@ def process_one(
     *,
     exclude_map: dict[str, str],
     seen_hashes: dict[str, str],
-) -> tuple[ImageRecord | None, ExcludeRow | None, ErrorRow | None]:
-    """Run module sequence for a single file. Returns (kept_record, exclude, error)."""
+) -> tuple[Any | None, ExcludeRow | None, ErrorRow | None]:
+    """Run module sequence for a single file. Returns (kept_record, exclude, error).
+
+    Zip members use relative_path form ``archive.zip::inner/path.jpg``.
+    """
     try:
-        record = verify_path(
-            path,
-            relative_path,
-            cfg.verification,
-            dataset_id=cfg.dataset_id,
-        )
+        member_rel = relative_path
+        container = str(path.parent)
+        if "::" in relative_path and path.suffix.lower() == ".zip":
+            zip_name, member_rel = relative_path.split("::", 1)
+            container = str(path)
+            with zipfile.ZipFile(path, "r") as zf:
+                data = zf.read(member_rel)
+            record = verify_image_bytes(
+                data,
+                member_rel,
+                cfg.verification,
+                dataset_id=cfg.dataset_id,
+            )
+            record.extras["size_bytes"] = len(data)
+            record.extras["zip_archive"] = zip_name
+        else:
+            record = verify_path(
+                path,
+                relative_path,
+                cfg.verification,
+                dataset_id=cfg.dataset_id,
+            )
+            member_rel = relative_path
+
         if not record.kept:
-            return None, ExcludeRow(relative_path, record.reason_code), None
+            return None, ExcludeRow(member_rel, record.reason_code), None
 
         for mod in cfg.module_sequence:
             if mod == "PPMOD01":
                 continue  # already done
             if mod == "PPMOD10":
                 meta_params = cfg.metadata
-                meta_params.source_container = str(path.parent)
+                meta_params.source_container = container
+                record.relative_path = member_rel
                 record = extract_metadata(record, meta_params)
             elif mod == "PPMOD08":
                 record = strip_artifacts(record, cfg.artifact)
@@ -138,7 +166,7 @@ def process_one(
                     seen_hashes=seen_hashes,
                 )
                 if not record.kept:
-                    return None, ExcludeRow(relative_path, record.reason_code), None
+                    return None, ExcludeRow(member_rel, record.reason_code), None
             elif mod == "PPMOD02":
                 record = detect_faces(record, cfg.face_detection)
             elif mod == "PPMOD03":
@@ -201,15 +229,17 @@ def run_pipeline(
         assert kept is not None
         # Save under processed/images with stable relative layout
         ext = ".png" if (kept.output_format or "PNG") == "PNG" else ".jpg"
-        out_name = Path(rel).with_suffix(ext).name
-        dest = tree["images"] / out_name
-        # Avoid collisions: preserve relative path structure
-        dest = tree["images"] / Path(rel).with_suffix(ext)
+        rel_out = kept.relative_path.replace("::", "/").replace("\\", "/")
+        dest = tree["images"] / Path(rel_out).with_suffix(ext)
         save_processed_image(kept, dest, cfg.format_conversion)
         row = to_index_row(kept)
         row["processed_path"] = str(dest.relative_to(cfg.processed_root)).replace("\\", "/")
         index_rows.append(row)
-        kept_images_for_stats.append(kept.ensure_image())
+        if cfg.normalization.norm_mode.lower() == "dataset":
+            # Only retain pixels when dataset stats are required (avoid OOM on 50k+)
+            kept_images_for_stats.append(kept.ensure_image().copy())
+        # Release pixel buffer from record after save
+        kept.image = None
 
     # Normalization stats artifact
     stats_path = tree["metadata"] / "normalization_stats.json"
@@ -253,12 +283,28 @@ def run_pipeline(
         fieldnames=["relative_path", "module_id", "reason_code", "message"],
     )
 
-    return {
+    summary = {
         "kept": len(index_rows),
         "excluded": len(excludes),
         "errors": len(errors),
+        "input_count": len(index_rows) + len(excludes) + len(errors),
         "processed_root": str(cfg.processed_root),
     }
+    write_preprocessing_report(
+        pipeline_id=cfg.pipeline_id,
+        dataset_id=cfg.dataset_id,
+        output_id=f"{cfg.dataset_id}_{cfg.pipeline_id}",
+        processed_root=Path(cfg.processed_root),
+        summary=summary,
+        config=_serialize_config(cfg),
+        research_question=(
+            "How can we improve the cross-generator generalization of "
+            "image-based AI face detection models to maintain high accuracy "
+            "on unseen generative architectures?"
+        ),
+        kaggle_pointer=str(getattr(cfg, "kaggle_pointer", "PENDING")),
+    )
+    return summary
 
 
 def _write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:

@@ -70,3 +70,20 @@ Per Handbook [A.6 Storage Tiers](MASTER_RESEARCH_OPERATING_SYSTEM.md#a6-canonica
 1. Files under `03_Datasets/raw/DSxxxx/` on remote Kaggle sessions are strictly **immutable**.
 2. Never rename, modify, or delete original files.
 3. All transformations, resizes, and cropping are performed downstream in `03_Datasets/processed/DSxxxx_PPxxxx/`.
+
+---
+
+## Processed Dataset Pointers (STEP-027 / Phase D11)
+
+> Image bytes live on Kaggle only. Git holds reports under `04_Preprocessing/reports/` + this pointer table.  
+> Status: **PENDING_UPLOAD** until Kaggle notebooks finish and slugs are confirmed.
+
+| Output ID | Pipeline | Raw source | Expected Kaggle slug | Status |
+|-----------|----------|------------|----------------------|--------|
+| DS0001_PP0001 | PP0001 | DS0001 | `isthisdeception/ds0001-pp0001` | PENDING |
+| DS0002_PP0002 | PP0002 | DS0002 | `isthisdeception/ds0002-pp0002` | PENDING |
+| DS0003_PP0003 | PP0003 | DS0003 | `isthisdeception/ds0003-pp0003` | PENDING |
+| DS0004_PP0004 | PP0004 | DS0004 | `isthisdeception/ds0004-pp0004` | PENDING |
+| DS0005_PP0005 | PP0005 | DS0005 | `isthisdeception/ds0005-pp0005` | PENDING |
+
+**Overwrite rule:** never replace an existing processed dataset in place. Parameter changes require a new `PPxxxx` and a new output folder/slug.
