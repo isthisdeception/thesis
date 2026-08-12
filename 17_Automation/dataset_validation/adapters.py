@@ -93,6 +93,28 @@ def _drop_ancestor_roots(paths: list[Path]) -> list[Path]:
     return keep
 
 
+def _root_looks_relevant(dataset_id: str, root: Path) -> bool:
+    """True if this search root is plausibly for dataset_id (avoids cross-pack contamination)."""
+    slugs = KAGGLE_SLUG_DIRS.get(dataset_id, [])
+    hints = ARCHIVE_NAME_HINTS.get(dataset_id, [])
+    blob = root.as_posix().lower()
+    if any(slug.lower() in blob for slug in slugs):
+        return True
+    if any(h.lower() in blob for h in hints):
+        return True
+    if dataset_id.lower() in blob:
+        return True
+    if dataset_id == "DS0003" and ("140k" in blob or "real-and-fake" in blob or "real_vs_fake" in blob):
+        return True
+    # Generic mounts (Kaggle /kaggle/input, 03_Datasets/raw) stay eligible
+    name = root.name.lower()
+    if name in {"input", "raw", "datasets", "working"}:
+        return True
+    if root.as_posix().rstrip("/").endswith("/kaggle/input"):
+        return True
+    return False
+
+
 def _collect_candidates(dataset_id: str, search_roots: list[Path]) -> list[Path]:
     """Aggressively find every plausible mount point under search roots."""
     slugs = KAGGLE_SLUG_DIRS.get(dataset_id, [])
@@ -102,7 +124,10 @@ def _collect_candidates(dataset_id: str, search_roots: list[Path]) -> list[Path]
         root = Path(root)
         if not root.exists():
             continue
-        candidates.append(root)
+        # Only treat the search root itself as a candidate when it looks relevant,
+        # otherwise foreign sibling packs (local multi-root staging) leak archives.
+        if _root_looks_relevant(dataset_id, root):
+            candidates.append(root)
         candidates.extend(_find_named_dirs(root, slugs))
         # Any folder named like the Kaggle slug anywhere under root
         for slug in slugs:
@@ -118,7 +143,7 @@ def _collect_candidates(dataset_id: str, search_roots: list[Path]) -> list[Path]
                 if hit.is_dir():
                     candidates.append(hit)
             for hit in root.rglob(dataset_id):
-                if hit.is_dir():
+                if hit.is_dir() and hit.name == dataset_id:
                     candidates.append(hit)
         except OSError:
             pass
@@ -141,16 +166,23 @@ def _filter_archives(dataset_id: str, zips: list[Path]) -> list[Path]:
         return []
     hints = ARCHIVE_NAME_HINTS.get(dataset_id, [])
     if dataset_id == "DS0002":
+        # Official DiFF TEST packs live under .../test/<COND>/*.zip
         matched = [
             z
             for z in zips
             if "/test/" in z.as_posix() or "\\test\\" in str(z)
         ]
-        return matched or zips
+        return matched
+    if dataset_id == "DS0003":
+        # Native Kaggle set is usually extracted (no project zip); ignore foreign archives.
+        return [
+            z
+            for z in zips
+            if "140k" in z.name.lower() or "real-and-fake" in z.name.lower() or "real_vs_fake" in z.as_posix().lower()
+        ]
     if hints:
         matched = [z for z in zips if any(h in z.name.lower() for h in hints)]
-        if matched:
-            return matched
+        return matched
     return zips
 
 
@@ -184,10 +216,8 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
 
     for base in candidates:
         zips = _find_all_zips(base)
+        # Keep only archives that match this dataset (never foreign sibling packs)
         layout.archives.extend(_filter_archives(dataset_id, zips))
-        # Always keep every zip under a DSxxxx path for zip-packaged sets
-        if dataset_id in {"DS0002", "DS0004"}:
-            layout.archives.extend(zips)
         layout.label_csvs.extend(_find_label_csvs(base, dataset_id))
 
         if dataset_id == "DS0001":
@@ -232,10 +262,10 @@ def discover_layout(dataset_id: str, search_roots: list[Path]) -> DatasetLayout:
                 leaf_roots.append(base)
             if leaf_roots:
                 layout.roots.extend(leaf_roots)
-            else:
-                # Fallback: whole dataset tree once
+            elif _root_looks_relevant(dataset_id, base):
+                # Fallback: whole dataset tree once (only if base is DS0004-relevant)
                 layout.roots.append(base)
-            layout.archives.extend(zips)
+            # Archives already added via _filter_archives above; do not re-add unfiltered zips.
         elif dataset_id == "DS0005":
             if (base / "train").is_dir() or (base / "val").is_dir():
                 layout.roots.append(base)

@@ -1,0 +1,21 @@
+Dataset ID,Metric,Value,Notes
+DS0001,n_images_with_identity,50000,
+DS0001,n_unique_identities,49786,DS0001/DS0002 person-like; DS0004 image stem
+DS0001,mean_images_per_identity,1.0043,
+DS0001,max_images_per_identity,3,
+DS0001,singleton_identities,49582,
+DS0001,coverage,1.000000,fraction of images with identity attribute
+DS0002,n_images_with_identity,57060,
+DS0002,n_unique_identities,143,DS0001/DS0002 person-like; DS0004 image stem
+DS0002,mean_images_per_identity,399.0210,
+DS0002,max_images_per_identity,1954,
+DS0002,singleton_identities,0,
+DS0002,coverage,1.000000,fraction of images with identity attribute
+DS0003,identity_available,no,unavailable for this dataset layout
+DS0004,n_images_with_identity,9999,
+DS0004,n_unique_identities,1000,DS0001/DS0002 person-like; DS0004 image stem
+DS0004,mean_images_per_identity,9.9990,
+DS0004,max_images_per_identity,10,
+DS0004,singleton_identities,0,
+DS0004,coverage,1.000000,fraction of images with identity attribute
+DS0005,identity_available,no,unavailable for this dataset layout

@@ -18,7 +18,12 @@
   - Per-dataset artifacts: `03_Datasets/reports/step022/`
   - DS0002: issues logged + filter plan `reports/step022/DS0002_issues_plan.md` (corrupt filter in STEP-025)
   - Local Kaggle dumps (gitignored): `_staging_dataset_validation/`
-  - **Next:** STEP-023 Exploratory Dataset Analysis
+- **Phase D7 — Exploratory Dataset Analysis (STEP-023):** `COMPLETE`
+  - Module: `17_Automation/dataset_eda/` + Kaggle guide `04_Preprocessing/notebooks/STEP023_KAGGLE_EDA.md`
+  - Reports: `03_Datasets/reports/eda_*.csv`, `eda_summary.json`, `reports/step023/`
+  - Figure specs (A.9): `09_Figures/specs/FIG0001_spec.md` … `FIG0010_spec.md`
+  - Pixel metrics: stratified sample n=3000 seed=42; label/generator/identity fully enumerated
+  - **Next:** STEP-024 Dataset documentation + Dataset Gate
 
 ## Contents
 Raw immutable originals (`raw/`), processed datasets (`processed/`), splits (`splits/`), metadata (`metadata/`), reports (`reports/`), licenses (`licenses/`).

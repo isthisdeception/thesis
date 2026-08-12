@@ -1,0 +1,7 @@
+Dataset ID,Generator,Class,Condition,Count,Proportion,Notes
+DS0003,none,real,train,50000,0.357143,
+DS0003,stylegan,fake,train,50000,0.357143,
+DS0003,none,real,test,10000,0.071429,
+DS0003,none,real,valid,10000,0.071429,
+DS0003,stylegan,fake,test,10000,0.071429,
+DS0003,stylegan,fake,valid,10000,0.071429,

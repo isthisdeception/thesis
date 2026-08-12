@@ -1,0 +1,85 @@
+{
+  "built_utc": "2026-08-12T05:03:05.103795+00:00",
+  "pixel_sample": 3000,
+  "full_pixels": false,
+  "seed": 42,
+  "search_roots": [
+    "_staging\\DS0001_artifact\\kaggle_upload",
+    "_staging\\DS0002_diff\\kaggle_upload",
+    "_staging\\DS0003_140k",
+    "_staging\\DS0004_synthbuster\\kaggle_upload",
+    "_staging\\DS0005_fairface\\kaggle_upload"
+  ],
+  "datasets": {
+    "DS0001": {
+      "n_images": 50000,
+      "n_pixel_measured": 3000,
+      "n_errors": 0,
+      "pixel_policy": "stratified_sample_n=3000_seed=42",
+      "roots_used": [],
+      "archives_used": [
+        "artifact_face_subset_50k.zip"
+      ]
+    },
+    "DS0002": {
+      "n_images": 57060,
+      "n_pixel_measured": 3000,
+      "n_errors": 0,
+      "pixel_policy": "stratified_sample_n=3000_seed=42",
+      "roots_used": [
+        "_staging\\DS0002_diff\\kaggle_upload\\ds0002-diff-official-test\\raw\\DS0002\\test\\FE",
+        "_staging\\DS0002_diff\\kaggle_upload\\ds0002-diff-official-test\\raw\\DS0002\\test\\FS",
+        "_staging\\DS0002_diff\\kaggle_upload\\ds0002-diff-official-test\\raw\\DS0002\\test\\I2I",
+        "_staging\\DS0002_diff\\kaggle_upload\\ds0002-diff-official-test\\raw\\DS0002\\test\\T2I"
+      ],
+      "archives_used": [
+        "CoDiff.zip",
+        "cycle_diff.zip",
+        "Imagic.zip",
+        "DCFace.zip",
+        "DiffFace.zip",
+        "DreamBooth.zip",
+        "FreeDoM_I.zip",
+        "LoRA.zip",
+        "SDXL_Refine.zip",
+        "FreeDoM_T.zip",
+        "HPS.zip",
+        "Midjourney.zip",
+        "SDXL.zip"
+      ]
+    },
+    "DS0003": {
+      "n_images": 140000,
+      "n_pixel_measured": 3000,
+      "n_errors": 0,
+      "pixel_policy": "stratified_sample_n=3000_seed=42",
+      "roots_used": [
+        "_staging\\DS0003_140k\\real_vs_fake"
+      ],
+      "archives_used": []
+    },
+    "DS0004": {
+      "n_images": 9999,
+      "n_pixel_measured": 3000,
+      "n_errors": 0,
+      "pixel_policy": "stratified_sample_n=3000_seed=42",
+      "roots_used": [
+        "_staging\\DS0004_synthbuster\\kaggle_upload\\ds0004-synthbuster\\raw\\DS0004"
+      ],
+      "archives_used": [
+        "raise_1k_jpeg.zip",
+        "synthbuster.zip"
+      ]
+    },
+    "DS0005": {
+      "n_images": 97698,
+      "n_pixel_measured": 3000,
+      "n_errors": 0,
+      "pixel_policy": "stratified_sample_n=3000_seed=42",
+      "roots_used": [],
+      "archives_used": [
+        "fairface-img-margin025-trainval.zip"
+      ]
+    }
+  }
+}

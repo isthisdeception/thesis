@@ -1,0 +1,37 @@
+Dataset ID,Split,Attribute,Level,Count,Proportion,Notes
+DS0005,train,age,0-2,1792,0.020658,from FairFace label CSVs
+DS0005,train,age,10-19,9103,0.104941,from FairFace label CSVs
+DS0005,train,age,20-29,25598,0.295098,from FairFace label CSVs
+DS0005,train,age,3-9,10408,0.119985,from FairFace label CSVs
+DS0005,train,age,30-39,19250,0.221917,from FairFace label CSVs
+DS0005,train,age,40-49,10744,0.123859,from FairFace label CSVs
+DS0005,train,age,50-59,6228,0.071797,from FairFace label CSVs
+DS0005,train,age,60-69,2779,0.032037,from FairFace label CSVs
+DS0005,train,age,more than 70,842,0.009707,from FairFace label CSVs
+DS0005,train,gender,Female,40758,0.469865,from FairFace label CSVs
+DS0005,train,gender,Male,45986,0.530135,from FairFace label CSVs
+DS0005,train,race,Black,12233,0.141024,from FairFace label CSVs
+DS0005,train,race,East Asian,12287,0.141647,from FairFace label CSVs
+DS0005,train,race,Indian,12319,0.142016,from FairFace label CSVs
+DS0005,train,race,Latino_Hispanic,13367,0.154097,from FairFace label CSVs
+DS0005,train,race,Middle Eastern,9216,0.106244,from FairFace label CSVs
+DS0005,train,race,Southeast Asian,10795,0.124447,from FairFace label CSVs
+DS0005,train,race,White,16527,0.190526,from FairFace label CSVs
+DS0005,val,age,0-2,199,0.018167,from FairFace label CSVs
+DS0005,val,age,10-19,1181,0.107814,from FairFace label CSVs
+DS0005,val,age,20-29,3300,0.301260,from FairFace label CSVs
+DS0005,val,age,3-9,1356,0.123790,from FairFace label CSVs
+DS0005,val,age,30-39,2330,0.212708,from FairFace label CSVs
+DS0005,val,age,40-49,1353,0.123517,from FairFace label CSVs
+DS0005,val,age,50-59,796,0.072668,from FairFace label CSVs
+DS0005,val,age,60-69,321,0.029304,from FairFace label CSVs
+DS0005,val,age,more than 70,118,0.010772,from FairFace label CSVs
+DS0005,val,gender,Female,5162,0.471243,from FairFace label CSVs
+DS0005,val,gender,Male,5792,0.528757,from FairFace label CSVs
+DS0005,val,race,Black,1556,0.142049,from FairFace label CSVs
+DS0005,val,race,East Asian,1550,0.141501,from FairFace label CSVs
+DS0005,val,race,Indian,1516,0.138397,from FairFace label CSVs
+DS0005,val,race,Latino_Hispanic,1623,0.148165,from FairFace label CSVs
+DS0005,val,race,Middle Eastern,1209,0.110371,from FairFace label CSVs
+DS0005,val,race,Southeast Asian,1415,0.129177,from FairFace label CSVs
+DS0005,val,race,White,2085,0.190341,from FairFace label CSVs

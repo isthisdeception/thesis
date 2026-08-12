@@ -1,0 +1,7 @@
+Dataset ID,Mode,Count,Proportion,Mean_R,Mean_G,Mean_B,Sample Policy,Notes
+DS0001,RGB,3000,1.000000,0.534934,0.427046,0.374067,stratified_sample_n=3000_seed=42,RGB means are global sample means (not per-mode)
+DS0002,RGB,3000,1.000000,0.517533,0.431757,0.376897,stratified_sample_n=3000_seed=42,RGB means are global sample means (not per-mode)
+DS0003,RGB,3000,1.000000,0.521727,0.426124,0.379721,stratified_sample_n=3000_seed=42,RGB means are global sample means (not per-mode)
+DS0004,RGB,2700,0.900000,0.478823,0.454296,0.397427,stratified_sample_n=3000_seed=42,RGB means are global sample means (not per-mode)
+DS0004,RGBA,300,0.100000,0.478823,0.454296,0.397427,stratified_sample_n=3000_seed=42,RGB means are global sample means (not per-mode)
+DS0005,RGB,3000,1.000000,0.487865,0.361272,0.307904,stratified_sample_n=3000_seed=42,RGB means are global sample means (not per-mode)

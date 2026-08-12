@@ -1,0 +1,11 @@
+Dataset ID,Generator,Class,Condition,Count,Proportion,Notes
+DS0004,dalle2,fake,,1000,0.100010,
+DS0004,dalle3,fake,,1000,0.100010,
+DS0004,firefly,fake,,1000,0.100010,
+DS0004,glide,fake,,1000,0.100010,
+DS0004,midjourney-v5,fake,,1000,0.100010,
+DS0004,stable-diffusion-1-3,fake,,1000,0.100010,
+DS0004,stable-diffusion-1-4,fake,,1000,0.100010,
+DS0004,stable-diffusion-2,fake,,1000,0.100010,
+DS0004,stable-diffusion-xl,fake,,1000,0.100010,
+DS0004,raise_1k_jpeg,real,,999,0.099910,

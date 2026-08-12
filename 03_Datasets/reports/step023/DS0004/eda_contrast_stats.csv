@@ -1,0 +1,12 @@
+Dataset ID,Stratum,N,Mean,Std,P05,P50,P95,Sample Policy,Notes
+DS0004,ALL,3000,0.214091,0.054696,0.125634,0.213228,0.306249,stratified_sample_n=3000_seed=42,"luma std in [0,1]; thumbnail<=256px"
+DS0004,fake|dalle2|,300,0.241915,0.058112,0.143626,0.242162,0.330037,stratified_sample_n=3000_seed=42,
+DS0004,fake|dalle3|,300,0.226750,0.029879,0.179410,0.227267,0.275092,stratified_sample_n=3000_seed=42,
+DS0004,fake|firefly|,300,0.217155,0.032298,0.167046,0.214927,0.274698,stratified_sample_n=3000_seed=42,
+DS0004,fake|glide|,300,0.248689,0.060651,0.153319,0.248939,0.348559,stratified_sample_n=3000_seed=42,
+DS0004,fake|midjourney-v5|,300,0.222291,0.044606,0.153482,0.221225,0.298622,stratified_sample_n=3000_seed=42,
+DS0004,fake|stable-diffusion-1-3|,300,0.208909,0.041486,0.140427,0.209477,0.273815,stratified_sample_n=3000_seed=42,
+DS0004,fake|stable-diffusion-1-4|,300,0.207985,0.044777,0.139659,0.208086,0.282164,stratified_sample_n=3000_seed=42,
+DS0004,fake|stable-diffusion-2|,300,0.156889,0.046999,0.081089,0.156591,0.236494,stratified_sample_n=3000_seed=42,
+DS0004,fake|stable-diffusion-xl|,300,0.178153,0.038978,0.118920,0.173168,0.245237,stratified_sample_n=3000_seed=42,
+DS0004,real|raise_1k_jpeg|,300,0.232180,0.065712,0.121864,0.235770,0.336933,stratified_sample_n=3000_seed=42,

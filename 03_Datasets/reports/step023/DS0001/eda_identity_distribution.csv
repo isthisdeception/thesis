@@ -1,0 +1,7 @@
+Dataset ID,Metric,Value,Notes
+DS0001,n_images_with_identity,50000,
+DS0001,n_unique_identities,49786,DS0001/DS0002 person-like; DS0004 image stem
+DS0001,mean_images_per_identity,1.0043,
+DS0001,max_images_per_identity,3,
+DS0001,singleton_identities,49582,
+DS0001,coverage,1.000000,fraction of images with identity attribute

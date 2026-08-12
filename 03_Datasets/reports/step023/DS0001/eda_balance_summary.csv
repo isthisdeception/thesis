@@ -1,0 +1,9 @@
+Dataset ID,Metric,Value,Notes
+DS0001,n_images,50000,full enumeration
+DS0001,n_generators,14,
+DS0001,real_fake_ratio,1.000000,real/fake; inf if fake=0
+DS0001,balance_abs_diff,0,|real-fake|
+DS0001,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0001,pixel_errors,0,
+DS0001,roots_used,0,
+DS0001,archives_used,1,artifact_face_subset_50k.zip

@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Dataset Operating System (PART 4)
-- Active Step: **STEP-022 COMPLETE** → next **STEP-023 — Exploratory Dataset Analysis**
+- Active Step: **STEP-023 COMPLETE** → next **STEP-024 — Dataset documentation + Dataset Gate**
 - Registered Datasets: DS0001–DS0005
 - Kaggle: `isthisdeception/ds0001-artifact-face-subset`, `…/ds0002-diff-official-test`, `…/ds0004-synthbuster`, `…/ds0005-fairface`; DS0003 = `xhlulu/140k-real-and-fake-faces`
 
@@ -12,9 +12,10 @@
 - `Downloaded=yes`: DS0001–DS0005
 - `Validated=yes`: DS0001–DS0005 (DS0002 with issues plan → STEP-025 filter)
 - Validation reports: `03_Datasets/reports/{validation,quality,integrity}_report.csv` + `reports/step022/`
-- Local Kaggle dumps (not in Git): `_staging_dataset_validation/`
+- EDA reports: `03_Datasets/reports/eda_*.csv` + `reports/step023/` + figure specs `09_Figures/specs/FIG0001`–`FIG0010`
+- Local packs (gitignored): `_staging/`, `_staging_dataset_validation/`
 
 ## Health
-- Risk Indicators: Amber on DS0002 (~2.8% corrupt — filtered in preprocessing)
+- Risk Indicators: Amber on DS0002 (~2.8% corrupt — filtered in preprocessing; 143 identities → leakage-safe splits required)
 - Storage Tier Compliance: Enforced
 - Publication Readiness: Dataset Preparation
