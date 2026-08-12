@@ -99,6 +99,8 @@ def _serialize_config(cfg: PipelineConfig) -> dict[str, Any]:
     def conv(obj: Any) -> Any:
         if isinstance(obj, Path):
             return str(obj)
+        if isinstance(obj, dict):
+            return {k: conv(v) for k, v in obj.items()}
         if hasattr(obj, "__dataclass_fields__"):
             return {k: conv(v) for k, v in asdict(obj).items()}
         if isinstance(obj, (list, tuple)):
