@@ -1,6 +1,6 @@
 # Preprocessing Pipeline Design (STEP-025 / Phase D9)
 
-> **Status:** DESIGN ONLY — no implementation code in this step (STEP-026 implements).  
+> **Status:** DESIGN APPROVED — implemented in STEP-026 (`modules/`, `pipeline_runner.py`, `tests/`).  
 > **Date:** 2026-08-12  
 > **Owner:** Preprocessing Agent (Cursor design)  
 > **Handbook:** Phase D9–D11; `04_Preprocessing` folder contract  
