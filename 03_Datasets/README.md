@@ -23,7 +23,10 @@
   - Reports: `03_Datasets/reports/eda_*.csv`, `eda_summary.json`, `reports/step023/`
   - Figure specs (A.9): `09_Figures/specs/FIG0001_spec.md` … `FIG0010_spec.md`
   - Pixel metrics: stratified sample n=3000 seed=42; label/generator/identity fully enumerated
-  - **Next:** STEP-024 Dataset documentation + Dataset Gate
+- **Phase D8 — Dataset Documentation + Raw Readiness Gate (STEP-024):** `COMPLETE` (raw-stage PASS, human-confirmed 2026-08-12)
+  - `reports/dataset_report.md`, `dataset_card.md`, `dataset_audit.md` (Checklist 3 raw-stage PASS)
+  - `Ready=no` until STEP-029 (preprocessing + splits)
+  - **Next:** STEP-025 Preprocessing pipeline design
 
 ## Contents
 Raw immutable originals (`raw/`), processed datasets (`processed/`), splits (`splits/`), metadata (`metadata/`), reports (`reports/`), licenses (`licenses/`).
