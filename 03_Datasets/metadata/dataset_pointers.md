@@ -76,14 +76,16 @@ Per Handbook [A.6 Storage Tiers](MASTER_RESEARCH_OPERATING_SYSTEM.md#a6-canonica
 ## Processed Dataset Pointers (STEP-027 / Phase D11)
 
 > Image bytes live on Kaggle only. Git holds reports under `04_Preprocessing/reports/` + this pointer table.  
-> Status: **PENDING_UPLOAD** until Kaggle notebooks finish and slugs are confirmed.
+> Status: **COMPLETE** (2026-09-01). All processed datasets hosted on Kaggle; Git holds reports + metadata only.
 
-| Output ID | Pipeline | Raw source | Expected Kaggle slug | Status |
-|-----------|----------|------------|----------------------|--------|
-| DS0001_PP0001 | PP0001 | DS0001 | `isthisdeception/ds0001-pp0001` | PENDING |
-| DS0002_PP0002 | PP0002 | DS0002 | `isthisdeception/ds0002-pp0002` | PENDING |
-| DS0003_PP0003 | PP0003 | DS0003 | `isthisdeception/ds0003-pp0003` | PENDING |
-| DS0004_PP0006 | PP0006 | DS0004 | `isthisdeception/ds0004-pp0006` | PENDING |
-| DS0005_PP0005 | PP0005 | DS0005 | `isthisdeception/ds0005-pp0005` | PENDING |
+| Output ID | Pipeline | Raw source | Kaggle slug | Status |
+|-----------|----------|------------|-------------|--------|
+| DS0001_PP0001 | PP0001 | DS0001 | [`isthisdeception/ds0001-pp0001`](https://www.kaggle.com/datasets/isthisdeception/ds0001-pp0001) | COMPLETE |
+| DS0002_PP0002 | PP0002 | DS0002 | [`isthisdeception/ds0002-pp0002`](https://www.kaggle.com/datasets/isthisdeception/ds0002-pp0002) | COMPLETE |
+| DS0003_PP0003 | PP0003 | DS0003 | [`isthisdeception/ds0003-pp0003`](https://www.kaggle.com/datasets/isthisdeception/ds0003-pp0003) | COMPLETE |
+| DS0004_PP0006 | PP0006 | DS0004 | [`isthisdeception/ds0004-pp0006`](https://www.kaggle.com/datasets/isthisdeception/ds0004-pp0006) | COMPLETE |
+| DS0005_PP0005 | PP0005 | DS0005 | [`isthisdeception/ds0005-pp0005`](https://www.kaggle.com/datasets/isthisdeception/ds0005-pp0005) | COMPLETE |
+
+> **Note:** `DS0004_PP0004` (PP0004) was superseded by PP0006 after RAISE images were excluded by `max_side=4096`.
 
 **Overwrite rule:** never replace an existing processed dataset in place. Parameter changes require a new `PPxxxx` and a new output folder/slug.

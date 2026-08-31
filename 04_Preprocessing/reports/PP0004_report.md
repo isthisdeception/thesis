@@ -1,7 +1,7 @@
 # Preprocessing Report: PP0004
 
 > Template 6 — Phase D11  
-> **Status:** PENDING_KAGGLE_RUN  
+> **Status:** SUPERSEDED (use PP0006 / `ds0004-pp0006`)  
 > **Date:** 2026-08-12  
 > **Pipeline:** PP0004 → `DS0004_PP0004`  
 > **Dataset:** DS0004  
@@ -11,7 +11,7 @@
 |-------|-------|
 | Pipeline ID | `PP0004` |
 | Output | `DS0004_PP0004` |
-| Kaggle pointer | `PENDING` — expected `kaggle:isthisdeception/ds0004-pp0004` |
+| Kaggle pointer | `superseded` — see PP0006 (`kaggle:isthisdeception/ds0004-pp0006`) |
 
 ## Ordered operations
 PPMOD01 → PPMOD10 → PPMOD08 → PPMOD07 → PPMOD09 → PPMOD05 → PPMOD06

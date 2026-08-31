@@ -5,8 +5,8 @@
 ## Phase Status
 - **STEP-025 — Pipeline Design:** `COMPLETE`
 - **STEP-026 — Implement modules:** `COMPLETE` (`modules/`, 34 tests)
-- **STEP-027 — Register & generate processed:** `IN PROGRESS`
-  - Registry: `preprocessing_registry.csv` (PP0001–PP0005)
+- **STEP-027 — Register & generate processed:** `COMPLETE`
+  - Registry: `preprocessing_registry.csv` (PP0001–PP0006)
   - Exclude list: `exclude_lists/exclude_list_DS0002.csv`
   - Kaggle guide: `notebooks/STEP027_KAGGLE_PREPROCESS.md`
   - Runner: `step027_run_preprocessing.py`

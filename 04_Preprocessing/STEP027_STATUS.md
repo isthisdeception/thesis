@@ -1,22 +1,30 @@
 # STEP-027 — Register Pipeline & Generate Processed Dataset
 
-**Status:** REGISTERED — **awaiting Kaggle execution** (2026-08-12)  
+**Status:** COMPLETE (2026-09-01)  
 **Handbook:** Phase D10–D11  
 **Guide:** `notebooks/STEP027_KAGGLE_PREPROCESS.md`
 
-## Done in Git
-- [x] `PP0001`–`PP0005` rows in `preprocessing_registry.csv` (full parameters)
+## Done
+- [x] `PP0001`–`PP0005` + `PP0006` (DS0004 fix) in `preprocessing_registry.csv`
 - [x] DS0002 exclude list: `exclude_lists/exclude_list_DS0002.csv` (1593 `CORRUPT_IMAGE`)
 - [x] Kaggle runner: `step027_run_preprocessing.py` + report writer
-- [x] Template-6 report stubs: `reports/PP0001_report.md` … `PP0005_report.md`
-- [x] Processed pointers section (PENDING slugs) in `03_Datasets/metadata/dataset_pointers.md`
+- [x] Full runs on Kaggle for PP0001–PP0003, PP0005; PP0006 for DS0004
+- [x] Reports + metadata synced to `04_Preprocessing/reports/`
+- [x] Processed datasets uploaded to Kaggle (pointers in `03_Datasets/metadata/dataset_pointers.md`)
 
-## Pending (human / Kaggle)
-- [ ] Run smoke (`PP0003`, `MAX_IMAGES=50`) then full PP0001–PP0005
-- [ ] Upload each `processed/DSxxxx_PPxxxx` as a Kaggle Dataset
-- [ ] Download `git_sync/reports` + metadata → replace report stubs
-- [ ] Reply with Kaggle slugs → finalize pointers + set registry `Status=complete`
+## Kaggle processed datasets
+| Output | Slug |
+|--------|------|
+| DS0001_PP0001 | `isthisdeception/ds0001-pp0001` |
+| DS0002_PP0002 | `isthisdeception/ds0002-pp0002` |
+| DS0003_PP0003 | `isthisdeception/ds0003-pp0003` |
+| DS0004_PP0006 | `isthisdeception/ds0004-pp0006` |
+| DS0005_PP0005 | `isthisdeception/ds0005-pp0005` |
 
-## Policy
-- Never overwrite processed outputs; new params ⇒ new `PPxxxx`
-- Raw read-only; no processed image bytes in Git
+## Notes
+- PP0004 superseded by PP0006 (RAISE `max_side` fix).
+- DS0002 upload required ASCII filename sanitization (42 Unicode paths).
+- `Ready=no` until STEP-029 (Checklist 4 gate).
+
+## Next step
+**STEP-028** — Train/validation/test split (leakage-safe).

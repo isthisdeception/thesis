@@ -1,0 +1,105 @@
+{
+  "pipeline_id": "PP0006",
+  "dataset_id": "DS0004",
+  "raw_root": "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/real/raise_1k_jpeg",
+  "processed_root": "/kaggle/working/processed/DS0004_PP0006",
+  "random_seed": 42,
+  "module_sequence": [
+    "PPMOD01",
+    "PPMOD10",
+    "PPMOD08",
+    "PPMOD07",
+    "PPMOD09",
+    "PPMOD05",
+    "PPMOD06"
+  ],
+  "verification": {
+    "allowed_extensions": [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".bmp",
+      ".webp"
+    ],
+    "reject_macos_junk": true,
+    "reject_zero_byte": true,
+    "open_verify": true,
+    "hash_algorithm": "sha256"
+  },
+  "metadata": {
+    "label_source": "auto",
+    "require_class_label": true,
+    "require_generator": false,
+    "require_identity": false,
+    "fairface_label_csvs": [],
+    "metadata_csv_path": null,
+    "source_container": ""
+  },
+  "artifact": {
+    "strip_exif": true,
+    "drop_alpha": true,
+    "remove_sidecar_files": true,
+    "forbid_generative_denoising": true
+  },
+  "quality": {
+    "exclude_list_path": null,
+    "exclude_codes": [
+      "CORRUPT_IMAGE"
+    ],
+    "dedupe_policy": "off",
+    "min_side": 64,
+    "max_side": 8192,
+    "min_file_bytes": 100,
+    "max_file_bytes": null,
+    "blur_var_threshold": null,
+    "min_brightness": null,
+    "max_brightness": null
+  },
+  "face_detection": {
+    "enabled": false,
+    "assume_single_face_crop": true,
+    "detector_name": "stub",
+    "min_face_confidence": 0.9,
+    "max_faces_keep": 1,
+    "fail_if_no_face": true
+  },
+  "face_alignment": {
+    "enabled": false,
+    "align_method": "eyes_horizontal",
+    "output_template_size": 112
+  },
+  "cropping": {
+    "enabled": false,
+    "crop_margin": 0.25,
+    "square_crop": true
+  },
+  "format_conversion": {
+    "force_rgb": true,
+    "output_format": "PNG",
+    "jpeg_quality": 95,
+    "png_compress_level": 3
+  },
+  "resize": {
+    "target_size": 224,
+    "interpolation": "bilinear",
+    "keep_aspect": false,
+    "pad_value": 0
+  },
+  "normalization": {
+    "norm_mode": "imagenet",
+    "imagenet_mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "imagenet_std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "dataset_stats_path": null,
+    "apply_on_disk": false,
+    "stats_sample_n": 3000,
+    "random_seed": 42
+  }
+}
