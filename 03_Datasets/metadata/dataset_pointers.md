@@ -83,7 +83,7 @@ Per Handbook [A.6 Storage Tiers](MASTER_RESEARCH_OPERATING_SYSTEM.md#a6-canonica
 | DS0001_PP0001 | PP0001 | DS0001 | `isthisdeception/ds0001-pp0001` | PENDING |
 | DS0002_PP0002 | PP0002 | DS0002 | `isthisdeception/ds0002-pp0002` | PENDING |
 | DS0003_PP0003 | PP0003 | DS0003 | `isthisdeception/ds0003-pp0003` | PENDING |
-| DS0004_PP0004 | PP0004 | DS0004 | `isthisdeception/ds0004-pp0004` | PENDING |
+| DS0004_PP0006 | PP0006 | DS0004 | `isthisdeception/ds0004-pp0006` | PENDING |
 | DS0005_PP0005 | PP0005 | DS0005 | `isthisdeception/ds0005-pp0005` | PENDING |
 
 **Overwrite rule:** never replace an existing processed dataset in place. Parameter changes require a new `PPxxxx` and a new output folder/slug.

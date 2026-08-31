@@ -9,7 +9,7 @@ notebook working dir, attach raw datasets, then:
   STEP027_PIPELINE=PP0001 python step027_run_preprocessing.py
 
 Environment:
-  STEP027_PIPELINE   — PP0001..PP0005 or ALL (default ALL)
+  STEP027_PIPELINE   — PP0001..PP0006 or ALL (default ALL)
   STEP027_MAX_IMAGES — optional cap for smoke tests
   STEP027_SEARCH     — comma-separated search roots (default /kaggle/input)
 """
@@ -91,6 +91,14 @@ PIPELINES: dict[str, dict] = {
         "require_identity": False,
         "require_generator": False,
         "exclude_list": None,
+    },
+    "PP0006": {
+        "dataset_id": "DS0004",
+        "purpose": "Frequency supplementary processed (RAISE max_side fix)",
+        "require_identity": False,
+        "require_generator": False,
+        "exclude_list": None,
+        "max_side": 8192,
     },
     "PP0005": {
         "dataset_id": "DS0005",
@@ -240,6 +248,7 @@ def build_config(
             exclude_codes=["CORRUPT_IMAGE"],
             dedupe_policy="off",
             min_side=64,
+            max_side=int(spec.get("max_side", 4096)),
         ),
         resize=ResizeParams(target_size=224, keep_aspect=False, interpolation="bilinear"),
         format_conversion=FormatConversionParams(force_rgb=True, output_format="PNG"),

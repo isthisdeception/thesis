@@ -47,4 +47,5 @@ uploads/
 # Local dataset staging (never commit images / archives)
 _staging/
 _staging_dataset_validation/
+_processed_dataset/
 
