@@ -5,6 +5,9 @@
 ## Phase Status
 - **Phase D1 — Dataset Discovery (STEP-018):** `COMPLETED`
   - Registered 17 candidate datasets (`CAND0001`–`CAND0017`) in `03_Datasets/metadata/dataset_candidates.csv`.
+  - Cover Kaggle, Hugging Face, GitHub, Zenodo, OpenML, VGG Oxford, TUM, and project sites.
+  - Represent diverse generator families (Diffusion models: SD v1.4/1.5/2.1/XL, DALL-E 2/3, Midjourney v5, GLIDE, Firefly; GANs: ProGAN, StyleGAN, StyleGAN2, StyleGAN3, StarGAN, AttGAN; Swaps: Deepfakes, Face2Face, FaceSwap, NeuralTextures).
+  - Licenses recorded at first sight; duplicates flagged (e.g. `CAND0011` -> `CAND0010`).
 - **Phase D2 — Dataset Evaluation & Selection (STEP-019):** `COMPLETED`
   - Evaluated and scored all 17 candidates across 16 Phase D2 dimensions (`dataset_evaluation.csv`).
   - Strict Public-Only Policy approved and locked in `01_Project_Management/decision_log/DEC0004.md` (resolving `DEF-003`).
