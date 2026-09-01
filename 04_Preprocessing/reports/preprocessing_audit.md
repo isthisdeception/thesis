@@ -4,7 +4,7 @@
 > **Audit Date:** 2026-09-01  
 > **Auditor:** Preprocessing Agent / Dataset Auditor Agent  
 > **Handbook Reference:** §13.2 / Checklist 4; Phases D9–D11, D13; STEP-025–029  
-> **Overall result:** **PASS** (agent-recommended; human **[H]** confirmation requested)
+> **Overall result:** **PASS** (human-confirmed 2026-09-01)
 
 ---
 
@@ -118,7 +118,7 @@ Git holds `index.csv`, `normalization_stats.json`, `pipeline.json` under `04_Pre
 
 ## Recommendations
 
-1. Human **[H]** confirm Checklist 4 PASS together with Checklist 3.
+1. Human **[H]** confirmation recorded 2026-09-01 (Checklists 3 and 4 PASS).
 2. Keep DS0002 amber on the dashboard until training docs explicitly use the 51,452 filtered set.
 3. Any PP parameter change ⇒ new `PPxxxx` + new dataset version (not an edit of v1.0).
 
@@ -129,6 +129,6 @@ Git holds `index.csv`, `normalization_stats.json`, `pipeline.json` under `04_Pre
 | Role | Status | Date |
 |------|--------|------|
 | Preprocessing / Dataset Auditor Agent | Checklist 4 **PASS** recommended | 2026-09-01 |
-| Human (Checklist 3 + 4 confirm) | **REQUESTED** | — |
+| Human (Checklist 3 + 4 confirm) | **CONFIRMED** | 2026-09-01 |
 
 **Gate decision:** ✅ **PASS** — preprocessing is registered, parameterized, reproducible, and FastAI-config-ready.

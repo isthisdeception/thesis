@@ -4,7 +4,7 @@
 > **Audit Date:** 2026-09-01  
 > **Auditor:** Dataset Auditor Agent / Registry Agent  
 > **Handbook Reference:** §13.2 / Checklist 3; Phases D8, D12–D15; STEP-029  
-> **Overall result:** **PASS** (agent-recommended; human **[H]** confirmation requested)  
+> **Overall result:** **PASS** (human-confirmed 2026-09-01)  
 > **Supersedes:** raw-stage audit of 2026-08-12 (same file; raw items remain PASS)
 
 ---
@@ -117,10 +117,10 @@ Checklist 3 items: registered, license verified, metadata complete, validation d
 
 ## Recommendations
 
-1. Human **[H]** confirm Checklists 3 and 4 PASS (blueprint STEP-029 GitHub expectation).
+1. Human **[H]** confirmation recorded 2026-09-01 (Checklists 3 and 4 PASS).
 2. Training experiments must copy FastAI keys from `fastai_dataset.yaml` into `EXPxxxx/config.yaml` (STEP-035+).
 3. DS0002 remains amber for corrupt-path volume; processed set is the 51,452-image filtered output — do not train a binary detector on DS0002 alone.
-4. Merge branch `dataset/finalize` into `develop` after confirmation.
+4. Merge branch `dataset/finalize` into `develop`.
 
 ---
 
@@ -129,6 +129,6 @@ Checklist 3 items: registered, license verified, metadata complete, validation d
 | Role | Status | Date |
 |------|--------|------|
 | Dataset Auditor / Registry Agent | Full Checklist 3 **PASS** recommended | 2026-09-01 |
-| Human (Checklist 3 + 4 confirm) | **REQUESTED** | — |
+| Human (Checklist 3 + 4 confirm) | **CONFIRMED** | 2026-09-01 |
 
-**Gate decision:** ✅ **PASS** — Dataset + Preprocessing phases complete pending human confirmation. Training (STEP-030+) may be prepared; do not start an `EXP` until the human signs the approval row.
+**Gate decision:** ✅ **PASS** — Dataset + Preprocessing phases complete. STEP-030 may begin.
