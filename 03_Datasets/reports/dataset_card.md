@@ -101,4 +101,4 @@
 
 - **Public-only policy:** DEC0004 / strict public licenses.
 - **Storage tier:** Images on Kaggle; Git = metadata + reports (`dataset_pointers.md`).
-- **Ready flag:** All rows `Ready=no` until Part 5 completes Checklist 3 fully (STEP-029).
+- **Ready flag:** All rows `Ready=yes` as of STEP-029 (Checklist 3 + 4; human confirmation requested).

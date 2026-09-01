@@ -15,6 +15,8 @@ Implementation is **STEP-026** — these files are design-only.
 | `PPMOD08_artifact_removal_spec.md` | Artifact removal (junk only) |
 | `PPMOD09_format_conversion_spec.md` | Format conversion |
 | `PPMOD10_metadata_extraction_spec.md` | Metadata extraction |
+| `FASTAI_DATABLOCK_SPEC.md` | Phase D13 FastAI DataBlock / transforms (config, not code) |
 
 Design overview: `../design/PREPROCESSING_PIPELINE_DESIGN.md`  
-Parameters: `../design/parameters_catalog.md`
+Parameters: `../design/parameters_catalog.md`  
+Canonical FastAI YAML: `../../05_Models/config/fastai_dataset.yaml`

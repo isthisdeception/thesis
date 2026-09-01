@@ -1,30 +1,32 @@
-# Dataset Quality Audit — Checklist 3 (Raw-Stage Gate)
+# Dataset Quality Audit — Checklist 3 (Full Dataset Readiness Gate)
 
-> **Audit Type:** Quality Gate — Dataset Readiness (Checklist 3), **raw-stage subset**  
-> **Audit Date:** 2026-08-12  
-> **Auditor:** Dataset Auditor Agent  
-> **Handbook Reference:** §13.2 / Checklist 3; Phase D8; STEP-024  
-> **Overall raw-stage result:** **PASS** (human-confirmed)  
-> **Note:** Preprocessing / split / no-leakage items are **PENDING** → completed in Part 5; finalized at STEP-029. Do **not** set `Ready=yes` yet.
+> **Audit Type:** Quality Gate — Dataset Readiness (Checklist 3), **full** (raw + preprocess + split)  
+> **Audit Date:** 2026-09-01  
+> **Auditor:** Dataset Auditor Agent / Registry Agent  
+> **Handbook Reference:** §13.2 / Checklist 3; Phases D8, D12–D15; STEP-029  
+> **Overall result:** **PASS** (agent-recommended; human **[H]** confirmation requested)  
+> **Supersedes:** raw-stage audit of 2026-08-12 (same file; raw items remain PASS)
 
 ---
 
 ## Summary
 
-This audit confirms that DS0001–DS0005 are registered, licensed, validated, integrity/quality/EDA documented, versioned, and covered by `dataset_report.md` + `dataset_card.md`. Full Dataset Readiness (including leakage-safe splits) remains open until STEP-029.
+DS0001–DS0005 are registered, licensed, validated, preprocessed (`PP0001`–`PP0003`, `PP0005`–`PP0006`), split with automated leakage checks **PASS**, versioned at **v1.0**, and linked on the master Dataset Registry (`DS → version → PP → SPLIT`). FastAI `DataBlock` parameters are recorded as config. `datasets.csv` `Ready=yes`.
+
+Checklist 3 items: registered, license verified, metadata complete, validation done, integrity/quality/dataset reports, version assigned, preprocessing documented, split documented, no leakage.
 
 ---
 
-## Passed Items (raw-stage)
+## Passed Items
 
 ### 1. Registration & metadata
 
 | Item | Status | Evidence |
 |------|--------|----------|
 | Datasets registered DS0001–DS0005 | ✅ PASS | `03_Datasets/metadata/datasets.csv` |
-| Metadata columns populated (source, URL, license, citation, counts, flags) | ✅ PASS | Same; `Downloaded=yes`, `Validated=yes`, `Ready=no` |
-| Version assigned | ✅ PASS | `Version=1.0` for all five |
-| Remote pointers documented | ✅ PASS | `03_Datasets/metadata/dataset_pointers.md` |
+| Metadata complete (source, URL, license, citation, counts, flags) | ✅ PASS | Same; `Downloaded=yes`, `Validated=yes`, `Ready=yes` |
+| Version assigned | ✅ PASS | `datasets.csv` Version=`1.0`; `dataset_versions.csv` `v1.0` |
+| Remote pointers documented | ✅ PASS | `dataset_pointers.md` (raw + processed Kaggle slugs) |
 | Candidate → selection trail | ✅ PASS | `dataset_candidates.csv`, `dataset_evaluation.csv`, DEC0004/DEC0005 |
 
 ### 2. License verification
@@ -39,28 +41,54 @@ This audit confirms that DS0001–DS0005 are registered, licensed, validated, in
 
 | Item | Status | Evidence |
 |------|--------|----------|
-| Validation executed (STEP-022) | ✅ PASS | `validation_report.csv`, `quality_report.csv`, `validation_summary.json`, `reports/step022/` |
+| Validation executed (STEP-022) | ✅ PASS | `validation_report.csv`, `quality_report.csv`, `step022/` |
 | Integrity records present | ✅ PASS | `integrity_report.csv` |
-| DS0001/3/4/5 threshold or accepted PASS | ✅ PASS | `quality_report.csv` `threshold_pass` |
-| DS0002 issues logged with filter plan (not silent fail) | ✅ PASS | `Validated=yes` + `reports/step022/DS0002_issues_plan.md` |
-| Raw untouched policy | ✅ PASS | Issues deferred to preprocessing; no raw deletes |
+| DS0001/3/4/5 threshold or accepted PASS | ✅ PASS | `quality_report.csv` |
+| DS0002 issues logged (not silent fail) | ✅ PASS | `Validated=yes`; `step022/DS0002_issues_plan.md`; PP0002 exclude |
+| Raw untouched | ✅ PASS | Exclusions only at PP; no raw deletes |
 
-### 4. EDA & documentation (Phase D7–D8)
+### 4. EDA & documentation (D7–D8)
 
 | Item | Status | Evidence |
 |------|--------|----------|
-| EDA distributions present | ✅ PASS | `reports/eda_*.csv`, `reports/step023/`, `eda_summary.json` |
-| Dataset report complete | ✅ PASS | `reports/dataset_report.md` (origin/purpose/license/stats/bias/usage/citation/location) |
-| Dataset card complete | ✅ PASS | `reports/dataset_card.md` (Template 23 fields) |
-| Statistics evidence-cited (not invented) | ✅ PASS | Counts/rates trace to STEP-022/023 CSVs |
+| EDA distributions | ✅ PASS | `reports/eda_*.csv`, `reports/step023/` |
+| Dataset report | ✅ PASS | `reports/dataset_report.md` |
+| Dataset card | ✅ PASS | `reports/dataset_card.md` |
 | Figure specs only (A.9) | ✅ PASS | `09_Figures/specs/FIG0001`–`FIG0010` |
 
-### 5. Storage & hygiene
+### 5. Preprocessing documented (finalizes Checklist 3)
 
 | Item | Status | Evidence |
 |------|--------|----------|
-| No raw image bytes in Git | ✅ PASS | `03_Datasets/raw/` placeholder; pointers only |
-| Kaggle data-tier locations recorded | ✅ PASS | `dataset_pointers.md` |
+| Pipeline registered | ✅ PASS | `04_Preprocessing/preprocessing_registry.csv` (`complete`; PP0004 `superseded_by_PP0006`) |
+| Parameters recorded | ✅ PASS | Registry JSON + `reports/PPxxxx_report.md` + `pipeline.json` |
+| Outputs documented | ✅ PASS | Processed pointers in `dataset_pointers.md`; reports + `index.csv` in Git |
+| Processed reproducible / raw untouched | ✅ PASS | Checklist 4 audit `04_Preprocessing/reports/preprocessing_audit.md` |
+
+### 6. Split documented + no leakage
+
+| Item | Status | Evidence |
+|------|--------|----------|
+| Split documented | ✅ PASS | `03_Datasets/splits/DSxxxx_PPxxxx_SPLITxxxx/`; `split_report.md`; `split_registry.csv` |
+| Standard + LOGO (or documented alternate) | ✅ PASS | DS0001–DS0004 LOGO; DS0005 grouped alternate (no generators) |
+| No identity/generator/duplicate leakage | ✅ PASS | All 10 `leakage_check.json` `"passed": true`; `split_report.md` Leakage=PASS |
+| Seed + algorithm recorded | ✅ PASS | `seed=42`; schemes `grouped_random` / `logo` / `official_holdout` |
+
+### 7. Master registry & FastAI prep (D13–D15)
+
+| Item | Status | Evidence |
+|------|--------|----------|
+| `dataset_versions.csv` v1.0 | ✅ PASS | One row per DS; added/removed/PP/split recorded |
+| `dataset_registry.csv` spine | ✅ PASS | 10 rows: DS → v1.0 → PP → SPLIT; EXP/MODEL empty |
+| FastAI DataBlock as config | ✅ PASS | `05_Models/config/fastai_dataset.yaml`; spec `04_Preprocessing/specs/FASTAI_DATABLOCK_SPEC.md` |
+| `Ready=yes` | ✅ PASS | `datasets.csv` |
+
+### 8. Storage & hygiene
+
+| Item | Status | Evidence |
+|------|--------|----------|
+| No raw or processed image bytes in Git | ✅ PASS | Pointers + split indexes only |
+| Split indexes are IDs/paths, not pixels | ✅ PASS | `assignments.csv` / `train.csv` / `val.csv` / `test.csv` |
 
 ---
 
@@ -68,42 +96,31 @@ This audit confirms that DS0001–DS0005 are registered, licensed, validated, in
 
 | Item | Status | Notes |
 |------|--------|-------|
-| — | none | No raw-stage failures |
+| — | none | No Checklist 3 failures |
 
 ---
 
-## Pending Items (Part 5 — not blocking STEP-024 raw gate)
-
-| Item | Status | Completes at |
-|------|--------|--------------|
-| Preprocessing documented (PPxxxx + report) | ⏳ PENDING | STEP-025–026 / Checklist 4 |
-| Split documented (leakage-safe) | ⏳ PENDING | STEP-027–028 |
-| No identity/generator/duplicate leakage verified | ⏳ PENDING | STEP-027–029 |
-| `Ready=yes` in `datasets.csv` | ⏳ PENDING | STEP-029 (after full Checklist 3) |
-| Dataset registry spine DS→PP→SPLIT→EXP | ⏳ PENDING | STEP-029 / Phase D15 |
-
----
-
-## Evidence index
+## Evidence
 
 | Artifact | Path |
 |----------|------|
-| Registry | `03_Datasets/metadata/datasets.csv` |
-| Pointers | `03_Datasets/metadata/dataset_pointers.md` |
-| Licenses | `03_Datasets/licenses/DS000*_license.txt` |
-| Validation | `03_Datasets/reports/validation_report.csv`, `quality_report.csv`, `integrity_report.csv`, `step022/` |
-| EDA | `03_Datasets/reports/eda_*.csv`, `step023/` |
-| Report | `03_Datasets/reports/dataset_report.md` |
-| Card | `03_Datasets/reports/dataset_card.md` |
+| Datasets | `03_Datasets/metadata/datasets.csv` |
+| Versions | `03_Datasets/metadata/dataset_versions.csv` |
+| Master registry | `03_Datasets/metadata/dataset_registry.csv` |
+| Splits | `03_Datasets/splits/`, `reports/split_report.md`, `metadata/split_registry.csv` |
+| Preprocessing | `04_Preprocessing/preprocessing_registry.csv`, `reports/PPxxxx_report.md` |
+| Preprocessing gate | `04_Preprocessing/reports/preprocessing_audit.md` |
+| FastAI config | `05_Models/config/fastai_dataset.yaml` |
+| FastAI spec | `04_Preprocessing/specs/FASTAI_DATABLOCK_SPEC.md` |
 
 ---
 
 ## Recommendations
 
-1. Proceed to **STEP-025** preprocessing design; implement DS0002 corrupt + macOS-junk exclude list first.
-2. Design splits with **identity grouping for DS0002** (143 ids) and generator holdouts for E9.
-3. Keep `Ready=no` until STEP-029 re-audit of full Checklist 3.
-4. Human confirmation recorded 2026-08-12 (STEP-024 **[H]**).
+1. Human **[H]** confirm Checklists 3 and 4 PASS (blueprint STEP-029 GitHub expectation).
+2. Training experiments must copy FastAI keys from `fastai_dataset.yaml` into `EXPxxxx/config.yaml` (STEP-035+).
+3. DS0002 remains amber for corrupt-path volume; processed set is the 51,452-image filtered output — do not train a binary detector on DS0002 alone.
+4. Merge branch `dataset/finalize` into `develop` after confirmation.
 
 ---
 
@@ -111,7 +128,7 @@ This audit confirms that DS0001–DS0005 are registered, licensed, validated, in
 
 | Role | Status | Date |
 |------|--------|------|
-| Dataset Auditor Agent | Raw-stage **PASS** recommended | 2026-08-12 |
-| Human (Checklist 3 raw confirm) | **CONFIRMED** | 2026-08-12 |
+| Dataset Auditor / Registry Agent | Full Checklist 3 **PASS** recommended | 2026-09-01 |
+| Human (Checklist 3 + 4 confirm) | **REQUESTED** | — |
 
-**Gate decision:** ✅ **PASS (raw-stage)** — Part 5 (STEP-025+) may begin.
+**Gate decision:** ✅ **PASS** — Dataset + Preprocessing phases complete pending human confirmation. Training (STEP-030+) may be prepared; do not start an `EXP` until the human signs the approval row.

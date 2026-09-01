@@ -3,7 +3,7 @@
 > **Document type:** Template 5 — Dataset Report (master raw-dataset report)  
 > **Date:** 2026-08-12  
 > **Owner:** Dataset Documentation Agent  
-> **Scope:** Raw, validated, documented datasets only. `Ready=yes` is deferred until preprocessing + splits (STEP-029).  
+> **Scope:** Raw, validated, documented datasets. Preprocess + split + FastAI prep completed at STEP-029 (`Ready=yes`).  
 > **Evidence sources:** `datasets.csv`, `dataset_pointers.md`, `licenses/`, `reports/{validation,quality,integrity}_report.csv`, `reports/step022/`, `reports/eda_*.csv`, `reports/step023/`
 
 ---
@@ -12,11 +12,11 @@
 
 | ID | Role | Images (EDA enum.) | Real/Fake | License | Validated | Ready |
 |----|------|-------------------:|-----------|---------|-----------|-------|
-| DS0001 | PRIMARY-TRAIN | 50,000 | 25k / 25k | MIT | yes | no |
-| DS0002 | PRIMARY-EVAL | 57,060 usable | 0 / 57,060 | CC BY-NC 4.0 | yes (issues logged) | no |
-| DS0003 | QUICK-BASELINE | 140,000 | 70k / 70k | CC BY-NC-SA 4.0 | yes | no |
-| DS0004 | SUPPLEMENTARY-FREQUENCY | 9,999 | 999 / 9,000 | CC BY 4.0 | yes | no |
-| DS0005 | SUPPLEMENTARY-BIAS | 97,698 | 97,698 / 0 | CC BY 4.0 | yes | no |
+| DS0001 | PRIMARY-TRAIN | 50,000 | 25k / 25k | MIT | yes | yes |
+| DS0002 | PRIMARY-EVAL | 57,060 usable (51,452 processed) | 0 / 57,060 | CC BY-NC 4.0 | yes (issues logged) | yes |
+| DS0003 | QUICK-BASELINE | 140,000 | 70k / 70k | CC BY-NC-SA 4.0 | yes | yes |
+| DS0004 | SUPPLEMENTARY-FREQUENCY | 9,999 | 999 / 9,000 | CC BY 4.0 | yes | yes |
+| DS0005 | SUPPLEMENTARY-BIAS | 97,698 | 97,698 / 0 | CC BY 4.0 | yes | yes |
 
 Remote locations: `03_Datasets/metadata/dataset_pointers.md`. Image bytes live in the Kaggle data tier (A.6); Git holds metadata/reports only.
 
@@ -233,9 +233,9 @@ Directly supports GAP0002 demographic fairness evaluation.
 
 ## 8. Known portfolio-level issues
 
-1. DS0002 corrupt filter deferred to STEP-025 (`DS0002_issues_plan.md`).
-2. Full Checklist 3 items for preprocessing / split / no-leakage remain **PENDING** until Part 5 (finalized STEP-029).
-3. Do **not** set `Ready=yes` in `datasets.csv` until STEP-029.
+1. DS0002: 5,608 images excluded at PP0002 (see `preprocessing_audit.md`); processed v1.0 count is 51,452. Raw untouched.
+2. Checklist 3 (full) and Checklist 4: **PASS** at STEP-029 — see `dataset_audit.md` and `04_Preprocessing/reports/preprocessing_audit.md`.
+3. `datasets.csv` `Ready=yes`. Human **[H]** confirmation of both gates is still requested.
 
 ---
 

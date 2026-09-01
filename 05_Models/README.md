@@ -3,7 +3,8 @@
 **Purpose:** Model definitions, the Model Registry, and exported inference models.
 
 ## Contents
-Architecture definitions, model registries, model cards, export pointers.
+Architecture definitions, model registries, model cards, export pointers.  
+FastAI dataset-prep defaults (STEP-029 / Phase D13): `config/fastai_dataset.yaml`.
 
 ## Workflow
 Model/Training agents write, AI Forensic System consumes. No anonymous models.
