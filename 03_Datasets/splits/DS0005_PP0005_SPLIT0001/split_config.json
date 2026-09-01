@@ -1,0 +1,63 @@
+{
+  "split_id": "SPLIT0001",
+  "output_id": "DS0005_PP0005",
+  "dataset_id": "DS0005",
+  "pipeline_id": "PP0005",
+  "scheme": "official_holdout",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "identity"
+  ],
+  "held_out_generators": [],
+  "official_test_column": "split",
+  "official_test_values": [
+    "val"
+  ],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "FairFace official val->test; train subsplit for tuning.",
+  "fingerprint_sha256": "40c4a0cc48c3454da2a75f9914fe5b2d8cf43f99214ab609f074541dc7702b81",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "test": 21962,
+      "train": 64372,
+      "val": 11364
+    },
+    "class_by_partition": {
+      "train": {
+        "real": 64372
+      },
+      "val": {
+        "real": 11364
+      },
+      "test": {
+        "real": 21962
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "none": 64372
+      },
+      "val": {
+        "none": 11364
+      },
+      "test": {
+        "none": 21962
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 86744,
+    "generator_count": 1
+  }
+}
