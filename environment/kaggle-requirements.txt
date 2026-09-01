@@ -1,0 +1,12 @@
+# Kaggle GPU v170 already provides Python 3.12, torch 2.10.0+cu128,
+# torchvision 0.25.0, fastai 2.8.7, and numpy 2.0.2.
+#
+# This file lists ONLY packages missing from that base image.
+# Do not pip-install torch/fastai/torchvision on Kaggle unless versions.lock.md
+# is updated after an image change.
+#
+# Session install (if this file ever gains rows):
+#   pip install -r /kaggle/working/thesis/environment/kaggle-requirements.txt
+#
+# Currently no extra packages are required for FastAI training or our
+# preprocessing/split modules.
