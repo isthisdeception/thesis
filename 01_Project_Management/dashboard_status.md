@@ -9,8 +9,8 @@
 
 ## Progress
 - Literature Gate (Checklist 2): PASS
-- Dataset Readiness (Checklist 3): PASS (agent) — human **[H]** confirmation requested
-- Preprocessing (Checklist 4): PASS (agent) — human **[H]** confirmation requested
+- Dataset Readiness (Checklist 3): PASS (human-confirmed 2026-09-01)
+- Preprocessing (Checklist 4): PASS (human-confirmed 2026-09-01)
 - Preprocessing design (STEP-025): COMPLETE
 - Preprocessing modules (STEP-026): COMPLETE (34 unit tests)
 - Preprocessing execution (STEP-027): COMPLETE
@@ -21,4 +21,4 @@
 ## Health
 - Risk Indicators: Amber on DS0002 (processed 51452 after 5608 PP exclusions; raw untouched)
 - Storage Tier Compliance: Enforced (processed images → Kaggle only)
-- Publication Readiness: Dataset + Preprocessing phases complete pending human gate signature
+- Publication Readiness: Dataset + Preprocessing phases complete (Checklists 3 & 4 PASS)

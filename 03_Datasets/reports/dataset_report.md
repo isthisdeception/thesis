@@ -235,7 +235,7 @@ Directly supports GAP0002 demographic fairness evaluation.
 
 1. DS0002: 5,608 images excluded at PP0002 (see `preprocessing_audit.md`); processed v1.0 count is 51,452. Raw untouched.
 2. Checklist 3 (full) and Checklist 4: **PASS** at STEP-029 — see `dataset_audit.md` and `04_Preprocessing/reports/preprocessing_audit.md`.
-3. `datasets.csv` `Ready=yes`. Human **[H]** confirmation of both gates is still requested.
+3. `datasets.csv` `Ready=yes`. Checklists 3 and 4 **PASS** (human-confirmed 2026-09-01).
 
 ---
 
