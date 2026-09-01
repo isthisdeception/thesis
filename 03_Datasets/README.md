@@ -24,9 +24,17 @@
   - Figure specs (A.9): `09_Figures/specs/FIG0001_spec.md` … `FIG0010_spec.md`
   - Pixel metrics: stratified sample n=3000 seed=42; label/generator/identity fully enumerated
 - **Phase D8 — Dataset Documentation + Raw Readiness Gate (STEP-024):** `COMPLETE` (raw-stage PASS, human-confirmed 2026-08-12)
-  - `reports/dataset_report.md`, `dataset_card.md`, `dataset_audit.md` (Checklist 3 raw-stage PASS)
-  - `Ready=no` until STEP-029 (preprocessing + splits)
-  - **Next:** STEP-025 Preprocessing pipeline design
+  - `reports/dataset_report.md`, `dataset_card.md`, `dataset_audit.md`
+- **Phases D9–D12 — Preprocess + split (STEP-025–028):** `COMPLETE`
+- **Phases D13–D15 — FastAI prep, versioning, master registry + gates (STEP-029):** `COMPLETE`
+  - Config: `05_Models/config/fastai_dataset.yaml`
+  - Spec: `04_Preprocessing/specs/FASTAI_DATABLOCK_SPEC.md`
+  - `metadata/dataset_versions.csv` (v1.0)
+  - `metadata/dataset_registry.csv` (DS→PP→SPLIT; EXP/MODEL empty)
+  - `datasets.csv` `Ready=yes`
+  - Audits: `reports/dataset_audit.md` (Checklist 3), `04_Preprocessing/reports/preprocessing_audit.md` (Checklist 4)
+  - Status: `STEP029_STATUS.md`
+  - **Next:** STEP-030 Environment definition & version lock
 
 ## Contents
 Raw immutable originals (`raw/`), processed datasets (`processed/`), splits (`splits/`), metadata (`metadata/`), reports (`reports/`), licenses (`licenses/`).
@@ -47,7 +55,9 @@ Dataset Discovery Agent / Dataset Evaluation Agent / Metadata Agent / Human
 - `03_Datasets/metadata/dataset_pointers.md` (Phase D4/D5)
 - `03_Datasets/reports/integrity_report.csv` (Phase D4/D5)
 - `03_Datasets/reports/download_instructions.md` (Phase D4/D5 — Human Task)
-- `03_Datasets/metadata/dataset_registry.csv` (Phase D8)
+- `03_Datasets/metadata/dataset_registry.csv` (Phase D15)
+- `03_Datasets/metadata/dataset_versions.csv` (Phase D14)
+- `03_Datasets/reports/dataset_audit.md` (Checklist 3)
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md` (§4).*
 

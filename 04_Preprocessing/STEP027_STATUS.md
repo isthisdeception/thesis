@@ -24,7 +24,7 @@
 ## Notes
 - PP0004 superseded by PP0006 (RAISE `max_side` fix).
 - DS0002 upload required ASCII filename sanitization (42 Unicode paths).
-- `Ready=no` until STEP-029 (Checklist 4 gate).
+- `Ready=yes` as of STEP-029 (Checklist 4 audit `reports/preprocessing_audit.md`).
 
 ## Next step
-**STEP-028** — Train/validation/test split (leakage-safe).
+**STEP-029** — FastAI prep, versioning, master registry + Preprocessing Gate — **COMPLETE**. Next: STEP-030.

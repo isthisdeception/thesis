@@ -12,6 +12,10 @@
   - Runner: `step027_run_preprocessing.py`
   - Reports: `reports/PPxxxx_report.md` (stubs until Kaggle sync)
   - Status: `STEP027_STATUS.md`
+- **STEP-029 — FastAI prep + Checklist 4 gate:** `COMPLETE`
+  - Spec: `specs/FASTAI_DATABLOCK_SPEC.md`
+  - Config: `05_Models/config/fastai_dataset.yaml`
+  - Audit: `reports/preprocessing_audit.md`
 
 ## Package layout
 
