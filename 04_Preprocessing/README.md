@@ -2,19 +2,48 @@
 
 **Purpose:** Modular, versioned preprocessing pipelines (PPxxxx).
 
-## Contents
-Reusable pipeline modules, registry, reports, validation modules.
+## Phase Status
+- **STEP-025 — Pipeline Design:** `COMPLETE`
+- **STEP-026 — Implement modules:** `COMPLETE` (`modules/`, 34 tests)
+- **STEP-027 — Register & generate processed:** `COMPLETE`
+  - Registry: `preprocessing_registry.csv` (PP0001–PP0006)
+  - Exclude list: `exclude_lists/exclude_list_DS0002.csv`
+  - Kaggle guide: `notebooks/STEP027_KAGGLE_PREPROCESS.md`
+  - Runner: `step027_run_preprocessing.py`
+  - Reports: `reports/PPxxxx_report.md` (stubs until Kaggle sync)
+  - Status: `STEP027_STATUS.md`
+- **STEP-029 — FastAI prep + Checklist 4 gate:** `COMPLETE`
+  - Spec: `specs/FASTAI_DATABLOCK_SPEC.md`
+  - Config: `05_Models/config/fastai_dataset.yaml`
+  - Audit: `reports/preprocessing_audit.md`
 
-## Workflow
-Preprocessing agent writes, Datasets and Experiments consume. No monolithic scripts.
+## Package layout
+
+```
+04_Preprocessing/
+  modules/                 # PPMOD01–10 + discovery + report_writer
+  pipeline_runner.py       # thin sequencer
+  step027_run_preprocessing.py
+  exclude_lists/
+  reports/
+  tests/
+```
+
+## Rules
+- **No monolith** — one module per Phase D9 step; parameters injected.
+- **Raw read-only** — writes only under `processed/DSxxxx_PPxxxx/`.
+- **Fail loudly** — `ModuleError` / exclude CSVs; never silent skips.
+- **Never overwrite** processed outputs; new params ⇒ new `PPxxxx`.
+- **No processed image bytes in Git.**
+
+## Run unit tests
+```bash
+cd 04_Preprocessing
+python -m pytest tests/ -v
+```
 
 ## Owner
-Preprocessing Agent (via Antigravity)
+Preprocessing Agent
 
 ## Related Folders
-03_Datasets
-
-## Expected Outputs
-preprocessing_registry.csv, preprocessing_report.md
-
-> *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*
+`03_Datasets`, `17_Automation/dataset_eda`, `17_Automation/dataset_validation`

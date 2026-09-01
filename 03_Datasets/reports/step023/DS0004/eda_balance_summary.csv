@@ -1,0 +1,9 @@
+Dataset ID,Metric,Value,Notes
+DS0004,n_images,9999,full enumeration
+DS0004,n_generators,10,
+DS0004,real_fake_ratio,0.111000,real/fake; inf if fake=0
+DS0004,balance_abs_diff,8001,|real-fake|
+DS0004,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0004,pixel_errors,0,
+DS0004,roots_used,1,_staging\DS0004_synthbuster\kaggle_upload\ds0004-synthbuster\raw\DS0004
+DS0004,archives_used,2,raise_1k_jpeg.zip;synthbuster.zip

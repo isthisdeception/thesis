@@ -1,0 +1,3 @@
+Dataset ID,Relative Path,Issue Code,Issue Detail,Severity,Source Container
+DS0004,(aggregated),NESTED_RESCAN_DUPLICATES,Full Kaggle run produced 39007 DUPLICATE_HASH warnings due to nested root re-scan; unique images ~9999; corrupt=0; threshold_pass=yes. Full CSV kept local in _staging_dataset_validation/DS04/.,warning,step022_sync
+DS0004,(stats),ISSUE_CODE_COUNTS,"{""DUPLICATE_HASH"": 39007}",info,step022_sync

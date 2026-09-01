@@ -1,0 +1,63 @@
+{
+  "split_id": "SPLIT0002",
+  "output_id": "DS0003_PP0003",
+  "dataset_id": "DS0003",
+  "pipeline_id": "PP0003",
+  "scheme": "logo",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "content_hash"
+  ],
+  "held_out_generators": [
+    "stylegan"
+  ],
+  "official_test_column": null,
+  "official_test_values": [],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "LOGO: stylegan fakes held out (native valid still test when present).",
+  "fingerprint_sha256": "2768a8b3070381aab09ea5bbcb077e08bd2ba8360d287b401c7f7a250cb29921",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "test": 70000,
+      "val": 10501,
+      "train": 59499
+    },
+    "class_by_partition": {
+      "train": {
+        "real": 59499
+      },
+      "val": {
+        "real": 10501
+      },
+      "test": {
+        "fake": 70000
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "none": 59499
+      },
+      "val": {
+        "none": 10501
+      },
+      "test": {
+        "stylegan": 70000
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 140000,
+    "generator_count": 2
+  }
+}

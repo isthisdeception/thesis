@@ -1,0 +1,4 @@
+Dataset ID,Stratum,N,Mean,Std,P05,P50,P95,Sample Policy,Notes
+DS0005,ALL,3000,0.384333,0.122949,0.188804,0.380217,0.592666,stratified_sample_n=3000_seed=42,"luma mean in [0,1]; thumbnail<=256px"
+DS0005,real|none|train,2663,0.383408,0.123537,0.183815,0.379475,0.592209,stratified_sample_n=3000_seed=42,
+DS0005,real|none|val,337,0.391639,0.117944,0.200850,0.387624,0.595731,stratified_sample_n=3000_seed=42,

@@ -1,0 +1,25 @@
+{
+  "built_utc": "2026-08-07T17:32:30.094513+00:00",
+  "dataset_ids": [
+    "DS0004"
+  ],
+  "max_images": null,
+  "results": {
+    "DS0004": {
+      "passed": true,
+      "fail_reasons": [],
+      "scanned_images": 48996,
+      "archives": [],
+      "roots": [
+        "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster",
+        "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004",
+        "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/real",
+        "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/real/raise_1k_jpeg",
+        "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic",
+        "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic/synthbuster",
+        "/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic/synthbuster/synthbuster"
+      ],
+      "layout_notes": "search_roots=['/kaggle/input/datasets/isthisdeception/ds0004-synthbuster']; candidates=['/kaggle/input/datasets/isthisdeception/ds0004-synthbuster', '/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004']"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+Dataset ID,Class,Count,Proportion,Notes
+DS0001,fake,25000,0.500000,
+DS0001,real,25000,0.500000,

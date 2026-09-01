@@ -1,0 +1,2 @@
+Dataset ID,Width,Height,Count,Proportion,Notes
+DS0005,224,224,3000,1.000000,stratified_sample_n=3000_seed=42

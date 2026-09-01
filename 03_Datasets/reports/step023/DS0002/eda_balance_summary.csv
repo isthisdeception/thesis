@@ -1,0 +1,9 @@
+Dataset ID,Metric,Value,Notes
+DS0002,n_images,57060,full enumeration
+DS0002,n_generators,13,
+DS0002,real_fake_ratio,0.000000,real/fake; inf if fake=0
+DS0002,balance_abs_diff,57060,|real-fake|
+DS0002,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0002,pixel_errors,0,
+DS0002,roots_used,4,_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\FE;_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\FS;_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\I2I;_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\T2I
+DS0002,archives_used,13,CoDiff.zip;cycle_diff.zip;Imagic.zip;DCFace.zip;DiffFace.zip;DreamBooth.zip;FreeDoM_I.zip;LoRA.zip

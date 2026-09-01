@@ -1,0 +1,2 @@
+Dataset ID,Mode,Count,Proportion,Mean_R,Mean_G,Mean_B,Sample Policy,Notes
+DS0002,RGB,3000,1.000000,0.517533,0.431757,0.376897,stratified_sample_n=3000_seed=42,RGB means are global sample means (not per-mode)

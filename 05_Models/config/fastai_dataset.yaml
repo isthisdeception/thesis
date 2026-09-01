@@ -1,0 +1,143 @@
+# Canonical FastAI dataset-prep defaults (Phase D13 / STEP-029).
+# Copy these keys into 06_Experiments/EXPxxxx/config.yaml.
+# Do not hide DataBlock / transform / split parameters in notebook code.
+
+dataset:
+  version: "v1.0"
+  # Override per experiment. Primary training default:
+  dataset_id: DS0001
+  pipeline_id: PP0001
+  output_id: DS0001_PP0001
+  split_id: SPLIT0001
+  split_dir: 03_Datasets/splits/DS0001_PP0001_SPLIT0001
+  assignments_csv: 03_Datasets/splits/DS0001_PP0001_SPLIT0001/assignments.csv
+  processed_kaggle_slug: isthisdeception/ds0001-pp0001
+  processed_root: /kaggle/input/ds0001-pp0001
+  path_column: processed_path
+  label_column: class_label
+  partition_column: partition
+  vocab: [fake, real]
+  role: primary_train
+
+split:
+  train_name: train
+  valid_name: val
+  test_name: test
+  seed: 42
+  leakage_required: pass
+
+fastai:
+  datablock:
+    blocks: [ImageBlock, CategoryBlock]
+    get_items: assignments_csv
+    get_x: processed_root + processed_path
+    get_y: class_label
+    splitter: column_splitter
+    n_inp: 1
+  item_tfms:
+    # Images are already 224 PNG on disk (PPMOD05). Resize is a safety clamp.
+    resize: 224
+    method: squish
+  batch_tfms:
+    aug_transforms:
+      enabled: true
+      train_only: true
+      do_flip: true
+      flip_vert: false
+      max_rotate: 10.0
+      max_zoom: 1.05
+      max_lighting: 0.1
+      max_warp: 0.0
+      min_scale: 1.0
+      pad_mode: zeros
+    normalize:
+      stats: imagenet
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+      apply_on_disk: false
+  dataloaders:
+    image_size: 224
+    batch_size: 64
+    batch_size_eval: 128
+    num_workers: 2
+    drop_last: false
+    shuffle_train: true
+
+# Per-output defaults. Experiments select one row; EXP/MODEL stay empty until training.
+outputs:
+  - dataset_id: DS0001
+    pipeline_id: PP0001
+    output_id: DS0001_PP0001
+    split_id: SPLIT0001
+    role: primary_train
+    scheme: grouped_random
+    processed_kaggle_slug: isthisdeception/ds0001-pp0001
+  - dataset_id: DS0001
+    pipeline_id: PP0001
+    output_id: DS0001_PP0001
+    split_id: SPLIT0002
+    role: logo_train
+    scheme: logo
+    held_out_generator: stable_diffusion
+    processed_kaggle_slug: isthisdeception/ds0001-pp0001
+  - dataset_id: DS0002
+    pipeline_id: PP0002
+    output_id: DS0002_PP0002
+    split_id: SPLIT0001
+    role: primary_eval
+    scheme: grouped_random
+    processed_kaggle_slug: isthisdeception/ds0002-pp0002
+    notes: Fake-only DiFF eval; do not train a binary detector on this split alone.
+  - dataset_id: DS0002
+    pipeline_id: PP0002
+    output_id: DS0002_PP0002
+    split_id: SPLIT0002
+    role: logo_eval
+    scheme: logo
+    held_out_generator: Midjourney
+    processed_kaggle_slug: isthisdeception/ds0002-pp0002
+  - dataset_id: DS0003
+    pipeline_id: PP0003
+    output_id: DS0003_PP0003
+    split_id: SPLIT0001
+    role: quick_baseline_train
+    scheme: official_holdout
+    processed_kaggle_slug: isthisdeception/ds0003-pp0003
+  - dataset_id: DS0003
+    pipeline_id: PP0003
+    output_id: DS0003_PP0003
+    split_id: SPLIT0002
+    role: logo_train
+    scheme: logo
+    held_out_generator: stylegan
+    processed_kaggle_slug: isthisdeception/ds0003-pp0003
+  - dataset_id: DS0004
+    pipeline_id: PP0006
+    output_id: DS0004_PP0006
+    split_id: SPLIT0001
+    role: frequency_supplementary
+    scheme: grouped_random
+    processed_kaggle_slug: isthisdeception/ds0004-pp0006
+  - dataset_id: DS0004
+    pipeline_id: PP0006
+    output_id: DS0004_PP0006
+    split_id: SPLIT0002
+    role: logo_eval
+    scheme: logo
+    held_out_generator: dalle3
+    processed_kaggle_slug: isthisdeception/ds0004-pp0006
+  - dataset_id: DS0005
+    pipeline_id: PP0005
+    output_id: DS0005_PP0005
+    split_id: SPLIT0001
+    role: bias_eval
+    scheme: official_holdout
+    processed_kaggle_slug: isthisdeception/ds0005-pp0005
+    notes: Real-only FairFace bias eval; keep vocab [fake, real] from the trained model.
+  - dataset_id: DS0005
+    pipeline_id: PP0005
+    output_id: DS0005_PP0005
+    split_id: SPLIT0002
+    role: bias_eval_grouped
+    scheme: grouped_random
+    processed_kaggle_slug: isthisdeception/ds0005-pp0005

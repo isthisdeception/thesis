@@ -1,0 +1,95 @@
+{
+  "split_id": "SPLIT0001",
+  "output_id": "DS0002_PP0002",
+  "dataset_id": "DS0002",
+  "pipeline_id": "PP0002",
+  "scheme": "grouped_random",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "identity",
+    "generator"
+  ],
+  "held_out_generators": [],
+  "official_test_column": null,
+  "official_test_values": [],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "DiFF eval pool internal grouped split (fake-only).",
+  "fingerprint_sha256": "2752b608c9f46328cd6d6dd3a699ac8a1af44b3e9173b658608c8ceff2394e79",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "val": 7103,
+      "train": 36985,
+      "test": 7364
+    },
+    "class_by_partition": {
+      "train": {
+        "fake": 36985
+      },
+      "val": {
+        "fake": 7103
+      },
+      "test": {
+        "fake": 7364
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "CoDiff": 2840,
+        "Imagic": 2868,
+        "cycle_diff": 5302,
+        "DCFace": 3308,
+        "DiffFace": 1064,
+        "LoRA": 993,
+        "DreamBooth": 3017,
+        "FreeDoM_I": 1694,
+        "FreeDoM_T": 1758,
+        "SDXL": 3508,
+        "Midjourney": 4443,
+        "HPS": 6190
+      },
+      "val": {
+        "CoDiff": 760,
+        "Imagic": 644,
+        "cycle_diff": 809,
+        "DCFace": 679,
+        "DiffFace": 208,
+        "LoRA": 239,
+        "DreamBooth": 343,
+        "FreeDoM_I": 304,
+        "FreeDoM_T": 392,
+        "SDXL": 939,
+        "Midjourney": 779,
+        "HPS": 1007
+      },
+      "test": {
+        "CoDiff": 420,
+        "Imagic": 819,
+        "cycle_diff": 1238,
+        "DCFace": 642,
+        "DiffFace": 304,
+        "LoRA": 360,
+        "DreamBooth": 553,
+        "FreeDoM_I": 259,
+        "FreeDoM_T": 368,
+        "SDXL": 1061,
+        "Midjourney": 425,
+        "HPS": 915
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 1511,
+    "generator_count": 12
+  }
+}

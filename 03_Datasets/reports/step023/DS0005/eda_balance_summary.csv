@@ -1,0 +1,9 @@
+Dataset ID,Metric,Value,Notes
+DS0005,n_images,97698,full enumeration
+DS0005,n_generators,1,
+DS0005,real_fake_ratio,inf,real/fake; inf if fake=0
+DS0005,balance_abs_diff,97698,|real-fake|
+DS0005,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0005,pixel_errors,0,
+DS0005,roots_used,0,
+DS0005,archives_used,1,fairface-img-margin025-trainval.zip

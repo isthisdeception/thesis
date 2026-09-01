@@ -1,0 +1,84 @@
+{
+  "split_id": "SPLIT0002",
+  "output_id": "DS0002_PP0002",
+  "dataset_id": "DS0002",
+  "pipeline_id": "PP0002",
+  "scheme": "logo",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "identity",
+    "generator"
+  ],
+  "held_out_generators": [
+    "Midjourney"
+  ],
+  "official_test_column": null,
+  "official_test_values": [],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "LOGO: Midjourney held out for unseen-generator eval (E9).",
+  "fingerprint_sha256": "fca325246b312d52dc55c117920549c79476536a1797182ce081725791bab205",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "train": 39718,
+      "val": 6087,
+      "test": 5647
+    },
+    "class_by_partition": {
+      "train": {
+        "fake": 39718
+      },
+      "val": {
+        "fake": 6087
+      },
+      "test": {
+        "fake": 5647
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "CoDiff": 3720,
+        "Imagic": 3812,
+        "cycle_diff": 6314,
+        "DCFace": 3852,
+        "DiffFace": 1240,
+        "LoRA": 1319,
+        "DreamBooth": 3280,
+        "FreeDoM_I": 1923,
+        "FreeDoM_T": 2096,
+        "SDXL": 4792,
+        "HPS": 7370
+      },
+      "val": {
+        "CoDiff": 300,
+        "Imagic": 519,
+        "cycle_diff": 1035,
+        "DCFace": 777,
+        "DiffFace": 336,
+        "LoRA": 273,
+        "DreamBooth": 633,
+        "FreeDoM_I": 334,
+        "FreeDoM_T": 422,
+        "SDXL": 716,
+        "HPS": 742
+      },
+      "test": {
+        "Midjourney": 5647
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 1511,
+    "generator_count": 12
+  }
+}

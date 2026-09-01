@@ -1,0 +1,2 @@
+Dataset ID,Format,Count,Mean Bytes,Median Bytes,P05 Bytes,P95 Bytes,Sample Policy,Notes
+DS0005,JPEG,3000,5901.8,5715.0,3943.8,8330.0,stratified_sample_n=3000_seed=42,

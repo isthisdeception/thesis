@@ -1,0 +1,3 @@
+Dataset ID,Generator,Class,Condition,Count,Proportion,Notes
+DS0005,none,real,train,86744,0.887879,
+DS0005,none,real,val,10954,0.112121,

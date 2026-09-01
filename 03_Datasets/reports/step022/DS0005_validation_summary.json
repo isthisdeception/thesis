@@ -1,0 +1,19 @@
+{
+  "built_utc": "2026-08-07T15:13:34.068308+00:00",
+  "dataset_ids": [
+    "DS0005"
+  ],
+  "max_images": null,
+  "results": {
+    "DS0005": {
+      "passed": true,
+      "fail_reasons": [],
+      "scanned_images": 97698,
+      "archives": [],
+      "roots": [
+        "/kaggle/input/datasets/isthisdeception/ds0005-fairface/raw/DS0005/fairface-img-margin025-trainval"
+      ],
+      "layout_notes": "search_roots=['/kaggle/input/datasets/isthisdeception/ds0005-fairface']; candidates=['/kaggle/input/datasets/isthisdeception/ds0005-fairface', '/kaggle/input/datasets/isthisdeception/ds0005-fairface/raw/DS0005']"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "split_id": "SPLIT0001",
+  "output_id": "DS0001_PP0001",
+  "dataset_id": "DS0001",
+  "pipeline_id": "PP0001",
+  "scheme": "grouped_random",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "identity",
+    "generator"
+  ],
+  "held_out_generators": [],
+  "official_test_column": null,
+  "official_test_values": [],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "Primary train split; groups by identity+generator.",
+  "fingerprint_sha256": "ff16279f2fe09c70a80f8460b175854d01a26e688513b68d188657afe3d47d48",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "train": 34993,
+      "test": 7505,
+      "val": 7502
+    },
+    "class_by_partition": {
+      "train": {
+        "real": 17491,
+        "fake": 17502
+      },
+      "val": {
+        "real": 3783,
+        "fake": 3719
+      },
+      "test": {
+        "real": 3726,
+        "fake": 3779
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "none": 17491,
+        "cips": 1338,
+        "stargan": 1350,
+        "stable_diffusion": 1355,
+        "mat": 1353,
+        "projected_gan": 1364,
+        "face_synthetics": 1379,
+        "gansformer": 1335,
+        "lama": 1324,
+        "stylegan3": 1355,
+        "sfhq": 1343,
+        "taming_transformer": 1361,
+        "stylegan1": 1324,
+        "stylegan2": 1321
+      },
+      "val": {
+        "none": 3783,
+        "cips": 320,
+        "stargan": 278,
+        "stable_diffusion": 269,
+        "mat": 298,
+        "projected_gan": 255,
+        "face_synthetics": 265,
+        "gansformer": 305,
+        "lama": 309,
+        "stylegan3": 284,
+        "sfhq": 278,
+        "taming_transformer": 281,
+        "stylegan1": 287,
+        "stylegan2": 290
+      },
+      "test": {
+        "none": 3726,
+        "cips": 265,
+        "stargan": 295,
+        "stable_diffusion": 299,
+        "mat": 272,
+        "projected_gan": 304,
+        "face_synthetics": 279,
+        "gansformer": 283,
+        "lama": 290,
+        "stylegan3": 284,
+        "sfhq": 302,
+        "taming_transformer": 281,
+        "stylegan1": 312,
+        "stylegan2": 313
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 49786,
+    "generator_count": 14
+  }
+}

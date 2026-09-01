@@ -1,0 +1,16 @@
+Dataset ID,Stratum,N,Mean,Std,P05,P50,P95,Sample Policy,Notes
+DS0001,ALL,3000,0.216457,0.049577,0.137898,0.215796,0.298167,stratified_sample_n=3000_seed=42,"luma std in [0,1]; thumbnail<=256px"
+DS0001,fake|cips|,115,0.208953,0.034827,0.154146,0.206673,0.264535,stratified_sample_n=3000_seed=42,
+DS0001,fake|face_synthetics|,115,0.197758,0.076649,0.097081,0.185825,0.345189,stratified_sample_n=3000_seed=42,
+DS0001,fake|gansformer|,116,0.208826,0.038921,0.148759,0.207290,0.272649,stratified_sample_n=3000_seed=42,
+DS0001,fake|lama|,116,0.218483,0.049353,0.146380,0.217832,0.298991,stratified_sample_n=3000_seed=42,
+DS0001,fake|mat|,116,0.226960,0.048005,0.145849,0.224337,0.310127,stratified_sample_n=3000_seed=42,
+DS0001,fake|projected_gan|,116,0.210643,0.041255,0.144117,0.206994,0.277046,stratified_sample_n=3000_seed=42,
+DS0001,fake|sfhq|,116,0.183543,0.050403,0.109494,0.177782,0.277313,stratified_sample_n=3000_seed=42,
+DS0001,fake|stable_diffusion|,116,0.228203,0.041046,0.164162,0.228262,0.280662,stratified_sample_n=3000_seed=42,
+DS0001,fake|stargan|,116,0.221248,0.053775,0.145214,0.215003,0.309424,stratified_sample_n=3000_seed=42,
+DS0001,fake|stylegan1|,116,0.210699,0.042050,0.152604,0.207811,0.289760,stratified_sample_n=3000_seed=42,
+DS0001,fake|stylegan2|,116,0.208774,0.040286,0.152833,0.209215,0.268114,stratified_sample_n=3000_seed=42,
+DS0001,fake|stylegan3|,116,0.201479,0.054773,0.112842,0.208280,0.285392,stratified_sample_n=3000_seed=42,
+DS0001,fake|taming_transformer|,116,0.202503,0.045427,0.132278,0.200871,0.286572,stratified_sample_n=3000_seed=42,
+DS0001,real|none|,1494,0.223107,0.048325,0.144656,0.223319,0.304163,stratified_sample_n=3000_seed=42,

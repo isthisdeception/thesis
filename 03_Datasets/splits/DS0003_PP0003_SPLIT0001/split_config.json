@@ -1,0 +1,69 @@
+{
+  "split_id": "SPLIT0001",
+  "output_id": "DS0003_PP0003",
+  "dataset_id": "DS0003",
+  "pipeline_id": "PP0003",
+  "scheme": "official_holdout",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "content_hash"
+  ],
+  "held_out_generators": [],
+  "official_test_column": "split",
+  "official_test_values": [
+    "valid"
+  ],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "Respect native train/valid; valid->test, train subsplit train/val by hash groups.",
+  "fingerprint_sha256": "76ec5f3ad98dcd7900d73fa5160534d1b37cc23d218c838077983c80f53c2fb7",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "test": 20000,
+      "train": 101999,
+      "val": 18001
+    },
+    "class_by_partition": {
+      "train": {
+        "fake": 50940,
+        "real": 51059
+      },
+      "val": {
+        "fake": 9060,
+        "real": 8941
+      },
+      "test": {
+        "fake": 10000,
+        "real": 10000
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "stylegan": 50940,
+        "none": 51059
+      },
+      "val": {
+        "stylegan": 9060,
+        "none": 8941
+      },
+      "test": {
+        "stylegan": 10000,
+        "none": 10000
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 140000,
+    "generator_count": 2
+  }
+}

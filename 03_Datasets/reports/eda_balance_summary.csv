@@ -1,0 +1,41 @@
+Dataset ID,Metric,Value,Notes
+DS0001,n_images,50000,full enumeration
+DS0001,n_generators,14,
+DS0001,real_fake_ratio,1.000000,real/fake; inf if fake=0
+DS0001,balance_abs_diff,0,|real-fake|
+DS0001,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0001,pixel_errors,0,
+DS0001,roots_used,0,
+DS0001,archives_used,1,artifact_face_subset_50k.zip
+DS0002,n_images,57060,full enumeration
+DS0002,n_generators,13,
+DS0002,real_fake_ratio,0.000000,real/fake; inf if fake=0
+DS0002,balance_abs_diff,57060,|real-fake|
+DS0002,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0002,pixel_errors,0,
+DS0002,roots_used,4,_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\FE;_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\FS;_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\I2I;_staging\DS0002_diff\kaggle_upload\ds0002-diff-official-test\raw\DS0002\test\T2I
+DS0002,archives_used,13,CoDiff.zip;cycle_diff.zip;Imagic.zip;DCFace.zip;DiffFace.zip;DreamBooth.zip;FreeDoM_I.zip;LoRA.zip
+DS0003,n_images,140000,full enumeration
+DS0003,n_generators,2,
+DS0003,real_fake_ratio,1.000000,real/fake; inf if fake=0
+DS0003,balance_abs_diff,0,|real-fake|
+DS0003,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0003,pixel_errors,0,
+DS0003,roots_used,1,_staging\DS0003_140k\real_vs_fake
+DS0003,archives_used,0,
+DS0004,n_images,9999,full enumeration
+DS0004,n_generators,10,
+DS0004,real_fake_ratio,0.111000,real/fake; inf if fake=0
+DS0004,balance_abs_diff,8001,|real-fake|
+DS0004,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0004,pixel_errors,0,
+DS0004,roots_used,1,_staging\DS0004_synthbuster\kaggle_upload\ds0004-synthbuster\raw\DS0004
+DS0004,archives_used,2,raise_1k_jpeg.zip;synthbuster.zip
+DS0005,n_images,97698,full enumeration
+DS0005,n_generators,1,
+DS0005,real_fake_ratio,inf,real/fake; inf if fake=0
+DS0005,balance_abs_diff,97698,|real-fake|
+DS0005,pixel_sample_n,3000,stratified_sample_n=3000_seed=42
+DS0005,pixel_errors,0,
+DS0005,roots_used,0,
+DS0005,archives_used,1,fairface-img-margin025-trainval.zip

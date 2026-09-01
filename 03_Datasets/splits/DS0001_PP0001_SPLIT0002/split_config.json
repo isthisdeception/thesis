@@ -1,0 +1,90 @@
+{
+  "split_id": "SPLIT0002",
+  "output_id": "DS0001_PP0001",
+  "dataset_id": "DS0001",
+  "pipeline_id": "PP0001",
+  "scheme": "logo",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "identity",
+    "generator"
+  ],
+  "held_out_generators": [
+    "stable_diffusion"
+  ],
+  "official_test_column": null,
+  "official_test_values": [],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "Leave-one-generator-out (stable_diffusion held out for test).",
+  "fingerprint_sha256": "8caf8ab38f094785c9eaa462fe6a774150b918a3869df545c22f9bd0892c03db",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "train": 40873,
+      "val": 7204,
+      "test": 1923
+    },
+    "class_by_partition": {
+      "train": {
+        "real": 21244,
+        "fake": 19629
+      },
+      "val": {
+        "real": 3756,
+        "fake": 3448
+      },
+      "test": {
+        "fake": 1923
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "none": 21244,
+        "cips": 1633,
+        "stargan": 1607,
+        "mat": 1631,
+        "projected_gan": 1628,
+        "face_synthetics": 1633,
+        "gansformer": 1658,
+        "lama": 1638,
+        "stylegan3": 1652,
+        "sfhq": 1636,
+        "taming_transformer": 1649,
+        "stylegan1": 1636,
+        "stylegan2": 1628
+      },
+      "val": {
+        "none": 3756,
+        "cips": 290,
+        "stargan": 316,
+        "mat": 292,
+        "projected_gan": 295,
+        "face_synthetics": 290,
+        "gansformer": 265,
+        "lama": 285,
+        "stylegan3": 271,
+        "sfhq": 287,
+        "taming_transformer": 274,
+        "stylegan1": 287,
+        "stylegan2": 296
+      },
+      "test": {
+        "stable_diffusion": 1923
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 49786,
+    "generator_count": 14
+  }
+}

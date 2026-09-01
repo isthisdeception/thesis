@@ -1,0 +1,82 @@
+{
+  "split_id": "SPLIT0002",
+  "output_id": "DS0004_PP0006",
+  "dataset_id": "DS0004",
+  "pipeline_id": "PP0006",
+  "scheme": "logo",
+  "seed": 42,
+  "ratios": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "group_by": [
+    "identity",
+    "generator"
+  ],
+  "held_out_generators": [
+    "dalle3"
+  ],
+  "official_test_column": null,
+  "official_test_values": [],
+  "train_val_ratio": [
+    0.85,
+    0.15
+  ],
+  "notes": "LOGO: dalle3 generator held out for frequency supplementary eval.",
+  "fingerprint_sha256": "62ae46771e01633ec85e21795137a21dbb42364810e778f038e1fb49d49275a4",
+  "date": "2026-09-01",
+  "summary": {
+    "counts": {
+      "train": 7648,
+      "val": 1351,
+      "test": 1000
+    },
+    "class_by_partition": {
+      "train": {
+        "real": 857,
+        "fake": 6791
+      },
+      "val": {
+        "real": 142,
+        "fake": 1209
+      },
+      "test": {
+        "fake": 1000
+      }
+    },
+    "generator_by_partition": {
+      "train": {
+        "raise_1k_jpeg": 857,
+        "midjourney-v5": 833,
+        "stable-diffusion-1-3": 841,
+        "glide": 843,
+        "stable-diffusion-1-4": 848,
+        "dalle2": 865,
+        "stable-diffusion-xl": 860,
+        "firefly": 832,
+        "stable-diffusion-2": 869
+      },
+      "val": {
+        "raise_1k_jpeg": 142,
+        "midjourney-v5": 167,
+        "stable-diffusion-1-3": 159,
+        "glide": 157,
+        "stable-diffusion-1-4": 152,
+        "dalle2": 135,
+        "stable-diffusion-xl": 140,
+        "firefly": 168,
+        "stable-diffusion-2": 131
+      },
+      "test": {
+        "dalle3": 1000
+      }
+    }
+  },
+  "leakage_check": {
+    "passed": true,
+    "issues": [],
+    "group_count": 9999,
+    "generator_count": 10
+  }
+}

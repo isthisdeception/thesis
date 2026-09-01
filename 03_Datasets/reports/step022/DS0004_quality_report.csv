@@ -1,0 +1,23 @@
+Dataset ID,Metric,Value,Notes
+DS0004,scanned_images,48996,
+DS0004,corrupt_count,0,
+DS0004,corrupt_rate,0.000000,corrupt / scanned_images
+DS0004,empty_files,0,
+DS0004,unsupported_format,0,
+DS0004,duplicate_hash_groups,9989,
+DS0004,width_min,256,
+DS0004,width_max,4928,
+DS0004,width_mean,1283.29,
+DS0004,height_min,256,
+DS0004,height_max,4928,
+DS0004,height_mean,1126.89,
+DS0004,aspect_ratio_min,0.5000,width/height
+DS0004,aspect_ratio_max,3.0000,width/height
+DS0004,aspect_ratio_mean,1.1533,width/height
+DS0004,format_histogram,"{""PNG"": 40000, ""JPEG"": 8996}",
+DS0004,mode_histogram,"{""RGB"": 43996, ""RGBA"": 5000}",
+DS0004,archives_scanned,0,
+DS0004,roots_scanned,7,/kaggle/input/datasets/isthisdeception/ds0004-synthbuster;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/real;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/real/raise_1k_jpeg;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic/synthbuster;/kaggle/input/datasets/isthisdeception/ds0004-synthbuster/raw/DS0004/synthetic/synthbuster/synthbuster
+DS0004,label_csvs,0,
+DS0004,built_utc,2026-08-07T17:32:29.698350+00:00,Phase D6
+DS0004,threshold_pass,yes,ok
