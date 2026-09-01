@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Environment & Model Foundation (PART 6)
-- Active Step: **STEP-030** — Environment definition & version lock
+- Active Step: **STEP-031** — Kaggle dataset upload & sync setup
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -16,6 +16,7 @@
 - Preprocessing execution (STEP-027): COMPLETE
 - Split generation (STEP-028): COMPLETE — leakage checks PASS
 - FastAI prep + versioning + master registry (STEP-029): COMPLETE
+- Environment lock (STEP-030): COMPLETE — Kaggle GPU v170 (Python 3.12, torch 2.10.0+cu128, fastai 2.8.7)
 - `Ready=yes`
 
 ## Health

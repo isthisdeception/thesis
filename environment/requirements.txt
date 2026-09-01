@@ -1,0 +1,23 @@
+# Local / CI training stack — pinned to Kaggle GPU image v170 (2026-06-29).
+# Do not use unpinned operators (>=, ~=, *).
+#
+# GPU local (Linux/Windows + NVIDIA): install torch/torchvision from the CUDA 12.8 index
+#   BEFORE this file, or use:
+#   pip install torch==2.10.0 torchvision==0.25.0 --index-url https://download.pytorch.org/whl/cu128
+#   pip install -r environment/requirements.txt
+#
+# CPU-only local: PyPI wheels are acceptable for preprocessing tests; do not train on CPU
+# as the experiment hardware of record.
+
+# --- Deep learning (Kaggle GPU v170) ---
+torch==2.10.0
+torchvision==0.25.0
+fastai==2.8.7
+fastcore==1.12.42
+fasttransform==0.0.2
+numpy==2.0.2
+
+# --- Preprocessing / tests (stdlib-adjacent; exact pins for local reproducibility) ---
+pillow==12.1.1
+pyyaml==6.0.3
+pytest==9.1.1
