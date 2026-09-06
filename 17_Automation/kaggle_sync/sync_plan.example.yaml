@@ -59,9 +59,9 @@ checkpoint_sources:
     required: false
 
 publish_targets:
-  - dataset_slug: isthisdeception/exp0001-artifacts
-    title: EXP0001 Artifact Tier
+  - dataset_slug: isthisdeception/thesis-experiment-artifacts
+    title: Thesis Experiment Artifact Tier
     upload_dir: 06_Experiments/EXP0001
-    version_notes: Upload EXP0001 outputs from Kaggle
+    version_notes: Upload experiment outputs from Kaggle
     is_private: true
     convert_to_csv: false
