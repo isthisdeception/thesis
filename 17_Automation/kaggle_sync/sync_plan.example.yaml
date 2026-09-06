@@ -1,5 +1,5 @@
 repo_url: https://github.com/isthisdeception/thesis.git
-repo_branch: develop
+repo_branch: feature/environment-lock
 repo_dir: thesis
 workspace_root: /kaggle/working
 kaggle_requirements: environment/kaggle-requirements.txt
