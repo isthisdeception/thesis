@@ -1,0 +1,67 @@
+repo_url: https://github.com/isthisdeception/thesis.git
+repo_branch: develop
+repo_dir: thesis
+workspace_root: /kaggle/working
+kaggle_requirements: environment/kaggle-requirements.txt
+
+metadata_paths:
+  - 06_Experiments/experiment_registry.csv
+  - 03_Datasets/metadata/dataset_registry.csv
+  - 05_Models/model_registry.csv
+  - 08_Evaluation/reports
+
+dataset_mounts:
+  - name: ds0001_raw
+    slug: isthisdeception/ds0001-artifact-face-subset
+    mount_path: /kaggle/input/ds0001-artifact-face-subset
+    tier: data
+  - name: ds0001_processed
+    slug: isthisdeception/ds0001-pp0001
+    mount_path: /kaggle/input/ds0001-pp0001
+    tier: data
+  - name: ds0002_raw
+    slug: isthisdeception/ds0002-diff-official-test
+    mount_path: /kaggle/input/ds0002-diff-official-test
+    tier: data
+  - name: ds0002_processed
+    slug: isthisdeception/ds0002-pp0002
+    mount_path: /kaggle/input/ds0002-pp0002
+    tier: data
+  - name: ds0003_raw
+    slug: xhlulu/140k-real-and-fake-faces
+    mount_path: /kaggle/input/140k-real-and-fake-faces
+    tier: data
+  - name: ds0003_processed
+    slug: isthisdeception/ds0003-pp0003
+    mount_path: /kaggle/input/ds0003-pp0003
+    tier: data
+  - name: ds0004_raw
+    slug: isthisdeception/ds0004-synthbuster
+    mount_path: /kaggle/input/ds0004-synthbuster
+    tier: data
+  - name: ds0004_processed
+    slug: isthisdeception/ds0004-pp0006
+    mount_path: /kaggle/input/ds0004-pp0006
+    tier: data
+  - name: ds0005_raw
+    slug: isthisdeception/ds0005-fairface
+    mount_path: /kaggle/input/ds0005-fairface
+    tier: data
+  - name: ds0005_processed
+    slug: isthisdeception/ds0005-pp0005
+    mount_path: /kaggle/input/ds0005-pp0005
+    tier: data
+
+checkpoint_sources:
+  - name: exp0001_resume
+    input_path: /kaggle/input/exp0001-checkpoints
+    target_relpath: 06_Experiments/EXP0001/notebook/checkpoints
+    required: false
+
+publish_targets:
+  - dataset_slug: isthisdeception/exp0001-artifacts
+    title: EXP0001 Artifact Tier
+    upload_dir: 06_Experiments/EXP0001
+    version_notes: Upload EXP0001 outputs from Kaggle
+    is_private: true
+    convert_to_csv: false
