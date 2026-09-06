@@ -5,6 +5,13 @@
 ## Contents
 Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset integrity + **STEP-022 validation**.
 
+## Kaggle sync (STEP-031)
+- Package: `17_Automation/kaggle_sync/`
+- Session template: `06_Experiments/KAGGLE_SESSION_TEMPLATE.ipynb`
+- Entrypoint: `python -m kaggle_sync --plan kaggle_sync/sync_plan.example.yaml <command>`
+- Commands: `bootstrap`, `resume-checkpoints`, `publish-artifacts`, `push-metadata`
+- Policy: data tier stays on Kaggle Datasets, artifact tier stays in Kaggle outputs/datasets, only source-tier metadata returns to Git
+
 ## Dataset validation (Phase D6)
 - Package: `17_Automation/dataset_validation/`
 - Spec: `dataset_validation/SPEC.md`
