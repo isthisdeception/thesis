@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Environment & Model Foundation (PART 6)
-- Active Step: **STEP-031** — Kaggle dataset upload & sync setup
+- Active Step: **STEP-033** — Baseline strategy & fairness invariants
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -17,6 +17,9 @@
 - Split generation (STEP-028): COMPLETE — leakage checks PASS
 - FastAI prep + versioning + master registry (STEP-029): COMPLETE
 - Environment lock (STEP-030): COMPLETE — Kaggle GPU v170 (Python 3.12, torch 2.10.0+cu128, fastai 2.8.7)
+- Kaggle dataset upload + sync setup (STEP-031): COMPLETE — dry-run verified; shared artifact dataset created
+- Candidate model discovery (STEP-032): COMPLETE — approved shortlist = ResNet-50, Xception, EfficientNet-B4
+- Baseline strategy + fairness invariants (STEP-033): COMPLETE — EXP0001 fixed to ResNet-50 on DS0001/v1.0/PP0001/SPLIT0001
 - `Ready=yes`
 
 ## Health
