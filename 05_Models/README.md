@@ -16,7 +16,7 @@ Model/Training Agents
 06_AI_Forensic_Analyst_Architecture
 
 ## Expected Outputs
-model_registry.csv, model_card.md
+candidate_models.csv, model_registry.csv, model_card.md
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*
 
