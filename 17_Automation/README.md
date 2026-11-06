@@ -12,6 +12,12 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Commands: `bootstrap`, `resume-checkpoints`, `publish-artifacts`, `push-metadata`
 - Policy: data tier stays on Kaggle Datasets, artifact tier stays in Kaggle outputs/datasets, only source-tier metadata returns to Git
 
+## Config validation (Phase M4 / STEP-034)
+- Package: `17_Automation/config_validation/`
+- Docs: `config_validation/README.md`; training workflow in `05_Models/FASTAI_TRAINING_STANDARD.md`
+- Entrypoint: `python -m config_validation ../06_Experiments/EXPxxxx/config.yaml` (template: add `--template`)
+- Fails on missing M4 sections, unknown DS/PP/SPLIT/MODEL IDs, and unset seed
+
 ## Dataset validation (Phase D6)
 - Package: `17_Automation/dataset_validation/`
 - Spec: `dataset_validation/SPEC.md`
