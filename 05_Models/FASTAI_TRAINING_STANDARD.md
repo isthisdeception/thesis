@@ -3,7 +3,8 @@
 **Step:** STEP-034  
 **Handbook:** Phase M3, Phase M4, Phase M6, Phase M7  
 **Config template:** `18_Templates/config.yaml`  
-**Validator:** `17_Automation/config_validation/`
+**Validator:** `17_Automation/config_validation/`  
+**Implementation:** `17_Automation/training/` (STEP-036)
 
 ## Purpose
 
@@ -38,7 +39,7 @@ config validation → DataBlock → DataLoaders → Learner → callbacks → mi
 
 **Learner (stage 6).** The backbone comes from `model.backbone` and `model.source` (`torchvision` for ResNet, `timm` for Xception and EfficientNet). `model.architecture` must match the Model ID's row in `05_Models/candidate_models.csv` (or `model_registry.csv` once registered). Training-time metrics are cheap monitors; the full canonical metric set in `metrics.primary` is computed by the evaluation pipeline on saved predictions.
 
-**Transfer learning and LR (stages 9–10).** Default schedule is `fine_tune`: `freeze_epochs` epochs with the pretrained body frozen, then unfreeze and train `epochs` more with discriminative learning rates. Run LR Finder once, write the suggested value into `learning_rate.value` with `source: lr_find`, commit the config, then train. The LR is never chosen inside the training cell.
+**Transfer learning and LR (stages 9–10).** Default schedule is `fine_tune`: `freeze_epochs` epochs with the pretrained body frozen (one-cycle, `pct_start` 0.99 as in FastAI's `fine_tune`), then unfreeze, halve the LR, and train `epochs` more with discriminative learning rates `slice(lr / lr_mult, lr)` using the configured `pct_start` and `div`. Run LR Finder once, write the suggested value into `learning_rate.value` with `source: lr_find`, commit the config, then train. The LR is never chosen inside the training cell.
 
 **Callbacks and checkpoints (stage 7).** `SaveModelCallback(every_epoch=True, with_opt=True)` keeps per-epoch states with optimizer state so a terminated Kaggle session can resume (Phase M7). Checkpoints go to `outputs.checkpoint_dir`; nothing is overwritten, and the manifest at `outputs.checkpoint_manifest` records checksums. `EarlyStoppingCallback` uses `metrics.monitor`. `CSVLogger` writes the per-epoch log used for learning curves.
 

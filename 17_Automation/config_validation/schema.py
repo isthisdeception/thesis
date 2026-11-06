@@ -59,7 +59,14 @@ REQUIRED_SUBKEYS: dict[str, tuple[str, ...]] = {
     "optimizer": ("name",),
     "learning_rate": ("value", "source"),
     "loss_function": ("name",),
-    "metrics": ("primary", "monitor", "threshold_policy"),
+    "metrics": (
+        "primary",
+        "monitor",
+        "positive_class",
+        "threshold_policy",
+        "threshold_criterion",
+        "calibration_bins",
+    ),
     "augmentations": ("aug_transforms",),
     "hardware": ("platform", "accelerator", "gpu", "environment_lock"),
     "outputs": ("experiment_dir", "checkpoint_dir", "checkpoint_manifest"),
@@ -74,6 +81,8 @@ MODEL_SOURCES = frozenset({"torchvision", "timm"})
 SCHEDULE_METHODS = frozenset({"fine_tune", "fit_one_cycle"})
 LR_SOURCES = frozenset({"manual", "lr_find"})
 THRESHOLD_POLICIES = frozenset({"validation_only"})
+THRESHOLD_CRITERIA = frozenset({"max_balanced_accuracy", "max_f1", "fixed_0.5"})
+SCHEDULE_NUMBERS = ("lr_mult", "pct_start", "div")
 
 # 05_Models/baseline_plan.md canonical metric set.
 CANONICAL_PRIMARY_METRICS = (

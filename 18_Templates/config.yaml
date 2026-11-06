@@ -102,9 +102,13 @@ fastai:
   lr_finder:
     enabled: true
     suggest_func: valley
+    num_it: 100
   schedule:
     method: fine_tune         # fine_tune | fit_one_cycle
     freeze_epochs: 1          # frozen-head epochs before unfreeze (transfer learning)
+    lr_mult: 100              # body LR = head LR / lr_mult after unfreeze
+    pct_start: 0.3            # one-cycle warm-up fraction (unfrozen phase)
+    div: 5.0                  # one-cycle initial LR divisor (unfrozen phase)
   callbacks:
     save_model:
       monitor: valid_loss
@@ -143,7 +147,10 @@ metrics:
   primary: [roc_auc, pr_auc, f1, balanced_accuracy, mcc, precision, recall, specificity, fpr, fnr]
   secondary: [accuracy, ece, brier]
   monitor: valid_loss
+  positive_class: fake        # class treated as positive (detection target)
   threshold_policy: validation_only
+  threshold_criterion: max_balanced_accuracy
+  calibration_bins: 15        # equal-width bins for ECE
 
 # --- Random Seed --------------------------------------------------------------
 random_seed: 42

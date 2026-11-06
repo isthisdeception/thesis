@@ -197,8 +197,20 @@ class _Checker:
             freeze = schedule.get("freeze_epochs")
             if not _is_int(freeze) or freeze < 0:
                 self.fail(f"fastai.schedule.freeze_epochs must be an integer >= 0, got {freeze!r}")
+            for key in schema.SCHEDULE_NUMBERS:
+                value = schedule.get(key)
+                if not _is_number(value) or value <= 0:
+                    self.fail(f"fastai.schedule.{key} must be a positive number, got {value!r}")
+            pct_start = schedule.get("pct_start")
+            if _is_number(pct_start) and pct_start >= 1:
+                self.fail(f"fastai.schedule.pct_start must be < 1, got {pct_start!r}")
         elif "schedule" in fastai:
             self.fail("fastai.schedule must be a mapping")
+        lr_finder = fastai.get("lr_finder")
+        if isinstance(lr_finder, dict):
+            num_it = lr_finder.get("num_it")
+            if not _is_int(num_it) or num_it <= 0:
+                self.fail(f"fastai.lr_finder.num_it must be a positive integer, got {num_it!r}")
         export = fastai.get("export")
         if isinstance(export, dict) and not (export.get("export_pkl") or export.get("weights_pth")):
             self.fail("fastai.export must enable export_pkl and/or weights_pth")
@@ -244,6 +256,19 @@ class _Checker:
         policy = metrics.get("threshold_policy")
         if policy is not None and policy not in schema.THRESHOLD_POLICIES:
             self.fail(f"metrics.threshold_policy must be one of {sorted(schema.THRESHOLD_POLICIES)}, got {policy!r}")
+        criterion = metrics.get("threshold_criterion")
+        if criterion is not None and criterion not in schema.THRESHOLD_CRITERIA:
+            self.fail(
+                f"metrics.threshold_criterion must be one of {sorted(schema.THRESHOLD_CRITERIA)}, got {criterion!r}"
+            )
+        bins = metrics.get("calibration_bins")
+        if bins is not None and (not _is_int(bins) or bins < 2):
+            self.fail(f"metrics.calibration_bins must be an integer >= 2, got {bins!r}")
+        positive = metrics.get("positive_class")
+        dataset = self.section("dataset") or {}
+        vocab = dataset.get("vocab")
+        if positive is not None and isinstance(vocab, list) and positive not in vocab:
+            self.fail(f"metrics.positive_class {positive!r} is not in dataset.vocab {vocab}")
 
     # --- seed -----------------------------------------------------------------
 

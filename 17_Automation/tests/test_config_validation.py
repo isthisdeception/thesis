@@ -163,6 +163,24 @@ def test_missing_canonical_metric_fails(ready_config, registries) -> None:
     _assert_error(_errors(ready_config, registries), "missing canonical metric(s): mcc")
 
 
+def test_positive_class_must_be_in_vocab(ready_config, registries) -> None:
+    ready_config["metrics"]["positive_class"] = "deepfake"
+    _assert_error(_errors(ready_config, registries), "metrics.positive_class 'deepfake' is not in dataset.vocab")
+
+
+def test_unknown_threshold_criterion_fails(ready_config, registries) -> None:
+    ready_config["metrics"]["threshold_criterion"] = "best_on_test"
+    _assert_error(_errors(ready_config, registries), "metrics.threshold_criterion must be one of")
+
+
+def test_schedule_numbers_required(ready_config, registries) -> None:
+    del ready_config["fastai"]["schedule"]["lr_mult"]
+    ready_config["fastai"]["schedule"]["pct_start"] = 1.5
+    errors = _errors(ready_config, registries)
+    _assert_error(errors, "fastai.schedule.lr_mult must be a positive number")
+    _assert_error(errors, "fastai.schedule.pct_start must be < 1")
+
+
 def test_bad_git_commit_fails(ready_config, registries) -> None:
     ready_config["git_commit"] = "not-a-sha"
     _assert_error(_errors(ready_config, registries), "git_commit must be a 7-40 character hex SHA")
