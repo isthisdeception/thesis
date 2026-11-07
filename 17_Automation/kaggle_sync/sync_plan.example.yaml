@@ -8,6 +8,7 @@ metadata_paths:
   - 06_Experiments/experiment_registry.csv
   - 03_Datasets/metadata/dataset_registry.csv
   - 05_Models/model_registry.csv
+  - 07_Checkpoints
   - 08_Evaluation/reports
 
 dataset_mounts:
@@ -53,8 +54,9 @@ dataset_mounts:
     tier: data
 
 checkpoint_sources:
+  # publish_targets uploads 06_Experiments/EXP0001 as the dataset root, so checkpoints mount under notebook/checkpoints.
   - name: exp0001_resume
-    input_path: /kaggle/input/exp0001-checkpoints
+    input_path: /kaggle/input/datasets/isthisdeception/thesis-experiment-artifacts/notebook/checkpoints
     target_relpath: 06_Experiments/EXP0001/notebook/checkpoints
     required: false
 

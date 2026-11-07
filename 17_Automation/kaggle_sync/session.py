@@ -36,6 +36,34 @@ def _copy_tree(src: Path, dst: Path) -> None:
             shutil.copy2(item, target)
 
 
+def _same_file(a: Path, b: Path) -> bool:
+    if a.stat().st_size != b.stat().st_size:
+        return False
+    with a.open("rb") as fa, b.open("rb") as fb:
+        while True:
+            ca, cb = fa.read(1 << 20), fb.read(1 << 20)
+            if ca != cb:
+                return False
+            if not ca:
+                return True
+
+
+def _merge_tree_no_overwrite(src: Path, dst: Path) -> None:
+    """Copy src into dst; identical files are skipped, differing same-name files abort before any copy."""
+
+    files = [src] if src.is_file() else [p for p in src.rglob("*") if p.is_file()]
+    pairs = [(f, dst if src.is_file() else dst / f.relative_to(src)) for f in files]
+    conflicts = [str(t) for f, t in pairs if t.exists() and not _same_file(f, t)]
+    if conflicts:
+        raise FileExistsError(
+            f"refusing to overwrite {len(conflicts)} existing checkpoint file(s), e.g. {conflicts[0]}"
+        )
+    for f, t in pairs:
+        if not t.exists():
+            t.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, t)
+
+
 def _write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -96,7 +124,7 @@ def bootstrap_repo(plan: SyncPlan, *, dry_run: bool = False) -> Path:
 
 
 def resume_checkpoints(plan: SyncPlan, *, dry_run: bool = False) -> list[str]:
-    """Copy mounted checkpoints into the working repo."""
+    """Copy mounted checkpoints into the working repo without deleting or overwriting anything."""
 
     repo_path = plan.repo_path
     copied: list[str] = []
@@ -110,9 +138,7 @@ def resume_checkpoints(plan: SyncPlan, *, dry_run: bool = False) -> list[str]:
         if dry_run:
             print(f"copy {src} -> {dst}")
         else:
-            if dst.exists():
-                shutil.rmtree(dst) if dst.is_dir() else dst.unlink()
-            _copy_tree(src, dst)
+            _merge_tree_no_overwrite(src, dst)
         copied.append(str(dst))
 
     if dry_run:

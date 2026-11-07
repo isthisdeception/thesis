@@ -1,71 +1,172 @@
-"""Callbacks that persist across the frozen and unfrozen fits of one run."""
+"""Callbacks whose state survives across fits and across interrupted sessions."""
 
 from __future__ import annotations
 
 import operator
 import time
+from typing import Callable
 
 import torch
-from fastai.callback.core import Callback
+from fastai.callback.core import Callback, CancelFitException
 from fastai.learner import Recorder
 
+from .checkpoints import CheckpointStore
 from .logs import get_logger
 
 
-def _monitor_value(recorder: Recorder, monitor: str) -> float:
+def _recorded(recorder: Recorder) -> dict[str, float]:
     names = list(recorder.metric_names[1:])
-    if monitor not in names:
-        raise KeyError(f"monitor {monitor!r} not among recorded values {names}")
-    return float(recorder.values[-1][names.index(monitor)])
+    return {n: float(v) for n, v in zip(names, recorder.values[-1]) if n != "time"}
 
 
-class EpochCheckpointer(Callback):
-    """Save every epoch under a run-global epoch number and keep the best model.
+def default_comp(monitor: str) -> str:
+    """FastAI's TrackerCallback rule: losses/errors are minimized, everything else maximized."""
 
-    Epoch files are never overwritten; ``best_model.pth`` tracks the best
-    monitored value across all phases of the run.
+    return "min" if "loss" in monitor or "error" in monitor else "max"
+
+
+class _Best:
+    def __init__(self, monitor: str, comp: str) -> None:
+        if comp not in {"min", "max"}:
+            raise ValueError(f"comp must be 'min' or 'max', got {comp!r}")
+        self.monitor = monitor
+        self.comp = comp
+        self.value: float | None = None
+        self.epoch: int | None = None
+
+    def update(self, values: dict[str, float], epoch: int) -> bool:
+        if self.monitor not in values:
+            raise KeyError(f"monitor {self.monitor!r} not among recorded values {sorted(values)}")
+        value = values[self.monitor]
+        better = operator.lt if self.comp == "min" else operator.gt
+        if self.value is None or better(value, self.value):
+            self.value, self.epoch = value, epoch
+            return True
+        return False
+
+    def state_dict(self) -> dict:
+        return {"monitor": self.monitor, "comp": self.comp, "value": self.value, "epoch": self.epoch}
+
+    def load_state_dict(self, state: dict) -> None:
+        self.value, self.epoch = state["value"], state["epoch"]
+
+
+class _PhaseAware(Callback):
+    """Knows the current phase and ignores epochs that SkipToEpoch cancels on resume.
+
+    FastAI still fires ``after_epoch`` for skipped epochs, so subclasses must
+    check ``skipped`` first.
+    """
+
+    def __init__(self) -> None:
+        self.phase = "unset"
+        self.phase_n_epoch = 0
+        self.start_epoch = 0
+
+    def begin_phase(self, phase: str, n_epoch: int, start_epoch: int) -> None:
+        self.phase, self.phase_n_epoch, self.start_epoch = phase, n_epoch, start_epoch
+
+    @property
+    def skipped(self) -> bool:
+        return self.epoch < self.start_epoch
+
+
+class EpochCheckpointer(_PhaseAware):
+    """Saves an immutable full-state recovery checkpoint after every epoch.
+
+    Also owns best-model tracking and early stopping, so both resume exactly:
+    the saved state already reflects the epoch's outcome before any stop.
     """
 
     order = Recorder.order + 10
 
-    def __init__(self, monitor: str, comp: str, with_opt: bool, every_epoch: bool) -> None:
-        if comp not in {"min", "max"}:
-            raise ValueError(f"comp must be 'min' or 'max', got {comp!r}")
-        self.monitor = monitor
-        self.better = operator.lt if comp == "min" else operator.gt
-        self.with_opt = with_opt
-        self.every_epoch = every_epoch
+    def __init__(
+        self,
+        store: CheckpointStore,
+        state_builder: Callable[["EpochCheckpointer"], dict],
+        monitor: str,
+        comp: str,
+        early_stopping: dict | None,
+    ) -> None:
+        super().__init__()
+        self.store = store
+        self.state_builder = state_builder
+        self.best = _Best(monitor, comp)
+        self.early_cfg = early_stopping if early_stopping and early_stopping.get("enabled") else None
+        self.early = _Best(self.early_cfg["monitor"], default_comp(self.early_cfg["monitor"])) if self.early_cfg else None
+        self.wait = 0
+        self.early_active = False
         self.global_epoch = 0
-        self.best_value: float | None = None
-        self.best_epoch: int | None = None
-        self.saved: list[str] = []
+        self.early_stopped = False
+        self.training_complete = False
+        self.last_values: dict[str, float] = {}
 
-    def _save(self, name: str, *, overwrite: bool) -> None:
-        target = self.learn.path / self.learn.model_dir / f"{name}.pth"
-        if target.exists() and not overwrite:
-            raise FileExistsError(f"refusing to overwrite checkpoint {target}")
-        self.learn.save(name, with_opt=self.with_opt)
+    def begin_phase(self, phase: str, n_epoch: int, start_epoch: int, early_active: bool = False) -> None:
+        super().begin_phase(phase, n_epoch, start_epoch)
+        self.early_active = early_active and self.early is not None
+        if self.early_active and start_epoch == 0:
+            self.early.value, self.early.epoch, self.wait = None, None, 0
 
     def after_epoch(self) -> None:
-        value = _monitor_value(self.recorder, self.monitor)
-        if self.every_epoch:
-            name = f"epoch_{self.global_epoch:03d}"
-            self._save(name, overwrite=False)
-            self.saved.append(name)
-        if self.best_value is None or self.better(value, self.best_value):
-            self.best_value, self.best_epoch = value, self.global_epoch
-            self._save("best_model", overwrite=True)
-            get_logger().info("new best %s=%.5f at epoch %d", self.monitor, value, self.global_epoch)
+        if self.skipped:
+            return
+        values = _recorded(self.recorder)
+        self.last_values = values
+        improved = self.best.update(values, self.global_epoch)
+        if improved:
+            get_logger().info("new best %s=%.5f at epoch %d", self.best.monitor, self.best.value, self.global_epoch)
+        stop = False
+        if self.early_active:
+            if self.early.update(values, self.global_epoch):
+                self.wait = 0
+            else:
+                self.wait += 1
+            stop = self.wait >= int(self.early_cfg["patience"])
+        last_of_run = self.phase == "unfrozen" and self.epoch == self.phase_n_epoch - 1
+        self.early_stopped = stop
+        self.training_complete = stop or last_of_run
+
+        meta = {
+            "epoch": self.global_epoch,
+            "phase": self.phase,
+            "phase_epoch": int(self.epoch),
+            "monitor": self.best.monitor,
+            "monitor_value": values[self.best.monitor],
+            "is_best_so_far": improved,
+        }
+        self.store.save_state(self.store.recovery_name(self.global_epoch), self.state_builder(self), "recovery", meta)
         self.global_epoch += 1
+        if stop:
+            get_logger().info("early stopping: no %s improvement for %d epoch(s)", self.early.monitor, self.wait)
+            raise CancelFitException()
+
+    def state_dict(self) -> dict:
+        return {
+            "next_global_epoch": self.global_epoch + 1,
+            "best": self.best.state_dict(),
+            "early": self.early.state_dict() if self.early else None,
+            "wait": self.wait,
+            "early_stopped": self.early_stopped,
+            "training_complete": self.training_complete,
+        }
+
+    def load_state_dict(self, state: dict) -> None:
+        self.global_epoch = state["next_global_epoch"]
+        self.best.load_state_dict(state["best"])
+        if self.early and state["early"]:
+            self.early.load_state_dict(state["early"])
+        self.wait = state["wait"]
+        self.early_stopped = state["early_stopped"]
+        self.training_complete = state["training_complete"]
 
 
-class HistoryTracker(Callback):
+class HistoryTracker(_PhaseAware):
     """Per-epoch and per-batch learning-curve data plus timing and GPU memory (M11)."""
 
     order = Recorder.order + 5
 
     def __init__(self) -> None:
-        self.phase = "unset"
+        super().__init__()
         self.global_epoch = 0
         self.global_iter = 0
         self.epochs: list[dict] = []
@@ -92,11 +193,9 @@ class HistoryTracker(Callback):
         self.global_iter += 1
 
     def after_epoch(self) -> None:
-        names = list(self.recorder.metric_names[1:])
-        row = {"epoch": self.global_epoch, "phase": self.phase}
-        for name, value in zip(names, self.recorder.values[-1]):
-            if name != "time":
-                row[name] = float(value)
+        if self.skipped:
+            return
+        row = {"epoch": self.global_epoch, "phase": self.phase, **_recorded(self.recorder)}
         row["seconds"] = round(time.perf_counter() - self._started, 2)
         row["lr_head"] = float(self.opt.hypers[-1]["lr"])
         if torch.cuda.is_available():
@@ -104,3 +203,17 @@ class HistoryTracker(Callback):
         self.epochs.append(row)
         get_logger().info("epoch %s", row)
         self.global_epoch += 1
+
+    def state_dict(self) -> dict:
+        return {
+            "global_epoch": self.global_epoch,
+            "global_iter": self.global_iter,
+            "epochs": list(self.epochs),
+            "batches": list(self.batches),
+        }
+
+    def load_state_dict(self, state: dict) -> None:
+        self.global_epoch = state["global_epoch"]
+        self.global_iter = state["global_iter"]
+        self.epochs = list(state["epochs"])
+        self.batches = list(state["batches"])

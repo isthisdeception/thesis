@@ -16,7 +16,8 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Package: `17_Automation/training/` (docs: `training/README.md`)
 - Entrypoints: `from training import find_lr, run_experiment` or `python -m training {lr-find,train} --config ...`
 - Thin caller: `06_Experiments/EXP0001/notebook/EXP0001_train.ipynb`
-- Tests: `tests/test_training_core.py` (no FastAI), `tests/test_training_smoke.py` (end-to-end, CPU)
+- Tests: `tests/test_training_core.py` (no FastAI), `tests/test_training_smoke.py` (end-to-end, CPU, including interruption + resume)
+- Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
 ## Config validation (Phase M4 / STEP-034)
 - Package: `17_Automation/config_validation/`
