@@ -21,7 +21,7 @@
 | Hardware | PASS | Kaggle GPU T4, image v170 |
 | Checkpoint location | PASS | `EXP0001/notebook/checkpoints`; artifact tier `isthisdeception/thesis-experiment-artifacts`; manifest `07_Checkpoints/EXP0001_checkpoints.md` |
 | Output folders | PASS | `logs/`, `metrics/`, `predictions/`, `learning_curves/`, `notebook/` |
-| Expected metrics | PASS | `expected_outcome`: test ROC-AUC ≥ 0.95, balanced accuracy ≥ 0.90 (sanity expectation) |
+| Expected metrics | PASS | `expected_outcome`: test ROC-AUC ≥ 0.95, balanced accuracy ≥ 0.90 (sanity expectation; human-approved in DEC0006) |
 | Research question | PASS | recorded in config, README, and registry |
 
 ## Before launch (STEP-039)

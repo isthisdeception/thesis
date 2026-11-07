@@ -12,3 +12,7 @@
 
 - Config gained explicit keys that were previously implicit (positive class, threshold criterion, calibration bins, `fine_tune` schedule numbers, LR Finder iterations). Training has not started, so the config is still editable; re-validated PASS.
 - Check `plum-dispatch` on the Kaggle image at first session; the pipeline stops before training if `export.pkl` would be unpicklable.
+
+## 2026-11-07 — Expected outcome approved
+
+- Human accepted the proposed expected outcome (test ROC-AUC ≥ 0.95, balanced accuracy ≥ 0.90; investigate below ROC-AUC 0.90). Recorded in `01_Project_Management/decision_log/DEC0006.md`.
