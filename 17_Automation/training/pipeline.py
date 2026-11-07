@@ -14,7 +14,8 @@ import pandas as pd
 from . import evaluation
 from .checkpoints import MANIFEST_NAME, QUARANTINE_DIR, STATE_FORMAT_VERSION, CheckpointStore, capture_rng, restore_rng
 from .data import SplitFrames, build_dataloaders, load_assignments, validate_dataset
-from .logs import close_run_logging, environment_info, get_logger, setup_run_logging, step
+from .logs import PipelineStepError, close_run_logging, environment_info, event, get_logger, setup_run_logging, step
+from .records import BATCH_COLUMNS, METRIC_SUMMARY_COLUMNS, epoch_columns, write_rows
 from .settings import TrainingConfigError, TrainingSettings, load_settings
 
 # FastAI `Learner.fine_tune` semantics for the frozen phase and the unfreeze LR step.
@@ -74,9 +75,7 @@ def plan_run(settings: TrainingSettings, store: CheckpointStore, *, resume: bool
     unknown = _files_in(settings.checkpoint_dir, {".gitkeep", MANIFEST_NAME, QUARANTINE_DIR})
     if unknown:
         _raise_existing(settings, unknown, "checkpoint folder holds files that are not in a checkpoint manifest")
-    history = settings.logs_dir / "history.csv"
-    if history.exists():
-        _raise_existing(settings, [history], "a training log from an earlier run exists")
+    # Logs are append-only and session-tagged, so logs from an attempt that died before its first checkpoint stay.
     return "fresh"
 
 
@@ -210,6 +209,60 @@ def schedule_record(settings: TrainingSettings) -> dict:
         "div": float(schedule["div"]),
         "frozen_pct_start": FROZEN_PCT_START,
         "unfreeze_lr_divisor": UNFREEZE_LR_DIVISOR,
+    }
+
+
+def phase_lrs(settings: TrainingSettings) -> list[dict]:
+    """The exact one-cycle arguments each phase uses (mirrors `train`)."""
+
+    sched = schedule_record(settings)
+    lr = sched["lr"]
+    out = []
+    for phase, n_epoch in phase_plan(settings):
+        if phase == "frozen":
+            out.append({"phase": phase, "epochs": n_epoch, "lr_max": lr, "pct_start": FROZEN_PCT_START})
+        elif sched["method"] == "fine_tune":
+            base = lr / UNFREEZE_LR_DIVISOR if sched["freeze_epochs"] > 0 else lr
+            out.append({"phase": phase, "epochs": n_epoch, "lr_max": [base / sched["lr_mult"], base],
+                        "pct_start": sched["pct_start"], "div": sched["div"]})
+        else:
+            out.append({"phase": phase, "epochs": n_epoch, "lr_max": lr, "pct_start": sched["pct_start"],
+                        "div": sched["div"]})
+    return out
+
+
+def hyperparameter_record(settings: TrainingSettings, store: CheckpointStore, frames: SplitFrames, dls, learn,
+                          mode: str, session: str) -> dict:
+    """Echo of the config plus everything derived from it at run time (M11 'hyperparameters')."""
+
+    params = list(learn.model.parameters())
+    return {
+        "experiment_id": settings.experiment_id,
+        "session": session,
+        "mode": mode,
+        "config": settings.config_path.relative_to(settings.repo_root).as_posix(),
+        "config_sha256": store.config_sha256,
+        "resolved_config": settings.config,
+        "schedule": schedule_record(settings),
+        "phases": phase_lrs(settings),
+        "data": {
+            "partitions": {"train": len(frames.train), "valid": len(frames.valid), "test": len(frames.test)},
+            "train_batches": len(dls.train),
+            "valid_batches": len(dls.valid),
+            "batch_size": dls.train.bs,
+            "valid_batch_size": dls.valid.bs,
+            "vocab": list(dls.vocab),
+        },
+        "model": {
+            "backbone": settings.get("model.backbone"),
+            "source": settings.get("model.source"),
+            "pretrained": settings.get("model.pretrained"),
+            "total_params": sum(p.numel() for p in params),
+        },
+        "train_monitors": [getattr(m, "name", str(m)) for m in learn.metrics],
+        "device": str(dls.device),
+        "mixed_precision": bool(settings.get("fastai.mixed_precision")),
+        "random_seed": settings.get("random_seed"),
     }
 
 
@@ -396,6 +449,9 @@ def predict_and_score(learn, settings: TrainingSettings, frames: SplitFrames) ->
     _prediction_frame(frames.test, test_probs, vocab, positive, threshold).to_csv(
         settings.predictions_dir / "test_predictions.csv", index=False)
     _write_json(settings.metrics_dir / "threshold.json", results["threshold"])
+    write_rows(settings.metrics_dir / "metrics_summary.csv", METRIC_SUMMARY_COLUMNS,
+               [{"split": split, **{k: results[split][k] for k in METRIC_SUMMARY_COLUMNS[1:]}}
+                for split in ("val", "test")])
     for split, y, p in (("val", y_val, val_probs[:, pos]), ("test", y_test, test_probs[:, pos])):
         _write_json(settings.metrics_dir / f"{split}_metrics.json", results[split])
         pd.DataFrame(evaluation.calibration_table(y, p, bins)).to_csv(
@@ -423,19 +479,22 @@ def run_experiment(
     check_checkpoint_policy(settings)
     store = CheckpointStore(settings)
     started = datetime.now().astimezone()
-    log_path = setup_run_logging(settings.logs_dir, f"{settings.experiment_id}_train")
+    run = setup_run_logging(settings.logs_dir, settings.experiment_id, "train")
     logger = get_logger()
     try:
         logger.info("experiment %s; config %s; config validation PASS", settings.experiment_id, settings.config_path)
+        event("run_start", config_sha256=store.config_sha256)
         with step("output guard"):
             mode = plan_run(settings, store, resume=resume)
             logger.info("run mode: %s", mode)
+            event("run_mode", mode=mode)
         with step("git provenance"):
             provenance = check_git_provenance(settings)
         env, frames, dls, learn = prepare(settings)
+        event("environment", **env)
 
         save_cfg = settings.get("fastai.callbacks.save_model")
-        tracker = HistoryTracker()
+        tracker = HistoryTracker(run.session, run.path("epochs", ".csv"), run.path("batches", ".csv"))
         checkpointer = EpochCheckpointer(
             store,
             make_state_builder(learn, settings, store, tracker),
@@ -443,6 +502,8 @@ def run_experiment(
             comp=save_cfg.get("comp") or default_comp(save_cfg["monitor"]),
             early_stopping=settings.get("fastai.callbacks").get("early_stopping"),
         )
+        hyper_path = run.session_path("hyperparameters", ".json")
+        _write_json(hyper_path, hyperparameter_record(settings, store, frames, dls, learn, mode, run.session))
         resumed_from = None
         rng_state = None
         state = None
@@ -458,27 +519,30 @@ def run_experiment(
                 rng_state = state["rng"]
                 resumed_from = entry["epoch"]
                 logger.info("resumed from %s (epoch %d, phase %s)", entry["name"], entry["epoch"], state["phase"])
+                event("resume", checkpoint=entry["name"], epoch=entry["epoch"], phase=state["phase"])
         start = start_point(settings, state)
         with step("training"):
             train(learn, settings, checkpointer, tracker, start, rng_state)
         with step("learning curves"):
-            settings.curves_dir.mkdir(parents=True, exist_ok=True)
-            pd.DataFrame(tracker.epochs).to_csv(settings.curves_dir / "epochs.csv", index=False)
-            pd.DataFrame(tracker.batches).to_csv(settings.curves_dir / "batches.csv", index=False)
+            columns = tracker.columns or epoch_columns([])
+            write_rows(settings.curves_dir / "epochs.csv", columns, tracker.epochs)
+            write_rows(settings.curves_dir / "batches.csv", BATCH_COLUMNS, tracker.batches)
         with step("checkpoint finalize + export"):
             artifacts = finalize_checkpoints(learn, settings, store, checkpointer)
         with step("validation + test predictions"):
             results = predict_and_score(learn, settings, frames)
         finished = datetime.now().astimezone()
+        rel = lambda p: p.relative_to(settings.repo_root).as_posix()  # noqa: E731
         summary = {
             "experiment_id": settings.experiment_id,
             "status": "complete",
-            "config": settings.config_path.relative_to(settings.repo_root).as_posix(),
+            "config": rel(settings.config_path),
             "config_sha256": store.config_sha256,
             "git": provenance,
             "started": started.isoformat(),
             "finished": finished.isoformat(),
             "resumed_from_epoch": resumed_from,
+            "sessions": sorted({row["session"] for row in tracker.epochs}),
             "training_seconds": round(sum(row["seconds"] for row in tracker.epochs), 1),
             "epochs_run": tracker.global_epoch,
             "early_stopped": checkpointer.early_stopped,
@@ -486,18 +550,31 @@ def run_experiment(
             "best_monitor": {"name": checkpointer.best.monitor, "value": checkpointer.best.value},
             "metrics": results,
             "artifacts": artifacts,
-            "checkpoint_manifest": {
-                "json": store.manifest_path.relative_to(settings.repo_root).as_posix(),
-                "markdown": store.markdown_path.relative_to(settings.repo_root).as_posix(),
-            },
+            "checkpoint_manifest": {"json": rel(store.manifest_path), "markdown": rel(store.markdown_path)},
             "environment": env,
-            "log": log_path.relative_to(settings.repo_root).as_posix(),
+            "logs": {
+                "log": rel(run.log_path),
+                "events": rel(run.events_path),
+                "epochs_live": rel(run.path("epochs", ".csv")),
+                "batches_live": rel(run.path("batches", ".csv")),
+                "hyperparameters": rel(hyper_path),
+            },
+            "warnings_logged": run.warnings,
+            "errors_logged": run.errors,
         }
         with step("summary"):
             _write_json(settings.metrics_dir / SUMMARY_NAME, summary)
         logger.info("run complete: best epoch %s, test ROC-AUC %.4f", checkpointer.best.epoch,
                     results["test"]["roc_auc"])
+        event("run_complete", best_epoch=checkpointer.best.epoch, test_roc_auc=results["test"]["roc_auc"],
+              warnings=run.warnings, errors=run.errors)
         return summary
+    except BaseException as exc:
+        if not isinstance(exc, PipelineStepError):
+            logger.error("RUN FAILED outside a pipeline step: %s: %s", type(exc).__name__, exc,
+                         exc_info=isinstance(exc, Exception))
+        event("run_failed", error=f"{type(exc).__name__}: {exc}", warnings=run.warnings, errors=run.errors)
+        raise
     finally:
         close_run_logging()
 
@@ -517,7 +594,7 @@ def find_lr(
     suggest = lr_cfg["suggest_func"]
     if suggest not in LR_SUGGESTERS:
         raise TrainingConfigError(f"fastai.lr_finder.suggest_func must be one of {LR_SUGGESTERS}, got {suggest!r}")
-    log_path = setup_run_logging(settings.logs_dir, f"{settings.experiment_id}_lr_find")
+    run = setup_run_logging(settings.logs_dir, settings.experiment_id, "lr_find")
     logger = get_logger()
     try:
         import fastai.callback.schedule as sched
@@ -528,22 +605,26 @@ def find_lr(
             result = learn.lr_find(num_it=int(lr_cfg["num_it"]), suggest_funcs=(getattr(sched, suggest),),
                                    show_plot=False)
             suggestion = float(getattr(result, suggest))
-        stamp = datetime.now().strftime("%Y%m%dT%H%M%S")
         curve = pd.DataFrame({"lr": [float(x) for x in learn.recorder.lrs],
                               "loss": [float(x) for x in learn.recorder.losses]})
-        curve_path = settings.logs_dir / f"{settings.experiment_id}_lr_find_{stamp}.csv"
+        curve_path = run.session_path("lr_find_curve", ".csv")
         curve.to_csv(curve_path, index=False)
         payload = {
             "experiment_id": settings.experiment_id,
+            "session": run.session,
             "suggest_func": suggest,
             "suggested_lr": suggestion,
             "config_lr": float(settings.get("learning_rate.value")),
             "curve": curve_path.relative_to(settings.repo_root).as_posix(),
-            "log": log_path.relative_to(settings.repo_root).as_posix(),
+            "log": run.log_path.relative_to(settings.repo_root).as_posix(),
         }
-        _write_json(settings.logs_dir / f"{settings.experiment_id}_lr_find_{stamp}.json", payload)
+        _write_json(run.session_path("lr_find", ".json"), payload)
         logger.info("LR Finder suggests %.3g (%s); record it in learning_rate.value before training", suggestion,
                     suggest)
+        event("lr_find_complete", suggested_lr=suggestion, suggest_func=suggest)
         return payload
+    except BaseException as exc:
+        event("run_failed", error=f"{type(exc).__name__}: {exc}")
+        raise
     finally:
         close_run_logging()

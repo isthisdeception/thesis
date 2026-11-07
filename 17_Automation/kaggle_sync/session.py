@@ -204,6 +204,32 @@ def publish_artifacts(plan: SyncPlan, *, dry_run: bool = False) -> list[str]:
     return staged
 
 
+BINARY_SUFFIXES = frozenset({".pth", ".pt", ".pkl", ".bin", ".safetensors", ".ckpt", ".zip", ".npy", ".npz"})
+MAX_METADATA_BYTES = 20 * 2**20
+
+
+def check_staged_files(repo_path: Path) -> list[str]:
+    """Refuse to commit artifact-tier files (A.6): binaries or anything over MAX_METADATA_BYTES."""
+
+    staged = subprocess.run(
+        ["git", "diff", "--cached", "--name-only", "--diff-filter=AM"],
+        cwd=repo_path, check=True, capture_output=True, text=True,
+    ).stdout.split()
+    bad = []
+    for rel in staged:
+        path = repo_path / rel
+        if path.suffix.lower() in BINARY_SUFFIXES:
+            bad.append(f"{rel} (binary type)")
+        elif path.is_file() and path.stat().st_size > MAX_METADATA_BYTES:
+            bad.append(f"{rel} ({path.stat().st_size / 2**20:.1f} MB)")
+    if bad:
+        subprocess.run(["git", "reset", "-q", "--", *staged], cwd=repo_path, check=False)
+        raise ValueError(
+            "refusing to push artifact-tier files to Git (unstaged them): " + ", ".join(bad)
+        )
+    return staged
+
+
 def push_metadata(
     plan: SyncPlan,
     *,
@@ -229,7 +255,11 @@ def push_metadata(
         dry_run=dry_run,
     )
     for relpath in plan.metadata_paths:
-        _run(["git", "add", relpath], cwd=repo_path, dry_run=dry_run)
+        if (repo_path / relpath).exists():
+            _run(["git", "add", relpath], cwd=repo_path, dry_run=dry_run)
+        else:
+            print(f"skip missing metadata path: {relpath}")
+    check_staged_files(repo_path)
 
     status = subprocess.run(
         ["git", "diff", "--cached", "--quiet"],

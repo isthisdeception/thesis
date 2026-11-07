@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Environment & Model Foundation (PART 6)
-- Active Step: **STEP-038** — Logging system
+- Active Step: **STEP-039** — Run EXP0001 on Kaggle
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -24,6 +24,7 @@
 - Experiment readiness (STEP-035): COMPLETE — `EXP0001` scaffolded, config validator PASS, Checklist 5 PASS, registry `Status=ready`
 - Training pipeline package (STEP-036): COMPLETE — `17_Automation/training/`, thin EXP0001 notebook, end-to-end smoke test PASS (CPU)
 - Checkpoint system (STEP-037): COMPLETE — full-state recovery checkpoints, SHA-256 manifests, never-overwrite, resume verified by interruption tests
+- Logging system (STEP-038): COMPLETE — live session-tagged epoch/batch CSVs, event log, hyperparameter records, warning capture, binary guard on metadata push
 - `Ready=yes`
 
 ## Health

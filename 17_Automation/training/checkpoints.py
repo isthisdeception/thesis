@@ -13,7 +13,7 @@ from typing import Any
 
 import numpy as np
 
-from .logs import get_logger
+from .logs import event, get_logger
 from .settings import TrainingSettings
 
 MANIFEST_NAME = "checkpoint_manifest.json"
@@ -175,6 +175,8 @@ class CheckpointStore:
         manifest["entries"].append(entry)
         self._write_manifest(manifest)
         get_logger().info("checkpoint saved %s (%s, sha256 %s…)", name, kind, entry["sha256"][:12])
+        event("checkpoint_saved", name=name, kind=kind, sha256=entry["sha256"], bytes=entry["bytes"],
+              epoch=entry.get("epoch"))
         return entry
 
     def save_state(self, name: str, state: dict, kind: str, meta: dict | None = None) -> dict:
@@ -210,6 +212,7 @@ class CheckpointStore:
         target = qdir / f"{path.name}.{datetime.now().strftime('%Y%m%dT%H%M%S%f')}"
         shutil.move(str(path), target)
         get_logger().warning("quarantined %s -> %s (%s)", path.name, target.relative_to(self.dir), reason)
+        event("checkpoint_quarantined", name=path.name, moved_to=target.relative_to(self.dir).as_posix(), reason=reason)
         return target
 
     def quarantine(self, entry: dict, reason: str) -> None:
