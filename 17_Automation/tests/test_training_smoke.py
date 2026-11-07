@@ -140,6 +140,46 @@ def test_predictions_metrics_and_curves(smoke_run) -> None:
     assert list((exp / "logs").glob("EXP0001_train_*.log"))
 
 
+def _events(root: Path) -> list[dict]:
+    path = root / EXP / "logs/EXP0001_events.jsonl"
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+
+def test_live_logs_and_event_log(smoke_run) -> None:
+    root, _, summary = smoke_run
+    logs = root / EXP / "logs"
+    live = pd.read_csv(logs / "EXP0001_epochs.csv")
+    assert list(live.columns[:6]) == ["session", "epoch", "phase", "phase_epoch", "train_loss", "valid_loss"]
+    assert list(live.columns[-4:]) == ["seconds", "lr_head", "gpu_peak_allocated_mb", "gpu_peak_reserved_mb"]
+    assert list(live["epoch"]) == [0, 1]
+    assert len(pd.read_csv(logs / "EXP0001_batches.csv")) == len(pd.read_csv(root / EXP / "learning_curves/batches.csv"))
+    names = [e["event"] for e in _events(root)]
+    for expected in ("session_start", "run_start", "run_mode", "environment", "epoch", "checkpoint_saved",
+                     "run_complete"):
+        assert expected in names, expected
+    assert names.count("epoch") == 2
+    assert summary["logs"]["events"].endswith("EXP0001_events.jsonl")
+    assert isinstance(summary["warnings_logged"], int) and summary["errors_logged"] == 0
+
+
+def test_hyperparameter_record(smoke_run) -> None:
+    root, _, summary = smoke_run
+    record = json.loads((root / summary["logs"]["hyperparameters"]).read_text(encoding="utf-8"))
+    assert record["config_sha256"] == summary["config_sha256"]
+    assert record["resolved_config"]["random_seed"] == 42
+    assert [p["phase"] for p in record["phases"]] == ["frozen", "unfrozen"]
+    assert record["phases"][1]["lr_max"] == pytest.approx([5e-6, 5e-4])
+    assert record["data"]["partitions"] == {"train": 16, "valid": 8, "test": 8}
+    assert record["train_monitors"]
+
+
+def test_metrics_summary_csv(smoke_run) -> None:
+    root, _, _ = smoke_run
+    table = pd.read_csv(root / EXP / "metrics/metrics_summary.csv")
+    assert list(table["split"]) == ["val", "test"]
+    assert list(table.columns[:4]) == ["split", "threshold", "roc_auc", "pr_auc"]
+
+
 def test_rerun_of_complete_experiment_refuses(smoke_run) -> None:
     root, config_path, _ = smoke_run
     with pytest.raises(PipelineStepError) as excinfo:
@@ -176,6 +216,16 @@ def test_interrupted_run_resumes_without_overwriting(tmp_path: Path, monkeypatch
     assert list(epochs["phase"]) == ["frozen", "unfrozen", "unfrozen"]
     state = torch.load(ckpt / "EXP0001_epoch_002.pth", weights_only=False)
     assert state["phase_epoch"] == 1
+
+    # Both sessions left evidence: the failure, the resume, and live rows tagged by session.
+    events = _events(tmp_path)
+    failed = [e for e in events if e["event"] == "run_failed"]
+    assert len(failed) == 1 and "SimulatedTermination" in failed[0]["error"]
+    assert any(e["event"] == "resume" and e["epoch"] == 1 for e in events)
+    live = pd.read_csv(tmp_path / EXP / "logs/EXP0001_epochs.csv")
+    assert list(live["epoch"]) == [0, 1, 2]
+    assert live["session"].nunique() == 2
+    assert len(summary["sessions"]) == 2
 
 
 def test_resumed_schedule_matches_uninterrupted_run(tmp_path: Path, monkeypatch) -> None:

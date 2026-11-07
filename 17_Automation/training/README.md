@@ -29,7 +29,9 @@ CLI from `17_Automation/`: `python -m training lr-find --config ../06_Experiment
 | learning curves | `learning_curves/epochs.csv` (per epoch, phase, time, GPU peak), `batches.csv` (loss + LR per iteration) | — |
 | checkpoint finalize + export | `EXPxxxx_best.pth`, `EXPxxxx_last.pth` (copies of recovery checkpoints), best weights loaded, `MODELxxxx_export.pkl`, `MODELxxxx_weights.pth`; every manifest entry re-verified | a checksum fails or an artifact is missing |
 | predictions + metrics | best model → `predictions/{val,test}_predictions.csv`; threshold chosen on validation only; `metrics/{val,test}_metrics.json`, `*_calibration.csv`, `threshold.json` | — |
-| summary | `metrics/run_summary.json`: config hash, git provenance, timing, best epoch, metrics, artifacts, environment | — |
+| summary | `metrics/run_summary.json`: config hash, git provenance, sessions, timing, best epoch, metrics, artifacts, environment, log files, warning/error counts | — |
+
+Throughout the run, each epoch is appended to `logs/EXPxxxx_epochs.csv` / `EXPxxxx_batches.csv`, and events go to `logs/EXPxxxx_events.jsonl` (see `LOGGING.md`).
 
 Checkpointing follows `07_Checkpoints/checkpoint_policy.md`: recovery checkpoints `EXPxxxx_epoch_NNN.pth` are numbered across both phases, written atomically, listed with SHA-256 in `checkpoint_manifest.json` and `07_Checkpoints/EXPxxxx_checkpoints.md`, and never overwritten. Binaries are Git-ignored; they go to the artifact tier. After a session ends, call `run_experiment(config)` again in a new session and it resumes.
 
@@ -44,7 +46,10 @@ Checkpointing follows `07_Checkpoints/checkpoint_policy.md`: recovery checkpoint
 | `checkpoints.py` | torch for save/load | `CheckpointStore` (never-overwrite writes, manifest, checksums, quarantine, resume lookup), RNG capture/restore |
 | `callbacks.py` | yes | `EpochCheckpointer` (recovery checkpoints, best tracking, resumable early stopping), `HistoryTracker` |
 | `pipeline.py` | yes (lazy) | `run_experiment`, `find_lr` |
-| `logs.py` | no | run log file, timed steps, environment info |
+| `logs.py` | no | session log file, append-only event log, warning capture + counts, timed steps, environment info |
+| `records.py` | no | fixed CSV schemas, append-only writers |
+
+Logging outputs and CSV schemas: [`LOGGING.md`](LOGGING.md).
 
 ## Environment note
 
