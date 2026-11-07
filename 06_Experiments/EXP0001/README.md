@@ -1,6 +1,6 @@
 # Experiment: EXP0001
 
-**Status:** ready (Checklist 5 PASS, 2026-11-06) — not yet trained
+**Status:** ready (Checklist 5 PASS, 2026-11-06; expected outcome approved in DEC0006, 2026-11-07) — not yet trained
 
 **Research Question:** How can we improve the cross-generator generalization of image-based AI face detection models to maintain high accuracy on unseen generative architectures?
 
