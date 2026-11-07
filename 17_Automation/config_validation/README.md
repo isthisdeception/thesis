@@ -38,7 +38,8 @@ validate_config_file("06_Experiments/EXP0001/config.yaml").raise_if_failed()
 | Model | Model ID is in neither `model_registry.csv` nor `candidate_models.csv`; architecture differs from the registry |
 | Seed | `random_seed` is unset, not an integer, or negative |
 | Training values | `image_size`, `batch_size`, `epochs` not positive integers; `fastai.item_tfms.resize` ≠ `image_size`; LR not a positive number (string `1e-3` gets a hint to write `1.0e-3`); unknown schedule, LR source, model source, or study track |
-| Metrics | Any canonical primary metric from `05_Models/baseline_plan.md` is missing; threshold policy is not `validation_only` |
+| Metrics | Any canonical primary metric from `05_Models/baseline_plan.md` is missing; threshold policy is not `validation_only`; unknown threshold criterion; `positive_class` not in `dataset.vocab`; `calibration_bins` < 2 |
+| Schedule / LR Finder | `lr_mult`, `pct_start`, `div` missing or not positive (`pct_start` must be < 1); `lr_finder.num_it` not a positive integer |
 | Outputs | `experiment_dir` is not `06_Experiments/<experiment_id>`; `checkpoint_dir` is not scoped to the experiment |
 
 ## Tests

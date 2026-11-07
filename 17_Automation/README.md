@@ -12,6 +12,12 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Commands: `bootstrap`, `resume-checkpoints`, `publish-artifacts`, `push-metadata`
 - Policy: data tier stays on Kaggle Datasets, artifact tier stays in Kaggle outputs/datasets, only source-tier metadata returns to Git
 
+## Training pipeline (Phase M6 / STEP-036)
+- Package: `17_Automation/training/` (docs: `training/README.md`)
+- Entrypoints: `from training import find_lr, run_experiment` or `python -m training {lr-find,train} --config ...`
+- Thin caller: `06_Experiments/EXP0001/notebook/EXP0001_train.ipynb`
+- Tests: `tests/test_training_core.py` (no FastAI), `tests/test_training_smoke.py` (end-to-end, CPU)
+
 ## Config validation (Phase M4 / STEP-034)
 - Package: `17_Automation/config_validation/`
 - Docs: `config_validation/README.md`; training workflow in `05_Models/FASTAI_TRAINING_STANDARD.md`
