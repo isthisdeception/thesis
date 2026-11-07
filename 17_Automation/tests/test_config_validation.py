@@ -59,6 +59,16 @@ def test_template_fails_in_ready_mode() -> None:
     _assert_error(errors, "timestamp is unset")
 
 
+@pytest.mark.parametrize(
+    "config_path",
+    sorted((REPO_ROOT / "06_Experiments").glob("EXP*/config.yaml")),
+    ids=lambda p: p.parent.name,
+)
+def test_committed_experiment_configs_pass(config_path: Path) -> None:
+    report = validate_config_file(config_path)
+    assert report.ok, report.errors
+
+
 def test_ready_config_passes(ready_config, registries) -> None:
     assert _errors(ready_config, registries) == []
 
