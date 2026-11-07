@@ -7,19 +7,21 @@
 | Item | Location |
 |------|----------|
 | Local checkpoint directory (Kaggle session) | `06_Experiments/EXP0001/notebook/checkpoints` |
-| Resume input mount | `/kaggle/input/exp0001-checkpoints` (from `17_Automation/kaggle_sync/sync_plan.example.yaml`) |
+| Machine manifest (travels with binaries) | `06_Experiments/EXP0001/notebook/checkpoints/checkpoint_manifest.json` |
+| Git-side manifest + checksums | [`07_Checkpoints/EXP0001_checkpoints.md`](../../07_Checkpoints/EXP0001_checkpoints.md) |
+| Resume input mount | `/kaggle/input/datasets/isthisdeception/thesis-experiment-artifacts/notebook/checkpoints` (`17_Automation/kaggle_sync/sync_plan.example.yaml`; unverified until the first Kaggle round trip) |
 | Artifact tier (binaries) | Kaggle dataset `isthisdeception/thesis-experiment-artifacts` |
-| Manifest + checksums | `07_Checkpoints/EXP0001_checkpoints.md` (created when the first checkpoint is saved) |
 
-## Policy (Phase M7)
+## Files this experiment will produce
 
-- `SaveModelCallback(every_epoch=True, with_opt=True)` saves every epoch with optimizer state, so a terminated session resumes from the last epoch.
-- Captured state: model weights, optimizer state, scheduler state, epoch number, random state.
-- Kept artifacts: best model (lowest `valid_loss`), last epoch, recovery checkpoint, FastAI `export.pkl`, PyTorch `weights.pth`.
-- Nothing is overwritten. Binaries (`*.pth`, `*.pkl`) are Git-ignored and live only in the artifact tier; Git holds this file and the manifest.
+- `EXP0001_epoch_000.pth` … one full-state recovery checkpoint per epoch (frozen epoch 0, then unfrozen epochs 1–10 unless early stopping triggers)
+- `EXP0001_best.pth`, `EXP0001_last.pth`
+- `MODEL0001_export.pkl`, `MODEL0001_weights.pth`
 
-## Checkpoints
+Policy, resume rules, and failure handling: [`07_Checkpoints/checkpoint_policy.md`](../../07_Checkpoints/checkpoint_policy.md).
 
-| Kind | Epoch | File | SHA-256 | Artifact version |
-|------|-------|------|---------|------------------|
-| — | — | — | — | — |
+## Resuming after a session ends
+
+1. Publish the checkpoint folder before the session ends: `python -m kaggle_sync --plan … publish-artifacts`.
+2. In the new session, attach the artifact dataset and run `resume-checkpoints`.
+3. Run `run_experiment(CONFIG)` again; it resumes from the newest checksum-valid recovery checkpoint.

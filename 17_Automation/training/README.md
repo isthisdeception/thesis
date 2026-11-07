@@ -19,18 +19,19 @@ CLI from `17_Automation/`: `python -m training lr-find --config ../06_Experiment
 | Step | What happens | Fails when |
 |------|--------------|-----------|
 | config validation | `config_validation` in ready mode, including registry checks | any validator error; config not inside its `outputs.experiment_dir` |
-| output guard | refuses to run if checkpoints, metrics, predictions, curves, or `logs/history.csv` already exist | any prior output (resume belongs to the checkpoint system; changed reruns need a new `EXP` ID) |
+| output guard | chooses **fresh** or **resume**: resumes when the checkpoint manifest has recovery checkpoints | run already complete; partial post-training outputs; unmanifested files in the checkpoint folder; config changed since the checkpoints were written |
 | git provenance | `git_commit` must be HEAD or an ancestor of HEAD | commit not in history (warning only if git is unavailable) |
 | environment | logs versions + GPU, seeds (`set_seed(reproducible=True)`), checks transforms are picklable | `mixed_precision` without CUDA; `export.pkl` would be unpicklable |
 | dataset validation | columns, partitions, labels ⊆ vocab, both classes in train/val, no content-hash overlap, every image file exists | any check; missing images report the count and, when possible, the correct `processed_root` |
 | dataloaders / learner | DataBlock, `aug_transforms`, `Normalize`, `vision_learner` with configured loss, optimizer, weight decay, monitors | unknown backbone, loss, or optimizer |
-| training | frozen phase (`freeze_epochs`), then unfrozen `fine_tune` or `fit_one_cycle` | — |
+| resume (resume mode only) | newest checksum-valid recovery checkpoint → weights, optimizer, freeze state, callback state, RNG | no recovery checkpoint verifies (corrupt ones are quarantined) |
+| training | frozen phase (`freeze_epochs`), then unfrozen `fine_tune` or `fit_one_cycle`; a full-state recovery checkpoint after every epoch; resumed runs continue with `start_epoch` | a checkpoint name already exists |
 | learning curves | `learning_curves/epochs.csv` (per epoch, phase, time, GPU peak), `batches.csv` (loss + LR per iteration) | — |
-| checkpoint save + export | `best_model.pth`, `last_checkpoint.pth`, `export.pkl`, `weights.pth` in `outputs.checkpoint_dir`, SHA-256 recorded | an expected artifact is missing |
+| checkpoint finalize + export | `EXPxxxx_best.pth`, `EXPxxxx_last.pth` (copies of recovery checkpoints), best weights loaded, `MODELxxxx_export.pkl`, `MODELxxxx_weights.pth`; every manifest entry re-verified | a checksum fails or an artifact is missing |
 | predictions + metrics | best model → `predictions/{val,test}_predictions.csv`; threshold chosen on validation only; `metrics/{val,test}_metrics.json`, `*_calibration.csv`, `threshold.json` | — |
 | summary | `metrics/run_summary.json`: config hash, git provenance, timing, best epoch, metrics, artifacts, environment | — |
 
-Per-epoch checkpoints (`epoch_000.pth`, …) are numbered across both phases and are never overwritten. Binaries are Git-ignored; they go to the artifact tier.
+Checkpointing follows `07_Checkpoints/checkpoint_policy.md`: recovery checkpoints `EXPxxxx_epoch_NNN.pth` are numbered across both phases, written atomically, listed with SHA-256 in `checkpoint_manifest.json` and `07_Checkpoints/EXPxxxx_checkpoints.md`, and never overwritten. Binaries are Git-ignored; they go to the artifact tier. After a session ends, call `run_experiment(config)` again in a new session and it resumes.
 
 ## Modules
 
@@ -40,7 +41,8 @@ Per-epoch checkpoints (`epoch_000.pth`, …) are numbered across both phases and
 | `data.py` | DataLoaders only | assignments loading, dataset validation, DataBlock |
 | `evaluation.py` | no | threshold selection, canonical metrics, ECE, calibration table |
 | `learner.py` | yes | backbone (torchvision / timm), loss, optimizer, monitors |
-| `callbacks.py` | yes | `EpochCheckpointer`, `HistoryTracker` |
+| `checkpoints.py` | torch for save/load | `CheckpointStore` (never-overwrite writes, manifest, checksums, quarantine, resume lookup), RNG capture/restore |
+| `callbacks.py` | yes | `EpochCheckpointer` (recovery checkpoints, best tracking, resumable early stopping), `HistoryTracker` |
 | `pipeline.py` | yes (lazy) | `run_experiment`, `find_lr` |
 | `logs.py` | no | run log file, timed steps, environment info |
 
@@ -56,4 +58,4 @@ python -m pytest tests/test_training_core.py -q        # no FastAI needed
 python -m pytest tests/test_training_smoke.py -q       # needs torch/torchvision/fastai; skipped otherwise
 ```
 
-The smoke test builds a throwaway repo with 32 synthetic 32-px images and runs the real pipeline: one frozen and one unfrozen epoch with `resnet18` trained from scratch on CPU, then the LR Finder.
+The smoke tests build a throwaway repo with 32 synthetic 32-px images and run the real pipeline with `resnet18` trained from scratch on CPU: an uninterrupted run, a simulated session termination followed by a resume (existing checkpoints byte-identical afterwards, LR schedule identical to an uninterrupted run batch by batch), a corrupt latest checkpoint (quarantined, previous one used), a config change after launch (refused), and the LR Finder.

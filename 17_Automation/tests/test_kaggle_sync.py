@@ -93,3 +93,15 @@ checkpoint_sources:
     target = repo_root / "06_Experiments" / "EXP0001" / "notebook" / "checkpoints" / "model.pth"
     assert copied == [str(repo_root / "06_Experiments" / "EXP0001" / "notebook" / "checkpoints")]
     assert target.read_text(encoding="utf-8") == "weights"
+
+    # Re-running with identical content is a no-op; local files are never deleted.
+    local_only = target.parent / "EXP0001_epoch_005.pth"
+    local_only.write_text("newer local checkpoint", encoding="utf-8")
+    resume_checkpoints(plan)
+    assert local_only.read_text(encoding="utf-8") == "newer local checkpoint"
+
+    # A same-named file with different content is never overwritten.
+    target.write_text("different", encoding="utf-8")
+    with pytest.raises(FileExistsError, match="refusing to overwrite"):
+        resume_checkpoints(plan)
+    assert target.read_text(encoding="utf-8") == "different"

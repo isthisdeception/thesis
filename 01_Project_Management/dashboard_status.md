@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Environment & Model Foundation (PART 6)
-- Active Step: **STEP-037** — Checkpoint system
+- Active Step: **STEP-038** — Logging system
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -23,6 +23,7 @@
 - Config system + FastAI training standard (STEP-034): COMPLETE — `config.yaml` template finalized; config validator (47 unit tests)
 - Experiment readiness (STEP-035): COMPLETE — `EXP0001` scaffolded, config validator PASS, Checklist 5 PASS, registry `Status=ready`
 - Training pipeline package (STEP-036): COMPLETE — `17_Automation/training/`, thin EXP0001 notebook, end-to-end smoke test PASS (CPU)
+- Checkpoint system (STEP-037): COMPLETE — full-state recovery checkpoints, SHA-256 manifests, never-overwrite, resume verified by interruption tests
 - `Ready=yes`
 
 ## Health

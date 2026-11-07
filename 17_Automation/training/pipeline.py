@@ -1,11 +1,10 @@
-"""Phase M6 training workflow: config → data → train → checkpoints → metrics → curves → export → summary."""
+"""Phase M6 training workflow: config → data → train (resumable) → checkpoints → curves → export → metrics → summary."""
 
 from __future__ import annotations
 
-import hashlib
 import json
-import shutil
 import subprocess
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
@@ -13,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 from . import evaluation
+from .checkpoints import MANIFEST_NAME, QUARANTINE_DIR, STATE_FORMAT_VERSION, CheckpointStore, capture_rng, restore_rng
 from .data import SplitFrames, build_dataloaders, load_assignments, validate_dataset
 from .logs import close_run_logging, environment_info, get_logger, setup_run_logging, step
 from .settings import TrainingConfigError, TrainingSettings, load_settings
@@ -22,18 +22,11 @@ FROZEN_PCT_START = 0.99
 UNFREEZE_LR_DIVISOR = 2
 
 LR_SUGGESTERS = ("valley", "minimum", "steep", "slide")
+SUMMARY_NAME = "run_summary.json"
 
 
 class OutputsExistError(FileExistsError):
-    """The experiment already has training outputs; nothing is ever overwritten."""
-
-
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1 << 20), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    """The experiment already has outputs that this run would overwrite."""
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -41,25 +34,50 @@ def _write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
 
 
-def _existing_outputs(settings: TrainingSettings) -> list[Path]:
-    found: list[Path] = []
-    for folder in (settings.checkpoint_dir, settings.metrics_dir, settings.predictions_dir, settings.curves_dir):
-        if folder.is_dir():
-            found.extend(p for p in folder.iterdir() if p.name != ".gitkeep")
+def _files_in(folder: Path, ignore: set[str]) -> list[Path]:
+    return [p for p in folder.iterdir() if p.name not in ignore] if folder.is_dir() else []
+
+
+def _raise_existing(settings: TrainingSettings, found: list[Path], why: str) -> None:
+    listed = ", ".join(str(p.relative_to(settings.repo_root)) for p in found[:5])
+    raise OutputsExistError(f"{settings.experiment_id}: {why} ({listed}{', ...' if len(found) > 5 else ''})")
+
+
+def plan_run(settings: TrainingSettings, store: CheckpointStore, *, resume: bool) -> str:
+    """Decide between a fresh run and a resume; refuse anything that would overwrite outputs.
+
+    Returns ``"fresh"`` or ``"resume"``.
+    """
+
+    summary = settings.metrics_dir / SUMMARY_NAME
+    if summary.exists():
+        _raise_existing(settings, [summary], "experiment is already complete; a changed rerun needs a new EXP ID")
+    finished = [f for d in (settings.metrics_dir, settings.predictions_dir, settings.curves_dir)
+                for f in _files_in(d, {".gitkeep"})]
+    if finished:
+        _raise_existing(settings, finished,
+                        "post-training outputs from an incomplete run exist; move them aside before running")
+
+    has_recovery = bool(store.valid_entries("recovery"))
+    if has_recovery:
+        if not resume:
+            _raise_existing(settings, [store.manifest_path], "recovery checkpoints exist and resume=False")
+        manifest = store.load_manifest()
+        if manifest["config_sha256"] != store.config_sha256:
+            raise TrainingConfigError(
+                f"config.yaml changed since {settings.experiment_id}'s checkpoints were written "
+                f"(manifest {manifest['config_sha256'][:12]}…, now {store.config_sha256[:12]}…); "
+                "the config is immutable after launch — a changed run needs a new EXP ID"
+            )
+        return "resume"
+
+    unknown = _files_in(settings.checkpoint_dir, {".gitkeep", MANIFEST_NAME, QUARANTINE_DIR})
+    if unknown:
+        _raise_existing(settings, unknown, "checkpoint folder holds files that are not in a checkpoint manifest")
     history = settings.logs_dir / "history.csv"
     if history.exists():
-        found.append(history)
-    return found
-
-
-def guard_outputs(settings: TrainingSettings) -> None:
-    existing = _existing_outputs(settings)
-    if existing:
-        listed = ", ".join(str(p.relative_to(settings.repo_root)) for p in existing[:5])
-        raise OutputsExistError(
-            f"{settings.experiment_id} already has training outputs ({listed}{', ...' if len(existing) > 5 else ''}). "
-            "Outputs are never overwritten: resume belongs to the checkpoint system, and a changed rerun needs a new EXP ID."
-        )
+        _raise_existing(settings, [history], "a training log from an earlier run exists")
+    return "fresh"
 
 
 def check_git_provenance(settings: TrainingSettings) -> dict:
@@ -106,6 +124,15 @@ def check_export_picklable() -> None:
         ) from exc
 
 
+def check_checkpoint_policy(settings: TrainingSettings) -> None:
+    save_cfg = settings.get("fastai.callbacks.save_model")
+    if not (save_cfg.get("every_epoch") and save_cfg.get("with_opt")):
+        raise TrainingConfigError(
+            "fastai.callbacks.save_model.every_epoch and with_opt must both be true: "
+            "recovery checkpoints need full state every epoch (Phase M7)"
+        )
+
+
 def prepare(settings: TrainingSettings):
     """Seed, validate data, and build DataLoaders + Learner (shared by training and LR Finder)."""
 
@@ -135,48 +162,190 @@ def prepare(settings: TrainingSettings):
     return env, frames, dls, learn
 
 
-def train(learn, settings: TrainingSettings, checkpointer, tracker) -> None:
-    """Transfer-learning schedule (FastAI standard stages 9–10)."""
+# --- schedule -------------------------------------------------------------------
+
+
+def phase_plan(settings: TrainingSettings) -> list[tuple[str, int]]:
+    freeze_epochs = int(settings.get("fastai.schedule.freeze_epochs"))
+    plan = [("frozen", freeze_epochs)] if freeze_epochs > 0 else []
+    return plan + [("unfrozen", int(settings.get("epochs")))]
+
+
+@dataclass(frozen=True)
+class StartPoint:
+    phase_index: int
+    start_epoch: int
+    done: bool = False
+
+
+def start_point(settings: TrainingSettings, state: dict | None) -> StartPoint:
+    """Where training continues, given the last recovery state (``None`` for a fresh run)."""
+
+    if state is None:
+        return StartPoint(0, 0)
+    if state["experiment"]["checkpointer"]["training_complete"]:
+        return StartPoint(0, 0, done=True)
+    plan = phase_plan(settings)
+    names = [name for name, _ in plan]
+    if state["phase"] not in names:
+        raise TrainingConfigError(f"checkpoint phase {state['phase']!r} does not exist in the configured schedule")
+    index = names.index(state["phase"])
+    nxt = state["phase_epoch"] + 1
+    if nxt < plan[index][1]:
+        return StartPoint(index, nxt)
+    if index + 1 < len(plan):
+        return StartPoint(index + 1, 0)
+    return StartPoint(0, 0, done=True)
+
+
+def schedule_record(settings: TrainingSettings) -> dict:
+    schedule = settings.get("fastai.schedule")
+    return {
+        "method": schedule["method"],
+        "lr": float(settings.get("learning_rate.value")),
+        "freeze_epochs": int(schedule["freeze_epochs"]),
+        "epochs": int(settings.get("epochs")),
+        "lr_mult": float(schedule["lr_mult"]),
+        "pct_start": float(schedule["pct_start"]),
+        "div": float(schedule["div"]),
+        "frozen_pct_start": FROZEN_PCT_START,
+        "unfreeze_lr_divisor": UNFREEZE_LR_DIVISOR,
+    }
+
+
+def make_state_builder(learn, settings: TrainingSettings, store: CheckpointStore, tracker):
+    """Full training state for a recovery checkpoint (Phase M7)."""
+
+    schedule = schedule_record(settings)
+
+    def build(checkpointer) -> dict:
+        return {
+            "format_version": STATE_FORMAT_VERSION,
+            "experiment_id": settings.experiment_id,
+            "config_sha256": store.config_sha256,
+            "epoch": checkpointer.global_epoch,
+            "phase": checkpointer.phase,
+            "phase_epoch": int(checkpointer.epoch),
+            "phase_n_epoch": checkpointer.phase_n_epoch,
+            # The one-cycle LR/momentum schedule is a pure function of these values plus the phase position.
+            "schedule": schedule,
+            "model": learn.model.state_dict(),
+            "opt": learn.opt.state_dict(),
+            "rng": capture_rng(),
+            "experiment": {
+                "checkpointer": checkpointer.state_dict(),
+                "tracker": tracker.state_dict(),
+                "values": checkpointer.last_values,
+            },
+        }
+
+    return build
+
+
+def restore_state(learn, state: dict, checkpointer, tracker) -> None:
+    """Load weights, optimizer, callback state; RNG is restored last, right before training resumes."""
+
+    if state["phase"] == "unfrozen":
+        learn.unfreeze()
+    else:
+        learn.freeze()
+    learn.model.load_state_dict(state["model"])
+    learn.opt.load_state_dict(state["opt"])
+    checkpointer.load_state_dict(state["experiment"]["checkpointer"])
+    tracker.load_state_dict(state["experiment"]["tracker"])
+
+
+def train(learn, settings: TrainingSettings, checkpointer, tracker, start: StartPoint, rng_state: dict | None) -> None:
+    """Transfer-learning schedule (FastAI standard stages 9–10), resumable at any epoch boundary."""
 
     from fastai.callback.progress import CSVLogger
-    from fastai.callback.tracker import EarlyStoppingCallback
 
     logger = get_logger()
-    lr = float(settings.get("learning_rate.value"))
-    schedule = settings.get("fastai.schedule")
-    method = schedule["method"]
-    freeze_epochs = int(schedule["freeze_epochs"])
-    epochs = int(settings.get("epochs"))
-    callbacks_cfg = settings.get("fastai.callbacks")
-    csv_logger = CSVLogger(fname="logs/history.csv", append=True) if callbacks_cfg.get("csv_logger") else None
-    base_cbs = [cb for cb in (checkpointer, tracker, csv_logger) if cb is not None]
-    unfrozen_cbs = list(base_cbs)
-    early = callbacks_cfg.get("early_stopping") or {}
-    if early.get("enabled"):
-        unfrozen_cbs.append(EarlyStoppingCallback(monitor=early["monitor"], patience=int(early["patience"])))
+    if start.done:
+        logger.info("training already complete in the recovery checkpoint; skipping to post-training steps")
+        return
+    sched = schedule_record(settings)
+    lr = sched["lr"]
+    csv_logger = CSVLogger(fname="logs/history.csv", append=True) if settings.get("fastai.callbacks.csv_logger") else None
+    cbs = [cb for cb in (checkpointer, tracker, csv_logger) if cb is not None]
+    logger.info("schedule %s: lr=%g (source=%s), freeze_epochs=%d, epochs=%d; starting at phase %d epoch %d",
+                sched["method"], lr, settings.get("learning_rate.source"), sched["freeze_epochs"], sched["epochs"],
+                start.phase_index, start.start_epoch)
 
-    logger.info("schedule %s: lr=%g (source=%s), freeze_epochs=%d, epochs=%d", method, lr,
-                settings.get("learning_rate.source"), freeze_epochs, epochs)
-    if freeze_epochs > 0:
-        tracker.phase = "frozen"
-        learn.freeze()
-        learn.fit_one_cycle(freeze_epochs, slice(lr), pct_start=FROZEN_PCT_START, cbs=base_cbs)
-    tracker.phase = "unfrozen"
-    learn.unfreeze()
-    if method == "fine_tune":
-        base = lr / UNFREEZE_LR_DIVISOR if freeze_epochs > 0 else lr
-        learn.fit_one_cycle(
-            epochs,
-            slice(base / float(schedule["lr_mult"]), base),
-            pct_start=float(schedule["pct_start"]),
-            div=float(schedule["div"]),
-            cbs=unfrozen_cbs,
-        )
-    elif method == "fit_one_cycle":
-        learn.fit_one_cycle(epochs, lr, pct_start=float(schedule["pct_start"]), div=float(schedule["div"]),
-                            cbs=unfrozen_cbs)
-    else:
-        raise TrainingConfigError(f"unsupported fastai.schedule.method {method!r}")
+    for index, (phase, n_epoch) in enumerate(phase_plan(settings)):
+        if index < start.phase_index:
+            continue
+        first = start.start_epoch if index == start.phase_index else 0
+        resuming_here = rng_state is not None and index == start.phase_index
+        # freeze()/unfreeze() clear optimizer state, so they are skipped when resuming inside a phase.
+        if not (resuming_here and first > 0):
+            learn.freeze() if phase == "frozen" else learn.unfreeze()
+        tracker.begin_phase(phase, n_epoch, first)
+        checkpointer.begin_phase(phase, n_epoch, first, early_active=phase == "unfrozen")
+        if resuming_here:
+            restore_rng(rng_state)
+        if phase == "frozen":
+            learn.fit_one_cycle(n_epoch, slice(lr), pct_start=FROZEN_PCT_START, cbs=cbs, start_epoch=first)
+        elif sched["method"] == "fine_tune":
+            base = lr / UNFREEZE_LR_DIVISOR if sched["freeze_epochs"] > 0 else lr
+            learn.fit_one_cycle(n_epoch, slice(base / sched["lr_mult"], base), pct_start=sched["pct_start"],
+                                div=sched["div"], cbs=cbs, start_epoch=first)
+        elif sched["method"] == "fit_one_cycle":
+            learn.fit_one_cycle(n_epoch, lr, pct_start=sched["pct_start"], div=sched["div"], cbs=cbs,
+                                start_epoch=first)
+        else:
+            raise TrainingConfigError(f"unsupported fastai.schedule.method {sched['method']!r}")
+        if checkpointer.early_stopped:
+            break
+
+
+# --- post-training --------------------------------------------------------------
+
+
+def finalize_checkpoints(learn, settings: TrainingSettings, store: CheckpointStore, checkpointer) -> dict[str, dict]:
+    """EXPxxxx_best/last copies, best weights loaded, MODELxxxx export.pkl + weights.pth (Phase M15)."""
+
+    import torch
+
+    recovery = store.valid_entries("recovery")
+    if not recovery:
+        raise FileNotFoundError("no recovery checkpoints to finalize")
+    best_src = store.find(store.recovery_name(checkpointer.best.epoch))
+    last_src = max(recovery, key=lambda e: e["epoch"])
+    if best_src is None:
+        raise FileNotFoundError(f"best epoch {checkpointer.best.epoch} has no valid recovery checkpoint")
+    entries = {
+        "best": store.copy_as(best_src, store.best_name, "best"),
+        "last": store.copy_as(last_src, store.last_name, "last"),
+    }
+    state = torch.load(store.path_of(entries["best"]), map_location=learn.dls.device, weights_only=False)
+    learn.model.load_state_dict(state["model"])
+    if settings.get("fastai.mixed_precision"):
+        learn.to_fp32()
+
+    export_cfg = settings.get("fastai.export")
+    meta = {"epoch": entries["best"]["epoch"], "copied_from": None, "source_checkpoint": store.best_name}
+    if export_cfg.get("export_pkl"):
+        entries["export_pkl"] = store.find(store.export_name) or _write_artifact(
+            store, store.export_name, "export_pkl", meta, lambda tmp: learn.export(tmp))
+    if export_cfg.get("weights_pth"):
+        entries["weights_pth"] = store.find(store.weights_name) or _write_artifact(
+            store, store.weights_name, "weights_pth", meta, lambda tmp: torch.save(learn.model.state_dict(), tmp))
+
+    broken = store.verify_all()
+    if broken:
+        raise FileNotFoundError(f"checkpoint checksum verification failed for: {broken}")
+    return {
+        kind: {"name": e["name"], "path": (store.dir / e["name"]).relative_to(settings.repo_root).as_posix(),
+               "sha256": e["sha256"], "bytes": e["bytes"]}
+        for kind, e in entries.items()
+    }
+
+
+def _write_artifact(store: CheckpointStore, name: str, kind: str, meta: dict, write) -> dict:
+    tmp = store.reserve(name)
+    write(tmp)
+    return store.commit(tmp, name, kind, meta)
 
 
 def _prediction_frame(items: pd.DataFrame, probs: np.ndarray, vocab: list[str], positive: str,
@@ -236,36 +405,7 @@ def predict_and_score(learn, settings: TrainingSettings, frames: SplitFrames) ->
     return results
 
 
-def export_artifacts(learn, settings: TrainingSettings, checkpointer) -> dict[str, dict]:
-    """best_model.pth, last_checkpoint.pth, export.pkl, weights.pth (Phase M15)."""
-
-    import torch
-
-    export_cfg = settings.get("fastai.export")
-    ckpt = settings.checkpoint_dir
-    artifacts: dict[str, Path] = {"best_model": ckpt / "best_model.pth"}
-    if checkpointer.saved:
-        last_src = ckpt / f"{checkpointer.saved[-1]}.pth"
-        last = ckpt / "last_checkpoint.pth"
-        shutil.copy2(last_src, last)
-        artifacts["last_checkpoint"] = last
-    learn.load("best_model", with_opt=False)
-    if settings.get("fastai.mixed_precision"):
-        learn.to_fp32()
-    if export_cfg.get("export_pkl"):
-        artifacts["export_pkl"] = ckpt / "export.pkl"
-        learn.export(artifacts["export_pkl"])
-    if export_cfg.get("weights_pth"):
-        artifacts["weights_pth"] = ckpt / "weights.pth"
-        torch.save(learn.model.state_dict(), artifacts["weights_pth"])
-    missing = [name for name, path in artifacts.items() if not path.is_file()]
-    if missing:
-        raise FileNotFoundError(f"expected export artifact(s) were not written: {missing}")
-    return {
-        name: {"path": str(path.relative_to(settings.repo_root)), "bytes": path.stat().st_size,
-               "sha256": _sha256(path)}
-        for name, path in artifacts.items()
-    }
+# --- entry points ---------------------------------------------------------------
 
 
 def run_experiment(
@@ -273,61 +413,89 @@ def run_experiment(
     *,
     repo_root: str | Path | None = None,
     check_registries: bool = True,
+    resume: bool = True,
 ) -> dict:
-    """Run one experiment end to end from its config.yaml and return the run summary."""
+    """Run one experiment from its config.yaml, resuming from the latest valid recovery checkpoint if present."""
 
-    from .callbacks import EpochCheckpointer, HistoryTracker
+    from .callbacks import EpochCheckpointer, HistoryTracker, default_comp
 
     settings = load_settings(config_path, repo_root=repo_root, check_registries=check_registries)
+    check_checkpoint_policy(settings)
+    store = CheckpointStore(settings)
     started = datetime.now().astimezone()
-    log_path = setup_run_logging(settings.logs_dir, "train")
+    log_path = setup_run_logging(settings.logs_dir, f"{settings.experiment_id}_train")
     logger = get_logger()
     try:
         logger.info("experiment %s; config %s; config validation PASS", settings.experiment_id, settings.config_path)
         with step("output guard"):
-            guard_outputs(settings)
-            settings.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+            mode = plan_run(settings, store, resume=resume)
+            logger.info("run mode: %s", mode)
         with step("git provenance"):
             provenance = check_git_provenance(settings)
         env, frames, dls, learn = prepare(settings)
 
         save_cfg = settings.get("fastai.callbacks.save_model")
-        checkpointer = EpochCheckpointer(
-            monitor=save_cfg["monitor"], comp=save_cfg["comp"], with_opt=bool(save_cfg["with_opt"]),
-            every_epoch=bool(save_cfg["every_epoch"]),
-        )
         tracker = HistoryTracker()
+        checkpointer = EpochCheckpointer(
+            store,
+            make_state_builder(learn, settings, store, tracker),
+            monitor=save_cfg["monitor"],
+            comp=save_cfg.get("comp") or default_comp(save_cfg["monitor"]),
+            early_stopping=settings.get("fastai.callbacks").get("early_stopping"),
+        )
+        resumed_from = None
+        rng_state = None
+        state = None
+        if mode == "resume":
+            with step("resume"):
+                found = store.latest_valid_recovery(map_location=dls.device)
+                if found is None:
+                    raise FileNotFoundError(
+                        f"no recovery checkpoint passed verification in {store.dir}; see quarantine/ and the manifest"
+                    )
+                entry, state = found
+                restore_state(learn, state, checkpointer, tracker)
+                rng_state = state["rng"]
+                resumed_from = entry["epoch"]
+                logger.info("resumed from %s (epoch %d, phase %s)", entry["name"], entry["epoch"], state["phase"])
+        start = start_point(settings, state)
         with step("training"):
-            train(learn, settings, checkpointer, tracker)
+            train(learn, settings, checkpointer, tracker, start, rng_state)
         with step("learning curves"):
             settings.curves_dir.mkdir(parents=True, exist_ok=True)
             pd.DataFrame(tracker.epochs).to_csv(settings.curves_dir / "epochs.csv", index=False)
             pd.DataFrame(tracker.batches).to_csv(settings.curves_dir / "batches.csv", index=False)
-        with step("checkpoint save + export"):
-            artifacts = export_artifacts(learn, settings, checkpointer)
+        with step("checkpoint finalize + export"):
+            artifacts = finalize_checkpoints(learn, settings, store, checkpointer)
         with step("validation + test predictions"):
             results = predict_and_score(learn, settings, frames)
         finished = datetime.now().astimezone()
         summary = {
             "experiment_id": settings.experiment_id,
             "status": "complete",
-            "config": str(settings.config_path.relative_to(settings.repo_root)),
-            "config_sha256": _sha256(settings.config_path),
+            "config": settings.config_path.relative_to(settings.repo_root).as_posix(),
+            "config_sha256": store.config_sha256,
             "git": provenance,
             "started": started.isoformat(),
             "finished": finished.isoformat(),
+            "resumed_from_epoch": resumed_from,
             "training_seconds": round(sum(row["seconds"] for row in tracker.epochs), 1),
             "epochs_run": tracker.global_epoch,
-            "best_epoch": checkpointer.best_epoch,
-            "best_monitor": {"name": checkpointer.monitor, "value": checkpointer.best_value},
+            "early_stopped": checkpointer.early_stopped,
+            "best_epoch": checkpointer.best.epoch,
+            "best_monitor": {"name": checkpointer.best.monitor, "value": checkpointer.best.value},
             "metrics": results,
             "artifacts": artifacts,
+            "checkpoint_manifest": {
+                "json": store.manifest_path.relative_to(settings.repo_root).as_posix(),
+                "markdown": store.markdown_path.relative_to(settings.repo_root).as_posix(),
+            },
             "environment": env,
-            "log": str(log_path.relative_to(settings.repo_root)),
+            "log": log_path.relative_to(settings.repo_root).as_posix(),
         }
         with step("summary"):
-            _write_json(settings.metrics_dir / "run_summary.json", summary)
-        logger.info("run complete: best epoch %s, test ROC-AUC %.4f", checkpointer.best_epoch,
+            _write_json(settings.metrics_dir / SUMMARY_NAME, summary)
+        logger.info("run complete: best epoch %s, test ROC-AUC %.4f", checkpointer.best.epoch,
                     results["test"]["roc_auc"])
         return summary
     finally:
@@ -349,7 +517,7 @@ def find_lr(
     suggest = lr_cfg["suggest_func"]
     if suggest not in LR_SUGGESTERS:
         raise TrainingConfigError(f"fastai.lr_finder.suggest_func must be one of {LR_SUGGESTERS}, got {suggest!r}")
-    log_path = setup_run_logging(settings.logs_dir, "lr_find")
+    log_path = setup_run_logging(settings.logs_dir, f"{settings.experiment_id}_lr_find")
     logger = get_logger()
     try:
         import fastai.callback.schedule as sched
@@ -363,17 +531,17 @@ def find_lr(
         stamp = datetime.now().strftime("%Y%m%dT%H%M%S")
         curve = pd.DataFrame({"lr": [float(x) for x in learn.recorder.lrs],
                               "loss": [float(x) for x in learn.recorder.losses]})
-        curve_path = settings.logs_dir / f"lr_find_{stamp}.csv"
+        curve_path = settings.logs_dir / f"{settings.experiment_id}_lr_find_{stamp}.csv"
         curve.to_csv(curve_path, index=False)
         payload = {
             "experiment_id": settings.experiment_id,
             "suggest_func": suggest,
             "suggested_lr": suggestion,
             "config_lr": float(settings.get("learning_rate.value")),
-            "curve": str(curve_path.relative_to(settings.repo_root)),
-            "log": str(log_path.relative_to(settings.repo_root)),
+            "curve": curve_path.relative_to(settings.repo_root).as_posix(),
+            "log": log_path.relative_to(settings.repo_root).as_posix(),
         }
-        _write_json(settings.logs_dir / f"lr_find_{stamp}.json", payload)
+        _write_json(settings.logs_dir / f"{settings.experiment_id}_lr_find_{stamp}.json", payload)
         logger.info("LR Finder suggests %.3g (%s); record it in learning_rate.value before training", suggestion,
                     suggest)
         return payload

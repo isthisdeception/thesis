@@ -31,7 +31,7 @@ config validation → DataBlock → DataLoaders → Learner → callbacks → mi
 | 8 | Mixed precision | `learn.to_fp16()` | `fastai.mixed_precision` |
 | 9 | LR Finder | `learn.lr_find(suggest_funcs=(valley,))` | `fastai.lr_finder`, `learning_rate` |
 | 10 | Train | `learn.fine_tune(epochs, base_lr, freeze_epochs=...)` or `learn.fit_one_cycle(epochs, lr_max)` | `fastai.schedule`, `epochs`, `learning_rate.value` |
-| 11 | Export | `learn.export("export.pkl")`, `torch.save(learn.model.state_dict(), "weights.pth")` | `fastai.export`, `outputs.*` |
+| 11 | Export | `learn.export("MODELxxxx_export.pkl")`, `torch.save(learn.model.state_dict(), "MODELxxxx_weights.pth")` | `fastai.export`, `outputs.*` |
 
 ## Stage rules
 
@@ -41,9 +41,9 @@ config validation → DataBlock → DataLoaders → Learner → callbacks → mi
 
 **Transfer learning and LR (stages 9–10).** Default schedule is `fine_tune`: `freeze_epochs` epochs with the pretrained body frozen (one-cycle, `pct_start` 0.99 as in FastAI's `fine_tune`), then unfreeze, halve the LR, and train `epochs` more with discriminative learning rates `slice(lr / lr_mult, lr)` using the configured `pct_start` and `div`. Run LR Finder once, write the suggested value into `learning_rate.value` with `source: lr_find`, commit the config, then train. The LR is never chosen inside the training cell.
 
-**Callbacks and checkpoints (stage 7).** `SaveModelCallback(every_epoch=True, with_opt=True)` keeps per-epoch states with optimizer state so a terminated Kaggle session can resume (Phase M7). Checkpoints go to `outputs.checkpoint_dir`; nothing is overwritten, and the manifest at `outputs.checkpoint_manifest` records checksums. `EarlyStoppingCallback` uses `metrics.monitor`. `CSVLogger` writes the per-epoch log used for learning curves.
+**Callbacks and checkpoints (stage 7).** `fastai.callbacks.save_model` (`every_epoch: true`, `with_opt: true`) drives the project's `EpochCheckpointer`, which replaces FastAI's `SaveModelCallback`/`EarlyStoppingCallback` so that best-model tracking, early stopping, optimizer state, schedule position, and RNG all survive a terminated Kaggle session (Phase M7, `07_Checkpoints/checkpoint_policy.md`). Checkpoints go to `outputs.checkpoint_dir`; nothing is overwritten, and the manifest at `outputs.checkpoint_manifest` records checksums. `CSVLogger` writes the raw per-epoch log; the pipeline's own learning-curve files are the clean record.
 
-**Export (stage 11).** Both `export.pkl` (FastAI inference) and `weights.pth` (plain PyTorch state dict) are produced. Binaries go to the artifact tier (`outputs.artifact_dataset_slug`), never to Git.
+**Export (stage 11).** Both `MODELxxxx_export.pkl` (FastAI inference) and `MODELxxxx_weights.pth` (plain PyTorch state dict) are produced from the best epoch's weights, alongside `EXPxxxx_best.pth` and `EXPxxxx_last.pth` (A.2 names). Binaries go to the artifact tier (`outputs.artifact_dataset_slug`), never to Git.
 
 ## Runtime fields
 

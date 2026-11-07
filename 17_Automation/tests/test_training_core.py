@@ -12,7 +12,8 @@ import yaml
 from training import TrainingConfigError, load_settings
 from training.data import DatasetValidationError, load_assignments, validate_dataset
 from training.evaluation import compute_metrics, expected_calibration_error, select_threshold, thresholded_metrics
-from training.pipeline import OutputsExistError, guard_outputs
+from training.checkpoints import CheckpointStore
+from training.pipeline import OutputsExistError, StartPoint, plan_run, start_point
 
 from training_fixtures import EXP0001_CONFIG, REPO_ROOT, build_tiny_repo
 
@@ -153,9 +154,37 @@ def test_missing_class_in_train_fails(tiny) -> None:
 
 # --- output guard -------------------------------------------------------------
 
-def test_output_guard_blocks_existing_outputs(tiny) -> None:
-    guard_outputs(tiny)
+def test_plan_run_fresh_on_empty_experiment(tiny) -> None:
+    assert plan_run(tiny, CheckpointStore(tiny), resume=True) == "fresh"
+
+
+def test_plan_run_blocks_unmanifested_checkpoint_files(tiny) -> None:
     tiny.checkpoint_dir.mkdir(parents=True, exist_ok=True)
-    (tiny.checkpoint_dir / "epoch_000.pth").write_bytes(b"x")
-    with pytest.raises(OutputsExistError, match="never overwritten"):
-        guard_outputs(tiny)
+    (tiny.checkpoint_dir / "stray.pth").write_bytes(b"x")
+    with pytest.raises(OutputsExistError, match="not in a checkpoint manifest"):
+        plan_run(tiny, CheckpointStore(tiny), resume=True)
+
+
+def test_plan_run_blocks_completed_experiment(tiny) -> None:
+    (tiny.metrics_dir / "run_summary.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(OutputsExistError, match="already complete"):
+        plan_run(tiny, CheckpointStore(tiny), resume=True)
+
+
+def test_plan_run_blocks_partial_post_training_outputs(tiny) -> None:
+    (tiny.predictions_dir / "test_predictions.csv").write_text("x", encoding="utf-8")
+    with pytest.raises(OutputsExistError, match="incomplete run"):
+        plan_run(tiny, CheckpointStore(tiny), resume=True)
+
+
+def _state(phase: str, phase_epoch: int, complete: bool = False) -> dict:
+    return {"phase": phase, "phase_epoch": phase_epoch,
+            "experiment": {"checkpointer": {"training_complete": complete}}}
+
+
+def test_start_point_resolution(tiny) -> None:
+    # tiny config: 1 frozen epoch, then 1 unfrozen epoch
+    assert start_point(tiny, None) == StartPoint(0, 0)
+    assert start_point(tiny, _state("frozen", 0)) == StartPoint(1, 0)
+    assert start_point(tiny, _state("unfrozen", 0)).done
+    assert start_point(tiny, _state("frozen", 0, complete=True)).done
