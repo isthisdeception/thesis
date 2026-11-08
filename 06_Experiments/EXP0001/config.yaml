@@ -120,7 +120,7 @@ optimizer:
   weight_decay: 0.01
   betas: [0.9, 0.99]
 learning_rate:
-  value: 1.0e-3               # record the LR Finder suggestion here before training
+  value: 3.31131302240938e-4  # LR Finder (valley), Kaggle Session A 2026-11-08
   source: lr_find             # manual | lr_find
 loss_function:
   name: CrossEntropyLossFlat
@@ -159,7 +159,7 @@ hardware:
   platform: kaggle
   accelerator: GPU
   gpu: T4                     # not P100: cu128 dropped sm_60
-  kaggle_image: v170
+  kaggle_image: kaggle-gpu-2026-11-08   # Python 3.13.16, torch 2.11.0+cu130, fastai 2.8.12
   environment_lock: environment/versions.lock.md
 
 # --- Output folders / checkpoint location -------------------------------------
@@ -170,11 +170,11 @@ outputs:
   artifact_dataset_slug: isthisdeception/thesis-experiment-artifacts
 
 # --- Git Commit / Timestamp (refresh at session start, before training) -------
-git_commit: 030efe04490ac7d3cacc73473e96d70e9a416f26
-timestamp: "2026-11-06T23:24:15+06:00"
+git_commit: 0f7c61343ce7515a9c699ab4610137c2cca5bb16
+timestamp: "2026-11-08T22:00:00+06:00"
 
 notes: >-
   SPLIT0001 is class-balanced (train 17502 fake / 17491 real; val 3719 / 3783;
   test 3779 / 3726), so no class weighting or resampling is applied.
-  learning_rate.value is the pre-LR-Finder default; record the LR Finder
-  suggestion before training.
+  learning_rate.value is the LR Finder valley suggestion from Kaggle Session A
+  (2026-11-08); frozen phase lr_max 3.31e-4, unfrozen slice(1.66e-6, 1.66e-4).

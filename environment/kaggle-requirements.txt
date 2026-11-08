@@ -1,5 +1,5 @@
-# Kaggle GPU v170 already provides Python 3.12, torch 2.10.0+cu128,
-# torchvision 0.25.0, fastai 2.8.7, and numpy 2.0.2.
+# The Kaggle GPU image (lock 2026-11-08) already provides Python 3.13.16,
+# torch 2.11.0+cu130, torchvision 0.26.0, and fastai 2.8.12.
 #
 # This file lists ONLY packages missing from that base image.
 # Do not pip-install torch/fastai/torchvision on Kaggle unless versions.lock.md
