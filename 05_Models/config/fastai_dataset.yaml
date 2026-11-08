@@ -12,7 +12,9 @@ dataset:
   split_dir: 03_Datasets/splits/DS0001_PP0001_SPLIT0001
   assignments_csv: 03_Datasets/splits/DS0001_PP0001_SPLIT0001/assignments.csv
   processed_kaggle_slug: isthisdeception/ds0001-pp0001
-  processed_root: /kaggle/input/ds0001-pp0001
+  # Kaggle mounts the dataset under /kaggle/input/datasets/<owner>/<slug>/ and the
+  # upload keeps its top-level <OUTPUT_ID>/ folder (verified in the first EXP0001 session).
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001
   path_column: processed_path
   label_column: class_label
   partition_column: partition

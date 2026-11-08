@@ -37,7 +37,7 @@ dataset:
   pipeline_id: PP0001
   output_id: DS0001_PP0001
   processed_kaggle_slug: isthisdeception/ds0001-pp0001
-  processed_root: /kaggle/input/datasets/isthisdeception/ds0001-pp0001
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001
   path_column: processed_path
   label_column: class_label
   partition_column: partition
