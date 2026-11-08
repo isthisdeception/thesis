@@ -109,6 +109,46 @@ checkpoint_sources:
     assert target.read_text(encoding="utf-8") == "different"
 
 
+def test_push_metadata_pushes_to_dedicated_branch(tmp_path: Path) -> None:
+    remote = tmp_path / "remote.git"
+    subprocess.run(["git", "init", "-q", "--bare", str(remote)], check=True)
+    workspace = tmp_path / "workspace"
+    repo = workspace / "thesis"
+    repo.mkdir(parents=True)
+    subprocess.run(["git", "init", "-q", "-b", "main"], cwd=repo, check=True)
+    (repo / "logs").mkdir()
+    (repo / "logs" / "EXP0001_epochs.csv").write_text("epoch\n0\n", encoding="utf-8")
+    plan_path = tmp_path / "sync_plan.yaml"
+    plan_path.write_text(
+        f"""
+repo_url: {remote.as_posix()}
+repo_branch: main
+repo_dir: thesis
+workspace_root: {workspace.as_posix()}
+metadata_paths:
+  - logs
+""".strip(),
+        encoding="utf-8",
+    )
+    push_metadata(load_sync_plan(plan_path), commit_message="sync: EXP0001", branch="kaggle/exp0001-test")
+    branches = subprocess.run(["git", "branch", "--list"], cwd=remote, capture_output=True, text=True).stdout
+    assert "kaggle/exp0001-test" in branches and "main" not in branches
+    files = subprocess.run(["git", "ls-tree", "-r", "--name-only", "kaggle/exp0001-test"], cwd=remote,
+                           capture_output=True, text=True).stdout.split()
+    assert files == ["logs/EXP0001_epochs.csv"]
+
+
+def test_push_url_masks_token(monkeypatch) -> None:
+    from kaggle_sync.session import _push_url, _run_masked
+
+    monkeypatch.setenv("GITHUB_TOKEN", "ghp_secret123")
+    url, secret = _push_url("https://github.com/owner/repo.git")
+    assert url == "https://x-access-token:ghp_secret123@github.com/owner/repo.git" and secret == "ghp_secret123"
+    with pytest.raises(RuntimeError) as excinfo:
+        _run_masked(["git", "ls-remote", url.replace("github.com", "invalid.invalid")], cwd=Path("."), secret=secret)
+    assert "ghp_secret123" not in str(excinfo.value) and "***" in str(excinfo.value)
+
+
 def test_push_metadata_refuses_binaries(tmp_path: Path) -> None:
     workspace = tmp_path / "workspace"
     repo = workspace / "thesis"

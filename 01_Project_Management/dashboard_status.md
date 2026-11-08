@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Environment & Model Foundation (PART 6)
-- Active Step: **STEP-039** — Run EXP0001 on Kaggle
+- Active Step: **STEP-039** — Run EXP0001 on Kaggle (IN PROGRESS: runbook + session notebook ready; Session A = LR Finder next)
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)

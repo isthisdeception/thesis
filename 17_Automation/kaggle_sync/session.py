@@ -191,7 +191,14 @@ def publish_artifacts(plan: SyncPlan, *, dry_run: bool = False) -> list[str]:
         ]
         if target.convert_to_csv:
             cmd.extend(["--keep-tabular"])
-        _run(cmd, dry_run=dry_run)
+        if dry_run:
+            _run(cmd, dry_run=True)
+        else:
+            versioned = subprocess.run(cmd, check=False, capture_output=True, text=True)
+            print(versioned.stdout.strip())
+            if versioned.returncode != 0:
+                print(f"dataset version failed ({versioned.stderr.strip()}); trying to create {target.dataset_slug}")
+                _run(["kaggle", "datasets", "create", "-p", str(stage_dir), "-r", "zip"])
         staged.append(str(stage_dir))
 
     if dry_run:
@@ -230,24 +237,51 @@ def check_staged_files(repo_path: Path) -> list[str]:
     return staged
 
 
+def _push_url(repo_url: str) -> tuple[str, str | None]:
+    """HTTPS GitHub URL with GITHUB_TOKEN credentials when the variable is set; the token is returned for masking."""
+
+    token = os.environ.get("GITHUB_TOKEN")
+    if token and repo_url.startswith("https://github.com/"):
+        return repo_url.replace("https://", f"https://x-access-token:{token}@", 1), token
+    return repo_url, None
+
+
+def _run_masked(cmd: list[str], *, cwd: Path, secret: str | None) -> None:
+    result = subprocess.run(cmd, cwd=cwd, check=False, capture_output=True, text=True)
+    mask = (lambda s: s.replace(secret, "***")) if secret else (lambda s: s)
+    if result.stdout.strip():
+        print(mask(result.stdout.strip()))
+    if result.returncode != 0:
+        shown = [mask(part) for part in cmd]
+        raise RuntimeError(f"command failed ({result.returncode}): {' '.join(shown)}\n{mask(result.stderr.strip())}")
+
+
 def push_metadata(
     plan: SyncPlan,
     *,
     commit_message: str = "sync: update experiment metadata from Kaggle",
+    branch: str | None = None,
     dry_run: bool = False,
 ) -> None:
-    """Commit and push source-tier metadata back to GitHub."""
+    """Commit source-tier metadata and push it to ``branch`` (default: the plan's repo branch).
+
+    Pushing to a dedicated branch keeps Kaggle results reviewable through a PR.
+    Authentication uses the ``GITHUB_TOKEN`` environment variable (Kaggle Secret).
+    """
 
     repo_path = plan.repo_path
+    target = branch or plan.repo_branch
     if not plan.metadata_paths:
         raise ValueError("metadata_paths is empty; nothing is allowed to return to Git")
     if dry_run:
         for relpath in plan.metadata_paths:
             print(f"git add {repo_path / relpath}")
         print(f"git commit -m {commit_message}")
-        print(f"git push origin {plan.repo_branch}")
+        print(f"git push {plan.repo_url} HEAD:refs/heads/{target}")
         return
 
+    if branch:
+        _run(["git", "checkout", "-B", branch], cwd=repo_path)
     _run(["git", "config", "user.name", os.environ.get("GIT_AUTHOR_NAME", "Kaggle Automation")], cwd=repo_path, dry_run=dry_run)
     _run(
         ["git", "config", "user.email", os.environ.get("GIT_AUTHOR_EMAIL", "kaggle-automation@local")],
@@ -274,4 +308,6 @@ def push_metadata(
         raise RuntimeError(status.stderr.decode("utf-8", errors="replace"))
 
     _run(["git", "commit", "-m", commit_message], cwd=repo_path, dry_run=dry_run)
-    _run(["git", "push", "origin", plan.repo_branch], cwd=repo_path, dry_run=dry_run)
+    url, secret = _push_url(plan.repo_url)
+    _run_masked(["git", "push", url, f"HEAD:refs/heads/{target}"], cwd=repo_path, secret=secret)
+    print(f"pushed metadata to branch {target}")

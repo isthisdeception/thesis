@@ -8,5 +8,7 @@
 # Session install (if this file ever gains rows):
 #   pip install -r /kaggle/working/thesis/environment/kaggle-requirements.txt
 #
-# Currently no extra packages are required for FastAI training or our
-# preprocessing/split modules.
+# plum-dispatch >= 2.6 makes FastAI transforms unpicklable (learn.export fails).
+# Installed by `kaggle_sync bootstrap` before FastAI is imported; a no-op if the
+# image already has this version.
+plum-dispatch==2.5.7
