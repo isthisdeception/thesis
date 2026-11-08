@@ -48,4 +48,5 @@
 | `learning_curves/` | Learning-curve data (not rendered figures) |
 | `checkpoints_info.md` | Checkpoint locations, policy, and resume instructions |
 | `observations.md` | Running observations during setup and training |
-| `notebook/` | Kaggle training notebook; `notebook/checkpoints/` holds local checkpoint binaries (Git-ignored) |
+| `notebook/` | Kaggle session notebook `EXP0001_train.ipynb`; `notebook/checkpoints/` holds local checkpoint binaries (Git-ignored) |
+| `KAGGLE_RUNBOOK.md` | Step-by-step Kaggle sessions (LR Finder, training with interruption check, publish, push) |

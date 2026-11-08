@@ -28,6 +28,7 @@ def build_parser() -> argparse.ArgumentParser:
         default="sync: update experiment metadata from Kaggle",
         help="Commit message for metadata sync.",
     )
+    push.add_argument("--branch", default=None, help="Branch to push to (default: the plan's repo_branch).")
     return parser
 
 
@@ -43,7 +44,7 @@ def main() -> None:
     elif args.command == "publish-artifacts":
         publish_artifacts(plan, dry_run=args.dry_run)
     elif args.command == "push-metadata":
-        push_metadata(plan, commit_message=args.commit_message, dry_run=args.dry_run)
+        push_metadata(plan, commit_message=args.commit_message, branch=args.branch, dry_run=args.dry_run)
     else:
         parser.error(f"unknown command: {args.command}")
 

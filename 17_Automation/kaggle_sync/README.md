@@ -28,7 +28,14 @@ cd /kaggle/working/thesis/17_Automation
 python -m kaggle_sync --plan kaggle_sync/sync_plan.example.yaml bootstrap
 python -m kaggle_sync --plan kaggle_sync/sync_plan.example.yaml resume-checkpoints
 python -m kaggle_sync --plan kaggle_sync/sync_plan.example.yaml publish-artifacts
-python -m kaggle_sync --plan kaggle_sync/sync_plan.example.yaml push-metadata
+python -m kaggle_sync --plan kaggle_sync/sync_plan.example.yaml push-metadata --branch kaggle/exp0001-<time>
 ```
+
+- `bootstrap` installs `environment/kaggle-requirements.txt` (pins `plum-dispatch==2.5.7`) and fails only for mounts marked `required: true` (for EXP0001: `ds0001-pp0001`).
+- `resume-checkpoints` merges mounted checkpoints into the repo; it never deletes and refuses to overwrite differing files.
+- `publish-artifacts` versions the artifact dataset (creates it if versioning fails); needs `KAGGLE_USERNAME` / `KAGGLE_KEY`.
+- `push-metadata --branch` commits only `metadata_paths`, refuses binaries / files > 20 MB, and pushes to the given branch using `GITHUB_TOKEN` (masked in any error output). Results reach `main` through a PR.
+
+Per-experiment session order: `06_Experiments/EXP0001/KAGGLE_RUNBOOK.md`.
 
 Use `--dry-run` while validating a new manifest.
