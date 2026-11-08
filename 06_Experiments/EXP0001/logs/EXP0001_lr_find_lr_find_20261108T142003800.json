@@ -1,0 +1,9 @@
+{
+  "experiment_id": "EXP0001",
+  "session": "lr_find_20261108T142003800",
+  "suggest_func": "valley",
+  "suggested_lr": 0.0003311311302240938,
+  "config_lr": 0.001,
+  "curve": "06_Experiments/EXP0001/logs/EXP0001_lr_find_curve_lr_find_20261108T142003800.csv",
+  "log": "06_Experiments/EXP0001/logs/EXP0001_lr_find_20261108T142003800.log"
+}

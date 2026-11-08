@@ -1,0 +1,250 @@
+{
+  "experiment_id": "EXP0001",
+  "session": "train_20261108T144549179",
+  "mode": "fresh",
+  "config": "06_Experiments/EXP0001/config.yaml",
+  "config_sha256": "d43eaebc643277cd1683a2ae42f671964b8682ffe1e97bd303d9f624e8b83fde",
+  "resolved_config": {
+    "schema_version": 1,
+    "experiment_id": "EXP0001",
+    "research_question": "How can we improve the cross-generator generalization of image-based AI face detection models to maintain high accuracy on unseen generative architectures?",
+    "purpose": "Establish the fair reference baseline (Phase M2) for every architecture comparison: ImageNet-pretrained ResNet-50 fine-tuned with the FastAI training standard on DS0001 / v1.0 / PP0001 / SPLIT0001. No variable is changed; this run defines the invariants that MODEL0002 (Xception) and MODEL0003 (EfficientNet-B4) are compared against.",
+    "expected_outcome": "High in-distribution separability on the SPLIT0001 test partition (generators seen in training): ROC-AUC >= 0.95 and balanced accuracy >= 0.90 at the validation-chosen threshold. Below ROC-AUC 0.90 indicates a pipeline or data problem to investigate before any comparator runs. These are sanity expectations, not targets to tune toward; cross-generator generalization is measured later on the SPLIT0002 hold-out track.",
+    "study_track": "primary_architecture",
+    "dataset": {
+      "dataset_id": "DS0001",
+      "version": "v1.0",
+      "pipeline_id": "PP0001",
+      "output_id": "DS0001_PP0001",
+      "processed_kaggle_slug": "isthisdeception/ds0001-pp0001",
+      "processed_root": "/kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001",
+      "path_column": "processed_path",
+      "label_column": "class_label",
+      "partition_column": "partition",
+      "vocab": [
+        "fake",
+        "real"
+      ]
+    },
+    "split": {
+      "split_id": "SPLIT0001",
+      "scheme": "grouped_random",
+      "assignments_csv": "03_Datasets/splits/DS0001_PP0001_SPLIT0001/assignments.csv",
+      "train_name": "train",
+      "valid_name": "val",
+      "test_name": "test",
+      "leakage_required": "PASS"
+    },
+    "model": {
+      "model_id": "MODEL0001",
+      "architecture": "ResNet-50",
+      "backbone": "resnet50",
+      "source": "torchvision",
+      "pretrained": true,
+      "pretrained_weights": "ImageNet-1k"
+    },
+    "fastai": {
+      "datablock": {
+        "blocks": [
+          "ImageBlock",
+          "CategoryBlock"
+        ],
+        "get_items": "assignments_csv",
+        "get_x": "processed_root + processed_path",
+        "get_y": "class_label",
+        "splitter": "column_splitter",
+        "n_inp": 1
+      },
+      "item_tfms": {
+        "resize": 224,
+        "method": "squish"
+      },
+      "normalize": {
+        "stats": "imagenet",
+        "mean": [
+          0.485,
+          0.456,
+          0.406
+        ],
+        "std": [
+          0.229,
+          0.224,
+          0.225
+        ]
+      },
+      "dataloaders": {
+        "batch_size_eval": 128,
+        "num_workers": 2,
+        "drop_last": false,
+        "shuffle_train": true
+      },
+      "mixed_precision": true,
+      "lr_finder": {
+        "enabled": true,
+        "suggest_func": "valley",
+        "num_it": 100
+      },
+      "schedule": {
+        "method": "fine_tune",
+        "freeze_epochs": 1,
+        "lr_mult": 100,
+        "pct_start": 0.3,
+        "div": 5.0
+      },
+      "callbacks": {
+        "save_model": {
+          "monitor": "valid_loss",
+          "comp": "min",
+          "every_epoch": true,
+          "with_opt": true
+        },
+        "early_stopping": {
+          "enabled": true,
+          "monitor": "valid_loss",
+          "patience": 3
+        },
+        "csv_logger": true
+      },
+      "export": {
+        "export_pkl": true,
+        "weights_pth": true
+      }
+    },
+    "image_size": 224,
+    "batch_size": 64,
+    "epochs": 10,
+    "optimizer": {
+      "name": "Adam",
+      "weight_decay": 0.01,
+      "betas": [
+        0.9,
+        0.99
+      ]
+    },
+    "learning_rate": {
+      "value": 0.001,
+      "source": "lr_find"
+    },
+    "loss_function": {
+      "name": "CrossEntropyLossFlat",
+      "label_smoothing": 0.0
+    },
+    "metrics": {
+      "primary": [
+        "roc_auc",
+        "pr_auc",
+        "f1",
+        "balanced_accuracy",
+        "mcc",
+        "precision",
+        "recall",
+        "specificity",
+        "fpr",
+        "fnr"
+      ],
+      "secondary": [
+        "accuracy",
+        "ece",
+        "brier"
+      ],
+      "monitor": "valid_loss",
+      "positive_class": "fake",
+      "threshold_policy": "validation_only",
+      "threshold_criterion": "max_balanced_accuracy",
+      "calibration_bins": 15
+    },
+    "random_seed": 42,
+    "augmentations": {
+      "aug_transforms": {
+        "enabled": true,
+        "train_only": true,
+        "do_flip": true,
+        "flip_vert": false,
+        "max_rotate": 10.0,
+        "max_zoom": 1.05,
+        "max_lighting": 0.1,
+        "max_warp": 0.0,
+        "min_scale": 1.0,
+        "pad_mode": "zeros"
+      }
+    },
+    "hardware": {
+      "platform": "kaggle",
+      "accelerator": "GPU",
+      "gpu": "T4",
+      "kaggle_image": "v170",
+      "environment_lock": "environment/versions.lock.md"
+    },
+    "outputs": {
+      "experiment_dir": "06_Experiments/EXP0001",
+      "checkpoint_dir": "06_Experiments/EXP0001/notebook/checkpoints",
+      "checkpoint_manifest": "07_Checkpoints/EXP0001_checkpoints.md",
+      "artifact_dataset_slug": "isthisdeception/thesis-experiment-artifacts"
+    },
+    "git_commit": "030efe04490ac7d3cacc73473e96d70e9a416f26",
+    "timestamp": "2026-11-06T23:24:15+06:00",
+    "notes": "SPLIT0001 is class-balanced (train 17502 fake / 17491 real; val 3719 / 3783; test 3779 / 3726), so no class weighting or resampling is applied. learning_rate.value is the pre-LR-Finder default; record the LR Finder suggestion before training."
+  },
+  "schedule": {
+    "method": "fine_tune",
+    "lr": 0.001,
+    "freeze_epochs": 1,
+    "epochs": 10,
+    "lr_mult": 100.0,
+    "pct_start": 0.3,
+    "div": 5.0,
+    "frozen_pct_start": 0.99,
+    "unfreeze_lr_divisor": 2
+  },
+  "phases": [
+    {
+      "phase": "frozen",
+      "epochs": 1,
+      "lr_max": 0.001,
+      "pct_start": 0.99
+    },
+    {
+      "phase": "unfrozen",
+      "epochs": 10,
+      "lr_max": [
+        5e-06,
+        0.0005
+      ],
+      "pct_start": 0.3,
+      "div": 5.0
+    }
+  ],
+  "data": {
+    "partitions": {
+      "train": 34993,
+      "valid": 7502,
+      "test": 7505
+    },
+    "train_batches": 546,
+    "valid_batches": 59,
+    "batch_size": 64,
+    "valid_batch_size": 128,
+    "vocab": [
+      "fake",
+      "real"
+    ]
+  },
+  "model": {
+    "backbone": "resnet50",
+    "source": "torchvision",
+    "pretrained": true,
+    "total_params": 25615424
+  },
+  "train_monitors": [
+    "roc_auc_score",
+    "f1_score",
+    "balanced_accuracy_score",
+    "matthews_corrcoef",
+    "precision_score",
+    "recall_score",
+    "accuracy"
+  ],
+  "device": "cuda:0",
+  "mixed_precision": true,
+  "random_seed": 42
+}
