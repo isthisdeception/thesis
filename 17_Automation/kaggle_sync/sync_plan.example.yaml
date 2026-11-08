@@ -9,6 +9,12 @@ metadata_paths:
   - 03_Datasets/metadata/dataset_registry.csv
   - 05_Models/model_registry.csv
   - 07_Checkpoints
+  - 06_Experiments/EXP0001/logs
+  - 06_Experiments/EXP0001/metrics
+  - 06_Experiments/EXP0001/learning_curves
+  - 06_Experiments/EXP0001/predictions
+  - 06_Experiments/EXP0001/observations.md
+  - 06_Experiments/EXP0001/notebook/checkpoints/checkpoint_manifest.json
   - 08_Evaluation/reports
 
 dataset_mounts:

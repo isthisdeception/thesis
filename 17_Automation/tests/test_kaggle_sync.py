@@ -7,7 +7,9 @@ from pathlib import Path
 import pytest
 
 from kaggle_sync.manifest import load_sync_plan
-from kaggle_sync.session import bootstrap_repo, resume_checkpoints
+import subprocess
+
+from kaggle_sync.session import bootstrap_repo, push_metadata, resume_checkpoints
 
 
 def test_load_sync_plan_parses_yaml(tmp_path: Path) -> None:
@@ -105,3 +107,33 @@ checkpoint_sources:
     with pytest.raises(FileExistsError, match="refusing to overwrite"):
         resume_checkpoints(plan)
     assert target.read_text(encoding="utf-8") == "different"
+
+
+def test_push_metadata_refuses_binaries(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    repo = workspace / "thesis"
+    repo.mkdir(parents=True)
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+    (repo / "logs").mkdir()
+    (repo / "logs" / "EXP0001_epochs.csv").write_text("epoch\n0\n", encoding="utf-8")
+    (repo / "ckpt").mkdir()
+    (repo / "ckpt" / "EXP0001_best.pth").write_bytes(b"weights")
+    plan_path = tmp_path / "sync_plan.yaml"
+    plan_path.write_text(
+        f"""
+repo_url: https://github.com/example/thesis.git
+repo_dir: thesis
+workspace_root: {workspace.as_posix()}
+metadata_paths:
+  - logs
+  - ckpt
+  - does/not/exist
+""".strip(),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="EXP0001_best.pth"):
+        push_metadata(load_sync_plan(plan_path))
+    staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo, capture_output=True, text=True)
+    assert staged.stdout.strip() == ""
+    log = subprocess.run(["git", "log", "--oneline"], cwd=repo, capture_output=True, text=True)
+    assert log.stdout.strip() == ""

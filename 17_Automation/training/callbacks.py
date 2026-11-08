@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import operator
 import time
+from pathlib import Path
 from typing import Callable
 
 import torch
@@ -11,7 +12,8 @@ from fastai.callback.core import Callback, CancelFitException
 from fastai.learner import Recorder
 
 from .checkpoints import CheckpointStore
-from .logs import get_logger
+from .logs import event, get_logger
+from .records import BATCH_COLUMNS, append_rows, epoch_columns
 
 
 def _recorded(recorder: Recorder) -> dict[str, float]:
@@ -138,6 +140,7 @@ class EpochCheckpointer(_PhaseAware):
         self.global_epoch += 1
         if stop:
             get_logger().info("early stopping: no %s improvement for %d epoch(s)", self.early.monitor, self.wait)
+            event("early_stop", epoch=self.global_epoch - 1, monitor=self.early.monitor, wait=self.wait)
             raise CancelFitException()
 
     def state_dict(self) -> dict:
@@ -161,53 +164,82 @@ class EpochCheckpointer(_PhaseAware):
 
 
 class HistoryTracker(_PhaseAware):
-    """Per-epoch and per-batch learning-curve data plus timing and GPU memory (M11)."""
+    """Per-epoch and per-batch learning-curve data plus timing and GPU memory (M11).
+
+    Rows are appended to the live CSVs (``live_epochs`` / ``live_batches``) as
+    each epoch ends, so they survive a session that dies before the run ends.
+    The in-memory history (restored from checkpoints on resume) is the
+    authoritative record used for the final learning-curve files.
+    """
 
     order = Recorder.order + 5
 
-    def __init__(self) -> None:
+    def __init__(self, session: str = "", live_epochs: Path | None = None, live_batches: Path | None = None) -> None:
         super().__init__()
+        self.session = session
+        self.live_epochs = live_epochs
+        self.live_batches = live_batches
+        self.columns: list[str] | None = None
         self.global_epoch = 0
         self.global_iter = 0
         self.epochs: list[dict] = []
         self.batches: list[dict] = []
+        self._epoch_batches: list[dict] = []
         self._started = 0.0
 
     def before_epoch(self) -> None:
         self._started = time.perf_counter()
+        self._epoch_batches = []
         if torch.cuda.is_available():
             torch.cuda.reset_peak_memory_stats()
 
     def after_batch(self) -> None:
         if not self.training:
             return
-        self.batches.append(
-            {
-                "iteration": self.global_iter,
-                "epoch": self.global_epoch,
-                "phase": self.phase,
-                "loss": float(self.learn.loss),
-                "lr": float(self.opt.hypers[-1]["lr"]),
-            }
-        )
+        row = {
+            "session": self.session,
+            "iteration": self.global_iter,
+            "epoch": self.global_epoch,
+            "phase": self.phase,
+            "loss": float(self.learn.loss.detach()),
+            "lr": float(self.opt.hypers[-1]["lr"]),
+        }
+        self.batches.append(row)
+        self._epoch_batches.append(row)
         self.global_iter += 1
 
     def after_epoch(self) -> None:
         if self.skipped:
             return
-        row = {"epoch": self.global_epoch, "phase": self.phase, **_recorded(self.recorder)}
-        row["seconds"] = round(time.perf_counter() - self._started, 2)
-        row["lr_head"] = float(self.opt.hypers[-1]["lr"])
-        if torch.cuda.is_available():
-            row["gpu_peak_mb"] = round(torch.cuda.max_memory_allocated() / 2**20, 1)
+        recorded = _recorded(self.recorder)
+        if self.columns is None:
+            self.columns = epoch_columns(recorded)
+        cuda = torch.cuda.is_available()
+        row = {
+            "session": self.session,
+            "epoch": self.global_epoch,
+            "phase": self.phase,
+            "phase_epoch": int(self.epoch),
+            **recorded,
+            "seconds": round(time.perf_counter() - self._started, 2),
+            "lr_head": float(self.opt.hypers[-1]["lr"]),
+            "gpu_peak_allocated_mb": round(torch.cuda.max_memory_allocated() / 2**20, 1) if cuda else None,
+            "gpu_peak_reserved_mb": round(torch.cuda.max_memory_reserved() / 2**20, 1) if cuda else None,
+        }
         self.epochs.append(row)
+        if self.live_epochs is not None:
+            append_rows(self.live_epochs, self.columns, [row])
+        if self.live_batches is not None:
+            append_rows(self.live_batches, BATCH_COLUMNS, self._epoch_batches)
         get_logger().info("epoch %s", row)
+        event("epoch", **row)
         self.global_epoch += 1
 
     def state_dict(self) -> dict:
         return {
             "global_epoch": self.global_epoch,
             "global_iter": self.global_iter,
+            "columns": self.columns,
             "epochs": list(self.epochs),
             "batches": list(self.batches),
         }
@@ -215,5 +247,6 @@ class HistoryTracker(_PhaseAware):
     def load_state_dict(self, state: dict) -> None:
         self.global_epoch = state["global_epoch"]
         self.global_iter = state["global_iter"]
+        self.columns = state["columns"]
         self.epochs = list(state["epochs"])
         self.batches = list(state["batches"])
