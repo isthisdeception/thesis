@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import posixpath
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -50,6 +51,25 @@ def _suggest_root(root: Path, sample: str) -> str:
             if first in dirnames and (Path(dirpath) / sample).is_file():
                 return f" Found it under {dirpath}; set dataset.processed_root to that path."
     return ""
+
+
+def _listed_files(root: Path, rel_paths) -> set[str]:
+    """Relative paths of the files in every folder the assignments reference.
+
+    One directory listing per folder instead of one stat per image: on Kaggle's
+    mounted inputs, 50k individual checks took ~20 minutes.
+    """
+
+    present: set[str] = set()
+    for parent in {posixpath.dirname(p) for p in rel_paths}:
+        folder = root / parent if parent else root
+        if not folder.is_dir():
+            continue
+        with os.scandir(folder) as entries:
+            for entry in entries:
+                if entry.is_file():
+                    present.add(posixpath.join(parent, entry.name) if parent else entry.name)
+    return present
 
 
 def validate_dataset(settings: TrainingSettings, frame: pd.DataFrame, *, check_files: bool = True) -> SplitFrames:
@@ -103,7 +123,8 @@ def validate_dataset(settings: TrainingSettings, frame: pd.DataFrame, *, check_f
                 f"dataset.processed_root does not exist: {root}. Attach Kaggle dataset "
                 f"{settings.get('dataset.processed_kaggle_slug')} to the session."
             )
-        missing = [p for p in frame[path_col] if not (root / p).is_file()]
+        present = _listed_files(root, frame[path_col])
+        missing = [p for p in frame[path_col] if p not in present]
         if missing:
             hint = _suggest_root(root, missing[0])
             raise DatasetValidationError(

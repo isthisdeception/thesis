@@ -1,5 +1,6 @@
-# Conda environment matching Kaggle GPU v170 (Python 3.12 + PyTorch 2.10 / CUDA 12.8).
-# Source of truth for package versions is requirements.txt + versions.lock.md.
+# Conda environment matching the Kaggle GPU image observed 2026-11-08
+# (Python 3.13 + PyTorch 2.11 / CUDA 13.0). Source of truth for package versions is
+# requirements.txt + versions.lock.md.
 name: thesis
 channels:
   - pytorch
@@ -7,7 +8,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.12
+  - python=3.13
   - pip
   - pip:
       - -r requirements.txt

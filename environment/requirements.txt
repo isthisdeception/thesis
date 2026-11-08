@@ -1,24 +1,24 @@
-# Local / CI training stack — pinned to Kaggle GPU image v170 (2026-06-29).
-# Do not use unpinned operators (>=, ~=, *).
+# Local / CI training stack — pinned to the Kaggle GPU image observed 2026-11-08
+# (environment/versions.lock.md, lock 2026-11-08). Do not use unpinned operators (>=, ~=, *).
 #
-# GPU local (Linux/Windows + NVIDIA): install torch/torchvision from the CUDA 12.8 index
+# GPU local (Linux/Windows + NVIDIA): install torch/torchvision from the CUDA 13.0 index
 #   BEFORE this file, or use:
-#   pip install torch==2.10.0 torchvision==0.25.0 --index-url https://download.pytorch.org/whl/cu128
+#   pip install torch==2.11.0 torchvision==0.26.0 --index-url https://download.pytorch.org/whl/cu130
 #   pip install -r environment/requirements.txt
 #
-# CPU-only local: PyPI wheels are acceptable for preprocessing tests; do not train on CPU
+# CPU-only local: use the CPU index for torch/torchvision; do not train on CPU
 # as the experiment hardware of record.
 
-# --- Deep learning (Kaggle GPU v170) ---
-torch==2.10.0
-torchvision==0.25.0
-fastai==2.8.7
-fastcore==1.12.42
-fasttransform==0.0.2
+# --- Deep learning (Kaggle GPU image 2026-11-08) ---
+torch==2.11.0
+torchvision==0.26.0
+fastai==2.8.12
+fastcore==2.2.39
+fasttransform==0.0.5
 # plum-dispatch >= 2.6 adds an RLock to dispatch functions, so FastAI
 # transforms (and learn.export -> export.pkl) can no longer be pickled.
 plum-dispatch==2.5.7
-numpy==2.0.2
+numpy==2.4.6
 
 # --- Preprocessing / tests (stdlib-adjacent; exact pins for local reproducibility) ---
 pillow==12.1.1

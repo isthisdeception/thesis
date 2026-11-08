@@ -6,7 +6,9 @@
 
 ---
 
-## Kaggle image (source of truth)
+> **Current lock: 2026-11-08 section below.** The v170 section is kept for history.
+
+## Kaggle image v170 (lock 2026-09-01, superseded)
 
 | Field | Value |
 |-------|-------|
@@ -97,8 +99,37 @@ Record stdout in the experiment log. If versions drift from this file, **stop**,
 
 ---
 
+## Lock 2026-11-08 — Kaggle GPU image observed at EXP0001 Session A (current)
+
+The Kaggle GPU runtime changed after the v170 lock. Values below were printed by the EXP0001 notebook's environment check and the pipeline's `environment` log on 2026-11-08 (Tesla T4). EXP0001 had not trained yet, so it uses this lock.
+
+| Component | Version |
+|-----------|---------|
+| Python | **3.13.16** |
+| PyTorch | **2.11.0+cu130** |
+| torchvision | **0.26.0+cu130** |
+| FastAI | **2.8.12** |
+| CUDA | **13.0** |
+| plum-dispatch | 2.5.7 (installed by `kaggle_sync bootstrap` from `kaggle-requirements.txt`) |
+| GPU | Tesla T4, 14,912 MB |
+| Platform | Linux 6.18.55, glibc 2.39 |
+
+Image tag/digest were not printed; experiments record `kaggle_image: kaggle-gpu-2026-11-08`. `fastcore`/NumPy versions on the image are not yet recorded; the next session's environment check prints them.
+
+Local reproduction (CPU, Python 3.11; validated with the full test suite):
+
+```bash
+pip install torch==2.11.0 torchvision==0.26.0 --index-url https://download.pytorch.org/whl/cpu
+pip install -r environment/requirements.txt
+```
+
+Smoke check for this lock: `sys.version_info[:2] == (3, 13)`, `torch.__version__.startswith("2.11.0")`, `fastai.__version__ == "2.8.12"`, CUDA available.
+
+---
+
 ## Change log
 
 | Date | Change |
 |------|--------|
 | 2026-09-01 | Initial lock to Kaggle GPU **v170** (STEP-030). |
+| 2026-11-08 | New lock for the Kaggle GPU image observed at EXP0001 Session A: Python 3.13.16, torch 2.11.0+cu130, torchvision 0.26.0, fastai 2.8.12, CUDA 13.0. v170 section kept as history. |
