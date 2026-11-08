@@ -1,0 +1,13 @@
+2026-11-08 16:04:18,763 INFO training experiment EXP0001; config /kaggle/working/thesis/06_Experiments/EXP0001/config.yaml; config validation PASS
+2026-11-08 16:04:18,765 INFO training STEP START output guard
+2026-11-08 16:04:18,766 ERROR training STEP FAILED output guard after 0.0s
+Traceback (most recent call last):
+  File "/kaggle/working/thesis/17_Automation/training/logs.py", line 151, in step
+    yield
+  File "/kaggle/working/thesis/17_Automation/training/pipeline.py", line 488, in run_experiment
+    mode = plan_run(settings, store, resume=resume)
+  File "/kaggle/working/thesis/17_Automation/training/pipeline.py", line 68, in plan_run
+    raise TrainingConfigError(
+    ...<3 lines>...
+    )
+training.settings.TrainingConfigError: config.yaml changed since EXP0001's checkpoints were written (manifest d43eaebc6432…, now d3359cf56f11…); the config is immutable after launch — a changed run needs a new EXP ID

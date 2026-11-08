@@ -1,0 +1,4 @@
+2026-11-08 14:19:47,025 INFO training STEP START environment
+2026-11-08 14:19:47,028 INFO training environment {'python': '3.13.16', 'platform': 'Linux-6.18.55+-x86_64-with-glibc2.39', 'torch': '2.11.0+cu130', 'torchvision': '0.26.0+cu130', 'fastai': '2.8.12', 'cuda_available': True, 'cuda': '13.0', 'gpu': 'Tesla T4', 'gpu_memory_mb': 14912, 'plum_dispatch': '2.5.7'}
+2026-11-08 14:19:47,032 INFO training STEP DONE environment in 0.0s
+2026-11-08 14:19:47,033 INFO training STEP START dataset validation

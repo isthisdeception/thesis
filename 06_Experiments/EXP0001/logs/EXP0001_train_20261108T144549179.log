@@ -1,0 +1,46 @@
+2026-11-08 14:45:49,181 INFO training experiment EXP0001; config /kaggle/working/thesis/06_Experiments/EXP0001/config.yaml; config validation PASS
+2026-11-08 14:45:49,181 INFO training STEP START output guard
+2026-11-08 14:45:49,183 INFO training run mode: fresh
+2026-11-08 14:45:49,184 INFO training STEP DONE output guard in 0.0s
+2026-11-08 14:45:49,185 INFO training STEP START git provenance
+2026-11-08 14:45:49,191 INFO training git provenance: config commit 030efe04490ac7d3cacc73473e96d70e9a416f26 is an ancestor of HEAD ab27c57f28927d2a4b4f1ee7eed33973517957e7
+2026-11-08 14:45:49,192 INFO training STEP DONE git provenance in 0.0s
+2026-11-08 14:45:49,193 INFO training STEP START environment
+2026-11-08 14:45:49,196 INFO training environment {'python': '3.13.16', 'platform': 'Linux-6.18.55+-x86_64-with-glibc2.39', 'torch': '2.11.0+cu130', 'torchvision': '0.26.0+cu130', 'fastai': '2.8.12', 'cuda_available': True, 'cuda': '13.0', 'gpu': 'Tesla T4', 'gpu_memory_mb': 14912, 'plum_dispatch': '2.5.7'}
+2026-11-08 14:45:49,200 INFO training STEP DONE environment in 0.0s
+2026-11-08 14:45:49,200 INFO training STEP START dataset validation
+2026-11-08 14:46:03,818 INFO training partition train: 34993 rows {'fake': 17502, 'real': 17491}
+2026-11-08 14:46:03,820 INFO training partition val: 7502 rows {'real': 3783, 'fake': 3719}
+2026-11-08 14:46:03,822 INFO training partition test: 7505 rows {'fake': 3779, 'real': 3726}
+2026-11-08 14:46:03,827 INFO training STEP DONE dataset validation in 14.6s
+2026-11-08 14:46:03,828 INFO training STEP START dataloaders
+2026-11-08 14:46:03,967 INFO training vocab ['fake', 'real']; train batches 546; valid batches 59
+2026-11-08 14:46:03,968 INFO training STEP DONE dataloaders in 0.1s
+2026-11-08 14:46:03,969 INFO training STEP START learner
+2026-11-08 14:46:04,454 INFO training learner resnet50 (torchvision), pretrained=True
+2026-11-08 14:46:04,454 INFO training STEP DONE learner in 0.5s
+2026-11-08 14:46:04,457 INFO training STEP START training
+2026-11-08 14:46:04,458 INFO training schedule fine_tune: lr=0.001 (source=lr_find), freeze_epochs=1, epochs=10; starting at phase 0 epoch 0
+2026-11-08 15:21:38,249 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 0, 'phase': 'frozen', 'phase_epoch': 0, 'train_loss': 0.5855149030685425, 'valid_loss': 0.5175832509994507, 'roc_auc_score': 0.8329541657506441, 'f1_score': 0.7036293436293436, 'balanced_accuracy_score': 0.7430877525778883, 'matthews_corrcoef': 0.5042209198896532, 'precision_score': 0.8265602322206096, 'recall_score': 0.6125302500672224, 'accuracy': 0.7442015409469604, 'seconds': 2133.72, 'lr_head': 8.051998315956421e-05, 'gpu_peak_allocated_mb': 4383.0, 'gpu_peak_reserved_mb': 5598.0}
+2026-11-08 15:21:38,250 INFO training new best valid_loss=0.51758 at epoch 0
+2026-11-08 15:21:38,714 INFO training checkpoint saved EXP0001_epoch_000.pth (recovery, sha256 3f27a4556f33…)
+2026-11-08 15:25:00,223 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 1, 'phase': 'unfrozen', 'phase_epoch': 0, 'train_loss': 0.4382377862930298, 'valid_loss': 0.45839837193489075, 'roc_auc_score': 0.8846591333541878, 'f1_score': 0.7472975090083033, 'balanced_accuracy_score': 0.7837752169187568, 'matthews_corrcoef': 0.5929740357499116, 'precision_score': 0.8952702702702703, 'recall_score': 0.641301425114278, 'accuracy': 0.784990668296814, 'seconds': 201.49, 'lr_head': 0.00019966797566403925, 'gpu_peak_allocated_mb': 4683.8, 'gpu_peak_reserved_mb': 5632.0}
+2026-11-08 15:25:00,224 INFO training new best valid_loss=0.45840 at epoch 1
+2026-11-08 15:25:01,351 INFO training checkpoint saved EXP0001_epoch_001.pth (recovery, sha256 f7004c80ff61…)
+2026-11-08 15:28:20,962 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 2, 'phase': 'unfrozen', 'phase_epoch': 1, 'train_loss': 0.38635849952697754, 'valid_loss': 0.38876548409461975, 'roc_auc_score': 0.914042897362047, 'f1_score': 0.7970798569725864, 'balanced_accuracy_score': 0.8176095532745558, 'matthews_corrcoef': 0.6485766905970544, 'precision_score': 0.8937520882058135, 'recall_score': 0.7192793761763915, 'accuracy': 0.8184484243392944, 'seconds': 199.6, 'lr_head': 0.00039966761320076385, 'gpu_peak_allocated_mb': 4684.3, 'gpu_peak_reserved_mb': 6124.0}
+2026-11-08 15:28:20,963 INFO training new best valid_loss=0.38877 at epoch 2
+2026-11-08 15:28:22,068 INFO training checkpoint saved EXP0001_epoch_002.pth (recovery, sha256 22c198f1bb23…)
+2026-11-08 15:31:40,872 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 3, 'phase': 'unfrozen', 'phase_epoch': 2, 'train_loss': 0.3260110318660736, 'valid_loss': 0.34887227416038513, 'roc_auc_score': 0.937791496851548, 'f1_score': 0.8283159463487332, 'balanced_accuracy_score': 0.8456018515063319, 'matthews_corrcoef': 0.7058179450957681, 'precision_score': 0.9291206954195921, 'recall_score': 0.747243882764184, 'accuracy': 0.8464409708976746, 'seconds': 198.8, 'lr_head': 0.0004999996321132336, 'gpu_peak_allocated_mb': 4684.3, 'gpu_peak_reserved_mb': 6124.0}
+2026-11-08 15:31:40,874 INFO training new best valid_loss=0.34887 at epoch 3
+2026-11-08 15:31:41,985 INFO training checkpoint saved EXP0001_epoch_003.pth (recovery, sha256 175b11439178…)
+2026-11-08 15:35:00,323 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 4, 'phase': 'unfrozen', 'phase_epoch': 3, 'train_loss': 0.2654782831668854, 'valid_loss': 0.29673123359680176, 'roc_auc_score': 0.9509308317157673, 'f1_score': 0.8597674752404191, 'balanced_accuracy_score': 0.8692229363940249, 'matthews_corrcoef': 0.7451490880859102, 'precision_score': 0.9221059113300493, 'recall_score': 0.8053240118311374, 'accuracy': 0.8697680830955505, 'seconds': 198.33, 'lr_head': 0.0004753315582096514, 'gpu_peak_allocated_mb': 4684.3, 'gpu_peak_reserved_mb': 6124.0}
+2026-11-08 15:35:00,324 INFO training new best valid_loss=0.29673 at epoch 4
+2026-11-08 15:35:01,418 INFO training checkpoint saved EXP0001_epoch_004.pth (recovery, sha256 b8a7bf6e0aae…)
+2026-11-08 15:38:21,867 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 5, 'phase': 'unfrozen', 'phase_epoch': 4, 'train_loss': 0.1963682472705841, 'valid_loss': 0.3012278378009796, 'roc_auc_score': 0.9546539879907402, 'f1_score': 0.8725077225498455, 'balanced_accuracy_score': 0.8785974275172956, 'matthews_corrcoef': 0.7604470517757499, 'precision_score': 0.9130179253599765, 'recall_score': 0.8354396343102984, 'accuracy': 0.8789656162261963, 'seconds': 200.44, 'lr_head': 0.00040603402266042, 'gpu_peak_allocated_mb': 4516.9, 'gpu_peak_reserved_mb': 6124.0}
+2026-11-08 15:38:22,975 INFO training checkpoint saved EXP0001_epoch_005.pth (recovery, sha256 a0a3c033e31a…)
+2026-11-08 15:41:43,657 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 6, 'phase': 'unfrozen', 'phase_epoch': 5, 'train_loss': 0.16015365719795227, 'valid_loss': 0.28592202067375183, 'roc_auc_score': 0.9597896492403107, 'f1_score': 0.8827489481065919, 'balanced_accuracy_score': 0.888204664774134, 'matthews_corrcoef': 0.7795902621660891, 'precision_score': 0.9226033421284081, 'recall_score': 0.8461952137671417, 'accuracy': 0.8885630369186401, 'seconds': 200.68, 'lr_head': 0.00030583248843860577, 'gpu_peak_allocated_mb': 4758.8, 'gpu_peak_reserved_mb': 6124.0}
+2026-11-08 15:41:43,659 INFO training new best valid_loss=0.28592 at epoch 6
+2026-11-08 15:41:44,797 INFO training checkpoint saved EXP0001_epoch_006.pth (recovery, sha256 29f782d75c5c…)
+2026-11-08 15:45:05,494 INFO training epoch {'session': 'train_20261108T144549179', 'epoch': 7, 'phase': 'unfrozen', 'phase_epoch': 6, 'train_loss': 0.12562596797943115, 'valid_loss': 0.29154568910598755, 'roc_auc_score': 0.9609128296961463, 'f1_score': 0.8907425133324217, 'balanced_accuracy_score': 0.893345159353093, 'matthews_corrcoef': 0.7873516673815545, 'precision_score': 0.9062326099053979, 'recall_score': 0.8757730572734606, 'accuracy': 0.8934950828552246, 'seconds': 200.69, 'lr_head': 0.00019457322381620864, 'gpu_peak_allocated_mb': 4758.8, 'gpu_peak_reserved_mb': 6124.0}
+2026-11-08 15:45:06,632 INFO training checkpoint saved EXP0001_epoch_007.pth (recovery, sha256 131e4a34f36b…)
+2026-11-08 15:48:06,884 ERROR training RUN FAILED outside a pipeline step: KeyboardInterrupt: 

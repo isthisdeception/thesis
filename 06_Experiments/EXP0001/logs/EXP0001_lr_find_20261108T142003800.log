@@ -1,0 +1,17 @@
+2026-11-08 14:20:03,802 INFO training STEP START environment
+2026-11-08 14:20:03,804 INFO training environment {'python': '3.13.16', 'platform': 'Linux-6.18.55+-x86_64-with-glibc2.39', 'torch': '2.11.0+cu130', 'torchvision': '0.26.0+cu130', 'fastai': '2.8.12', 'cuda_available': True, 'cuda': '13.0', 'gpu': 'Tesla T4', 'gpu_memory_mb': 14912, 'plum_dispatch': '2.5.7'}
+2026-11-08 14:20:03,808 INFO training STEP DONE environment in 0.0s
+2026-11-08 14:20:03,809 INFO training STEP START dataset validation
+2026-11-08 14:40:02,771 INFO training partition train: 34993 rows {'fake': 17502, 'real': 17491}
+2026-11-08 14:40:02,774 INFO training partition val: 7502 rows {'real': 3783, 'fake': 3719}
+2026-11-08 14:40:02,776 INFO training partition test: 7505 rows {'fake': 3779, 'real': 3726}
+2026-11-08 14:40:02,782 INFO training STEP DONE dataset validation in 1199.0s
+2026-11-08 14:40:02,784 INFO training STEP START dataloaders
+2026-11-08 14:40:07,019 INFO training vocab ['fake', 'real']; train batches 546; valid batches 59
+2026-11-08 14:40:07,020 INFO training STEP DONE dataloaders in 4.2s
+2026-11-08 14:40:07,022 INFO training STEP START learner
+2026-11-08 14:40:08,578 INFO training learner resnet50 (torchvision), pretrained=True
+2026-11-08 14:40:08,578 INFO training STEP DONE learner in 1.6s
+2026-11-08 14:40:08,584 INFO training STEP START lr finder
+2026-11-08 14:45:48,856 INFO training STEP DONE lr finder in 340.3s
+2026-11-08 14:45:48,866 INFO training LR Finder suggests 0.000331 (valley); record it in learning_rate.value before training

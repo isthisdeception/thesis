@@ -1,0 +1,15 @@
+2026-11-08 14:16:13,961 INFO training STEP START environment
+2026-11-08 14:16:19,332 INFO training environment {'python': '3.13.16', 'platform': 'Linux-6.18.55+-x86_64-with-glibc2.39', 'torch': '2.11.0+cu130', 'torchvision': '0.26.0+cu130', 'fastai': '2.8.12', 'cuda_available': True, 'cuda': '13.0', 'gpu': 'Tesla T4', 'gpu_memory_mb': 14912, 'plum_dispatch': '2.5.7'}
+2026-11-08 14:16:22,895 INFO training STEP DONE environment in 8.9s
+2026-11-08 14:16:22,896 INFO training STEP START dataset validation
+2026-11-08 14:16:28,684 ERROR training STEP FAILED dataset validation after 5.8s
+Traceback (most recent call last):
+  File "/kaggle/working/thesis/17_Automation/training/logs.py", line 151, in step
+    yield
+  File "/kaggle/working/thesis/17_Automation/training/pipeline.py", line 153, in prepare
+    frames = validate_dataset(settings, load_assignments(settings))
+  File "/kaggle/working/thesis/17_Automation/training/data.py", line 109, in validate_dataset
+    raise DatasetValidationError(
+        f"{len(missing)} of {len(frame)} image(s) missing under {root}; first: {missing[0]}.{hint}"
+    )
+training.data.DatasetValidationError: 50000 of 50000 image(s) missing under /kaggle/input/datasets/isthisdeception/ds0001-pp0001; first: images/fake/cips/cips_img000005_81cbc201.png. Found it under /kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001; set dataset.processed_root to that path.
