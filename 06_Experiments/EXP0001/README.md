@@ -17,12 +17,12 @@
 | Image size / batch size | 224 / 64 |
 | Schedule | `fine_tune`: 1 frozen epoch, then 10 unfrozen epochs |
 | Optimizer | FastAI Adam, weight decay 0.01 |
-| Learning rate | LR Finder (`valley`); 1.0e-3 placeholder until the suggestion is recorded |
+| Learning rate | 3.31e-4 from LR Finder (`valley`, Kaggle Session A 2026-11-08); unfrozen phase uses `slice(1.66e-6, 1.66e-4)` |
 | Loss | `CrossEntropyLossFlat` |
 | Augmentation | `aug_transforms`: horizontal flip, rotate ≤ 10°, zoom ≤ 1.05, lighting ≤ 0.1, no warp |
 | Precision | mixed (`to_fp16`) |
 | Callbacks | per-epoch `SaveModelCallback` (with optimizer state), early stopping (patience 3 on `valid_loss`), `CSVLogger` |
-| Hardware | Kaggle GPU T4, image v170 (`environment/versions.lock.md`) |
+| Hardware | Kaggle GPU T4; image lock 2026-11-08: Python 3.13.16, torch 2.11.0+cu130, fastai 2.8.12 (`environment/versions.lock.md`) |
 | Seed | 42 |
 
 **Planned results:** the full canonical metric set from `05_Models/baseline_plan.md` on the SPLIT0001 test partition (ROC-AUC, PR-AUC, F1, balanced accuracy, MCC, precision, recall, specificity, FPR, FNR; plus accuracy, ECE, Brier), with the operating threshold chosen on the validation partition only.
