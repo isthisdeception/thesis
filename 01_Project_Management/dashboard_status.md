@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Experiment system (PART 7)
-- Active Step: **STEP-041** — Evaluation trigger artifacts
+- Active Step: **STEP-042** — Prediction validation
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -27,6 +27,7 @@
 - Logging system (STEP-038): COMPLETE — live session-tagged epoch/batch CSVs, event log, hyperparameter records, warning capture, binary guard on metadata push
 - Baseline training (STEP-039): COMPLETE — EXP0001 on Kaggle, test ROC-AUC 0.926, balanced accuracy 0.848 (below DEC0006 sanity bar, above 0.90)
 - Training completion (STEP-040): COMPLETE — MODEL0001 registered, Checklist 6 PASS
+- Evaluation inputs (STEP-041): COMPLETE — confusion, ROC, PR, and calibration tables derived from the saved predictions. Grad-CAM maps are not in Git. The eight-case list is `08_Evaluation/EXP0001/gradcam_sample.csv`.
 - `Ready=yes`
 
 ## Health

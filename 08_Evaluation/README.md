@@ -5,6 +5,8 @@
 ## Contents
 Metric CSVs, ROC/PR data, evaluation reports, failure analysis, prediction validation.
 
+STEP-041 inputs for EXP0001 live in `EXP0001/` (predictions, confusion, ROC, PR, calibration, Grad-CAM case list). Schema: `EXP0001/SCHEMA.md`. These are data files. Figures are specified later, not rendered here.
+
 ## Workflow
 Evaluation agents write, Figures/Tables consume. Do not re-compute metrics without new Evaluation ID.
 
