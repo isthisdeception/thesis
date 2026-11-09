@@ -1,8 +1,8 @@
 # Project Dashboard
 
 ## Active Phase
-- Current Phase: Environment & Model Foundation (PART 6)
-- Active Step: **STEP-039** — Run EXP0001 on Kaggle (IN PROGRESS: runbook + session notebook ready; Session A = LR Finder next)
+- Current Phase: Experiment system (PART 7)
+- Active Step: **STEP-041** — Evaluation trigger artifacts
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -25,6 +25,8 @@
 - Training pipeline package (STEP-036): COMPLETE — `17_Automation/training/`, thin EXP0001 notebook, end-to-end smoke test PASS (CPU)
 - Checkpoint system (STEP-037): COMPLETE — full-state recovery checkpoints, SHA-256 manifests, never-overwrite, resume verified by interruption tests
 - Logging system (STEP-038): COMPLETE — live session-tagged epoch/batch CSVs, event log, hyperparameter records, warning capture, binary guard on metadata push
+- Baseline training (STEP-039): COMPLETE — EXP0001 on Kaggle, test ROC-AUC 0.926, balanced accuracy 0.848 (below DEC0006 sanity bar, above 0.90)
+- Training completion (STEP-040): COMPLETE — MODEL0001 registered, Checklist 6 PASS
 - `Ready=yes`
 
 ## Health

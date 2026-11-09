@@ -6,7 +6,8 @@
 Architecture definitions, model registries, model cards, export pointers.  
 FastAI dataset-prep defaults (STEP-029 / Phase D13): `config/fastai_dataset.yaml`.  
 FastAI training standard (STEP-034 / Phase M3): `FASTAI_TRAINING_STANDARD.md`.  
-Training pipeline package (STEP-036 / Phase M6): `17_Automation/training/` — `run_experiment(config.yaml)` produces checkpoints, `export.pkl`, `weights.pth`, predictions, metrics, and learning-curve data under `06_Experiments/EXPxxxx/`.
+Training pipeline package (STEP-036 / Phase M6): `17_Automation/training/` — `run_experiment(config.yaml)` produces checkpoints, `export.pkl`, `weights.pth`, predictions, metrics, and learning-curve data under `06_Experiments/EXPxxxx/`.  
+Registered models: `MODEL0001` (ResNet-50, EXP0001) — `MODEL0001_model_card.md`, row in `model_registry.csv`. Weights are in the Kaggle artifact dataset, not in Git.
 
 ## Workflow
 Model/Training agents write, AI Forensic System consumes. No anonymous models.

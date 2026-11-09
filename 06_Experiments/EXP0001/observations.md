@@ -29,3 +29,8 @@
 - Dataset validation took 1,199 s on the Kaggle mount (one file check per image). Replaced by one directory listing per folder; same checks, same failure messages.
 - **Aborted run, discarded:** "Run All" also started cell B, so training began with the pre-LR-Finder value 1.0e-3 before the suggestion was recorded. It was interrupted within minutes; its checkpoints and logs lived only in that session's `/kaggle/working`, were never published or pushed, and were discarded by stopping the session. No results from it exist or are used.
 - `git_commit` → `0f7c613` (code + lock commit), `timestamp` refreshed. The config is frozen from Session B on.
+
+## 2026-11-09 — Registration (STEP-040)
+
+- Training result from Session B stands: test ROC-AUC 0.926, balanced accuracy 0.848. Checklist 6 PASS. `MODEL0001` registered. Config and metric files were not edited.
+- `CLAIM0001`–`CLAIM0008` were not linked. This run does not test them.
