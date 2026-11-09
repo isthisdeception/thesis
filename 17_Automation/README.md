@@ -20,6 +20,11 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Logging (STEP-038): `training/logs.py`, `training/records.py`; schemas in `training/LOGGING.md`. `kaggle_sync push-metadata` refuses binaries and files over 20 MB.
 - Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
+## Evaluation inputs (Phase M16 / STEP-041)
+- Package: `17_Automation/evaluation_trigger/`
+- Entrypoint: `python -m evaluation_trigger --experiment EXP0001 --positive-class fake --negative-class real`
+- Writes `08_Evaluation/EXPxxxx/` from the saved prediction CSVs. Does not run the model and does not render figures.
+
 ## Config validation (Phase M4 / STEP-034)
 - Package: `17_Automation/config_validation/`
 - Docs: `config_validation/README.md`; training workflow in `05_Models/FASTAI_TRAINING_STANDARD.md`
