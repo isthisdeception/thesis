@@ -20,6 +20,11 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Logging (STEP-038): `training/logs.py`, `training/records.py`; schemas in `training/LOGGING.md`. `kaggle_sync push-metadata` refuses binaries and files over 20 MB.
 - Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
+## Prediction validation (Phase E1–E2 / STEP-042)
+- Package: `17_Automation/prediction_validation/`
+- Entrypoint: `python -m prediction_validation --experiment EXP0001 --evaluation EVAL0001`
+- Rejects an incomplete experiment and any prediction whose id, count, label, path, or probability does not match the split. Writes `08_Evaluation/EVAL0001/prediction_validation_report.md`.
+
 ## Evaluation inputs (Phase M16 / STEP-041)
 - Package: `17_Automation/evaluation_trigger/`
 - Entrypoint: `python -m evaluation_trigger --experiment EXP0001 --positive-class fake --negative-class real`

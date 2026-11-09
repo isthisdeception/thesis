@@ -7,6 +7,8 @@ Metric CSVs, ROC/PR data, evaluation reports, failure analysis, prediction valid
 
 STEP-041 inputs for EXP0001 live in `EXP0001/` (predictions, confusion, ROC, PR, calibration, Grad-CAM case list). Schema: `EXP0001/SCHEMA.md`. These are data files. Figures are specified later, not rendered here.
 
+STEP-042: `EVAL0001/prediction_validation_report.md` records the E1–E2 checks. Status is `predictions_validated` in `evaluation_registry.csv`. Metrics are not computed there.
+
 ## Workflow
 Evaluation agents write, Figures/Tables consume. Do not re-compute metrics without new Evaluation ID.
 
