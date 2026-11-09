@@ -1,6 +1,6 @@
 # Experiment: EXP0001
 
-**Status:** ready (Checklist 5 PASS, 2026-11-06; expected outcome approved in DEC0006, 2026-11-07) — not yet trained
+**Status:** completed (trained 2026-11-08; Checklist 6 PASS, 2026-11-09). See [`conclusions.md`](conclusions.md).
 
 **Research Question:** How can we improve the cross-generator generalization of image-based AI face detection models to maintain high accuracy on unseen generative architectures?
 
@@ -27,13 +27,13 @@
 
 **Planned results:** the full canonical metric set from `05_Models/baseline_plan.md` on the SPLIT0001 test partition (ROC-AUC, PR-AUC, F1, balanced accuracy, MCC, precision, recall, specificity, FPR, FNR; plus accuracy, ECE, Brier), with the operating threshold chosen on the validation partition only.
 
-**Results:** pending (training starts in STEP-039).
+**Results:** Test ROC-AUC 0.926, balanced accuracy 0.848, PR-AUC 0.935, F1 0.844, MCC 0.698, at threshold 0.395 chosen on validation. Best epoch 7. Below the DEC0006 sanity bar and above the 0.90 pipeline-failure line. Exact figures are in `metrics/test_metrics.json`.
 
-**Failures:** none yet.
+**Failures:** none.
 
 **Observations:** see [`observations.md`](observations.md).
 
-**Conclusion:** pending.
+**Conclusion:** [`conclusions.md`](conclusions.md). Audit: [`experiment_audit.md`](experiment_audit.md). Model card: [`../../05_Models/MODEL0001_model_card.md`](../../05_Models/MODEL0001_model_card.md).
 
 **Next Experiment:** `MODEL0002` Xception on the same frozen track (`DS0001 / v1.0 / PP0001 / SPLIT0001`), then `MODEL0003` EfficientNet-B4.
 

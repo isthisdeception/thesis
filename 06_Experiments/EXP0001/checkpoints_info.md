@@ -1,6 +1,6 @@
 # EXP0001 — Checkpoint Info
 
-**Status:** no checkpoints yet (training not started)
+**Status:** exported 2026-11-08. Best epoch 7. Checksums: [`../../07_Checkpoints/EXP0001_checkpoints.md`](../../07_Checkpoints/EXP0001_checkpoints.md). Binaries: Kaggle dataset `isthisdeception/thesis-experiment-artifacts`.
 
 ## Locations
 
