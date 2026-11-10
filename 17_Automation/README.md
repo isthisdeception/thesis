@@ -20,6 +20,11 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Logging (STEP-038): `training/logs.py`, `training/records.py`; schemas in `training/LOGGING.md`. `kaggle_sync push-metadata` refuses binaries and files over 20 MB.
 - Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
+## Classification metrics (Phase E3 / STEP-043)
+- Package: `17_Automation/classification_metrics/`
+- Entrypoint: `python -m classification_metrics --experiment EXP0001 --evaluation EVAL0001`
+- Refuses to run unless `prediction_validation_report.md` passed. Writes the full E3 suite to `08_Evaluation/EVAL0001/classification_metrics.csv` and the metrics section with per-metric notes to `classification_metrics.md`. Accuracy is never written alone.
+
 ## Prediction validation (Phase E1–E2 / STEP-042)
 - Package: `17_Automation/prediction_validation/`
 - Entrypoint: `python -m prediction_validation --experiment EXP0001 --evaluation EVAL0001`
