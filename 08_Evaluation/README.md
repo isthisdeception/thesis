@@ -17,6 +17,11 @@ STEP-045: `python -m failure_analysis` joins the predictions to the DS0001/PP000
 
 STEP-046: `EVAL0001/robustness/` holds the perturbation config (`config.yaml`), the Kaggle notebook and runbook, and, after the Kaggle run, `robustness_probs.csv`, `run_manifest.json`, the analysis CSVs, and `robustness_report.md`. Inference needs the MODEL0001 export and the processed images, so it runs on Kaggle only. Figure specs are FIG0016–FIG0017. Ran on Kaggle 2026-11-10; status is `robustness_complete` in `evaluation_registry.csv`.
 
+STEP-047 (DEC0007):
+- E8 cross-dataset, `EVAL0001/generalization/`: config, Kaggle notebook and runbook. After the Kaggle run: `predictions/DS000N.csv`, `run_manifest.json`, `cross_dataset_*.csv`, and `cross_dataset_report.md`. MODEL0001 runs unchanged at its frozen threshold on DS0002–DS0005 test (DS0005: fixed 10,000 sample).
+- E9 unseen generator, `EVAL0002/` (reserved): evaluates EXP0002 / MODEL0008, trained without Stable Diffusion. After EXP0002 syncs: STEP-041 inputs in `EXP0002/`, the E1–E2 report, then `EVAL0002/unseen_generator/` from `python -m generalization unseen`.
+- Figure specs FIG0018–FIG0019.
+
 ## Workflow
 Evaluation agents write, Figures/Tables consume. Do not re-compute metrics without new Evaluation ID.
 

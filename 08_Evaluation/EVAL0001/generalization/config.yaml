@@ -1,0 +1,65 @@
+# STEP-047 / Phase E8 cross-dataset evaluation of MODEL0001 (trained on DS0001 SPLIT0001).
+# List the plan (from 17_Automation/):  python -m generalization datasets
+# The model and the frozen threshold are not changed for any target dataset.
+# Generators come from each dataset's metadata; `relation` labels how a generator
+# relates to MODEL0001's training generators (default: unseen). Adding a dataset = adding an entry.
+
+evaluation_id: EVAL0001
+experiment_id: EXP0001
+seed: 42
+
+model:
+  model_id: MODEL0001
+  export_name: MODEL0001_export.pkl
+  export_sha256: 228495c1fe16cdc06246c985d0209bd416ec63f3b843c8983a2f41b3d40e279a  # 07_Checkpoints/EXP0001_checkpoints.md
+  positive_class: fake
+  search: [/kaggle/input/datasets/isthisdeception/thesis-experiment-artifacts, /kaggle/input/thesis-experiment-artifacts]
+
+reference:
+  name: DS0001 SPLIT0001 test (in-distribution)
+  predictions: 08_Evaluation/EXP0001/predictions.csv   # frozen threshold and the in-distribution baseline
+  split: test
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001
+
+training_generators: [cips, face_synthetics, gansformer, lama, mat, projected_gan, sfhq, stable_diffusion,
+                      stargan, stylegan1, stylegan2, stylegan3, taming_transformer]
+
+inference:
+  image_size: 224
+  resize_interpolation: bilinear
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  batch_size: 128
+  num_workers: 8               # image reads from Kaggle inputs are I/O-bound
+  sanity_images: 500           # first N reference images re-predicted; must match predictions.csv
+  sanity_atol: 0.001
+
+datasets:
+  - name: DS0002
+    description: DiFF official test, diffusion-generated faces (fake only)
+    assignments: 03_Datasets/splits/DS0002_PP0002_SPLIT0001/assignments.csv
+    partition: test
+    processed_root: /kaggle/input/datasets/isthisdeception/ds0002-pp0002/DS0002_PP0002
+    max_images: null
+  - name: DS0003
+    description: 140k Real and Fake Faces, FFHQ real vs StyleGAN fake
+    assignments: 03_Datasets/splits/DS0003_PP0003_SPLIT0001/assignments.csv
+    partition: test
+    processed_root: /kaggle/input/datasets/isthisdeception/ds0003-pp0003/DS0003_PP0003
+    max_images: null
+    relation: {stylegan: related}            # StyleGAN family is in training; version not stated
+    notes: Real images are FFHQ, a real source also present in DS0001.
+  - name: DS0004
+    description: Synthbuster, general scenes (not faces), RAISE real vs 9 diffusion generators
+    assignments: 03_Datasets/splits/DS0004_PP0006_SPLIT0001/assignments.csv
+    partition: test
+    processed_root: /kaggle/input/datasets/isthisdeception/ds0004-pp0006/DS0004_PP0006
+    max_images: null
+    relation: {stable-diffusion-1-3: related, stable-diffusion-1-4: related, stable-diffusion-2: related, stable-diffusion-xl: related}
+    notes: Not faces; tests a different content distribution.
+  - name: DS0005
+    description: FairFace, real faces only
+    assignments: 03_Datasets/splits/DS0005_PP0005_SPLIT0001/assignments.csv
+    partition: test
+    processed_root: /kaggle/input/datasets/isthisdeception/ds0005-pp0005/DS0005_PP0005
+    max_images: 10000          # fixed seeded sample of the 21962 test images

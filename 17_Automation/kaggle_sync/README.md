@@ -40,4 +40,6 @@ Per-experiment session order: `06_Experiments/EXP0001/KAGGLE_RUNBOOK.md`.
 
 Robustness (STEP-046) uses `sync_plan.robustness.yaml`: both `ds0001-pp0001` and `thesis-experiment-artifacts` are required, and only `08_Evaluation/EVAL0001/robustness` returns to Git. Session order: `08_Evaluation/EVAL0001/robustness/KAGGLE_RUNBOOK.md`.
 
+STEP-047 adds two plans. `sync_plan.generalization.yaml` (cross-dataset; six required inputs; returns `08_Evaluation/EVAL0001/generalization`). `sync_plan.exp0002.yaml` (EXP0002 training; publishes to the separate dataset `isthisdeception/thesis-exp0002-artifacts`, because a new version of `thesis-experiment-artifacts` with a different upload root would drop MODEL0001's files).
+
 Use `--dry-run` while validating a new manifest.
