@@ -1,0 +1,250 @@
+{
+  "experiment_id": "EXP0002",
+  "session": "train_20261110T053300979",
+  "mode": "fresh",
+  "config": "06_Experiments/EXP0002/config.yaml",
+  "config_sha256": "3ac905d2ef6468f2f934dfc199dc39224e8d86ea6fd9a3a7c249c45e586ba21b",
+  "resolved_config": {
+    "schema_version": 1,
+    "experiment_id": "EXP0002",
+    "research_question": "How can we improve the cross-generator generalization of image-based AI face detection models to maintain high accuracy on unseen generative architectures?",
+    "purpose": "Phase E9 unseen-generator test for the baseline: the same ResNet-50 and FastAI training standard as EXP0001, trained on DS0001 / v1.0 / PP0001 / SPLIT0002, where stable_diffusion is held out of train and val. Detection of the held-out generator on the SPLIT0002 test partition (stable_diffusion fakes only) measures generalization to an unseen generator.",
+    "expected_outcome": "Pipeline sanity only: validation ROC-AUC >= 0.90 on the seen generators (EXP0001 reached 0.934 on its validation split). No expectation is set for recall on the held-out generator; it is reported as observed and compared with EXP0001 on the same Stable Diffusion images.",
+    "study_track": "generator_holdout",
+    "dataset": {
+      "dataset_id": "DS0001",
+      "version": "v1.0",
+      "pipeline_id": "PP0001",
+      "output_id": "DS0001_PP0001",
+      "processed_kaggle_slug": "isthisdeception/ds0001-pp0001",
+      "processed_root": "/kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001",
+      "path_column": "processed_path",
+      "label_column": "class_label",
+      "partition_column": "partition",
+      "vocab": [
+        "fake",
+        "real"
+      ]
+    },
+    "split": {
+      "split_id": "SPLIT0002",
+      "scheme": "logo",
+      "assignments_csv": "03_Datasets/splits/DS0001_PP0001_SPLIT0002/assignments.csv",
+      "train_name": "train",
+      "valid_name": "val",
+      "test_name": "test",
+      "leakage_required": "PASS"
+    },
+    "model": {
+      "model_id": "MODEL0008",
+      "architecture": "ResNet-50",
+      "backbone": "resnet50",
+      "source": "torchvision",
+      "pretrained": true,
+      "pretrained_weights": "ImageNet-1k"
+    },
+    "fastai": {
+      "datablock": {
+        "blocks": [
+          "ImageBlock",
+          "CategoryBlock"
+        ],
+        "get_items": "assignments_csv",
+        "get_x": "processed_root + processed_path",
+        "get_y": "class_label",
+        "splitter": "column_splitter",
+        "n_inp": 1
+      },
+      "item_tfms": {
+        "resize": 224,
+        "method": "squish"
+      },
+      "normalize": {
+        "stats": "imagenet",
+        "mean": [
+          0.485,
+          0.456,
+          0.406
+        ],
+        "std": [
+          0.229,
+          0.224,
+          0.225
+        ]
+      },
+      "dataloaders": {
+        "batch_size_eval": 128,
+        "num_workers": 2,
+        "drop_last": false,
+        "shuffle_train": true
+      },
+      "mixed_precision": true,
+      "lr_finder": {
+        "enabled": true,
+        "suggest_func": "valley",
+        "num_it": 100
+      },
+      "schedule": {
+        "method": "fine_tune",
+        "freeze_epochs": 1,
+        "lr_mult": 100,
+        "pct_start": 0.3,
+        "div": 5.0
+      },
+      "callbacks": {
+        "save_model": {
+          "monitor": "valid_loss",
+          "comp": "min",
+          "every_epoch": true,
+          "with_opt": true
+        },
+        "early_stopping": {
+          "enabled": true,
+          "monitor": "valid_loss",
+          "patience": 3
+        },
+        "csv_logger": true
+      },
+      "export": {
+        "export_pkl": true,
+        "weights_pth": true
+      }
+    },
+    "image_size": 224,
+    "batch_size": 64,
+    "epochs": 10,
+    "optimizer": {
+      "name": "Adam",
+      "weight_decay": 0.01,
+      "betas": [
+        0.9,
+        0.99
+      ]
+    },
+    "learning_rate": {
+      "value": 0.000331131302240938,
+      "source": "manual"
+    },
+    "loss_function": {
+      "name": "CrossEntropyLossFlat",
+      "label_smoothing": 0.0
+    },
+    "metrics": {
+      "primary": [
+        "roc_auc",
+        "pr_auc",
+        "f1",
+        "balanced_accuracy",
+        "mcc",
+        "precision",
+        "recall",
+        "specificity",
+        "fpr",
+        "fnr"
+      ],
+      "secondary": [
+        "accuracy",
+        "ece",
+        "brier"
+      ],
+      "monitor": "valid_loss",
+      "positive_class": "fake",
+      "threshold_policy": "validation_only",
+      "threshold_criterion": "max_balanced_accuracy",
+      "calibration_bins": 15
+    },
+    "random_seed": 42,
+    "augmentations": {
+      "aug_transforms": {
+        "enabled": true,
+        "train_only": true,
+        "do_flip": true,
+        "flip_vert": false,
+        "max_rotate": 10.0,
+        "max_zoom": 1.05,
+        "max_lighting": 0.1,
+        "max_warp": 0.0,
+        "min_scale": 1.0,
+        "pad_mode": "zeros"
+      }
+    },
+    "hardware": {
+      "platform": "kaggle",
+      "accelerator": "GPU",
+      "gpu": "T4",
+      "kaggle_image": "kaggle-gpu-2026-11-08",
+      "environment_lock": "environment/versions.lock.md"
+    },
+    "outputs": {
+      "experiment_dir": "06_Experiments/EXP0002",
+      "checkpoint_dir": "06_Experiments/EXP0002/notebook/checkpoints",
+      "checkpoint_manifest": "07_Checkpoints/EXP0002_checkpoints.md",
+      "artifact_dataset_slug": "isthisdeception/thesis-exp0002-artifacts"
+    },
+    "git_commit": "faa16a67836b52b7f87dda4fcf8d09ef3bd97997",
+    "timestamp": "2026-11-10T10:07:28+06:00",
+    "notes": "SPLIT0002 (logo, seed 42): train 40873 (19629 fake / 21244 real), val 7204 (3448 / 3756), test 1923 (stable_diffusion fakes only). Train and val hold the other 12 generators. Test metrics that need real images (ROC-AUC, specificity) are undefined on this split; recall on the held-out generator is the result."
+  },
+  "schedule": {
+    "method": "fine_tune",
+    "lr": 0.000331131302240938,
+    "freeze_epochs": 1,
+    "epochs": 10,
+    "lr_mult": 100.0,
+    "pct_start": 0.3,
+    "div": 5.0,
+    "frozen_pct_start": 0.99,
+    "unfreeze_lr_divisor": 2
+  },
+  "phases": [
+    {
+      "phase": "frozen",
+      "epochs": 1,
+      "lr_max": 0.000331131302240938,
+      "pct_start": 0.99
+    },
+    {
+      "phase": "unfrozen",
+      "epochs": 10,
+      "lr_max": [
+        1.65565651120469e-06,
+        0.000165565651120469
+      ],
+      "pct_start": 0.3,
+      "div": 5.0
+    }
+  ],
+  "data": {
+    "partitions": {
+      "train": 40873,
+      "valid": 7204,
+      "test": 1923
+    },
+    "train_batches": 638,
+    "valid_batches": 57,
+    "batch_size": 64,
+    "valid_batch_size": 128,
+    "vocab": [
+      "fake",
+      "real"
+    ]
+  },
+  "model": {
+    "backbone": "resnet50",
+    "source": "torchvision",
+    "pretrained": true,
+    "total_params": 25615424
+  },
+  "train_monitors": [
+    "roc_auc_score",
+    "f1_score",
+    "balanced_accuracy_score",
+    "matthews_corrcoef",
+    "precision_score",
+    "recall_score",
+    "accuracy"
+  ],
+  "device": "cuda:0",
+  "mixed_precision": true,
+  "random_seed": 42
+}

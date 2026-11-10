@@ -1,0 +1,6 @@
+{
+  "value": 0.4419808089733124,
+  "criterion": "max_balanced_accuracy",
+  "policy": "validation_only",
+  "positive_class": "fake"
+}
