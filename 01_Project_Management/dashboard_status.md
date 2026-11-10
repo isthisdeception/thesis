@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Experiment system (PART 7)
-- Active Step: **STEP-044** — Calibration & threshold analysis
+- Active Step: **STEP-045** — Confusion & failure analysis
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -30,6 +30,7 @@
 - Evaluation inputs (STEP-041): COMPLETE — confusion, ROC, PR, and calibration tables derived from the saved predictions. Grad-CAM maps are not in Git. The eight-case list is `08_Evaluation/EXP0001/gradcam_sample.csv`.
 - Prediction validation (STEP-042): COMPLETE — EVAL0001, E1–E2 PASS. Counts, ids, labels, and probabilities match the split.
 - Classification metrics (STEP-043): COMPLETE — EVAL0001 E3 suite in `08_Evaluation/EVAL0001/classification_metrics.csv`. Test MCC 0.698, PR-AUC 0.935, FNR 0.183 vs FPR 0.120.
+- Calibration & threshold analysis (STEP-044): COMPLETE — test ECE 0.052, MCE 0.154, Brier 0.113. Frozen threshold 0.395 kept for reporting; screening (0.089) and flag-for-review (0.629) points chosen on val. Figure specs FIG0011–FIG0013.
 - `Ready=yes`
 
 ## Health

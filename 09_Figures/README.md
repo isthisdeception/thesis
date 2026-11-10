@@ -31,6 +31,13 @@ specs/FIGxxxx_spec.md, assets/FIGxxxx_v1.png
 | FIG0009 | Contrast comparison | `eda_contrast_stats.csv` |
 | FIG0010 | Compression / format | `eda_compression_stats.csv` |
 
+## STEP-044 / Phases E4–E5 figure specs (data only)
+| FIG ID | Topic | Data path |
+|--------|-------|-----------|
+| FIG0011 | Reliability diagram (EVAL0001 test) | `08_Evaluation/EVAL0001/reliability.csv` |
+| FIG0012 | Confidence distribution vs accuracy | `08_Evaluation/EVAL0001/confidence_distribution.csv` |
+| FIG0013 | Threshold trade-off with operating points | `08_Evaluation/EVAL0001/threshold_sweep.csv`, `operating_points.csv` |
+
 Specs live in `09_Figures/specs/`. **Do not commit AI-rendered publication figures** ([A.9](../MASTER_RESEARCH_OPERATING_SYSTEM.md#a9-canonical-figure-policy)).
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*
