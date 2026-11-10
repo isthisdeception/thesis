@@ -1,0 +1,36 @@
+{
+  "evaluation_id": "EVAL0001",
+  "model_id": "MODEL0001",
+  "export_sha256": "228495c1fe16cdc06246c985d0209bd416ec63f3b843c8983a2f41b3d40e279a",
+  "config": "config.yaml",
+  "config_sha256": "c5c05305f0e74e76205276b97b0b67a4d842ff6fd6fb5d695982f401493e6773",
+  "sanity_check": {
+    "images": 500,
+    "max_abs_diff": 1.3291963653516703e-05,
+    "atol": 0.001
+  },
+  "datasets": {
+    "DS0002": 7364,
+    "DS0003": 20000,
+    "DS0004": 1500,
+    "DS0005": 10000
+  },
+  "processed_roots": {
+    "DS0002": "/kaggle/input/datasets/isthisdeception/ds0002-pp0002/DS0002_PP0002",
+    "DS0003": "/kaggle/input/datasets/isthisdeception/ds0003-pp0003/DS0003_PP0003",
+    "DS0004": "/kaggle/input/datasets/isthisdeception/ds0004-pp0006/DS0004_PP0006",
+    "DS0005": "/kaggle/input/datasets/isthisdeception/ds0005-pp0005/DS0005_PP0005"
+  },
+  "seconds": {
+    "DS0002": 103.7,
+    "DS0003": 776.2,
+    "DS0004": 23.6,
+    "DS0005": 323.1
+  },
+  "device": "cuda",
+  "python": "3.13.16",
+  "git_commit": "362e2e283f6d9e1c4222c9e26ba3acfb21f4b876",
+  "torch": "2.11.0+cu130",
+  "export_path": "/kaggle/input/datasets/isthisdeception/thesis-experiment-artifacts/notebook/checkpoints/MODEL0001_export.pkl",
+  "gpu": "Tesla T4"
+}

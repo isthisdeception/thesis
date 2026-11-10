@@ -1,6 +1,6 @@
 # Experiment: EXP0002
 
-**Status:** ready (Checklist 5 PASS, 2026-11-10). Waiting for the Kaggle training session.
+**Status:** completed (trained 2026-11-10 on Kaggle T4). See [`conclusions.md`](conclusions.md).
 
 **Research Question:** How can we improve the cross-generator generalization of image-based AI face detection models to maintain high accuracy on unseen generative architectures?
 
@@ -16,7 +16,7 @@
 
 **Planned results:** the canonical metric set on val (both classes) and recall on the held-out generator (test). Metrics that need real images (ROC-AUC, specificity) are undefined on this test split. The E9 analysis (`python -m generalization unseen`) compares recall on unseen Stable Diffusion with recall on the seen generators, and with EXP0001 on the same 299 Stable Diffusion images.
 
-**Results:** pending.
+**Results:** validation (seen generators) ROC-AUC 0.937, balanced accuracy 0.859 at threshold 0.442. Held-out Stable Diffusion recall 15.2% (293 / 1,923), against 83.3% for seen generators on val; on the same 299 images MODEL0001 detects 96.3%. Best epoch 9, 66.0 min. Evaluation: `08_Evaluation/EVAL0002/`.
 
 **Kaggle:** [`KAGGLE_RUNBOOK.md`](KAGGLE_RUNBOOK.md). Artifacts go to the separate Kaggle dataset `isthisdeception/thesis-exp0002-artifacts`.
 

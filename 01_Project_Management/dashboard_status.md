@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Experiment system (PART 7)
-- Active Step: **STEP-047** — Generalization & unseen-generator evaluation (code, EXP0002, and notebooks ready; waiting for two Kaggle runs: cross-dataset inference and EXP0002 training)
+- Active Step: **STEP-048** — Comparison study
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -33,6 +33,8 @@
 - Calibration & threshold analysis (STEP-044): COMPLETE — test ECE 0.052, MCE 0.154, Brier 0.113. Frozen threshold 0.395 kept for reporting; screening (0.089) and flag-for-review (0.629) points chosen on val. Figure specs FIG0011–FIG0013.
 - Confusion & failure analysis (STEP-045): COMPLETE — `08_Evaluation/EVAL0001/failure_analysis.md`. Missed fakes concentrate in StyleGAN3, Projected GAN, StyleGAN2, MAT (FNR 38–44%); MetFaces real images have FPR 36.7%. Compression, quality, identity, lighting not assessable from metadata. Figure specs FIG0014–FIG0015.
 - Robustness evaluation (STEP-046): COMPLETE — Kaggle T4, 54 conditions × 7505 test images; clean check PASS. Blur, downscaling, low-quality uploads, strong noise, and JPEG 10 push balanced accuracy to ~0.50 (nearly every image called fake). Brightness, contrast, colour, and small rotations cost under 0.10. `08_Evaluation/EVAL0001/robustness/robustness_report.md`; figure specs FIG0016–FIG0017.
+- Cross-dataset (STEP-047, E8): DONE — MODEL0001 at its frozen threshold. Unseen-generator fakes missed 48% (DS0002 diffusion faces 50%) vs 18% in-distribution; StyleGAN-family fakes missed 9%. Real images from other sources mostly flagged as fake: FPR 30% (DS0003 FFHQ), 77% (DS0004 scenes), 83% (DS0005 FairFace). DS0004 ROC-AUC 0.52. `08_Evaluation/EVAL0001/generalization/cross_dataset_report.md`.
+- Unseen generator (STEP-047, E9): DONE — EXP0002 / MODEL0008 (EXP0001 settings, Stable Diffusion held out; DEC0007). Val ROC-AUC 0.937 on seen generators; held-out Stable Diffusion recall 15.2% vs 83.3% for seen generators. Same 299 images: MODEL0001 96.3%, MODEL0008 13.7%. `08_Evaluation/EVAL0002/unseen_generator/unseen_report.md`. STEP-047 COMPLETE.
 - `Ready=yes`
 
 ## Health

@@ -1,0 +1,30 @@
+{
+  "held_out": [
+    "stable_diffusion"
+  ],
+  "leakage": {
+    "held_out": [
+      "stable_diffusion"
+    ],
+    "train_generators": [
+      "cips",
+      "face_synthetics",
+      "gansformer",
+      "lama",
+      "mat",
+      "projected_gan",
+      "sfhq",
+      "stargan",
+      "stylegan1",
+      "stylegan2",
+      "stylegan3",
+      "taming_transformer"
+    ],
+    "test_generators": [
+      "stable_diffusion"
+    ],
+    "test_only_held_out_fakes": true
+  },
+  "ranking_auc_vs_val_real": 0.5542438736953099,
+  "threshold": 0.4419808089733124
+}
