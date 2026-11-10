@@ -72,7 +72,8 @@ def load_config(path: str | Path) -> RobustnessConfig:
     raw = yaml.safe_load(text)
     if not isinstance(raw, dict):
         raise RobustnessConfigError(f"{path}: not a mapping")
-    config = RobustnessConfig(raw, path, hashlib.sha256(text).hexdigest())
+    # Hash LF-normalised bytes: a Windows checkout (CRLF) and Kaggle (LF) must agree.
+    config = RobustnessConfig(raw, path, hashlib.sha256(text.replace(b"\r\n", b"\n")).hexdigest())
     for dotted in REQUIRED:
         config.get(dotted)
     perturbations = raw.get("perturbations")

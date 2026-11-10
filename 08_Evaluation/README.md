@@ -15,7 +15,7 @@ STEP-044: `python -m calibration_threshold` writes `EVAL0001/calibration_summary
 
 STEP-045: `python -m failure_analysis` joins the predictions to the DS0001/PP0001 preprocessing index and writes `EVAL0001/confusion_matrix.csv`, `per_class_stats.csv`, `error_by_group.csv` (per generator and real source, Wilson 95% intervals), `error_summary.csv`, `error_cases.csv` (most confident errors for manual review), and `failure_analysis.md`. Causes are hypotheses only. Figure specs are FIG0014–FIG0015. Status is `failure_analysis_complete` in `evaluation_registry.csv`.
 
-STEP-046: `EVAL0001/robustness/` holds the perturbation config (`config.yaml`), the Kaggle notebook and runbook, and, after the Kaggle run, `robustness_probs.csv`, `run_manifest.json`, the analysis CSVs, and `robustness_report.md`. Inference needs the MODEL0001 export and the processed images, so it runs on Kaggle only. Figure specs are FIG0016–FIG0017.
+STEP-046: `EVAL0001/robustness/` holds the perturbation config (`config.yaml`), the Kaggle notebook and runbook, and, after the Kaggle run, `robustness_probs.csv`, `run_manifest.json`, the analysis CSVs, and `robustness_report.md`. Inference needs the MODEL0001 export and the processed images, so it runs on Kaggle only. Figure specs are FIG0016–FIG0017. Ran on Kaggle 2026-11-10; status is `robustness_complete` in `evaluation_registry.csv`.
 
 ## Workflow
 Evaluation agents write, Figures/Tables consume. Do not re-compute metrics without new Evaluation ID.

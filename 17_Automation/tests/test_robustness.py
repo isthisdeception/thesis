@@ -50,6 +50,13 @@ def test_repo_config_loads() -> None:
     assert "low_quality_upload@0.75_75" in ids
 
 
+def test_config_hash_ignores_line_endings(tmp_path: Path) -> None:
+    text = CONFIG.read_bytes().replace(b"\r\n", b"\n")
+    (tmp_path / "lf.yaml").write_bytes(text)
+    (tmp_path / "crlf.yaml").write_bytes(text.replace(b"\n", b"\r\n"))
+    assert load_config(tmp_path / "lf.yaml").sha256 == load_config(tmp_path / "crlf.yaml").sha256
+
+
 @pytest.mark.parametrize(
     "perturbations, match",
     [
