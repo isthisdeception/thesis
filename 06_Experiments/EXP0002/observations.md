@@ -12,5 +12,5 @@
 
 - Ran from `main` at `362e2e2`; git provenance verified. Fresh run, no resume. All 11 epochs, best epoch 9 (valid_loss 0.331), 66.0 min.
 - Test metrics printed as `nan` for ROC-AUC/PR-AUC and 0 for specificity: the test split is fake-only. Expected.
-- Publish (C): the first `datasets version` call returned 403 because the dataset did not exist; the fallback `datasets create` ran. Its log stops after three small files, so the dataset's file list must be checked on Kaggle. The kaggle CLI 2.0.2 also logged `KaggleObject.from_dict() got an unexpected keyword argument 'token'` per file; uploads still reported success.
+- Publish (C): the first `datasets version` call returned 403 because the dataset did not exist; the fallback `datasets create` ran. Its log stops after three small files; the dataset page was checked afterwards and `notebook/checkpoints/MODEL0008_export.pkl` is present. The kaggle CLI 2.0.2 also logged `KaggleObject.from_dict() got an unexpected keyword argument 'token'` per file; uploads still reported success.
 - Push (D) ran twice; the first created `kaggle/exp0002-20261110-0656`, the second found nothing new.

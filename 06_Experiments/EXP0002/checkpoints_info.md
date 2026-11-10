@@ -1,6 +1,6 @@
 # EXP0002 — Checkpoint Info
 
-**Status:** exported 2026-11-10. Best epoch 9. Checksums: [`../../07_Checkpoints/EXP0002_checkpoints.md`](../../07_Checkpoints/EXP0002_checkpoints.md). Binaries: Kaggle dataset `isthisdeception/thesis-exp0002-artifacts` (created by the first publish; its file list still needs a check on Kaggle because the creation log was cut short).
+**Status:** exported 2026-11-10. Best epoch 9. Checksums: [`../../07_Checkpoints/EXP0002_checkpoints.md`](../../07_Checkpoints/EXP0002_checkpoints.md). Binaries: Kaggle dataset `isthisdeception/thesis-exp0002-artifacts` (created by the first publish; `notebook/checkpoints/MODEL0008_export.pkl` confirmed present on Kaggle, 2026-11-10).
 
 ## Locations
 
