@@ -20,6 +20,13 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Logging (STEP-038): `training/logs.py`, `training/records.py`; schemas in `training/LOGGING.md`. `kaggle_sync push-metadata` refuses binaries and files over 20 MB.
 - Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
+## Robustness evaluation (Phase E7 / STEP-046)
+- Package: `17_Automation/robustness/`
+- Config: `08_Evaluation/EVAL0001/robustness/config.yaml` (perturbations and levels; nothing hardcoded)
+- Entrypoints: `python -m robustness conditions` (list), `python -m robustness run` (Kaggle GPU: perturbed inference, clean check first, resumable), `python -m robustness analyze` (anywhere: metrics, flips, per-group errors, summary, `robustness_report.md`).
+- JPEG and resizing reuse PPMOD09 and PPMOD05 from `04_Preprocessing/modules`. Per-image seeds make every perturbation deterministic.
+- Kaggle session: `08_Evaluation/EVAL0001/robustness/KAGGLE_RUNBOOK.md`, sync plan `kaggle_sync/sync_plan.robustness.yaml`.
+
 ## Confusion and failure analysis (Phases E6, E12 / STEP-045)
 - Package: `17_Automation/failure_analysis/`
 - Entrypoint: `python -m failure_analysis --experiment EXP0001 --evaluation EVAL0001`

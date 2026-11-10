@@ -38,4 +38,6 @@ python -m kaggle_sync --plan kaggle_sync/sync_plan.example.yaml push-metadata --
 
 Per-experiment session order: `06_Experiments/EXP0001/KAGGLE_RUNBOOK.md`.
 
+Robustness (STEP-046) uses `sync_plan.robustness.yaml`: both `ds0001-pp0001` and `thesis-experiment-artifacts` are required, and only `08_Evaluation/EVAL0001/robustness` returns to Git. Session order: `08_Evaluation/EVAL0001/robustness/KAGGLE_RUNBOOK.md`.
+
 Use `--dry-run` while validating a new manifest.

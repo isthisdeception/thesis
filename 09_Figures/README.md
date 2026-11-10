@@ -44,6 +44,12 @@ specs/FIGxxxx_spec.md, assets/FIGxxxx_v1.png
 | FIG0014 | Confusion matrix (EVAL0001 test) | `08_Evaluation/EVAL0001/confusion_matrix.csv` |
 | FIG0015 | Error rate by generator and real source | `08_Evaluation/EVAL0001/error_by_group.csv` |
 
+## STEP-046 / Phase E7 figure specs (data only)
+| FIG ID | Topic | Data path |
+|--------|-------|-----------|
+| FIG0016 | Robustness curves per perturbation | `08_Evaluation/EVAL0001/robustness/robustness_metrics.csv` |
+| FIG0017 | Δ error rate by group at worst level | `08_Evaluation/EVAL0001/robustness/robustness_by_group.csv` |
+
 Specs live in `09_Figures/specs/`. **Do not commit AI-rendered publication figures** ([A.9](../MASTER_RESEARCH_OPERATING_SYSTEM.md#a9-canonical-figure-policy)).
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*

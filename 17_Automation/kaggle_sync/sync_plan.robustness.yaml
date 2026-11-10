@@ -1,0 +1,22 @@
+# STEP-046 robustness session. Runbook: 08_Evaluation/EVAL0001/robustness/KAGGLE_RUNBOOK.md
+repo_url: https://github.com/isthisdeception/thesis.git
+repo_branch: main
+repo_dir: thesis
+workspace_root: /kaggle/working
+kaggle_requirements: environment/kaggle-requirements.txt
+
+# Only the robustness results return to Git. Per-condition work files stay in /kaggle/working.
+metadata_paths:
+  - 08_Evaluation/EVAL0001/robustness
+
+dataset_mounts:
+  - name: ds0001_processed
+    slug: isthisdeception/ds0001-pp0001
+    mount_path: /kaggle/input/datasets/isthisdeception/ds0001-pp0001
+    tier: data
+    required: true
+  - name: experiment_artifacts
+    slug: isthisdeception/thesis-experiment-artifacts
+    mount_path: /kaggle/input/datasets/isthisdeception/thesis-experiment-artifacts
+    tier: artifact
+    required: true
