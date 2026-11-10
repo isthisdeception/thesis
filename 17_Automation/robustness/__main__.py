@@ -12,6 +12,7 @@ import argparse
 import datetime as dt
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -88,6 +89,8 @@ def cmd_analyze(args) -> None:
 
 
 def main() -> None:
+    # Notebook `!` cells read stdout through a pipe; without this, progress lines appear only at the end.
+    sys.stdout.reconfigure(line_buffering=True)
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
     default_config = REPO / "08_Evaluation/EVAL0001/robustness/config.yaml"
