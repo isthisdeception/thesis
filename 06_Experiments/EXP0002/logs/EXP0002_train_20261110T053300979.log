@@ -1,0 +1,77 @@
+2026-11-10 05:33:00,979 INFO training experiment EXP0002; config /kaggle/working/thesis/06_Experiments/EXP0002/config.yaml; config validation PASS
+2026-11-10 05:33:00,980 INFO training STEP START output guard
+2026-11-10 05:33:00,982 INFO training run mode: fresh
+2026-11-10 05:33:00,983 INFO training STEP DONE output guard in 0.0s
+2026-11-10 05:33:00,984 INFO training STEP START git provenance
+2026-11-10 05:33:00,992 INFO training git provenance: config commit faa16a67836b52b7f87dda4fcf8d09ef3bd97997 is an ancestor of HEAD 362e2e283f6d9e1c4222c9e26ba3acfb21f4b876
+2026-11-10 05:33:00,992 INFO training STEP DONE git provenance in 0.0s
+2026-11-10 05:33:00,995 INFO training STEP START environment
+2026-11-10 05:33:04,998 INFO training environment {'python': '3.13.16', 'platform': 'Linux-6.18.55+-x86_64-with-glibc2.39', 'torch': '2.11.0+cu130', 'torchvision': '0.26.0+cu130', 'fastai': '2.8.12', 'cuda_available': True, 'cuda': '13.0', 'gpu': 'Tesla T4', 'gpu_memory_mb': 14912, 'plum_dispatch': '2.9.0'}
+2026-11-10 05:33:08,080 INFO training STEP DONE environment in 7.1s
+2026-11-10 05:33:08,081 INFO training STEP START dataset validation
+2026-11-10 05:33:11,075 INFO training partition train: 40873 rows {'real': 21244, 'fake': 19629}
+2026-11-10 05:33:11,076 INFO training partition val: 7204 rows {'real': 3756, 'fake': 3448}
+2026-11-10 05:33:11,078 INFO training partition test: 1923 rows {'fake': 1923}
+2026-11-10 05:33:11,085 INFO training STEP DONE dataset validation in 3.0s
+2026-11-10 05:33:11,087 INFO training STEP START dataloaders
+2026-11-10 05:33:13,470 INFO training vocab ['fake', 'real']; train batches 638; valid batches 57
+2026-11-10 05:33:13,471 INFO training STEP DONE dataloaders in 2.4s
+2026-11-10 05:33:13,473 INFO training STEP START learner
+2026-11-10 05:33:14,713 INFO training learner resnet50 (torchvision), pretrained=True
+2026-11-10 05:33:14,714 INFO training STEP DONE learner in 1.2s
+2026-11-10 05:33:14,717 INFO training STEP START training
+2026-11-10 05:33:14,718 INFO training schedule fine_tune: lr=0.000331131 (source=manual), freeze_epochs=1, epochs=10; starting at phase 0 epoch 0
+2026-11-10 06:02:41,815 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 0, 'phase': 'frozen', 'phase_epoch': 0, 'train_loss': 0.7283222675323486, 'valid_loss': 0.5692326426506042, 'roc_auc_score': 0.8196558746531459, 'f1_score': 0.6873034265850024, 'balanced_accuracy_score': 0.7322208673392487, 'matthews_corrcoef': 0.4833690501722917, 'precision_score': 0.8006170458927883, 'recall_score': 0.6020881670533643, 'accuracy': 0.7377845644950867, 'seconds': 1767.03, 'lr_head': 1.967383249478925e-05, 'gpu_peak_allocated_mb': 4511.3, 'gpu_peak_reserved_mb': 5722.0}
+2026-11-10 06:02:41,817 INFO training new best valid_loss=0.56923 at epoch 0
+2026-11-10 06:02:42,305 INFO training checkpoint saved EXP0002_epoch_000.pth (recovery, sha256 22db27900b2a…)
+2026-11-10 06:06:22,438 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 1, 'phase': 'unfrozen', 'phase_epoch': 0, 'train_loss': 0.5544562339782715, 'valid_loss': 0.5080674290657043, 'roc_auc_score': 0.8572579310072176, 'f1_score': 0.7026098901098901, 'balanced_accuracy_score': 0.752764023038776, 'matthews_corrcoef': 0.5371366994548522, 'precision_score': 0.8611111111111112, 'recall_score': 0.5933874709976799, 'accuracy': 0.7595779895782471, 'seconds': 220.11, 'lr_head': 6.613216832706146e-05, 'gpu_peak_allocated_mb': 4808.3, 'gpu_peak_reserved_mb': 5774.0}
+2026-11-10 06:06:22,439 INFO training new best valid_loss=0.50807 at epoch 1
+2026-11-10 06:06:23,614 INFO training checkpoint saved EXP0002_epoch_001.pth (recovery, sha256 4873340325cf…)
+2026-11-10 06:10:03,252 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 2, 'phase': 'unfrozen', 'phase_epoch': 1, 'train_loss': 0.5122331976890564, 'valid_loss': 0.449338436126709, 'roc_auc_score': 0.8807792682520033, 'f1_score': 0.7449809191969471, 'balanced_accuracy_score': 0.7810888502603105, 'matthews_corrcoef': 0.585785335711954, 'precision_score': 0.8704924389298178, 'recall_score': 0.6511020881670534, 'accuracy': 0.78664630651474, 'seconds': 219.63, 'lr_head': 0.00013235833598537657, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:10:03,253 INFO training new best valid_loss=0.44934 at epoch 2
+2026-11-10 06:10:04,410 INFO training checkpoint saved EXP0002_epoch_002.pth (recovery, sha256 c29b5afe0cb3…)
+2026-11-10 06:13:42,804 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 3, 'phase': 'unfrozen', 'phase_epoch': 2, 'train_loss': 0.42980319261550903, 'valid_loss': 0.4231335520744324, 'roc_auc_score': 0.8999484428935359, 'f1_score': 0.7648329732424797, 'balanced_accuracy_score': 0.7979954424042954, 'matthews_corrcoef': 0.6215543591109568, 'precision_score': 0.8956792526274815, 'recall_score': 0.6673433874709976, 'accuracy': 0.8035813570022583, 'seconds': 218.39, 'lr_head': 0.0001655655618799461, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:13:42,805 INFO training new best valid_loss=0.42313 at epoch 3
+2026-11-10 06:13:43,987 INFO training checkpoint saved EXP0002_epoch_003.pth (recovery, sha256 6d07e15ad6cf…)
+2026-11-10 06:17:22,758 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 4, 'phase': 'unfrozen', 'phase_epoch': 3, 'train_loss': 0.37419816851615906, 'valid_loss': 0.38303861021995544, 'roc_auc_score': 0.9143225440995877, 'f1_score': 0.7965256554608332, 'balanced_accuracy_score': 0.8200444640470066, 'matthews_corrcoef': 0.6573224200157176, 'precision_score': 0.8941856265799928, 'recall_score': 0.7180974477958236, 'accuracy': 0.8244031071662903, 'seconds': 218.76, 'lr_head': 0.00015739290722565147, 'gpu_peak_allocated_mb': 4808.3, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:17:22,760 INFO training new best valid_loss=0.38304 at epoch 4
+2026-11-10 06:17:24,000 INFO training checkpoint saved EXP0002_epoch_004.pth (recovery, sha256 978527ad0be0…)
+2026-11-10 06:21:03,328 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 5, 'phase': 'unfrozen', 'phase_epoch': 4, 'train_loss': 0.3264152705669403, 'valid_loss': 0.3671974539756775, 'roc_auc_score': 0.9208633549043881, 'f1_score': 0.8060413354531002, 'balanced_accuracy_score': 0.82673646373073, 'matthews_corrcoef': 0.6679118565526571, 'precision_score': 0.8919774806474314, 'recall_score': 0.7352088167053364, 'accuracy': 0.8306496143341064, 'seconds': 219.32, 'lr_head': 0.00013444290174716362, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:21:03,329 INFO training new best valid_loss=0.36720 at epoch 5
+2026-11-10 06:21:04,475 INFO training checkpoint saved EXP0002_epoch_005.pth (recovery, sha256 43b31c9d8496…)
+2026-11-10 06:24:43,866 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 6, 'phase': 'unfrozen', 'phase_epoch': 5, 'train_loss': 0.29510343074798584, 'valid_loss': 0.34030285477638245, 'roc_auc_score': 0.9338359475573808, 'f1_score': 0.8329411764705882, 'balanced_accuracy_score': 0.8487970677696814, 'matthews_corrcoef': 0.7095259028507145, 'precision_score': 0.9070720874615648, 'recall_score': 0.7700116009280742, 'accuracy': 0.8521654605865479, 'seconds': 219.38, 'lr_head': 0.00010126115312926429, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:24:43,868 INFO training new best valid_loss=0.34030 at epoch 6
+2026-11-10 06:24:45,039 INFO training checkpoint saved EXP0002_epoch_006.pth (recovery, sha256 bf804ced9e42…)
+2026-11-10 06:28:24,432 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 7, 'phase': 'unfrozen', 'phase_epoch': 6, 'train_loss': 0.25815802812576294, 'valid_loss': 0.3441399037837982, 'roc_auc_score': 0.9334977801951525, 'f1_score': 0.8350178821334162, 'balanced_accuracy_score': 0.8496862869370337, 'matthews_corrcoef': 0.7092849011269599, 'precision_score': 0.9001005698960778, 'recall_score': 0.7787122969837587, 'accuracy': 0.8527207374572754, 'seconds': 219.39, 'lr_head': 6.441970194746644e-05, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:28:25,602 INFO training checkpoint saved EXP0002_epoch_007.pth (recovery, sha256 693c6fa84075…)
+2026-11-10 06:32:04,793 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 8, 'phase': 'unfrozen', 'phase_epoch': 7, 'train_loss': 0.23203019797801971, 'valid_loss': 0.33936846256256104, 'roc_auc_score': 0.937104036480533, 'f1_score': 0.8389501475384377, 'balanced_accuracy_score': 0.8530714352781875, 'matthews_corrcoef': 0.7158714838342904, 'precision_score': 0.9030424607154798, 'recall_score': 0.7833526682134571, 'accuracy': 0.8560522198677063, 'seconds': 219.18, 'lr_head': 3.121546369643232e-05, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:32:04,794 INFO training new best valid_loss=0.33937 at epoch 8
+2026-11-10 06:32:06,046 INFO training checkpoint saved EXP0002_epoch_008.pth (recovery, sha256 33fac80b006a…)
+2026-11-10 06:35:45,411 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 9, 'phase': 'unfrozen', 'phase_epoch': 8, 'train_loss': 0.22781340777873993, 'valid_loss': 0.3313068747520447, 'roc_auc_score': 0.9366762599793925, 'f1_score': 0.8470694590929637, 'balanced_accuracy_score': 0.8573081213909253, 'matthews_corrcoef': 0.7187026880223992, 'precision_score': 0.8814675446848542, 'recall_score': 0.8152552204176334, 'accuracy': 0.8591060638427734, 'seconds': 219.36, 'lr_head': 8.224929923640026e-06, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:35:45,413 INFO training new best valid_loss=0.33131 at epoch 9
+2026-11-10 06:35:46,581 INFO training checkpoint saved EXP0002_epoch_009.pth (recovery, sha256 8ecb1344646b…)
+2026-11-10 06:39:26,211 INFO training epoch {'session': 'train_20261110T053300979', 'epoch': 10, 'phase': 'unfrozen', 'phase_epoch': 9, 'train_loss': 0.22980552911758423, 'valid_loss': 0.334369033575058, 'roc_auc_score': 0.9362891762970431, 'f1_score': 0.8410334346504559, 'balanced_accuracy_score': 0.8526581753803351, 'matthews_corrcoef': 0.7107479420284853, 'precision_score': 0.8834610472541508, 'recall_score': 0.8024941995359629, 'accuracy': 0.8548029065132141, 'seconds': 219.62, 'lr_head': 1.6761420897071222e-09, 'gpu_peak_allocated_mb': 4847.0, 'gpu_peak_reserved_mb': 6266.0}
+2026-11-10 06:39:27,435 INFO training checkpoint saved EXP0002_epoch_010.pth (recovery, sha256 f57664c2e4dc…)
+2026-11-10 06:39:27,441 INFO training STEP DONE training in 3972.7s
+2026-11-10 06:39:27,442 INFO training STEP START learning curves
+2026-11-10 06:39:27,489 INFO training STEP DONE learning curves in 0.1s
+2026-11-10 06:39:27,490 INFO training STEP START checkpoint finalize + export
+2026-11-10 06:39:29,348 INFO training checkpoint saved EXP0002_best.pth (best, sha256 8ecb1344646b…)
+2026-11-10 06:39:31,226 INFO training checkpoint saved EXP0002_last.pth (last, sha256 f57664c2e4dc…)
+2026-11-10 06:39:32,086 INFO training checkpoint saved MODEL0008_export.pkl (export_pkl, sha256 d076875658a8…)
+2026-11-10 06:39:32,480 INFO training checkpoint saved MODEL0008_weights.pth (weights_pth, sha256 1b812462c8eb…)
+2026-11-10 06:39:43,718 INFO training STEP DONE checkpoint finalize + export in 16.2s
+2026-11-10 06:39:43,719 INFO training STEP START validation + test predictions
+2026-11-10 06:41:25,897 WARNING py.warnings /usr/local/lib/python3.13/dist-packages/sklearn/metrics/_ranking.py:379: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case.
+  warnings.warn(
+
+2026-11-10 06:41:25,907 WARNING py.warnings /usr/local/lib/python3.13/dist-packages/sklearn/metrics/_classification.py:2524: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+
+2026-11-10 06:41:25,923 INFO training threshold 0.441981 chosen on validation (max_balanced_accuracy)
+2026-11-10 06:41:26,086 INFO training val metrics {'threshold': 0.442, 'tp': 2871, 'tn': 3326, 'fp': 430, 'fn': 577, 'precision': 0.8697, 'recall': 0.8327, 'specificity': 0.8855, 'fpr': 0.1145, 'fnr': 0.1673, 'f1': 0.8508, 'balanced_accuracy': 0.8591, 'accuracy': 0.8602, 'mcc': 0.72, 'roc_auc': 0.9367, 'pr_auc': 0.9407, 'ece': 0.0398, 'brier': 0.1013, 'n': 7204, 'n_positive': 3448}
+2026-11-10 06:41:26,090 INFO training test metrics {'threshold': 0.442, 'tp': 293, 'tn': 0, 'fp': 0, 'fn': 1630, 'precision': 1.0, 'recall': 0.1524, 'specificity': 0.0, 'fpr': 0.0, 'fnr': 0.8476, 'f1': 0.2644, 'balanced_accuracy': 0.0762, 'accuracy': 0.1524, 'mcc': 0.0, 'roc_auc': nan, 'pr_auc': nan, 'ece': 0.8182, 'brier': 0.7378, 'n': 1923, 'n_positive': 1923}
+2026-11-10 06:41:26,091 INFO training STEP DONE validation + test predictions in 102.4s
+2026-11-10 06:41:26,093 INFO training STEP START summary
+2026-11-10 06:41:26,094 INFO training STEP DONE summary in 0.0s
+2026-11-10 06:41:26,095 INFO training run complete: best epoch 9, test ROC-AUC nan
