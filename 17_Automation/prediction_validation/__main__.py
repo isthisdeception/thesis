@@ -17,9 +17,10 @@ def main() -> None:
     parser.add_argument("--experiment", default="EXP0001")
     parser.add_argument("--evaluation", default="EVAL0001")
     parser.add_argument("--repo-root", type=Path, default=None)
+    parser.add_argument("--date", default=None, help="report date; default keeps an existing report's date, else today")
     args = parser.parse_args()
     root = args.repo_root or Path(__file__).resolve().parents[2]
-    checks = write_report(root, args.evaluation, args.experiment)
+    checks = write_report(root, args.evaluation, args.experiment, args.date)
     print(f"PASS {args.evaluation}: {len(checks)} checks")
 
 

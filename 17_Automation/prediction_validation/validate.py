@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import datetime as dt
 import hashlib
 import json
 import re
@@ -183,7 +184,7 @@ def validate(repo: Path, experiment_id: str = "EXP0001", evaluation_id: str = "E
     return checks
 
 
-def render_report(checks: list[Check], evaluation_id: str, experiment_id: str) -> str:
+def render_report(checks: list[Check], evaluation_id: str, experiment_id: str, date: str) -> str:
     failed = [c for c in checks if not c.passed]
     status = "PASS" if not failed else "FAIL"
     rows = "\n".join(f"| {c.phase} | {c.name} | {'PASS' if c.passed else 'FAIL'} | {c.detail} |" for c in checks)
@@ -193,7 +194,7 @@ def render_report(checks: list[Check], evaluation_id: str, experiment_id: str) -
         "",
         f"**Experiment:** {experiment_id}",
         f"**Status:** {status}",
-        "**Date:** 2026-11-09",
+        f"**Date:** {date}",
         "",
         "Phases E1 and E2 only. This report does not recompute ROC-AUC or any other metric.",
         "",
@@ -206,11 +207,17 @@ def render_report(checks: list[Check], evaluation_id: str, experiment_id: str) -
     ])
 
 
-def write_report(repo: Path, evaluation_id: str = "EVAL0001", experiment_id: str = "EXP0001") -> list[Check]:
+def write_report(repo: Path, evaluation_id: str = "EVAL0001", experiment_id: str = "EXP0001", date: str | None = None) -> list[Check]:
+    """Write the report. Without ``date``, an existing report keeps its date (re-runs are reproducible); a new one gets today."""
+
     checks = validate(repo, experiment_id, evaluation_id)
     out = repo / "08_Evaluation" / evaluation_id
     out.mkdir(parents=True, exist_ok=True)
-    (out / "prediction_validation_report.md").write_text(render_report(checks, evaluation_id, experiment_id), encoding="utf-8")
+    path = out / "prediction_validation_report.md"
+    if date is None:
+        found = re.search(r"\*\*Date:\*\* (\S+)", path.read_text(encoding="utf-8")) if path.is_file() else None
+        date = found.group(1) if found else dt.date.today().isoformat()
+    path.write_text(render_report(checks, evaluation_id, experiment_id, date), encoding="utf-8")
     failed = [c for c in checks if not c.passed]
     if failed:
         raise PredictionValidationError(checks)

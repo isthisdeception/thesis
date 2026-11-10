@@ -65,7 +65,7 @@ def write_bundle(
         "sources": sources,
         "gradcam": {
             "status": "sample_only",
-            "reason": "MODEL0001 weights and the images are in the Kaggle artifact and data tiers, not in Git. gradcam_sample.csv is the case list. Maps are computed by evaluation_trigger.gradcam when that export is mounted.",
+            "reason": "The model weights and the images are in the Kaggle artifact and data tiers, not in Git. gradcam_sample.csv is the case list. Maps are computed by evaluation_trigger.gradcam when that export is mounted.",
             "target_layer": "layer4",
         },
         "feature_importance": {

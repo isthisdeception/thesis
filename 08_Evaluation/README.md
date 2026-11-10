@@ -19,7 +19,7 @@ STEP-046: `EVAL0001/robustness/` holds the perturbation config (`config.yaml`), 
 
 STEP-047 (DEC0007):
 - E8 cross-dataset, `EVAL0001/generalization/`: config, Kaggle notebook and runbook. After the Kaggle run: `predictions/DS000N.csv`, `run_manifest.json`, `cross_dataset_*.csv`, and `cross_dataset_report.md`. MODEL0001 runs unchanged at its frozen threshold on DS0002–DS0005 test (DS0005: fixed 10,000 sample).
-- E9 unseen generator, `EVAL0002/` (reserved): evaluates EXP0002 / MODEL0008, trained without Stable Diffusion. After EXP0002 syncs: STEP-041 inputs in `EXP0002/`, the E1–E2 report, then `EVAL0002/unseen_generator/` from `python -m generalization unseen`.
+- E9 unseen generator, `EVAL0002/`: evaluates EXP0002 / MODEL0008, trained without Stable Diffusion. STEP-041 inputs in `EXP0002/`, the E1–E2 report in `EVAL0002/`, and `EVAL0002/unseen_generator/` from `python -m generalization unseen`. Status `unseen_generator_complete`.
 - Figure specs FIG0018–FIG0019.
 
 ## Workflow

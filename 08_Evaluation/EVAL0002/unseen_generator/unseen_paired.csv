@@ -1,0 +1,2 @@
+generator,n,recall_reference,recall_held_out,both_detected,only_reference,only_held_out,neither,mean_prob_reference,mean_prob_held_out
+stable_diffusion,299,0.9632107023411371,0.13712374581939799,41,247,0,11,0.9146226868237458,0.1730559470906923
