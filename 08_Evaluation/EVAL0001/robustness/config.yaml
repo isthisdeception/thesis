@@ -1,0 +1,82 @@
+# STEP-046 / Phase E7 robustness configuration for MODEL0001 on the EXP0001 test split.
+# Validate and list conditions (from 17_Automation/):
+#   python -m robustness conditions --config ../08_Evaluation/EVAL0001/robustness/config.yaml
+# Perturbations are applied to the processed 224 x 224 PNG, then the model input is
+# built as in training (squish resize to image_size, ImageNet normalisation).
+# Levels are listed mild -> strong. Adding a perturbation = adding an entry here.
+
+evaluation_id: EVAL0001
+experiment_id: EXP0001
+seed: 42                       # per-image seeds derive from (seed, condition, image id)
+
+model:
+  model_id: MODEL0001
+  export_name: MODEL0001_export.pkl
+  export_sha256: 228495c1fe16cdc06246c985d0209bd416ec63f3b843c8983a2f41b3d40e279a  # 07_Checkpoints/EXP0001_checkpoints.md
+  positive_class: fake
+
+data:
+  predictions: 08_Evaluation/EXP0001/predictions.csv
+  split: test
+  metadata_index: 04_Preprocessing/reports/metadata/DS0001_PP0001/index.csv
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001
+
+inference:
+  image_size: 224
+  resize_interpolation: bilinear
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  batch_size: 128
+  num_workers: 4
+  clean_check_atol: 0.001      # clean probabilities must match predictions.csv within this
+
+analysis:
+  tolerance: 0.02              # balanced-accuracy drop still counted as "within tolerance"
+  ranking_kept: 0.02           # ROC-AUC drop below this with a larger BA drop = threshold shift
+
+perturbations:
+  - name: jpeg
+    kind: jpeg                 # JPEG quality (PPMOD09 encoder)
+    levels: [90, 70, 50, 30, 10]
+  - name: gaussian_noise
+    kind: gaussian_noise       # noise std on the [0, 1] pixel scale
+    levels: [0.01, 0.02, 0.05, 0.1]
+  - name: gaussian_blur
+    kind: gaussian_blur        # blur radius in pixels
+    levels: [0.5, 1.0, 2.0, 3.0]
+  - name: brightness_down
+    kind: brightness           # enhancement factor; 1 = unchanged
+    levels: [0.9, 0.75, 0.5]
+  - name: brightness_up
+    kind: brightness
+    levels: [1.1, 1.25, 1.5]
+  - name: contrast_down
+    kind: contrast
+    levels: [0.9, 0.75, 0.5]
+  - name: contrast_up
+    kind: contrast
+    levels: [1.1, 1.25, 1.5]
+  - name: desaturate
+    kind: saturation           # colour perturbation; 0 = greyscale
+    levels: [0.75, 0.5, 0.0]
+  - name: oversaturate
+    kind: saturation
+    levels: [1.25, 1.5, 2.0]
+  - name: resolution
+    kind: resolution           # downscale factor (PPMOD05 resize), model resizes back up
+    levels: [0.75, 0.5, 0.35, 0.25]
+  - name: upscaling
+    kind: scaling              # upscale factor, model resizes back down
+    levels: [1.25, 1.5, 2.0]
+  - name: center_crop
+    kind: crop                 # fraction of each side kept
+    levels: [0.95, 0.9, 0.8, 0.7]
+  - name: rotation
+    kind: rotation             # degrees, black fill, size kept
+    levels: [5, 10, 15, 30]
+  - name: occlusion
+    kind: occlusion            # area fraction of one grey square, seeded position
+    levels: [0.05, 0.1, 0.2, 0.3]
+  - name: low_quality_upload
+    kind: low_quality          # [downscale factor, JPEG quality]
+    levels: [[0.75, 75], [0.5, 50], [0.35, 30]]
