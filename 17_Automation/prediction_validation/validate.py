@@ -5,10 +5,12 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
+import yaml
 
 POSITIVE_CLASS = "fake"
 NEGATIVE_CLASS = "real"
@@ -59,6 +61,11 @@ def _add(checks: list[Check], phase: str, name: str, passed: bool, detail: str) 
     checks.append(Check(phase, name, passed, detail))
 
 
+def _experiment_config(repo: Path, experiment_id: str) -> dict:
+    path = repo / "06_Experiments" / experiment_id / "config.yaml"
+    return (yaml.safe_load(path.read_text(encoding="utf-8")) or {}) if path.is_file() else {}
+
+
 def check_registration(repo: Path, experiment_id: str, evaluation_id: str) -> list[Check]:
     """Phase E1. An incomplete experiment is rejected."""
 
@@ -93,15 +100,18 @@ def check_registration(repo: Path, experiment_id: str, evaluation_id: str) -> li
 
     manifest = repo / "07_Checkpoints" / f"{experiment_id}_checkpoints.md"
     text = manifest.read_text(encoding="utf-8") if manifest.is_file() else ""
+    model_id = (_experiment_config(repo, experiment_id).get("model") or {}).get("model_id", "")
     _add(checks, "E1", "checkpoint and export archived",
-         "MODEL0001_export.pkl" in text and f"{experiment_id}_best.pth" in text,
+         bool(model_id) and f"{model_id}_export.pkl" in text and f"{experiment_id}_best.pth" in text,
          manifest.name if manifest.is_file() else "manifest missing")
 
     git_ok = bool(summary.get("git", {}).get("recorded")) and bool(model and model.get("Git Commit"))
     _add(checks, "E1", "git commit recorded", git_ok, str(summary.get("git", {}).get("recorded") or "missing"))
 
-    report = repo / "08_Evaluation" / evaluation_id / "prediction_validation_report.md"
-    _add(checks, "E1", "evaluation id reserved", evaluation_id == "EVAL0001", evaluation_id)
+    evaluations = _read_csv(repo / "08_Evaluation" / "evaluation_registry.csv") if (repo / "08_Evaluation" / "evaluation_registry.csv").is_file() else []
+    reserved = any(r.get("Evaluation ID") == evaluation_id and r.get("Experiment") == experiment_id for r in evaluations)
+    _add(checks, "E1", "evaluation id reserved", reserved and re.fullmatch(r"EVAL\d{4}", evaluation_id) is not None,
+         evaluation_id if reserved else f"{evaluation_id} not in evaluation_registry.csv for {experiment_id}")
     return checks
 
 
@@ -141,9 +151,10 @@ def check_predictions(repo: Path, experiment_id: str, positive_class: str = POSI
     labels_ok = set(predictions["y_true"].unique()).issubset({0, 1})
     _add(checks, "E2", "class labels binary", bool(labels_ok), "y_true is 0/1" if labels_ok else "unexpected y_true")
 
-    assignments_path = repo / "03_Datasets" / "splits" / "DS0001_PP0001_SPLIT0001" / "assignments.csv"
-    if not assignments_path.is_file():
-        _add(checks, "E2", "ground truth present", False, f"missing {assignments_path.name}")
+    relative = (_experiment_config(repo, experiment_id).get("split") or {}).get("assignments_csv")
+    assignments_path = repo / relative if relative else None
+    if assignments_path is None or not assignments_path.is_file():
+        _add(checks, "E2", "ground truth present", False, f"missing {relative or 'split.assignments_csv in the experiment config'}")
         return checks
     assignments = pd.read_csv(assignments_path, dtype=str)
     for split in ("val", "test"):

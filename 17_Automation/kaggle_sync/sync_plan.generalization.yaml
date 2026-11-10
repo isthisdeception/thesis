@@ -1,0 +1,41 @@
+# STEP-047 cross-dataset session (MODEL0001 on DS0002-DS0005). Runbook: 08_Evaluation/EVAL0001/generalization/KAGGLE_RUNBOOK.md
+repo_url: https://github.com/isthisdeception/thesis.git
+repo_branch: main
+repo_dir: thesis
+workspace_root: /kaggle/working
+kaggle_requirements: environment/kaggle-requirements.txt
+
+metadata_paths:
+  - 08_Evaluation/EVAL0001/generalization
+
+dataset_mounts:
+  - name: ds0001_processed
+    slug: isthisdeception/ds0001-pp0001
+    mount_path: /kaggle/input/datasets/isthisdeception/ds0001-pp0001
+    tier: data
+    required: true
+  - name: ds0002_processed
+    slug: isthisdeception/ds0002-pp0002
+    mount_path: /kaggle/input/datasets/isthisdeception/ds0002-pp0002
+    tier: data
+    required: true
+  - name: ds0003_processed
+    slug: isthisdeception/ds0003-pp0003
+    mount_path: /kaggle/input/datasets/isthisdeception/ds0003-pp0003
+    tier: data
+    required: true
+  - name: ds0004_processed
+    slug: isthisdeception/ds0004-pp0006
+    mount_path: /kaggle/input/datasets/isthisdeception/ds0004-pp0006
+    tier: data
+    required: true
+  - name: ds0005_processed
+    slug: isthisdeception/ds0005-pp0005
+    mount_path: /kaggle/input/datasets/isthisdeception/ds0005-pp0005
+    tier: data
+    required: true
+  - name: experiment_artifacts
+    slug: isthisdeception/thesis-experiment-artifacts
+    mount_path: /kaggle/input/datasets/isthisdeception/thesis-experiment-artifacts
+    tier: artifact
+    required: true

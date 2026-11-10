@@ -1,0 +1,177 @@
+# EXP0002 — ResNet-50 on the generator-holdout track (Stable Diffusion never seen in training).
+# Copied from EXP0001/config.yaml (STEP-047, DEC0007). Only the identity, the split, the
+# model ID, the purpose/expected outcome, and the output locations differ; every training
+# setting is EXP0001's, including its LR Finder value, so the held-out generator is the only change.
+# Validate: `python -m config_validation ../06_Experiments/EXP0002/config.yaml` from 17_Automation/.
+# Immutable once training starts: any change → new EXP ID.
+
+schema_version: 1
+
+# --- Experiment ID ------------------------------------------------------------
+experiment_id: EXP0002
+
+# --- Research Question / Purpose / Expected Outcome ---------------------------
+research_question: >-
+  How can we improve the cross-generator generalization of image-based AI face
+  detection models to maintain high accuracy on unseen generative architectures?
+purpose: >-
+  Phase E9 unseen-generator test for the baseline: the same ResNet-50 and FastAI
+  training standard as EXP0001, trained on DS0001 / v1.0 / PP0001 / SPLIT0002,
+  where stable_diffusion is held out of train and val. Detection of the held-out
+  generator on the SPLIT0002 test partition (stable_diffusion fakes only) measures
+  generalization to an unseen generator.
+expected_outcome: >-
+  Pipeline sanity only: validation ROC-AUC >= 0.90 on the seen generators
+  (EXP0001 reached 0.934 on its validation split). No expectation is set for
+  recall on the held-out generator; it is reported as observed and compared with
+  EXP0001 on the same Stable Diffusion images.
+# primary_architecture | generator_holdout | quick_convenience | external_eval | ablation
+study_track: generator_holdout
+
+# --- Dataset Version ----------------------------------------------------------
+dataset:
+  dataset_id: DS0001
+  version: v1.0
+  pipeline_id: PP0001
+  output_id: DS0001_PP0001
+  processed_kaggle_slug: isthisdeception/ds0001-pp0001
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001
+  path_column: processed_path
+  label_column: class_label
+  partition_column: partition
+  vocab: [fake, real]
+
+# --- Split Version ------------------------------------------------------------
+split:
+  split_id: SPLIT0002
+  scheme: logo
+  assignments_csv: 03_Datasets/splits/DS0001_PP0001_SPLIT0002/assignments.csv
+  train_name: train
+  valid_name: val
+  test_name: test
+  leakage_required: PASS
+
+# --- Model Version ------------------------------------------------------------
+model:
+  model_id: MODEL0008
+  architecture: ResNet-50
+  backbone: resnet50          # name passed to vision_learner
+  source: torchvision         # torchvision | timm
+  pretrained: true
+  pretrained_weights: ImageNet-1k
+
+# --- FastAI Settings ----------------------------------------------------------
+fastai:
+  datablock:
+    blocks: [ImageBlock, CategoryBlock]
+    get_items: assignments_csv
+    get_x: processed_root + processed_path
+    get_y: class_label
+    splitter: column_splitter
+    n_inp: 1
+  item_tfms:
+    resize: 224               # must equal image_size
+    method: squish
+  normalize:
+    stats: imagenet
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+  dataloaders:
+    batch_size_eval: 128
+    num_workers: 2
+    drop_last: false
+    shuffle_train: true
+  mixed_precision: true       # learn.to_fp16()
+  lr_finder:
+    enabled: true
+    suggest_func: valley
+    num_it: 100
+  schedule:
+    method: fine_tune         # fine_tune | fit_one_cycle
+    freeze_epochs: 1          # frozen-head epochs before unfreeze (transfer learning)
+    lr_mult: 100              # body LR = head LR / lr_mult after unfreeze
+    pct_start: 0.3            # one-cycle warm-up fraction (unfrozen phase)
+    div: 5.0                  # one-cycle initial LR divisor (unfrozen phase)
+  callbacks:
+    save_model:
+      monitor: valid_loss
+      comp: min
+      every_epoch: true
+      with_opt: true
+    early_stopping:
+      enabled: true
+      monitor: valid_loss
+      patience: 3
+    csv_logger: true
+  export:
+    export_pkl: true
+    weights_pth: true
+
+# --- Image Size / Batch Size / Epochs -----------------------------------------
+image_size: 224
+batch_size: 64
+epochs: 10                    # unfrozen epochs after freeze_epochs
+
+# --- Optimizer / Learning Rate / Loss Function --------------------------------
+optimizer:
+  name: Adam                  # FastAI Adam with decoupled weight decay
+  weight_decay: 0.01
+  betas: [0.9, 0.99]
+learning_rate:
+  value: 3.31131302240938e-4  # EXP0001's LR Finder value, reused unchanged (DEC0007)
+  source: manual              # manual | lr_find
+loss_function:
+  name: CrossEntropyLossFlat
+  label_smoothing: 0.0
+
+# --- Metrics ------------------------------------------------------------------
+metrics:
+  primary: [roc_auc, pr_auc, f1, balanced_accuracy, mcc, precision, recall, specificity, fpr, fnr]
+  secondary: [accuracy, ece, brier]
+  monitor: valid_loss
+  positive_class: fake        # class treated as positive (detection target)
+  threshold_policy: validation_only
+  threshold_criterion: max_balanced_accuracy
+  calibration_bins: 15        # equal-width bins for ECE
+
+# --- Random Seed --------------------------------------------------------------
+random_seed: 42
+
+# --- Augmentations ------------------------------------------------------------
+augmentations:
+  aug_transforms:
+    enabled: true
+    train_only: true
+    do_flip: true
+    flip_vert: false
+    max_rotate: 10.0
+    max_zoom: 1.05
+    max_lighting: 0.1
+    max_warp: 0.0
+    min_scale: 1.0
+    pad_mode: zeros
+
+# --- Hardware -----------------------------------------------------------------
+hardware:
+  platform: kaggle
+  accelerator: GPU
+  gpu: T4                     # not P100: cu128 dropped sm_60
+  kaggle_image: kaggle-gpu-2026-11-08   # Python 3.13.16, torch 2.11.0+cu130, fastai 2.8.12
+  environment_lock: environment/versions.lock.md
+
+# --- Output folders / checkpoint location -------------------------------------
+outputs:
+  experiment_dir: 06_Experiments/EXP0002
+  checkpoint_dir: 06_Experiments/EXP0002/notebook/checkpoints
+  checkpoint_manifest: 07_Checkpoints/EXP0002_checkpoints.md
+  artifact_dataset_slug: isthisdeception/thesis-exp0002-artifacts   # separate from EXP0001's artifact dataset
+
+# --- Git Commit / Timestamp (refresh at session start, before training) -------
+git_commit: faa16a67836b52b7f87dda4fcf8d09ef3bd97997
+timestamp: "2026-11-10T10:07:28+06:00"
+
+notes: >-
+  SPLIT0002 (logo, seed 42): train 40873 (19629 fake / 21244 real), val 7204
+  (3448 / 3756), test 1923 (stable_diffusion fakes only). Train and val hold the
+  other 12 generators. Test metrics that need real images (ROC-AUC, specificity)
+  are undefined on this split; recall on the held-out generator is the result.

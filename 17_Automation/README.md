@@ -20,6 +20,13 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Logging (STEP-038): `training/logs.py`, `training/records.py`; schemas in `training/LOGGING.md`. `kaggle_sync push-metadata` refuses binaries and files over 20 MB.
 - Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
+## Generalization (Phases E8–E9 / STEP-047)
+- Package: `17_Automation/generalization/`
+- Config (E8): `08_Evaluation/EVAL0001/generalization/config.yaml` (target datasets, samples, generator relations; nothing hardcoded)
+- Entrypoints: `python -m generalization datasets` (plan), `run` (Kaggle GPU: sanity pass on 500 DS0001 images, then MODEL0001 on each target; resumable per dataset), `analyze` (E8 CSVs + `cross_dataset_report.md`), `unseen --experiment EXP0002 --evaluation EVAL0002` (E9 from the held-out experiment's STEP-041 predictions; leakage check from the split's `split_config.json`).
+- Reuses the robustness input pipeline and export lookup. Kaggle: `sync_plan.generalization.yaml` (E8), `sync_plan.exp0002.yaml` (EXP0002 training).
+- `prediction_validation` now reads the model ID and split from the experiment config and requires the evaluation ID in `evaluation_registry.csv`, so it serves EVAL0002 as well as EVAL0001.
+
 ## Robustness evaluation (Phase E7 / STEP-046)
 - Package: `17_Automation/robustness/`
 - Config: `08_Evaluation/EVAL0001/robustness/config.yaml` (perturbations and levels; nothing hardcoded)
