@@ -38,6 +38,12 @@ specs/FIGxxxx_spec.md, assets/FIGxxxx_v1.png
 | FIG0012 | Confidence distribution vs accuracy | `08_Evaluation/EVAL0001/confidence_distribution.csv` |
 | FIG0013 | Threshold trade-off with operating points | `08_Evaluation/EVAL0001/threshold_sweep.csv`, `operating_points.csv` |
 
+## STEP-045 / Phases E6, E12 figure specs (data only)
+| FIG ID | Topic | Data path |
+|--------|-------|-----------|
+| FIG0014 | Confusion matrix (EVAL0001 test) | `08_Evaluation/EVAL0001/confusion_matrix.csv` |
+| FIG0015 | Error rate by generator and real source | `08_Evaluation/EVAL0001/error_by_group.csv` |
+
 Specs live in `09_Figures/specs/`. **Do not commit AI-rendered publication figures** ([A.9](../MASTER_RESEARCH_OPERATING_SYSTEM.md#a9-canonical-figure-policy)).
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*

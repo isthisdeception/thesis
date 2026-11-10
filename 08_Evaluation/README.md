@@ -11,7 +11,9 @@ STEP-042: `EVAL0001/prediction_validation_report.md` records the E1–E2 checks.
 
 STEP-043: `EVAL0001/classification_metrics.csv` holds the full E3 suite for `val` and `test`. `EVAL0001/classification_metrics.md` is the metrics section for the evaluation report, with per-metric notes. Both are written by `python -m classification_metrics` from `17_Automation/`, which refuses to run unless the STEP-042 report passed.
 
-STEP-044: `python -m calibration_threshold` writes `EVAL0001/calibration_summary.csv` (ECE, MCE, Brier), `reliability.csv`, `confidence_distribution.csv`, `threshold_sweep.csv`, `operating_points.csv`, and the report section `calibration_threshold.md`. Thresholds are chosen on `val` only. Figure specs are FIG0011–FIG0013. Status is `calibration_computed` in `evaluation_registry.csv`.
+STEP-044: `python -m calibration_threshold` writes `EVAL0001/calibration_summary.csv` (ECE, MCE, Brier), `reliability.csv`, `confidence_distribution.csv`, `threshold_sweep.csv`, `operating_points.csv`, and the report section `calibration_threshold.md`. Thresholds are chosen on `val` only. Figure specs are FIG0011–FIG0013.
+
+STEP-045: `python -m failure_analysis` joins the predictions to the DS0001/PP0001 preprocessing index and writes `EVAL0001/confusion_matrix.csv`, `per_class_stats.csv`, `error_by_group.csv` (per generator and real source, Wilson 95% intervals), `error_summary.csv`, `error_cases.csv` (most confident errors for manual review), and `failure_analysis.md`. Causes are hypotheses only. Figure specs are FIG0014–FIG0015. Status is `failure_analysis_complete` in `evaluation_registry.csv`.
 
 ## Workflow
 Evaluation agents write, Figures/Tables consume. Do not re-compute metrics without new Evaluation ID.

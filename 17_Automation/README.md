@@ -20,6 +20,11 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Logging (STEP-038): `training/logs.py`, `training/records.py`; schemas in `training/LOGGING.md`. `kaggle_sync push-metadata` refuses binaries and files over 20 MB.
 - Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
+## Confusion and failure analysis (Phases E6, E12 / STEP-045)
+- Package: `17_Automation/failure_analysis/`
+- Entrypoint: `python -m failure_analysis --experiment EXP0001 --evaluation EVAL0001`
+- Refuses to run unless `prediction_validation_report.md` passed. Joins predictions to the preprocessing index by content hash, then writes confusion, per-class, per-group error, and error-case CSVs plus `failure_analysis.md` to `08_Evaluation/EVAL0001/`. Causes are written as hypotheses.
+
 ## Calibration and threshold analysis (Phases E4–E5 / STEP-044)
 - Package: `17_Automation/calibration_threshold/`
 - Entrypoint: `python -m calibration_threshold --experiment EXP0001 --evaluation EVAL0001`

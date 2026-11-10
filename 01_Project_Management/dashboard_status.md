@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Experiment system (PART 7)
-- Active Step: **STEP-045** — Confusion & failure analysis
+- Active Step: **STEP-046** — Robustness evaluation
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -31,6 +31,7 @@
 - Prediction validation (STEP-042): COMPLETE — EVAL0001, E1–E2 PASS. Counts, ids, labels, and probabilities match the split.
 - Classification metrics (STEP-043): COMPLETE — EVAL0001 E3 suite in `08_Evaluation/EVAL0001/classification_metrics.csv`. Test MCC 0.698, PR-AUC 0.935, FNR 0.183 vs FPR 0.120.
 - Calibration & threshold analysis (STEP-044): COMPLETE — test ECE 0.052, MCE 0.154, Brier 0.113. Frozen threshold 0.395 kept for reporting; screening (0.089) and flag-for-review (0.629) points chosen on val. Figure specs FIG0011–FIG0013.
+- Confusion & failure analysis (STEP-045): COMPLETE — `08_Evaluation/EVAL0001/failure_analysis.md`. Missed fakes concentrate in StyleGAN3, Projected GAN, StyleGAN2, MAT (FNR 38–44%); MetFaces real images have FPR 36.7%. Compression, quality, identity, lighting not assessable from metadata. Figure specs FIG0014–FIG0015.
 - `Ready=yes`
 
 ## Health
