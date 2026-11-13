@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP0003",
+  "status": "complete",
+  "config": "06_Experiments/EXP0003/config.yaml",
+  "config_sha256": "01ea569f4186f5be2a212de42da9ce6c743571410e19371423938b9459c69601",
+  "git": {
+    "recorded": "813fb9662e9989c3ef149565114c9dfe22247c3f",
+    "head": "5fd495c881d8b2ac087467e875bc8bd73d0a0b62",
+    "verified": true
+  },
+  "started": "2026-11-13T05:23:06.812185+00:00",
+  "finished": "2026-11-13T06:25:20.782561+00:00",
+  "resumed_from_epoch": null,
+  "sessions": [
+    "train_20261113T052306812"
+  ],
+  "training_seconds": 3392.7,
+  "epochs_run": 11,
+  "early_stopped": false,
+  "best_epoch": 9,
+  "best_monitor": {
+    "name": "valid_loss",
+    "value": 0.34315383434295654
+  },
+  "metrics": {
+    "threshold": {
+      "value": 0.40687403082847595,
+      "criterion": "max_balanced_accuracy",
+      "policy": "validation_only",
+      "positive_class": "fake"
+    },
+    "val": {
+      "threshold": 0.40687403082847595,
+      "tp": 3052,
+      "tn": 3348,
+      "fp": 435,
+      "fn": 667,
+      "precision": 0.8752509320332664,
+      "recall": 0.8206507125571391,
+      "specificity": 0.8850118953211736,
+      "fpr": 0.11498810467882632,
+      "fnr": 0.179349287442861,
+      "f1": 0.8470718845406605,
+      "balanced_accuracy": 0.8528313039391564,
+      "accuracy": 0.8531058384430819,
+      "mcc": 0.7073911410886091,
+      "roc_auc": 0.9348674036498886,
+      "pr_auc": 0.9411181857118255,
+      "ece": 0.049398322086298116,
+      "brier": 0.10692844224571885,
+      "n": 7502,
+      "n_positive": 3719
+    },
+    "test": {
+      "threshold": 0.40687403082847595,
+      "tp": 3068,
+      "tn": 3295,
+      "fp": 431,
+      "fn": 711,
+      "precision": 0.8768219491283223,
+      "recall": 0.8118549880920879,
+      "specificity": 0.8843263553408481,
+      "fpr": 0.1156736446591519,
+      "fnr": 0.18814501190791214,
+      "f1": 0.8430887606485299,
+      "balanced_accuracy": 0.848090671716468,
+      "accuracy": 0.8478347768154564,
+      "mcc": 0.697757973826972,
+      "roc_auc": 0.9271907909305273,
+      "pr_auc": 0.9363340250195984,
+      "ece": 0.05453600492355274,
+      "brier": 0.11261778362898485,
+      "n": 7505,
+      "n_positive": 3779
+    }
+  },
+  "artifacts": {
+    "best": {
+      "name": "EXP0003_best.pth",
+      "path": "06_Experiments/EXP0003/notebook/checkpoints/EXP0003_best.pth",
+      "sha256": "6c5264b3d75145be2c40ab458c0401bd467f907810b796eb094259d9b61f660f",
+      "bytes": 308192039
+    },
+    "last": {
+      "name": "EXP0003_last.pth",
+      "path": "06_Experiments/EXP0003/notebook/checkpoints/EXP0003_last.pth",
+      "sha256": "02ea56748ba2e39b1f42ad7e907d3aa0ac063a03e5961bf4b70386aea46c5aa8",
+      "bytes": 308224423
+    },
+    "export_pkl": {
+      "name": "MODEL0009_export.pkl",
+      "path": "06_Experiments/EXP0003/notebook/checkpoints/MODEL0009_export.pkl",
+      "sha256": "25cb4f1e74bf020fc4077d5ee804b92fbd732dcc7258910f7bc3aa3491bd408f",
+      "bytes": 104652357
+    },
+    "weights_pth": {
+      "name": "MODEL0009_weights.pth",
+      "path": "06_Experiments/EXP0003/notebook/checkpoints/MODEL0009_weights.pth",
+      "sha256": "d4fae0f3c9beb598e87ddd1314178dd645ffa77c6df83a9f86110c801162812a",
+      "bytes": 102823179
+    }
+  },
+  "checkpoint_manifest": {
+    "json": "06_Experiments/EXP0003/notebook/checkpoints/checkpoint_manifest.json",
+    "markdown": "07_Checkpoints/EXP0003_checkpoints.md"
+  },
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "torch": "2.11.0+cu130",
+    "torchvision": "0.26.0+cu130",
+    "fastai": "2.8.12",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "Tesla T4",
+    "gpu_memory_mb": 14912,
+    "plum_dispatch": "2.5.7"
+  },
+  "logs": {
+    "log": "06_Experiments/EXP0003/logs/EXP0003_train_20261113T052306812.log",
+    "events": "06_Experiments/EXP0003/logs/EXP0003_events.jsonl",
+    "epochs_live": "06_Experiments/EXP0003/logs/EXP0003_epochs.csv",
+    "batches_live": "06_Experiments/EXP0003/logs/EXP0003_batches.csv",
+    "hyperparameters": "06_Experiments/EXP0003/logs/EXP0003_hyperparameters_train_20261113T052306812.json"
+  },
+  "warnings_logged": 0,
+  "errors_logged": 0
+}
