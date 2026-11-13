@@ -1,0 +1,9 @@
+split,true_label,predicted_label,threshold,count
+val,fake,fake,0.4852776825428009,2995
+val,fake,real,0.4852776825428009,724
+val,real,fake,0.4852776825428009,637
+val,real,real,0.4852776825428009,3146
+test,fake,fake,0.4852776825428009,3002
+test,fake,real,0.4852776825428009,777
+test,real,fake,0.4852776825428009,680
+test,real,real,0.4852776825428009,3046

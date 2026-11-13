@@ -1,0 +1,9 @@
+split,id,processed_path,generator,y_true,y_prob,y_pred,threshold,role,target_layer
+test,374c243abc262bcef6155c0efdee64aaa3f31f01c6e31ff004330389c86a8264,images/fake/stargan/stargan_img002247_0b8ef5f9.png,stargan,1,0.99999917,1,0.4068740308284759,true_positive,layer4
+test,4ee11360945ce0cd09e843bfbe9edddca672c5c33096add9654799c7c771768b,images/fake/face_synthetics/face_synthetics_img009554_0f45cf5a.png,face_synthetics,1,0.9999989,1,0.4068740308284759,true_positive,layer4
+test,940cb44ebe5a52aea31fdd8b1d2329903e4613dea52c1ff1f766f7aaffb0693b,images/real/celebahq_img011950_42ef9e6c.png,none,0,2.2781521e-06,0,0.4068740308284759,true_negative,layer4
+test,3eef55f94774cd4eaa4b26de5477bb1dfa39a3a6e1fb89d010e5747ac39c5940,images/real/celebahq_img016702_0b349f7b.png,none,0,2.5668378e-06,0,0.4068740308284759,true_negative,layer4
+test,88bf60eec5c0b855098674bd2e9ec111e5f70fe3529dfcf0a4c95d3833f18e69,images/real/celebahq_img024090_a0c73b0b.png,none,0,0.9996228,1,0.4068740308284759,false_positive,layer4
+test,2f017ad79c96e06bf011bfb8e05257a38ca94dc0720c1717823f6cbda1ddb8bb,images/real/celebahq_img021979_f4a85785.png,none,0,0.9973533,1,0.4068740308284759,false_positive,layer4
+test,8b52b2138ceb77a0a7ed3684579fd8d29102675d3f5a931db2085dd620035140,images/fake/stylegan2/stylegan2_img039497_26e7fc58.png,stylegan2,1,0.000330187,0,0.4068740308284759,false_negative,layer4
+test,a9828f3e3e74241e8188558f70043350aafae6ab3eee4224daf664c33d8d8163,images/fake/mat/mat_img027527_a412b7a3.png,mat,1,0.0004309788,0,0.4068740308284759,false_negative,layer4

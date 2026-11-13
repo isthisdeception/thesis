@@ -22,7 +22,7 @@ STEP-047 (DEC0007):
 - E9 unseen generator, `EVAL0002/`: evaluates EXP0002 / MODEL0008, trained without Stable Diffusion. STEP-041 inputs in `EXP0002/`, the E1–E2 report in `EVAL0002/`, and `EVAL0002/unseen_generator/` from `python -m generalization unseen`. Status `unseen_generator_complete`.
 - Figure specs FIG0018–FIG0019.
 
-STEP-048 (DEC0008): `ablations/` will hold `ablation_results.csv` and `ablation_report.md` from `python -m ablation evaluate`, comparing EXP0003–EXP0006 with EXP0001. EVAL0003–EVAL0006 are reserved for their E1–E2 checks; their STEP-041 inputs go to `EXP0003/` … `EXP0006/`. Figure spec FIG0020.
+STEP-048 (DEC0008): `ablations/ablation_results.csv` and `ablation_report.md` compare EXP0003–EXP0006 with EXP0001. EVAL0003–EVAL0006 passed E1–E2. STEP-041 inputs are in `EXP0003/` … `EXP0006/`. Figure spec FIG0020.
 
 ## Workflow
 Evaluation agents write, Figures/Tables consume. Do not re-compute metrics without new Evaluation ID.
