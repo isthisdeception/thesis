@@ -26,6 +26,13 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Entrypoints: `python -m ablation list`, `create` (generates each experiment from the baseline config; refuses any difference beyond identity fields and the planned keys; never overwrites; writes docs, sync plans, registry rows), `evaluate` (after Kaggle: STEP-040 registration from `run_summary.json`, STEP-041 inputs, E1–E2, then `08_Evaluation/ablations/ablation_results.csv` and `ablation_report.md`, read against the seed replicate).
 - Kaggle: `06_Experiments/ablations/STEP048_ablations.ipynb`, push plan `kaggle_sync/sync_plan.ablations.yaml`, one publish plan per experiment.
 
+## Statistical testing (Phase E11 / STEP-049)
+- Package: `17_Automation/statistics/`
+- Entrypoint: `python -m statistics`
+- Reads the STEP-048 plan and the validated SPLIT0001 test predictions for EXP0001 and EXP0003–EXP0006.
+- Writes `08_Evaluation/statistics/`: bootstrap intervals, paired differences, exact McNemar, two-seed variance, repeatability, the test plan, and `statistics_report.md`.
+- The seed-level Wilcoxon test is implemented and is not run: two seeds are below the minimum of six. No row carries a superiority claim.
+
 ## Generalization (Phases E8–E9 / STEP-047)
 - Package: `17_Automation/generalization/`
 - Config (E8): `08_Evaluation/EVAL0001/generalization/config.yaml` (target datasets, samples, generator relations; nothing hardcoded)

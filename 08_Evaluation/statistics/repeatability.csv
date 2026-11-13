@@ -1,0 +1,2 @@
+experiment_a,experiment_b,split,n,decision_agreement,cohen_kappa,prob_pearson,prob_mae,n_seeds
+EXP0001,EXP0003,test,7505,0.9333777481678881,0.8662365513818825,0.9661664329117224,0.060145200684829,2

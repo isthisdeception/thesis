@@ -40,7 +40,7 @@ Per-metric values and flags for all metrics: `ablation_results.csv`. Figure spec
 
 ## Limits
 
-- One seed per configuration; the noise floor comes from a single seed pair. Formal tests are STEP-049 (Phase E11).
+- One seed per configuration; the noise floor comes from a single seed pair. Paired intervals and McNemar tests are in `08_Evaluation/statistics/statistics_report.md` (STEP-049). They do not support a superiority claim.
 - EXP0004 stopped at epoch 3 under the baseline early-stopping rule (patience 3). The other runs used more of the 11-epoch budget. That is the configured rule firing, not a second changed factor.
 - In-distribution test only (SPLIT0001). Robustness and cross-dataset behaviour of the ablations were not measured.
 - Every ablation reuses EXP0001's learning rate and schedule. For the no-pretraining run this keeps one factor changed, but it is not a tuned from-scratch training.
