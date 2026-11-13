@@ -1,0 +1,19 @@
+{
+  "step": "STEP-049",
+  "phase": "E11",
+  "split": "test",
+  "baseline": "EXP0001",
+  "seed_replicate": "EXP0003",
+  "alpha": 0.05,
+  "primary_metric": "roc_auc",
+  "n_bootstrap": 10000,
+  "bootstrap_seed": 49,
+  "superiority_claim": "none",
+  "prediction_sha256": {
+    "EXP0001": "4553498081ef7da8574c6742f0f5fbec08993556b6ef0b25abcd76c313c1cc90",
+    "EXP0003": "a9b8054aba84e38123e32ad9c9b90c129d5db5edf5486953e4d8fa76ee470ec5",
+    "EXP0004": "9a737dede571764cd8f706a5df0792e723cb9585431cde60065710b8d23e002a",
+    "EXP0005": "9f495acef8f5220a40cea28d1be91265f2262b429deb46db8880c05308b04ef1",
+    "EXP0006": "703ecc643cff9bc2d6b995619d926344e094902cd7ff228481b7ccffab67e9f1"
+  }
+}
