@@ -1,0 +1,28 @@
+{
+  "experiment_id": "EXP0004",
+  "positive_class": "fake",
+  "negative_class": "real",
+  "calibration_bins": 15,
+  "sources": {
+    "val": {
+      "path": "06_Experiments/EXP0004/predictions/val_predictions.csv",
+      "sha256": "a9d35f431b57bb35a14a5681e11e8d145ce82680576536c5b418a5508c698c85",
+      "rows": 7502
+    },
+    "test": {
+      "path": "06_Experiments/EXP0004/predictions/test_predictions.csv",
+      "sha256": "b8401243972249e64bb11e8845d63f57c78e138882a9ab5830092cce40ae0138",
+      "rows": 7505
+    }
+  },
+  "gradcam": {
+    "status": "sample_only",
+    "reason": "The model weights and the images are in the Kaggle artifact and data tiers, not in Git. gradcam_sample.csv is the case list. Maps are computed by evaluation_trigger.gradcam when that export is mounted.",
+    "target_layer": "layer4"
+  },
+  "feature_importance": {
+    "status": "not_applicable",
+    "reason": "ResNet-50 has no separate feature-importance output. Case-level attribution is the Grad-CAM sample, not a global importance table."
+  },
+  "figures": "none (A.9: data only)"
+}
