@@ -56,6 +56,11 @@ specs/FIGxxxx_spec.md, assets/FIGxxxx_v1.png
 | FIG0018 | Cross-dataset error rates (MODEL0001) | `08_Evaluation/EVAL0001/generalization/cross_dataset_metrics.csv` |
 | FIG0019 | Unseen vs seen generator detection (MODEL0008) | `08_Evaluation/EVAL0002/unseen_generator/unseen_detection.csv` |
 
+## STEP-048 / Phase E10 figure spec (data only)
+| FIG ID | Topic | Data path |
+|--------|-------|-----------|
+| FIG0020 | Ablation chart against seed noise | `08_Evaluation/ablations/ablation_results.csv` |
+
 Specs live in `09_Figures/specs/`. **Do not commit AI-rendered publication figures** ([A.9](../MASTER_RESEARCH_OPERATING_SYSTEM.md#a9-canonical-figure-policy)).
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*

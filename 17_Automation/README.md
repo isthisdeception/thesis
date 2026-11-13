@@ -20,6 +20,12 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Logging (STEP-038): `training/logs.py`, `training/records.py`; schemas in `training/LOGGING.md`. `kaggle_sync push-metadata` refuses binaries and files over 20 MB.
 - Checkpoint system (STEP-037): `training/checkpoints.py`; policy in `07_Checkpoints/checkpoint_policy.md`. `kaggle_sync resume-checkpoints` merges mounted checkpoints without deleting or overwriting local files.
 
+## Ablations (Phase E10 / STEP-048)
+- Package: `17_Automation/ablation/`
+- Plan: `06_Experiments/ablations/STEP048_plan.yaml` (one entry per ablation: experiment, model, evaluation IDs, factor, question, and the config keys of that one factor).
+- Entrypoints: `python -m ablation list`, `create` (generates each experiment from the baseline config; refuses any difference beyond identity fields and the planned keys; never overwrites; writes docs, sync plans, registry rows), `evaluate` (after Kaggle: STEP-040 registration from `run_summary.json`, STEP-041 inputs, E1–E2, then `08_Evaluation/ablations/ablation_results.csv` and `ablation_report.md`, read against the seed replicate).
+- Kaggle: `06_Experiments/ablations/STEP048_ablations.ipynb`, push plan `kaggle_sync/sync_plan.ablations.yaml`, one publish plan per experiment.
+
 ## Generalization (Phases E8–E9 / STEP-047)
 - Package: `17_Automation/generalization/`
 - Config (E8): `08_Evaluation/EVAL0001/generalization/config.yaml` (target datasets, samples, generator relations; nothing hardcoded)

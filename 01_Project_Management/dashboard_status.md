@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Experiment system (PART 7)
-- Active Step: **STEP-048** — Comparison study
+- Active Step: **STEP-048** — Ablation studies (EXP0003–EXP0006 created; waiting for the Kaggle training session)
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
