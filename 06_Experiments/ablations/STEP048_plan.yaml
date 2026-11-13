@@ -1,0 +1,45 @@
+# STEP-048 / Phase E10 ablation plan (DEC0008). Each entry is a new immutable experiment that
+# changes exactly one factor of the baseline; `changes` lists every config key of that factor.
+# Scaffold (from 17_Automation/):  python -m ablation create
+# Compare after the Kaggle run:     python -m ablation evaluate
+
+step: STEP-048
+baseline: EXP0001
+noise_reference: EXP0003          # the seed replicate: run-to-run variation for every comparison
+artifact_slug_pattern: isthisdeception/thesis-{exp}-artifacts   # one Kaggle dataset per experiment
+
+ablations:
+  - experiment_id: EXP0003
+    model_id: MODEL0009
+    evaluation_id: EVAL0003
+    factor: random_seed
+    question: How much do the metrics change when only the training seed changes?
+    changes: {random_seed: 43}
+    expected_outcome: >-
+      No directional expectation. The differences from EXP0001 are the run-to-run
+      variation that every other ablation is compared against.
+  - experiment_id: EXP0004
+    model_id: MODEL0010
+    evaluation_id: EVAL0004
+    factor: augmentation
+    question: Does training-time augmentation (flip, rotate, zoom, lighting) change performance?
+    changes: {augmentations.aug_transforms.enabled: false}
+    expected_outcome: >-
+      No directional expectation. Validation ROC-AUC >= 0.90 as a pipeline sanity check.
+  - experiment_id: EXP0005
+    model_id: MODEL0011
+    evaluation_id: EVAL0005
+    factor: pretraining
+    question: How much does ImageNet pretraining contribute under the same 11-epoch budget?
+    changes: {model.pretrained: false, model.pretrained_weights: none}
+    expected_outcome: >-
+      Lower than EXP0001 is likely; no sanity bar, because training from scratch
+      within the baseline budget may stay far below it. Reported as observed.
+  - experiment_id: EXP0006
+    model_id: MODEL0012
+    evaluation_id: EVAL0006
+    factor: image_size
+    question: Does reducing the model input from 224 to 160 pixels change performance?
+    changes: {image_size: 160, fastai.item_tfms.resize: 160}
+    expected_outcome: >-
+      No directional expectation. Validation ROC-AUC >= 0.90 as a pipeline sanity check.
