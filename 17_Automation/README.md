@@ -26,6 +26,13 @@ Environment scripts, Kaggle sync scripts, Git automation, health checks, dataset
 - Entrypoints: `python -m ablation list`, `create` (generates each experiment from the baseline config; refuses any difference beyond identity fields and the planned keys; never overwrites; writes docs, sync plans, registry rows), `evaluate` (after Kaggle: STEP-040 registration from `run_summary.json`, STEP-041 inputs, E1–E2, then `08_Evaluation/ablations/ablation_results.csv` and `ablation_report.md`, read against the seed replicate).
 - Kaggle: `06_Experiments/ablations/STEP048_ablations.ipynb`, push plan `kaggle_sync/sync_plan.ablations.yaml`, one publish plan per experiment.
 
+## Comparison and evaluation gate (Phases E16–E18 / STEP-050)
+- Package: `17_Automation/comparison/`
+- Entrypoint: `python -m comparison`
+- Ranks only experiments that keep EXP0001's dataset, version, pipeline, and split. Writes `08_Evaluation/comparison_tables.csv`, `comparison_exclusions.csv`, `comparison_report.md`, and `evaluation_report.md`.
+- Writes figure specs FIG0021–FIG0025 and table specs TAB0002–TAB0003. Does not render figures.
+- Writes `08_Evaluation/evaluation_audit.md` and exits non-zero when Checklist 8 fails.
+
 ## Statistical testing (Phase E11 / STEP-049)
 - Package: `17_Automation/statistics/`
 - Entrypoint: `python -m statistics`

@@ -61,6 +61,15 @@ specs/FIGxxxx_spec.md, assets/FIGxxxx_v1.png
 |--------|-------|-----------|
 | FIG0020 | Ablation chart against seed noise | `08_Evaluation/ablations/ablation_results.csv` |
 
+## STEP-050 / Phase E17 figure specs (data only)
+| FIG ID | Topic | Data path |
+|--------|-------|-----------|
+| FIG0021 | ROC curves, fair runs, test split | `08_Evaluation/EXP0001/roc_curve.csv` (and EXP0003–EXP0006) |
+| FIG0022 | Precision-recall curves, same runs | `08_Evaluation/EXP0001/pr_curve.csv` (and EXP0003–EXP0006) |
+| FIG0023 | Metric comparison | `08_Evaluation/comparison_tables.csv` |
+| FIG0024 | EXP0001 validation ROC-AUC | `06_Experiments/EXP0001/logs/EXP0001_epochs.csv` |
+| FIG0025 | EXP0001 train and validation loss | `06_Experiments/EXP0001/logs/EXP0001_epochs.csv` |
+
 Specs live in `09_Figures/specs/`. **Do not commit AI-rendered publication figures** ([A.9](../MASTER_RESEARCH_OPERATING_SYSTEM.md#a9-canonical-figure-policy)).
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*

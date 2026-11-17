@@ -26,6 +26,8 @@ STEP-048 (DEC0008): `ablations/ablation_results.csv` and `ablation_report.md` co
 
 STEP-049 (Phase E11): `python -m statistics` (from `17_Automation/`) reads those validated predictions and writes `statistics/`. Bootstrap intervals, exact McNemar tests, the two-seed variance, and repeatability are in the CSVs. `statistics/statistics_report.md` states what they support. Wilcoxon across seeds is not run, because there are two seeds and the test needs six. No superiority claim is made.
 
+STEP-050 (Phases E16–E18): `python -m comparison` writes `comparison_tables.csv`, `comparison_exclusions.csv`, `comparison_report.md`, and `evaluation_report.md`. The ranked rows are EXP0001 and EXP0003–EXP0006. EXP0002 is excluded because it uses SPLIT0002. Figure specs FIG0021–FIG0025 and table specs TAB0002–TAB0003 are data only. `evaluation_audit.md` is Checklist 8.
+
 ## Workflow
 Evaluation agents write, Figures/Tables consume. Do not re-compute metrics without new Evaluation ID.
 
