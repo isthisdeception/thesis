@@ -3,8 +3,9 @@
 **Module ID:** MOD012  
 **Name:** Report Generator  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-18  
+**Code:** `reports/` (`reports/generator.py`)
 
 **Purpose:** Write the case report from the decision, the evidence ids, the explanation data, and the version stamps. The report is reproducible from those records. It does not recompute a prediction.
 

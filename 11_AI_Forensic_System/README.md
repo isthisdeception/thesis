@@ -21,6 +21,8 @@ STEP-057: `confidence/` computes the four E4-calibrated confidence values (`pred
 
 STEP-058: `explainability/` assembles data-only `explanation.json` from validated `explainability_input` items (`grad_cam`, `attention_maps`, `saliency`, `integrated_gradients`), recording `"no_data"` (`data: null`) when no map was collected and rejecting any rendered image (A.9). `reasoning/` writes `reasoning.json` from validated evidence rows, verifying that every sentence cites an input `EV` id and states only measurements present on that row. MOD010 and MOD011 are `implemented`. See `explainability/README.md` and `reasoning/README.md`. Tests: `python -m pytest tests/test_explainability_reasoning.py` from this folder.
 
+STEP-059: `reports/` generates reproducible JSON, Markdown (Template 24), and HTML case reports with byte-for-byte system/model/dataset/experiment/Git-commit provenance. `audit/` appends immutable `CASExxxxxx` rows to `case_registry.csv`. `failure_handling/` writes, reads, and classifies structured failure records across all 8 canonical failure names. `system_registry/` verifies `MOD001`–`MOD018` specs and modality proposals. `pipeline.py` (`run_investigation`) runs the end-to-end investigation. `evaluate_e14.py` produces Phase E14 (`EVAL0007`) in `08_Evaluation/forensic_analyst_eval/` and Checklist 9 audit in `08_Evaluation/forensic_audit.md`. MOD012 and MOD015–MOD018 are `implemented` (MOD013 API and MOD014 Frontend belong to Parts 10–11). Tests: `python -m pytest tests/test_report_audit_pipeline.py` from this folder.
+
 ## Workflow
 Antigravity writes, Backend consumes. No frontend/training code.
 

@@ -3,8 +3,9 @@
 **Module ID:** MOD018  
 **Name:** Future Modality Support  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-18  
+**Code:** `system_registry/` (`system_registry/__init__.py`)
 
 **Purpose:** State how a modality that does not exist yet is added. Audio, video, text, multimodal fusion, knowledge graphs, and an LLM reasoner are anticipated. None of them is built in this step.
 

@@ -1,0 +1,17 @@
+scenario_id,case_id,category,status,expected_status,decision,expected_decision,lean,evidence_count,prediction_confidence,evidence_confidence,system_confidence,decision_confidence,reasoning_sentences,rejected_sentences,report_valid,failures_recorded,execution_time_ms,all_checks_pass
+E14-01,CASE000001,exp0001_true_positive,completed,completed,Fake,Fake,positive_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,78.36,yes
+E14-02,CASE000002,exp0001_true_positive,completed,completed,Fake,Fake,positive_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,53.88,yes
+E14-03,CASE000003,exp0001_true_negative,completed,completed,Real,Real,negative_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,51.98,yes
+E14-04,CASE000004,exp0001_true_negative,completed,completed,Real,Real,negative_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,52.78,yes
+E14-05,CASE000005,exp0001_false_positive,completed,completed,Fake,Fake,positive_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,56.32,yes
+E14-06,CASE000006,exp0001_false_positive,completed,completed,Fake,Fake,positive_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,59.91,yes
+E14-07,CASE000007,exp0001_false_negative,completed,completed,Real,Real,negative_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,67.09,yes
+E14-08,CASE000008,exp0001_false_negative,completed,completed,Real,Real,negative_class,24,0.971745,0.900000,0.900000,0.795492,12,0,yes,,69.93,yes
+E14-09,CASE000009,contested_detectors,completed,completed,Inconclusive,Inconclusive,contested,26,0.426776,0.390909,0.909091,0.256239,12,0,yes,,80.34,yes
+E14-10,CASE000010,unusable_supporting_evidence,completed,completed,Inconclusive,Inconclusive,positive_class,10,0.971745,0.333333,0.333333,0.333333,5,0,yes,low_confidence,74.97,yes
+E14-11,CASE000011,model_unavailable_recovery,completed,completed,Unknown,Unknown,no_directional_evidence,22,,0.888889,0.800000,,11,0,yes,model_unavailable,102.25,yes
+E14-12,CASE000012,detector_timeout_recovery,completed,completed,Unknown,Unknown,no_directional_evidence,22,,0.888889,0.800000,,11,0,yes,timeout,149.08,yes
+E14-13,CASE000013,unsupported_format_stop,failed,failed,,,,0,,,,,0,0,yes,unsupported_format,2.37,yes
+E14-14,CASE000014,corrupted_image_stop,failed,failed,,,,0,,,,,0,0,yes,corrupted_image,47.62,yes
+E14-15,CASE000015,no_face_stop,failed,failed,,,,0,,,,,0,0,yes,no_face,7.21,yes
+E14-16,CASE000016,multiple_faces_stop,failed,failed,,,,0,,,,,0,0,yes,multiple_faces,6.20,yes

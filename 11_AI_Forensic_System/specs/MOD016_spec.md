@@ -3,8 +3,9 @@
 **Module ID:** MOD016  
 **Name:** Failure Handling  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-18  
+**Code:** `failure_handling/` (`failure_handling/report.py`)
 
 **Purpose:** Record every pipeline failure as a structured report. Callers stop or continue only as their own specs say. No caller catches an error and continues without a record.
 

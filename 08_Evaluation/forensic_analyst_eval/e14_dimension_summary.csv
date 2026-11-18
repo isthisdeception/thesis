@@ -1,0 +1,10 @@
+dimension,metric,value,pass
+evidence_completeness,collectors_registered_and_validated_on_clean_cases,10/10 collectors (24 EV rows/case incl. MOD006+MOD007+MOD009),yes
+fusion_quality,strategy_swappable_and_leans_match_ground_truth_rules,12/12 completed cases,yes
+decision_consistency,decision_matches_expected_4way_rule_without_image_access,16/16,yes
+confidence_consistency,e4_val_calibrated_distinct_from_raw_softmax_and_null_when_missing,12/12 verified,yes
+report_quality,template24_json_md_html_with_exact_version_and_git_stamps,12/12,yes
+reasoning_quality,ev_id_grounded_sentences_with_zero_ungrounded_leaks,"135 verified, 0 ungrounded",yes
+execution_time,mean_and_max_case_pipeline_latency_ms,"mean=60.02 ms, max=149.08 ms",yes
+module_failures,structured_mod016_records_for_all_8_canonical_failure_names,8/8 canonical modes verified; 0 silent failures,yes
+recovery_behavior,graceful_degradation_and_audit_preservation_across_faults,7/7,yes
