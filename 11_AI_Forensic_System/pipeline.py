@@ -5,6 +5,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Callable
 
 from audit import CaseRow, append_case_row, next_case_id
 from confidence import ConfidenceResult, estimate_confidence
@@ -81,6 +82,8 @@ def run_investigation(
     collectors_override: list[EvidenceCollector] | None = None,
     strategy_id: str | None = None,
     intake_config: IntakeConfig | None = None,
+    intake_result: IntakeResult | None = None,
+    stage_callback: Callable[[str, list[str]], None] | None = None,
     image_validation_config: ImageValidationConfig | None = None,
     evidence_validation_config: EvidenceValidationConfig | None = None,
     version_stamps: VersionStamps | dict | None = None,
@@ -117,9 +120,14 @@ def run_investigation(
         out.case_row = audit_res.row
         return out
 
+    def mark_stage(label: str) -> None:
+        out.stage_history.append(label)
+        if stage_callback is not None:
+            stage_callback(label, list(out.stage_history))
+
     # 1. MOD001 — Input Management
-    out.stage_history.append("Uploading")
-    intake_res = receive_upload(
+    mark_stage("Uploading")
+    intake_res = intake_result or receive_upload(
         case_id=resolved_case_id,
         filename=filename,
         data=data,
@@ -134,8 +142,8 @@ def run_investigation(
     input_dir = storage_root / resolved_case_id / input_id
 
     # 2. MOD002 — Image Validation (includes face gate)
-    out.stage_history.append("Validating")
-    out.stage_history.append("Detecting Face")
+    mark_stage("Validating")
+    mark_stage("Detecting Face")
     img_val = validate_stored_input(
         input_dir,
         face_counter,
@@ -147,8 +155,8 @@ def run_investigation(
         return finalize_failed(input_id=input_id)
 
     # 3. MOD003 + MOD004 — Evidence Collection & Deep Learning Specialist
-    out.stage_history.append("Running Analysis")
-    out.stage_history.append("Collecting Evidence")
+    mark_stage("Running Analysis")
+    mark_stage("Collecting Evidence")
     if collectors_override is not None:
         collector_list = list(collectors_override)
     else:
@@ -202,7 +210,7 @@ def run_investigation(
         return finalize_failed(input_id=input_id, ev_ids=[*collector_ev_ids, *validated_collector_ids])
 
     # 6. MOD009 — Confidence Estimation
-    out.stage_history.append("Evaluating Confidence")
+    mark_stage("Evaluating Confidence")
     conf_res = estimate_confidence(
         evidence_registry_path,
         [*validated_collector_ids, fus_res.validated.evidence_id],
@@ -251,7 +259,7 @@ def run_investigation(
         return finalize_failed(input_id=input_id, ev_ids=all_case_ev_ids)
 
     # 8. MOD010 + MOD011 — Explainability & Forensic Reasoning
-    out.stage_history.append("Generating Explanation")
+    mark_stage("Generating Explanation")
     expl_res = assemble_explanation(
         evidence_registry_path,
         validated_collector_ids,
@@ -273,7 +281,7 @@ def run_investigation(
         return finalize_failed(input_id=input_id, ev_ids=all_case_ev_ids)
 
     # 9. MOD012 — Report Generator
-    out.stage_history.append("Preparing Report")
+    mark_stage("Preparing Report")
     elapsed = time.perf_counter() - started
     all_failures = read_case_failures(storage_root, resolved_case_id)
     err_ids, warn_ids = classify_failures(all_failures)
@@ -323,6 +331,6 @@ def run_investigation(
         out.failures = read_case_failures(storage_root, resolved_case_id)
         return out
 
-    out.stage_history.append("Complete")
+    mark_stage("Complete")
     out.status = "completed"
     return out
