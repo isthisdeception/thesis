@@ -1,0 +1,8 @@
+# Pinned web backend dependencies (STEP-061)
+# Install alongside environment/requirements.txt:
+#   pip install -r 13_Backend/requirements.txt
+Django==5.2.19
+djangorestframework==3.18.3
+django-cors-headers==4.9.0
+asgiref==3.13.0
+sqlparse==0.6.1
