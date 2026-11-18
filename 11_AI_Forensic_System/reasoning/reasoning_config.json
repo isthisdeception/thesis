@@ -1,0 +1,12 @@
+{
+  "version": "0.1.0",
+  "language": "en",
+  "max_sentences": 12,
+  "templates": {
+    "collector_value": "Evidence {evidence_id} ({evidence_type}, quality {quality}) records value {value}{unit_suffix}.",
+    "collector_unusable": "Evidence {evidence_id} ({evidence_type}) is marked unusable ({validation_reason}) with recorded value {value}.",
+    "deep_learning_prediction": "Evidence {evidence_id} (deep_learning_prediction, model {model_id}, quality {quality}) records probability {value} against threshold {threshold}.",
+    "fused_conclusion": "Evidence {evidence_id} (fused_conclusion, strategy {strategy_id}, quality {quality}) combines {supporting_count} supporting items with lean {lean}.",
+    "confidence": "Evidence {evidence_id} (confidence, formula {formula_id}, quality {quality}) records prediction_confidence={prediction_confidence}, evidence_confidence={evidence_confidence}, system_confidence={system_confidence}, decision_confidence={decision_confidence}."
+  }
+}
