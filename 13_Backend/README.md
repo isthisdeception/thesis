@@ -5,6 +5,8 @@
 ## Contents
 Django apps, media config, static config, API specs.
 
+STEP-060 (2026-11-18): `architecture.md` specifies the single-responsibility Django apps (`core`, `api`, `forensic_engine`, `evidence`, `reports`, `health`, `versioning`; reserved future `accounts`, `history`, `analytics`), asynchronous investigation job flow, per-case media storage policy, `MOD016` error envelope (zero stack traces exposed), right-sized security controls, environment-variable configuration, and 7 log channels. `api_spec/api_spec.md` specifies all 10 canonical REST endpoints (`POST /cases`, `GET /cases/{id}`, `POST /cases/{id}/upload`, `GET /cases/{id}/status`, `/evidence`, `/decision`, `/explanation`, `/report`, `GET /health`, `GET /version`) via Template 16. Implementation begins at STEP-061.
+
 ## Workflow
 Antigravity writes, frontend consumes. No model training code.
 
