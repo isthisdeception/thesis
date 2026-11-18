@@ -21,6 +21,8 @@
 
 **Fused items (STEP-056):** a MOD007 `fused_conclusion` row is validated like any other item. Named checks: `fused_output_incomplete` (no strategy id or summary → `unusable`), `fused_conflict` (contested lean or directional conflict → `low`), `no_directional_evidence` (→ `low`), `single_source` (→ `medium`).
 
+**Confidence items (STEP-057):** a MOD009 `confidence` row is validated like any other item. Named checks: `confidence_output_incomplete` (missing formula id or any of the four confidence keys → `unusable`), `decision_confidence_unavailable` (`decision_confidence` is empty → `low`).
+
 **Future Extensions:** Further reliability checks, each named in configuration.
 
 **Interfaces:** Reads and annotates the evidence schema. It does not implement `EvidenceCollector` or `FusionStrategy`.

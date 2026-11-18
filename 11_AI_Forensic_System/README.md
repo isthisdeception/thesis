@@ -17,6 +17,8 @@ STEP-055: `evidence/registry/` appends `EVxxxxxx` rows. `evidence/validation/` a
 
 STEP-056: `fusion/` fuses MOD006 rows into one `fused_conclusion` item through the strategy named in `fusion/fusion_config.json` (`rule_based`; table approved in DEC0009). An unknown strategy id writes a MOD016 failure and no item. The summary is a lean with rationale citing `EV` ids, not a decision. MOD007 is `implemented`. See `fusion/README.md`. Tests: `python -m pytest tests/test_fusion.py` from this folder.
 
+STEP-057: `confidence/` computes the four E4-calibrated confidence values (`prediction_confidence`, `evidence_confidence`, `system_confidence`, `decision_confidence`, formula `e4_calibrated_v1` in `confidence/confidence_config.json`, approved in DEC0010) and registers a `confidence` item through MOD005 and MOD006. `decision/` reads only the validated `fused_conclusion` `EV` id and the validated `confidence` `EV` id—never the image—and writes `decision.json` (`Real`, `Fake`, `Inconclusive`, or `Unknown` with `reasoning_path`). MOD008 and MOD009 are `implemented`. See `confidence/README.md` and `decision/README.md`. Tests: `python -m pytest tests/test_decision_confidence.py` from this folder.
+
 ## Workflow
 Antigravity writes, Backend consumes. No frontend/training code.
 

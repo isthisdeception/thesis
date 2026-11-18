@@ -1,0 +1,33 @@
+{
+  "formula_id": "e4_calibrated_v1",
+  "formula_version": "0.1.0",
+  "formula_status": "approved in DEC0010 (Human, 2026-11-18)",
+  "calibration": {
+    "evaluation_id": "EVAL0001",
+    "split": "val",
+    "confidence_distribution_path": "08_Evaluation/EVAL0001/confidence_distribution.csv",
+    "calibration_summary_path": "08_Evaluation/EVAL0001/calibration_summary.csv"
+  },
+  "reliability_weights": {
+    "high": 1.0,
+    "medium": 0.6,
+    "low": 0.3,
+    "unusable": 0.0
+  },
+  "blend_weights": {
+    "prediction": 0.5,
+    "evidence": 0.3,
+    "system": 0.2
+  },
+  "penalties": {
+    "conflict_multiplier": 0.5,
+    "single_source_multiplier": 0.85,
+    "contested_multiplier": 0.5
+  },
+  "interpretations": {
+    "prediction_confidence": "Empirical validation-set accuracy for the detector's predicted class at its frozen threshold (E4 EVAL0001 confidence_distribution.csv, split=val), scaled by the detector item's MOD006 reliability weight. Distinct from raw softmax P(fake).",
+    "evidence_confidence": "Mean MOD006 reliability weight across the case's validated collector items (high=1.0, medium=0.6, low=0.3, unusable=0.0), penalized when validation flags conflicting evidence.",
+    "system_confidence": "Fraction of usable validated collector items among all collector attempts and MOD016 case failures for the run.",
+    "decision_confidence": "Forensic certainty attached to the conclusion MOD008 will cite: weighted blend of prediction, evidence, and system confidence, bounded by weak evidence/system health and discounted for single-source or contested leans."
+  }
+}
