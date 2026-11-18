@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Experiment system (PART 7)
-- Active Step: **STEP-049** — Statistical testing
+- Active Step: **STEP-050** — Comparison study, publication specs, and evaluation gate
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
 - Registered Splits: 10 splits across 5 outputs (`dataset_registry.csv` + `split_registry.csv`)
@@ -35,6 +35,7 @@
 - Robustness evaluation (STEP-046): COMPLETE — Kaggle T4, 54 conditions × 7505 test images; clean check PASS. Blur, downscaling, low-quality uploads, strong noise, and JPEG 10 push balanced accuracy to ~0.50 (nearly every image called fake). Brightness, contrast, colour, and small rotations cost under 0.10. `08_Evaluation/EVAL0001/robustness/robustness_report.md`; figure specs FIG0016–FIG0017.
 - Cross-dataset (STEP-047, E8): DONE — MODEL0001 at its frozen threshold. Unseen-generator fakes missed 48% (DS0002 diffusion faces 50%) vs 18% in-distribution; StyleGAN-family fakes missed 9%. Real images from other sources mostly flagged as fake: FPR 30% (DS0003 FFHQ), 77% (DS0004 scenes), 83% (DS0005 FairFace). DS0004 ROC-AUC 0.52. `08_Evaluation/EVAL0001/generalization/cross_dataset_report.md`.
 - Ablation study (STEP-048): DONE — four one-factor runs of EXP0001 (DEC0008). Seed change (EXP0003) moves test ROC-AUC by +0.001. No augmentation (EXP0004) −0.034. No ImageNet pretraining (EXP0005) −0.224. Image size 160 (EXP0006) −0.038. `08_Evaluation/ablations/ablation_report.md`.
+- Statistical testing (STEP-049): DONE — 10,000 paired bootstrap resamples (seed 49) and exact McNemar on the 7505 SPLIT0001 test images. EXP0003 is not distinguishable from EXP0001 (ROC-AUC +0.001, 95% CI includes 0; McNemar p 0.96; decision agreement 0.933). On this split the three factor runs are lower: no augmentation −0.034, no pretraining −0.224, image size 160 −0.038; each Bonferroni-adjusted 98.3% CI excludes 0. No superiority claim. Wilcoxon across seeds not run (2 seeds; the test needs 6). `08_Evaluation/statistics/statistics_report.md`.
 - Unseen generator (STEP-047, E9): DONE — EXP0002 / MODEL0008 (EXP0001 settings, Stable Diffusion held out; DEC0007). Val ROC-AUC 0.937 on seen generators; held-out Stable Diffusion recall 15.2% vs 83.3% for seen generators. Same 299 images: MODEL0001 96.3%, MODEL0008 13.7%. `08_Evaluation/EVAL0002/unseen_generator/unseen_report.md`. STEP-047 COMPLETE.
 - `Ready=yes`
 

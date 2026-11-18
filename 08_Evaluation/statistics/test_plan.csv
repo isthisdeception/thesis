@@ -1,0 +1,5 @@
+test_id,procedure,comparisons,alpha,adjustment,n_bootstrap,bootstrap_seed,multi_seed_required
+marginal_bootstrap,"percentile bootstrap of roc_auc, balanced_accuracy, mcc","each of EXP0001, EXP0003, EXP0004, EXP0005, EXP0006",0.05,"none (interval, not a family of claims)",10000,49,False
+paired_bootstrap,percentile bootstrap of challenger minus EXP0001; primary metric roc_auc,"EXP0003, EXP0004, EXP0005, EXP0006",0.05,bonferroni x3 on the 3 factor runs; seed replicate stays at 95%,10000,49,False
+mcnemar_exact,exact McNemar on saved decisions at each run's own threshold,"EXP0003, EXP0004, EXP0005, EXP0006",0.05,bonferroni x3 for factor runs; none for the seed replicate,0,49,False
+wilcoxon_across_seeds,two-sided exact signed-rank on one metric per seed,EXP0001 vs EXP0003,0.05,not run,0,49,True
