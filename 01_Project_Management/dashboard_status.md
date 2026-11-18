@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: AI Forensic Analyst (PART 9)
-- Active Step: **STEP-052** — Input management and image validation
+- Active Step: **STEP-057** — Decision & confidence engines
 - Evaluation gate (Checklist 8): PASS, human-confirmed 2026-11-17. Evidence is in `08_Evaluation/evaluation_audit.md`.
 - Registered Datasets: DS0001–DS0005 (`Ready=yes`, version v1.0)
 - Registered Pipelines: PP0001–PP0003, PP0005–PP0006 (`complete`); PP0004 superseded
@@ -39,6 +39,11 @@
 - Statistical testing (STEP-049): DONE — 10,000 paired bootstrap resamples (seed 49) and exact McNemar on the 7505 SPLIT0001 test images. EXP0003 is not distinguishable from EXP0001 (ROC-AUC +0.001, 95% CI includes 0; McNemar p 0.96; decision agreement 0.933). On this split the three factor runs are lower: no augmentation −0.034, no pretraining −0.224, image size 160 −0.038; each Bonferroni-adjusted 98.3% CI excludes 0. No superiority claim. Wilcoxon across seeds not run (2 seeds; the test needs 6). `08_Evaluation/statistics/statistics_report.md`.
 - Comparison and evaluation gate (STEP-050): DONE — ranked table is EXP0001 and EXP0003–EXP0006 (same dataset, pipeline, and SPLIT0001). EXP0002 is excluded (SPLIT0002). Publication specs FIG0021–FIG0025 and TAB0002–TAB0003 are data only. Checklist 8 PASS, human-confirmed 2026-11-17. `08_Evaluation/comparison_report.md`, `08_Evaluation/evaluation_audit.md`.
 - Forensic architecture (STEP-051): DONE — specs for MOD001–MOD018, `EvidenceCollector` and `FusionStrategy`, and the evidence schema. The detector does not decide. The decision module reads validated evidence ids. `11_AI_Forensic_System/architecture.md`. No module code yet.
+- Input and validation (STEP-052): DONE — MOD001 stores an upload as `input_metadata.json` and does not keep a rejected file. MOD002 checks format, corruption, channels, resolution, compression, noise, missing pixels, and face availability, and writes a MOD016 failure instead of continuing. `11_AI_Forensic_System/input_management/`, `image_validation/`.
+- Evidence collectors (STEP-053): DONE — nine collectors run only after validation passes. None imports another. A failure or an unknown name leaves the others in place. The detector collector is not in this set. `11_AI_Forensic_System/evidence/`.
+- Deep learning specialist (STEP-054): DONE — MOD004 reads the model id from configuration and the export pointer from `model_registry.csv`. It records the fake-class probability, optional embedding, and execution time. It does not apply the threshold or choose Real or Fake. A missing export yields `model_unavailable`. `evidence/collectors/deep_learning_specialist/`.
+- Evidence registry and validation (STEP-055): DONE — each item receives an `EVxxxxxx` id in an append-only registry. Validation appends a reliability row (`high`, `medium`, `low`, or `unusable`) and leaves the collector row unchanged. Empty confidence stays empty. Conflicting items both remain and cite each other. `evidence/registry/`, `evidence/validation/`.
+- Evidence fusion (STEP-056): DONE — MOD007 runs the strategy named in `fusion/fusion_config.json` (`rule_based`, DEF-004). Reliability weights high 1.0 / medium 0.6 / low 0.3; the detector probability is compared with its recorded threshold; other evidence types are cited as context. Output is one `fused_conclusion` item (lean `positive_class`, `negative_class`, `contested`, or `no_directional_evidence`, rationale citing `EV` ids), registered by MOD005 and validated by MOD006. No decision word. Unknown strategy id → MOD016, no fallback. Rule table approved in DEC0009 (human-confirmed 2026-11-18). 14 tests. `11_AI_Forensic_System/fusion/`.
 - Unseen generator (STEP-047, E9): DONE — EXP0002 / MODEL0008 (EXP0001 settings, Stable Diffusion held out; DEC0007). Val ROC-AUC 0.937 on seen generators; held-out Stable Diffusion recall 15.2% vs 83.3% for seen generators. Same 299 images: MODEL0001 96.3%, MODEL0008 13.7%. `08_Evaluation/EVAL0002/unseen_generator/unseen_report.md`. STEP-047 COMPLETE.
 - `Ready=yes`
 
