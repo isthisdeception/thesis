@@ -1,0 +1,21 @@
+{
+  "strategy_id": "rule_based",
+  "rule_based": {
+    "table_version": "0.1.0",
+    "table_status": "approved in DEC0009 (Human, 2026-11-18)",
+    "reliability_weights": {
+      "high": 1.0,
+      "medium": 0.6,
+      "low": 0.3
+    },
+    "directional_rules": {
+      "deep_learning_prediction": {
+        "rule": "probability_vs_threshold",
+        "value_field": "value",
+        "threshold_field": "threshold",
+        "positive_class_raw_field": "positive_class"
+      }
+    },
+    "contested_balance_below": 0.5
+  }
+}

@@ -3,8 +3,9 @@
 **Module ID:** MOD005  
 **Name:** Evidence Registry  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-17  
+**Code:** `evidence/registry/`
 
 **Purpose:** Give every evidence item an immutable `EV` id and append it to `evidence_registry.csv`. After this module writes the row, the rest of the pipeline cites the id rather than the collector's private objects.
 

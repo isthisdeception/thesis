@@ -36,6 +36,8 @@ A collector does not call another collector. Face quality does not call face det
 
 DEF-004 is still deferred. The first configured strategy name is `rule_based`. `weighted` and `bayesian` are reserved names on the same interface and are not selected. This document does not choose the rule table. A later step writes that table for human approval.
 
+STEP-056: the engine and the `rule_based` strategy are in `fusion/`. The approved rule table is in `fusion/fusion_config.json` and DEC0009.
+
 ## Registries
 
 - Modules: `module_registry.csv` (MOD001–MOD018, status `specified`)

@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-17  
 **Status:** specified  
-These are contracts. This step does not implement them.
+These are contracts. The evidence item and `EvidenceCollector` types are `evidence/item.py`. Collectors still do not assign `EV` ids. `FusionStrategy` is `fusion/interface.py` (STEP-056); the engine is `fusion/engine.py`.
 
 ## Evidence item
 
@@ -79,7 +79,9 @@ Module 7 calls the strategy named by configuration. The strategy is replaceable.
 
 The fused item is not a decision. MOD008 reads it after MOD006 has validated it.
 
-**Configured now:** `rule_based` (DEF-004). The rule table is not part of this contract.
+Each id the strategy receives must appear in `supporting_ids` or `unresolved`, never both. The engine adds ids it refused before the strategy ran (not in registry, not validated by MOD006, an earlier fused item, another case) to `unresolved`. A strategy output that breaks this rule, names a different `strategy_id`, or contains a decision word is refused and no fused item is written.
+
+**Configured now:** `rule_based` (DEF-004), `fusion/fusion_config.json`. The rule table is not part of this contract; its approved values are in DEC0009.
 
 **Reserved, not selected:** `weighted`, `bayesian`.
 
