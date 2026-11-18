@@ -3,8 +3,9 @@
 **Module ID:** MOD004  
 **Name:** Deep Learning Specialist  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-17  
+**Code:** `evidence/collectors/deep_learning_specialist/`
 
 **Purpose:** Load one registered detector and run inference. The output is a probability and the metadata of that run. This module never decides Real, Fake, Inconclusive, or Unknown.
 
