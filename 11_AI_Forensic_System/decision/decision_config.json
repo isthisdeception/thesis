@@ -1,0 +1,20 @@
+{
+  "rule_version": "0.1.0",
+  "rule_status": "approved in DEC0010 (Human, 2026-11-18)",
+  "allowed_decisions": [
+    "Real",
+    "Fake",
+    "Inconclusive",
+    "Unknown"
+  ],
+  "positive_class_decisions": {
+    "fake": {
+      "positive_class": "Fake",
+      "negative_class": "Real"
+    }
+  },
+  "min_decision_confidence": 0.5,
+  "low_confidence_warning_below": 0.5,
+  "stop_on_low_confidence": false,
+  "inconclusive_on_validation_conflict": true
+}

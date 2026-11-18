@@ -56,6 +56,20 @@ def findings_for(item: dict, config: ValidationConfig) -> list[Finding]:
             found.append(Finding("unusable", "poor_image_quality"))
     if evidence_type == "fused_conclusion":
         found.extend(_fused_findings(item["processed_output"]))
+    if evidence_type == "confidence":
+        found.extend(_confidence_findings(item["processed_output"]))
+    return found
+
+
+def _confidence_findings(processed: dict) -> list[Finding]:
+    """A MOD009 confidence record must carry the four confidence fields."""
+
+    required = ("prediction_confidence", "evidence_confidence", "system_confidence", "decision_confidence")
+    if not all(key in processed for key in required) or not processed.get("formula_id"):
+        return [Finding("unusable", "confidence_output_incomplete")]
+    found: list[Finding] = []
+    if processed.get("decision_confidence") is None:
+        found.append(Finding("low", "decision_confidence_unavailable"))
     return found
 
 
