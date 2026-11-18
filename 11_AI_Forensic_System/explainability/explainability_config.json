@@ -1,0 +1,15 @@
+{
+  "version": "0.1.0",
+  "configured_methods": [
+    "grad_cam",
+    "attention_maps",
+    "saliency",
+    "integrated_gradients"
+  ],
+  "reserved_future_methods": [
+    "shap",
+    "lime",
+    "counterfactuals"
+  ],
+  "figure_policy": "A.9_data_only_no_rendered_images"
+}

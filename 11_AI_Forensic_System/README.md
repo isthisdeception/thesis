@@ -19,6 +19,8 @@ STEP-056: `fusion/` fuses MOD006 rows into one `fused_conclusion` item through t
 
 STEP-057: `confidence/` computes the four E4-calibrated confidence values (`prediction_confidence`, `evidence_confidence`, `system_confidence`, `decision_confidence`, formula `e4_calibrated_v1` in `confidence/confidence_config.json`, approved in DEC0010) and registers a `confidence` item through MOD005 and MOD006. `decision/` reads only the validated `fused_conclusion` `EV` id and the validated `confidence` `EV` id—never the image—and writes `decision.json` (`Real`, `Fake`, `Inconclusive`, or `Unknown` with `reasoning_path`). MOD008 and MOD009 are `implemented`. See `confidence/README.md` and `decision/README.md`. Tests: `python -m pytest tests/test_decision_confidence.py` from this folder.
 
+STEP-058: `explainability/` assembles data-only `explanation.json` from validated `explainability_input` items (`grad_cam`, `attention_maps`, `saliency`, `integrated_gradients`), recording `"no_data"` (`data: null`) when no map was collected and rejecting any rendered image (A.9). `reasoning/` writes `reasoning.json` from validated evidence rows, verifying that every sentence cites an input `EV` id and states only measurements present on that row. MOD010 and MOD011 are `implemented`. See `explainability/README.md` and `reasoning/README.md`. Tests: `python -m pytest tests/test_explainability_reasoning.py` from this folder.
+
 ## Workflow
 Antigravity writes, Backend consumes. No frontend/training code.
 
