@@ -3,8 +3,9 @@
 **Module ID:** MOD015  
 **Name:** Audit Trail  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-18  
+**Code:** `audit/` (`audit/trail.py`)
 
 **Purpose:** Append one case row for every investigation so the decision can be traced to its input, its evidence ids, its model, and its errors.
 

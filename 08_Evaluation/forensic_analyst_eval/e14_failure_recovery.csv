@@ -1,0 +1,8 @@
+scenario_id,case_id,failure_mode,recorded_failures,pipeline_status,decision,audit_row_present,recovery_verified
+E14-10,CASE000010,low_confidence,low_confidence,completed,Inconclusive,yes,yes
+E14-11,CASE000011,model_unavailable,model_unavailable,completed,Unknown,yes,yes
+E14-12,CASE000012,timeout,timeout,completed,Unknown,yes,yes
+E14-13,CASE000013,unsupported_format,unsupported_format,failed,,yes,yes
+E14-14,CASE000014,corrupted_image,corrupted_image,failed,,yes,yes
+E14-15,CASE000015,no_face,no_face,failed,,yes,yes
+E14-16,CASE000016,multiple_faces,multiple_faces,failed,,yes,yes

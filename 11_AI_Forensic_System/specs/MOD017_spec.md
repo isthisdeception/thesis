@@ -3,8 +3,9 @@
 **Module ID:** MOD017  
 **Name:** System Registry  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-18  
+**Code:** `system_registry/` (`system_registry/__init__.py`)
 
 **Purpose:** Hold the module registry that lists every forensic module, its responsibility, and its status. This file is the registry. Modules are not added by editing code alone.
 
