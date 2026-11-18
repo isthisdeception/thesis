@@ -3,7 +3,9 @@
 **Purpose:** The AI Forensic Analyst source.
 
 ## Contents
-Module packages, registry, module specs.
+Module specs, the shared interfaces, and the module registry. Implementation begins at STEP-052.
+
+STEP-051 (2026-11-17): `architecture.md` states the pipeline and the invariants. `specs/MOD001_spec.md` through `specs/MOD018_spec.md` are the module specs. `specs/interfaces.md` defines `EvidenceCollector`, `FusionStrategy`, and the evidence item tied to `EV` ids. `module_registry.csv` lists MOD001–MOD018 as `specified`. No collector is implemented yet.
 
 ## Workflow
 Antigravity writes, Backend consumes. No frontend/training code.

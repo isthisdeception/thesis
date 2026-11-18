@@ -1,1 +1,19 @@
-Module ID, Responsibilities, Inputs, Outputs, Dependencies, Version, Status, Owner, Future Extensions, Created, Updated
+Module ID,Responsibilities,Inputs,Outputs,Dependencies,Version,Status,Owner,Future Extensions,Created,Updated
+MOD001,Receive one upload and store input metadata,Case id and file bytes,input_metadata.json and an input id,MOD016,0.1.0,specified,Systems Architect,Batch upload,2026-11-17,2026-11-17
+MOD002,Validate one accepted image before collectors run,input id and stored file,Validation status and measurements,MOD001; MOD016,0.1.0,specified,Systems Architect,Stricter quality scores,2026-11-17,2026-11-17
+MOD003,Run independent evidence collectors,Validated input and the collector list,Evidence items for MOD005,MOD001; MOD002; MOD005; MOD016,0.1.0,specified,Systems Architect,New collectors via EvidenceCollector,2026-11-17,2026-11-17
+MOD004,Run one registered detector and emit a probability,input id and model id,deep_learning_prediction evidence item,Model Registry; MOD005; MOD016,0.1.0,specified,Systems Architect,Swap the registered detector,2026-11-17,2026-11-17
+MOD005,Assign immutable EV ids and append evidence rows,Collector evidence items,evidence_registry.csv rows,MOD003,0.1.0,specified,Systems Architect,New evidence types without new columns,2026-11-17,2026-11-17
+MOD006,Mark reliability of each evidence item,Evidence rows by EV id,Quality and status on those rows,MOD005; MOD016,0.1.0,specified,Systems Architect,Named reliability checks,2026-11-17,2026-11-17
+MOD007,Fuse validated evidence with a replaceable strategy,Validated evidence rows and strategy id,fused_conclusion evidence item,MOD005; MOD006; MOD016,0.1.0,specified,Systems Architect,weighted and bayesian strategies,2026-11-17,2026-11-17
+MOD008,Decide from validated fused evidence and the confidence record,Fused evidence id and confidence evidence id,decision.json,MOD007; MOD009; MOD016,0.1.0,specified,Systems Architect,Decision metadata fields,2026-11-17,2026-11-17
+MOD009,Report the four confidence values,Validated evidence ids,confidence evidence item,MOD004; MOD005; MOD006; MOD016,0.1.0,specified,Systems Architect,A versioned formula,2026-11-17,2026-11-17
+MOD010,Assemble explanation data from recorded maps,explainability_input evidence items,explanation.json,MOD003; MOD005; MOD006; MOD016,0.1.0,specified,Systems Architect,SHAP LIME and counterfactuals,2026-11-17,2026-11-17
+MOD011,Write reasoning tied to evidence ids,Validated evidence rows,Reasoning record,MOD005; MOD006; MOD007; MOD009; MOD016,0.1.0,specified,Systems Architect,Another language or a citing LLM,2026-11-17,2026-11-17
+MOD012,Write the reproducible case report,Decision explanation reasoning and version stamps,JSON and Markdown report,MOD008; MOD010; MOD011; MOD015; MOD016,0.1.0,specified,Systems Architect,PDF from the same JSON,2026-11-17,2026-11-17
+MOD013,Expose the investigation over the REST contract,HTTP requests,Records the pipeline already wrote,MOD001; MOD012; MOD015; MOD016,0.1.0,specified,Systems Architect,Authentication history and batch upload,2026-11-17,2026-11-17
+MOD014,Show investigation progress and records,API JSON,Progress labels and result layout,MOD013,0.1.0,specified,Systems Architect,History and accounts after the API grows,2026-11-17,2026-11-17
+MOD015,Append the case audit row,Input evidence decision model version and errors,case_registry.csv row,MOD001; MOD005; MOD008; MOD016,0.1.0,specified,Systems Architect,History queries,2026-11-17,2026-11-17
+MOD016,Record structured failures,Failure name module id and case id,Failure record,none,0.1.0,specified,Systems Architect,New failure names added here first,2026-11-17,2026-11-17
+MOD017,Keep the module registry,Module specs,module_registry.csv,specs,0.1.0,specified,Systems Architect,Status changes when a module is implemented,2026-11-17,2026-11-17
+MOD018,Define how a new modality is registered,A collector or strategy proposal,An updated collector or strategy list,MOD003; MOD007; MOD011; MOD017,0.1.0,specified,Systems Architect,Audio video text and multimodal specialists,2026-11-17,2026-11-17
