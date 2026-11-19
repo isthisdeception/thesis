@@ -72,7 +72,7 @@ export function normalizeApiError(status, payload, fallbackCaseId = "") {
 }
 
 export function normalizeNetworkError(err, fallbackCaseId = "") {
-  const isAbort = err && (err.name === "AbortError" || /timed out|abort/i.test(String(err.message)));
+  const isAbort = err && (err.name === "AbortError" || err.name === "TimeoutError");
   return new ForensicApiError({
     status: 0,
     name: isAbort ? "timeout" : "unexpected_error",

@@ -58,10 +58,28 @@ class BackendConfig:
     repo_root: Path = REPO_ROOT
 
 
+def _load_dotenv_file(dotenv_path: Path) -> None:
+    """Populate os.environ from a local `.env` file without overwriting explicit environment variables."""
+
+    if not dotenv_path.is_file():
+        return
+    for raw_line in dotenv_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, val = line.split("=", 1)
+        key = key.strip()
+        val = val.strip().strip('"').strip("'")
+        if key:
+            os.environ.setdefault(key, val)
+
+
 def load_backend_config(environ: dict[str, str] | None = None) -> BackendConfig:
     """Load and validate backend configuration from environment variables."""
 
     ensure_forensic_sys_path()
+    if environ is None:
+        _load_dotenv_file(BACKEND_ROOT / ".env")
     env_map = os.environ if environ is None else environ
     env = env_map.get("DJANGO_ENV", "dev").strip().lower()
     if env not in ALLOWED_ENVS:

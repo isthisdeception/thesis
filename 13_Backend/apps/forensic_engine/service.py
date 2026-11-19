@@ -26,6 +26,7 @@ from pipeline import PROGRESS_STAGES, InvestigationResult, run_investigation  # 
 
 _EXECUTOR = ThreadPoolExecutor(max_workers=4, thread_name_prefix="forensic-job")
 _LOCK = threading.Lock()
+_PIPELINE_LOCK = threading.Lock()
 _FUTURES: dict[str, Future] = {}
 
 
@@ -238,22 +239,23 @@ def _execute_pipeline_job(
         )
         case_log.info("Stage transition | case_id=%s | stage=%s | progress=%d%%", case_id, stage_label, pct)
 
-    res = run_investigation(
-        case_id=case_id,
-        filename=filename,
-        data=data,
-        storage_root=config.media_root,
-        evidence_registry_path=config.evidence_registry_path,
-        case_registry_path=config.case_registry_path,
-        face_counter=face_counter,
-        model_id=model_id,
-        predictor=predictor,
-        artifact_root=config.artifact_root,
-        intake_result=intake_res,
-        stage_callback=on_stage,
-        configuration_id=configuration_id,
-        repo_root=config.repo_root,
-    )
+    with _PIPELINE_LOCK:
+        res = run_investigation(
+            case_id=case_id,
+            filename=filename,
+            data=data,
+            storage_root=config.media_root,
+            evidence_registry_path=config.evidence_registry_path,
+            case_registry_path=config.case_registry_path,
+            face_counter=face_counter,
+            model_id=model_id,
+            predictor=predictor,
+            artifact_root=config.artifact_root,
+            intake_result=intake_res,
+            stage_callback=on_stage,
+            configuration_id=configuration_id,
+            repo_root=config.repo_root,
+        )
 
     if res.status != "completed":
         _write_job_status(
