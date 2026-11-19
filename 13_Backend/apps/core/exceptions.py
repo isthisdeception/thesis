@@ -18,7 +18,7 @@ from failure_handling import FAILURE_NAMES, FailureRecord  # noqa: E402
 
 def make_error_envelope(
     *,
-    detail: str,
+    detail: str = "",
     name: str = "unexpected_error",
     module_id: str = "MOD013",
     case_id: str = "",

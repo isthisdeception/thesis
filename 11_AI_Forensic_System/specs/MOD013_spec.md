@@ -3,8 +3,9 @@
 **Module ID:** MOD013  
 **Name:** API Layer  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-19  
+**Code:** `../13_Backend/apps/api/` (`views.py`, `serializers.py`, `urls.py`, `throttles.py`)
 
 **Purpose:** Define the HTTP boundary that starts an investigation and returns its records. This step specifies the endpoints. It does not implement them. The API does not run a model and does not choose a decision. It calls the pipeline and returns the records the pipeline wrote.
 
