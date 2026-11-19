@@ -77,6 +77,7 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
     ],
     "EXCEPTION_HANDLER": "apps.core.exceptions.forensic_exception_handler",
+    "URL_FORMAT_OVERRIDE": None,
     "DEFAULT_THROTTLE_RATES": {
         "upload": FORENSIC_CONFIG.throttle_upload,
         "anon": FORENSIC_CONFIG.throttle_anon,

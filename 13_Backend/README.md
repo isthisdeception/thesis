@@ -9,6 +9,8 @@ STEP-060 (2026-11-18): `architecture.md` specifies the single-responsibility Dja
 
 STEP-061 (2026-11-18): `forensic_backend/` and `apps/` scaffold the Django + DRF project (`apps.core`, `apps.forensic_engine`, `apps.evidence`, `apps.reports`, `apps.health`, `apps.versioning`, `apps.api`), `.env.example`, `requirements.txt`, 7 structured rotating log channels (`apps/core/logging_config.py`), and `apps/forensic_engine/service.py` wrapping `11_AI_Forensic_System/pipeline.py` as an asynchronous/eager job with zero duplicated forensic logic. Check & tests: `python manage.py check` and `python -m pytest` from this folder.
 
+STEP-062 (2026-11-19): `apps/api/` (`views.py`, `serializers.py`, `urls.py`, `throttles.py`) implements all 10 canonical REST endpoints (`POST /cases`, `GET /cases/{id}`, `POST /cases/{id}/upload`, `GET /cases/{id}/status`, `/evidence`, `/decision`, `/explanation`, `/report`, `GET /health`, `GET /version`) matching `api_spec/api_spec.md` and `MOD013_spec.md`. `backend_audit.md` records the Checklist 11 gate audit (`PASS`). Tests: `python -m pytest tests/test_api_endpoints.py` from this folder.
+
 ## Workflow
 Antigravity writes, frontend consumes. No model training code.
 
