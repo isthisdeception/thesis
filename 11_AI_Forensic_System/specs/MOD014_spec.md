@@ -3,8 +3,9 @@
 **Module ID:** MOD014  
 **Name:** Frontend Interaction  
 **Version:** 0.1.0  
-**Status:** specified  
-**Date:** 2026-11-17
+**Status:** implemented  
+**Date:** 2026-11-19  
+**Code:** `../12_Web/src/` (`pages/`, `components/`, `layouts/`, `hooks/`, `context/`, `api/`)
 
 **Purpose:** Describe what the user sees during an investigation. The screen shows progress and the records the API returned. It does not infer, score, or decide. The implementation of the pages belongs to the web application, not to this step.
 

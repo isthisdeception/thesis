@@ -12,7 +12,7 @@ MOD010,Assemble explanation data from recorded maps,explainability_input evidenc
 MOD011,Write reasoning tied to evidence ids,Validated evidence rows,Reasoning record,MOD005; MOD006; MOD007; MOD009; MOD016,0.1.0,implemented,Systems Architect,Another language or a citing LLM,2026-11-17,2026-11-18
 MOD012,Write the reproducible case report,Decision explanation reasoning and version stamps,JSON and Markdown report,MOD008; MOD010; MOD011; MOD015; MOD016,0.1.0,implemented,Systems Architect,PDF from the same JSON,2026-11-17,2026-11-18
 MOD013,Expose the investigation over the REST contract,HTTP requests,Records the pipeline already wrote,MOD001; MOD012; MOD015; MOD016,0.1.0,implemented,Systems Architect,Authentication history and batch upload,2026-11-17,2026-11-19
-MOD014,Show investigation progress and records,API JSON,Progress labels and result layout,MOD013,0.1.0,specified,Systems Architect,History and accounts after the API grows,2026-11-17,2026-11-17
+MOD014,Show investigation progress and records,API JSON,Progress labels and result layout,MOD013,0.1.0,implemented,Systems Architect,History and accounts after the API grows,2026-11-17,2026-11-19
 MOD015,Append the case audit row,Input evidence decision model version and errors,case_registry.csv row,MOD001; MOD005; MOD008; MOD016,0.1.0,implemented,Systems Architect,History queries,2026-11-17,2026-11-18
 MOD016,Record structured failures,Failure name module id and case id,Failure record,none,0.1.0,implemented,Systems Architect,New failure names added here first,2026-11-17,2026-11-18
 MOD017,Keep the module registry,Module specs,module_registry.csv,specs,0.1.0,implemented,Systems Architect,Status changes when a module is implemented,2026-11-17,2026-11-18
