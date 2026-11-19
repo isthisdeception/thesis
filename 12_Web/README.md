@@ -9,6 +9,8 @@ STEP-063 (2026-11-19): `architecture.md` specifies the frontend folder structure
 
 STEP-064 (2026-11-19): Scaffolds the React + Vite + Tailwind CSS app shell (`package.json`, `vite.config.js`, `tailwind.config.js`, `.env.example`, `src/App.jsx`), the centralized API client (`src/api/`), global and case-scoped state (`src/context/SystemContext.jsx`, `ThemeContext.jsx`, `src/hooks/useInvestigation.js`), layouts (`src/layouts/AppShellLayout.jsx`, `InvestigationLayout.jsx`), and all 24 reusable accessible components + `ErrorBoundary` (`src/components/`). Commands: `npm test` and `npm run build` from this folder.
 
+STEP-065 (2026-11-19): `src/pages/` implements all 14 canonical pages (`LandingPage`, `AboutProjectPage`, `InvestigationDashboardPage`, `ImageUploadPage`, `InvestigationProgressPage`, `EvidenceViewerPage`, `ResultSummaryPage`, `ExplanationViewerPage`, `ReportViewerPage`, `SystemInfoPage`, `DocumentationPage`, `ApiDocumentationPage`, `NotFoundPage`, `ErrorPage`) wired exclusively through `src/api/forensicApi.js`. `frontend_audit.md` records the Checklist 10 gate audit (`PASS`), and `MOD014` is `implemented` in `11_AI_Forensic_System/module_registry.csv`. Tests: `npm test` (`src/__tests__/investigation_pages.test.jsx`).
+
 ## Workflow
 Antigravity writes, users consume. No AI inference logic.
 
