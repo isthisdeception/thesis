@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Writing (PART 14)
-- Active Step: **STEP-069** — Writing Evidence Collection & Writing Database
+- Active Step: **STEP-070** — Draft Thesis Chapters
 - Documentation gate (Checklist 12): PASS, human-confirmed 2026-11-19. Evidence is in `16_Documentation/documentation_audit.md`.
 - Frontend gate (Checklist 10): PASS, human-confirmed 2026-11-19. Evidence is in `12_Web/frontend_audit.md`.
 - Backend gate (Checklist 11): PASS, human-confirmed 2026-11-19. Evidence is in `13_Backend/backend_audit.md`.
@@ -60,6 +60,7 @@
 - System integration (STEP-066): DONE — Wired `12_Web` ↔ `13_Backend` ↔ `11_AI_Forensic_System` end-to-end (`VITE_API_BASE_URL` + Vite `/api/v1` proxy in `12_Web/vite.config.js`, `.env` loader in `13_Backend/apps/core/config.py`, `DEFAULT_AUTHENTICATION_CLASSES=[]` in `settings.py`, `_PIPELINE_LOCK` thread safety in `apps/forensic_engine/service.py`). Verified live HTTP async `thread` investigation (`POST /cases` → `POST /upload` `202` → polling `/status` → `/evidence`, `/decision`, `/explanation`, `/report`, `/version`, `/health`, CORS preflight, and versioned `-input-02` uploads) via `13_Backend/tests/test_system_integration.py` and live React-to-Django `17_Automation/verify_integration.py`. Guide in `16_Documentation/integration_guide.md`.
 - Consolidated testing suite and UAT (STEP-067): DONE — Added backend smoke/regression matrix (`13_Backend/tests/test_smoke_regression.py`), frontend failure/regression suite (`12_Web/src/__tests__/regression_and_errors.test.jsx`), automated 6-scenario live UAT script (`17_Automation/run_uat.py`), unified cross-tier test runner (`17_Automation/run_all_tests.py`), and `16_Documentation/test_plan.md`. Full cross-tier suite (`55` forensic + `18` backend + `12` frontend unit/page/regression + `vite build` + `1` live cross-tier React-to-Django integration + `6` UAT scenarios) PASS.
 - System, developer, and user documentation + Documentation Gate (STEP-068): DONE — Authored `16_Documentation/` suite (`architecture.md`, `api_guide.md`, `developer_guide.md`, `user_guide.md`, `installation.md`, `folder_guide.md`, `workflow_diagrams/`, `documentation_audit.md`, `README.md`) and updated root `README.md` Quick Start without duplicating `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Checklist 12 audit (`16_Documentation/documentation_audit.md`) PASS (human-confirmed 2026-11-19).
+- Writing evidence collection & Writing Database (STEP-069): DONE — Assembled verified evidence across all registries, reports, decision logs (`DEC0001`–`DEC0010`), and specs into `15_Writing/shared/knowledge_index.csv` (61 entries `KI0001`–`KI0061` across all 8 Phase W2 categories) and mapped all thesis sections (Abstract, Chapters 1–8, Appendices & References) to concrete evidence IDs in `15_Writing/shared/writing_database.csv` (40 writing units `WR0001`–`WR0040`, 100% referential integrity verified, zero unsupported entries, zero prose).
 - Unseen generator (STEP-047, E9): DONE — EXP0002 / MODEL0008 (EXP0001 settings, Stable Diffusion held out; DEC0007). Val ROC-AUC 0.937 on seen generators; held-out Stable Diffusion recall 15.2% vs 83.3% for seen generators. Same 299 images: MODEL0001 96.3%, MODEL0008 13.7%. `08_Evaluation/EVAL0002/unseen_generator/unseen_report.md`. STEP-047 COMPLETE.
 - `Ready=yes`
 
