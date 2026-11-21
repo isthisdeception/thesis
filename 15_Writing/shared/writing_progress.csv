@@ -1,5 +1,5 @@
 Section ID,Section,Writing Units,Target File,Completion Pct,Evidence Completeness,Missing Figures,Missing Tables,Missing Citations,Pending Reviews,Outstanding Revisions,Publication Readiness,Owner,Version,Status,Created,Updated
-SEC0000,Front Matter - Abstract,WR0001,15_Writing/thesis/abstract.md,0,100%,0,0,0,not_started,0,not_ready,Writing Agents,0.0.0,planned,2026-11-21,2026-11-21
+SEC0000,Front Matter - Abstract,WR0001,15_Writing/thesis/abstract.md,100,100%,0,0,0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21
 SEC0001,Chapter 1 - Introduction,WR0002; WR0003; WR0004; WR0005; WR0006,15_Writing/thesis/chapter1_introduction.md,100,100%,0,0,0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21
 SEC0002,Chapter 2 - Literature Review,WR0007; WR0008; WR0009; WR0010; WR0011; WR0012,15_Writing/thesis/chapter2_literature_review.md,100,100%,0,1 (TAB0001 render),0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21
 SEC0003,Chapter 3 - Methodology,WR0013; WR0014; WR0015; WR0016; WR0017; WR0018,15_Writing/thesis/chapter3_methodology.md,100,100%,13 (FIG0001-FIG0013 A.9),0,0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21
@@ -8,4 +8,4 @@ SEC0005,Chapter 5 - Evaluation,WR0025; WR0026; WR0027; WR0028,15_Writing/thesis/
 SEC0006,Chapter 6 - Results,WR0029; WR0030; WR0031; WR0032; WR0033; WR0034,15_Writing/thesis/chapter6_results.md,100,100%,15 (FIG0011-FIG0025 A.9),2 (TAB0002-TAB0003 render),0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21
 SEC0007,Chapter 7 - Discussion,WR0035; WR0036,15_Writing/thesis/chapter7_discussion.md,100,100%,4 (FIG0015-FIG0016; FIG0018-FIG0019 A.9),2 (TAB0002-TAB0003 render),0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21
 SEC0008,Chapter 8 - Conclusion,WR0037; WR0038,15_Writing/thesis/chapter8_conclusion.md,100,100%,0,0,0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21
-SEC0009,Appendices & References,WR0039; WR0040,15_Writing/thesis/appendices_and_references.md,0,100%,10 (FIG0001-FIG0010 A.9),3 (TAB0001-TAB0003 render),0,not_started,0,not_ready,Writing Agents,0.0.0,planned,2026-11-21,2026-11-21
+SEC0009,Appendices & References,WR0039; WR0040,15_Writing/thesis/appendices_and_references.md,100,100%,10 (FIG0001-FIG0010 A.9),3 (TAB0001-TAB0003 render),0,human_review,0,draft_ready,Writing Agents,0.1.0,drafted,2026-11-21,2026-11-21

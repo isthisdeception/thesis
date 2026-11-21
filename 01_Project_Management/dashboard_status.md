@@ -2,7 +2,7 @@
 
 ## Active Phase
 - Current Phase: Writing (PART 14)
-- Active Step: **STEP-070** — Draft Thesis Chapters
+- Active Step: **STEP-071** — Figures, Tables, Claim Verification, Citations & Consistency
 - Documentation gate (Checklist 12): PASS, human-confirmed 2026-11-19. Evidence is in `16_Documentation/documentation_audit.md`.
 - Frontend gate (Checklist 10): PASS, human-confirmed 2026-11-19. Evidence is in `12_Web/frontend_audit.md`.
 - Backend gate (Checklist 11): PASS, human-confirmed 2026-11-19. Evidence is in `13_Backend/backend_audit.md`.
@@ -61,6 +61,7 @@
 - Consolidated testing suite and UAT (STEP-067): DONE — Added backend smoke/regression matrix (`13_Backend/tests/test_smoke_regression.py`), frontend failure/regression suite (`12_Web/src/__tests__/regression_and_errors.test.jsx`), automated 6-scenario live UAT script (`17_Automation/run_uat.py`), unified cross-tier test runner (`17_Automation/run_all_tests.py`), and `16_Documentation/test_plan.md`. Full cross-tier suite (`55` forensic + `18` backend + `12` frontend unit/page/regression + `vite build` + `1` live cross-tier React-to-Django integration + `6` UAT scenarios) PASS.
 - System, developer, and user documentation + Documentation Gate (STEP-068): DONE — Authored `16_Documentation/` suite (`architecture.md`, `api_guide.md`, `developer_guide.md`, `user_guide.md`, `installation.md`, `folder_guide.md`, `workflow_diagrams/`, `documentation_audit.md`, `README.md`) and updated root `README.md` Quick Start without duplicating `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Checklist 12 audit (`16_Documentation/documentation_audit.md`) PASS (human-confirmed 2026-11-19).
 - Writing evidence collection & Writing Database (STEP-069): DONE — Assembled verified evidence across all registries, reports, decision logs (`DEC0001`–`DEC0010`), and specs into `15_Writing/shared/knowledge_index.csv` (61 entries `KI0001`–`KI0061` across all 8 Phase W2 categories) and mapped all thesis sections (Abstract, Chapters 1–8, Appendices & References) to concrete evidence IDs in `15_Writing/shared/writing_database.csv` (40 writing units `WR0001`–`WR0040`, 100% referential integrity verified, zero unsupported entries, zero prose).
+- Draft thesis chapters (STEP-070): DONE — Drafted all 10 thesis files (`abstract.md`, `chapter1_introduction.md` through `chapter8_conclusion.md`, and `appendices_and_references.md`) in `15_Writing/thesis/` (40/40 `WR` units drafted, `15_Writing/shared/writing_progress.csv` 100% drafted pending human review; every paragraph evidence-cited, zero em-dashes, zero AI filler, zero unknown IDs).
 - Unseen generator (STEP-047, E9): DONE — EXP0002 / MODEL0008 (EXP0001 settings, Stable Diffusion held out; DEC0007). Val ROC-AUC 0.937 on seen generators; held-out Stable Diffusion recall 15.2% vs 83.3% for seen generators. Same 299 images: MODEL0001 96.3%, MODEL0008 13.7%. `08_Evaluation/EVAL0002/unseen_generator/unseen_report.md`. STEP-047 COMPLETE.
 - `Ready=yes`
 
