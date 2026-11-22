@@ -30,15 +30,13 @@
 - [x] **Tables Rendered & Embedded (Checklist 15):** `TAB0001`–`TAB0003` verified in `10_Tables/data/*.csv`, `10_Tables/rendered/*.md`, and embedded verbatim in Appendix C of `assembled_thesis.md`.
 - [x] **Citations, Claims & References Verified:** `28/28` papers (`P0001`–`P0028`) matched 1:1 in `15_Writing/references/references.bib` (`0` duplicate keys, `0` duplicate DOIs), `8/8` claims marked `verified` in `02_Literature/claims/claim_database.csv`, `100%` canonical ID coverage across all 12 registered prefixes (`0` hard issues in `15_Writing/shared/consistency_and_verification_report.md`).
 - [x] **Grammar, Spelling & Consistency Reviewed:** Phase W13 revision completed (`REV0001`–`REV0004` resolved, `0` em-dashes, `0` AI filler, `0` US/UK spelling mismatches, SemVer synced across all 10 files).
-- [x] **Writing Readiness & Publication Readiness Gates Passed:** Checklist 13 (`15_Writing/writing_audit.md`) and Checklist 19 (`15_Writing/publication_readiness_report.md`, `94.69 / 100.00` PASS) human-confirmed `2026-11-22`.
-- [x] **Figure Sources & Human Renderer Verified (Policy A.9):** All 30 figure specs (`FIG0001_spec.md`–`FIG0030_spec.md`), 5 validated Draw.io architectural sources (`09_Figures/diagrams/FIG0026.drawio`–`FIG0030.drawio`), Matplotlib script (`09_Figures/scripts/render_figures.py`), and runbook (`09_Figures/FIGURE_RENDERING_RUNBOOK.md`) verified clean.
+- [x] **Writing Readiness, Figure Quality & Publication Readiness Gates Passed:** Checklist 13 (`15_Writing/writing_audit.md`), Checklist 14 (`30/30` figures `FIG0001_v1`–`FIG0030_v1` PNG + vector PDF exported into `09_Figures/assets/` and embedded in `assembled_thesis.md`), and Checklist 19 (`15_Writing/publication_readiness_report.md`, **`95.97 / 100.00` PASS**) completed and human-confirmed `2026-11-22`.
 - [x] **Release Changelog & Notes Prepared:** `CHANGELOG.md` updated with `v1.0` thesis release entry; `15_Writing/RELEASE_NOTES_v1.0.md` and `15_Writing/THESIS_SUBMISSION_RUNBOOK.md` finalized.
 
 ---
 
 ## Pending (Human & Institutional Actions Required Before Final Sign-Off)
 
-- [ ] **Human Policy A.9 Figure Export (Checklist 14):** Export `FIG0026`–`FIG0030` from Draw.io (`app.diagrams.net`) and run `python 09_Figures/scripts/render_figures.py` for `FIG0001`–`FIG0025` into `09_Figures/assets/`, then re-run `python 17_Automation/assemble_thesis.py` and `python 17_Automation/compute_publication_readiness.py` (target score: `95.97 / 100.00`).
 - [ ] **Institutional Similarity / Plagiarism Check:** Run university similarity check (Turnitin / iThenticate) on the compiled thesis document and record the verified score below: `Similarity Score = ____% (Date: ____-__-__)`.
 - [ ] **Final Formatted PDF Compilation:** Compile `thesis_v1.0.pdf` per institutional template (Pandoc/LaTeX/Word — instructions in `15_Writing/THESIS_SUBMISSION_RUNBOOK.md`) and verify page numbering, margins, figure legibility (600 DPI / vector), and bibliography rendering.
 - [ ] **Read-Only Archival to `20_Archive/` (Phase W19):** Place final submitted `thesis_v1.0.pdf` (and optional similarity receipt) into `20_Archive/thesis_v1.0/` and treat the folder as strictly read-only thereafter.

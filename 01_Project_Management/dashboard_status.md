@@ -3,8 +3,9 @@
 ## Active Phase
 - Current Phase: Thesis Submission (PART 15)
 - Active Step: **STEP-074 (Submission Kit Ready — Awaiting Human Final PDF, Similarity Check, `20_Archive/` Placement & `v1.0` Tag)** — Thesis Submission (Checklist 17)
-- Publication Readiness gate (Checklist 19): PASS (`94.69 / 100.00`), human-confirmed 2026-11-22. Evidence is in `15_Writing/publication_readiness_report.md`.
-- Writing Readiness gate (Checklist 13): PASS, human-confirmed 2026-11-22. Evidence is in `15_Writing/writing_audit.md` (human Policy A.9 figure export into `09_Figures/assets/` tracked prior to Checklist 17 final PDF).
+- Publication Readiness gate (Checklist 19): PASS (`95.97 / 100.00`), human-confirmed 2026-11-22. Evidence is in `15_Writing/publication_readiness_report.md`.
+- Figure Quality gate (Checklist 14): PASS (`30/30` figures `FIG0001_v1`–`FIG0030_v1` exported as 600 DPI PNG + vector PDF in `09_Figures/assets/` and embedded in `assembled_thesis.md`, 2026-11-22).
+- Writing Readiness gate (Checklist 13): PASS, human-confirmed 2026-11-22. Evidence is in `15_Writing/writing_audit.md`.
 - Documentation gate (Checklist 12): PASS, human-confirmed 2026-11-19. Evidence is in `16_Documentation/documentation_audit.md`.
 - Frontend gate (Checklist 10): PASS, human-confirmed 2026-11-19. Evidence is in `12_Web/frontend_audit.md`.
 - Backend gate (Checklist 11): PASS, human-confirmed 2026-11-19. Evidence is in `13_Backend/backend_audit.md`.
