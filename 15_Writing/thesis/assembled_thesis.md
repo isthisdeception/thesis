@@ -6,12 +6,12 @@
 |---|---|
 | **Manuscript Version** | `1.0.0-rc1` (Assembled from Checklist 13 Approved Chapters) |
 | **Assembly Date** | `2026-11-22` |
-| **Source Git Revision** | `9a8f288` |
+| **Source Git Revision** | `9143198` |
 | **Research Direction** | Direction 1 (`DEC0003`): System-Level AI Forensic Analyst + Generalization Focus (`DEC0002`) |
 | **Quality Gates Passed** | Checklists 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13 (Human-Confirmed) |
 | **Bibliography Source** | `15_Writing/references/references.bib` (`28` verified entries, `P0001`–`P0028`) |
 | **Rendered Tables Included** | `TAB0001`–`TAB0003` (`10_Tables/rendered/`, Checklist 15 PASS) |
-| **Figure Catalog Status (Policy A.9)** | `30` specified (`FIG0001`–`FIG0030`), `0` exported in `09_Figures/assets/` |
+| **Figure Catalog Status (Policy A.9)** | `30` specified (`FIG0001`–`FIG0030`), `30` exported in `09_Figures/assets/` |
 | **Assembler Script** | `17_Automation/assemble_thesis.py` (deterministic rebuild) |
 | **License** | MIT (`DEC0001`; strictly public-only datasets `DS0001`–`DS0005`, `DEC0004`) |
 
@@ -70,36 +70,36 @@ This thesis manuscript is compiled deterministically from the ten Checklist 13 a
 
 | Figure ID | Caption Summary | Source Spec / Script | Policy A.9 Asset Status |
 |---|---|---|---|
-| `FIG0001` | Class distribution of DS0001 (ArtiFact 50k face subset): balanced real/fake split used for primary training. | `09_Figures/specs/FIG0001_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0002` | Generator distribution in DS0001: real images labeled `none`; synthetic faces span 13 generators at near-equal counts. | `09_Figures/specs/FIG0002_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0003` | DS0002 DiFF official TEST composition across 13 generators and four synthesis conditions (all synthetic; pristine excluded). | `09_Figures/specs/FIG0003_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0004` | DS0003 class distribution (StyleGAN fakes vs real faces) used for rapid baseline training on Kaggle. | `09_Figures/specs/FIG0004_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0005` | DS0004 Synthbuster composition: ~1k RAISE JPEG reals and 1k images per synthetic generator. | `09_Figures/specs/FIG0005_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0006` | DS0005 FairFace race distribution (padding 0.25) used for demographic fairness checks of the forensic analyst. | `09_Figures/specs/FIG0006_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0007` | Image resolution distributions from STEP-023 EDA pixel samples; DS0001/DS0003/DS0005 are fixed-size while DS0002/DS0004 vary. | `09_Figures/specs/FIG0007_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0008` | Per-dataset brightness summary from stratified EDA pixel samples (thumbnail ≤256 px). | `09_Figures/specs/FIG0008_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0009` | Per-dataset contrast summary from stratified EDA pixel samples. | `09_Figures/specs/FIG0009_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0010` | Compression and container formats observed in STEP-023 EDA pixel samples. | `09_Figures/specs/FIG0010_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0011` | Reliability of MODEL0001 P(fake) on the EXP0001 test split, 15 equal-width bins. ECE and MCE in the caption come from `calibration_summary.c... | `09_Figures/specs/FIG0011_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0012` | Confidence is max(p, 1 − p) for the predicted class at threshold 0.395. Where accuracy sits below mean confidence, the model is overconfiden... | `09_Figures/specs/FIG0012_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0013` | Error rates and scores on the EXP0001 test split across thresholds. Markers are thresholds chosen on val and applied to test unchanged. | `09_Figures/specs/FIG0013_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0014` | Confusion matrix of MODEL0001 on the EXP0001 test split (n = 7505) at threshold 0.395, chosen on val. Cells show count and share of the true... | `09_Figures/specs/FIG0014_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0015` | Error rates by generator (false negatives) and real source (false positives) on the EXP0001 test split at threshold 0.395. Intervals are per... | `09_Figures/specs/FIG0015_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0016` | Balanced accuracy (frozen threshold 0.395) and ROC-AUC of MODEL0001 under graded perturbations of the EXP0001 test split (n = 7505 per condi... | `09_Figures/specs/FIG0016_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0017` | Change in error rate per generator and real source at each perturbation's worst level, EXP0001 test split, threshold 0.395. Clean rates are ... | `09_Figures/specs/FIG0017_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0018` | MODEL0001 (trained on DS0001) at its frozen threshold 0.395 on DS0001 test and four other datasets. Fake-only datasets have no FPR; real-onl... | `09_Figures/specs/FIG0018_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0019` | MODEL0008 (EXP0002) was trained without Stable Diffusion; recall on Stable Diffusion test images at its val-chosen threshold, against seen g... | `09_Figures/specs/FIG0019_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0020` | One-factor ablations of the EXP0001 ResNet-50 baseline on the SPLIT0001 test split, each at its own val-chosen threshold. The band shows the... | `09_Figures/specs/FIG0020_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0021` | Test ROC curves for EXP0001 and the one-factor runs on the same split. Intervals and the decision to make no superiority claim are in the ST... | `09_Figures/specs/FIG0021_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0022` | Test precision-recall curves for EXP0001 and the one-factor runs. Chance is the fake share of the SPLIT0001 test split, not 0.5. | `09_Figures/specs/FIG0022_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0023` | SPLIT0001 test metrics for experiments that share DS0001 / v1.0 / PP0001 / SPLIT0001. No bar is marked as a winner. Statistical intervals ar... | `09_Figures/specs/FIG0023_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0024` | Validation ROC-AUC during the completed EXP0001 session. Earlier sessions in the same log file are abandoned runs and are not plotted. | `09_Figures/specs/FIG0024_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0025` | Train and validation loss for the completed EXP0001 session. The best epoch is chosen by validation ROC-AUC, not by the lowest validation lo... | `09_Figures/specs/FIG0025_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0026` | End-to-end reproducible research and evaluation pipeline spanning public dataset curation (`DS0001`–`DS0005`), seven-stage preprocessing (`P... | `09_Figures/specs/FIG0026_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0027` | Architecture and trust boundaries of the 18-module AI Forensic Analyst (`MOD001`–`MOD018`). Raw image bytes are accessible only to intake (`... | `09_Figures/specs/FIG0027_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0028` | Reliability-weighted evidence fusion (`MOD007`, `DEC0009`), four-dimensional validation-calibrated confidence estimation (`MOD009`, `DEC0010... | `09_Figures/specs/FIG0028_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0029` | Three-tier system architecture connecting the React 18 frontend (`12_Web`, `MOD014`, 14 pages, 24 accessible components), the seven-app Djan... | `09_Figures/specs/FIG0029_spec.md` | Awaiting Human Policy A.9 Export |
-| `FIG0030` | Config-driven FastAI training and fault-tolerant checkpoint architecture (`17_Automation/training/`). Every run validates immutable YAML con... | `09_Figures/specs/FIG0030_spec.md` | Awaiting Human Policy A.9 Export |
+| `FIG0001` | Class distribution of DS0001 (ArtiFact 50k face subset): balanced real/fake split used for primary training. | `09_Figures/specs/FIG0001_spec.md` | Exported (PNG + PDF) |
+| `FIG0002` | Generator distribution in DS0001: real images labeled `none`; synthetic faces span 13 generators at near-equal counts. | `09_Figures/specs/FIG0002_spec.md` | Exported (PNG + PDF) |
+| `FIG0003` | DS0002 DiFF official TEST composition across 13 generators and four synthesis conditions (all synthetic; pristine excluded). | `09_Figures/specs/FIG0003_spec.md` | Exported (PNG + PDF) |
+| `FIG0004` | DS0003 class distribution (StyleGAN fakes vs real faces) used for rapid baseline training on Kaggle. | `09_Figures/specs/FIG0004_spec.md` | Exported (PNG + PDF) |
+| `FIG0005` | DS0004 Synthbuster composition: ~1k RAISE JPEG reals and 1k images per synthetic generator. | `09_Figures/specs/FIG0005_spec.md` | Exported (PNG + PDF) |
+| `FIG0006` | DS0005 FairFace race distribution (padding 0.25) used for demographic fairness checks of the forensic analyst. | `09_Figures/specs/FIG0006_spec.md` | Exported (PNG + PDF) |
+| `FIG0007` | Image resolution distributions from STEP-023 EDA pixel samples; DS0001/DS0003/DS0005 are fixed-size while DS0002/DS0004 vary. | `09_Figures/specs/FIG0007_spec.md` | Exported (PNG + PDF) |
+| `FIG0008` | Per-dataset brightness summary from stratified EDA pixel samples (thumbnail ≤256 px). | `09_Figures/specs/FIG0008_spec.md` | Exported (PNG + PDF) |
+| `FIG0009` | Per-dataset contrast summary from stratified EDA pixel samples. | `09_Figures/specs/FIG0009_spec.md` | Exported (PNG + PDF) |
+| `FIG0010` | Compression and container formats observed in STEP-023 EDA pixel samples. | `09_Figures/specs/FIG0010_spec.md` | Exported (PNG + PDF) |
+| `FIG0011` | Reliability of MODEL0001 P(fake) on the EXP0001 test split, 15 equal-width bins. ECE and MCE in the caption come from `calibration_summary.c... | `09_Figures/specs/FIG0011_spec.md` | Exported (PNG + PDF) |
+| `FIG0012` | Confidence is max(p, 1 − p) for the predicted class at threshold 0.395. Where accuracy sits below mean confidence, the model is overconfiden... | `09_Figures/specs/FIG0012_spec.md` | Exported (PNG + PDF) |
+| `FIG0013` | Error rates and scores on the EXP0001 test split across thresholds. Markers are thresholds chosen on val and applied to test unchanged. | `09_Figures/specs/FIG0013_spec.md` | Exported (PNG + PDF) |
+| `FIG0014` | Confusion matrix of MODEL0001 on the EXP0001 test split (n = 7505) at threshold 0.395, chosen on val. Cells show count and share of the true... | `09_Figures/specs/FIG0014_spec.md` | Exported (PNG + PDF) |
+| `FIG0015` | Error rates by generator (false negatives) and real source (false positives) on the EXP0001 test split at threshold 0.395. Intervals are per... | `09_Figures/specs/FIG0015_spec.md` | Exported (PNG + PDF) |
+| `FIG0016` | Balanced accuracy (frozen threshold 0.395) and ROC-AUC of MODEL0001 under graded perturbations of the EXP0001 test split (n = 7505 per condi... | `09_Figures/specs/FIG0016_spec.md` | Exported (PNG + PDF) |
+| `FIG0017` | Change in error rate per generator and real source at each perturbation's worst level, EXP0001 test split, threshold 0.395. Clean rates are ... | `09_Figures/specs/FIG0017_spec.md` | Exported (PNG + PDF) |
+| `FIG0018` | MODEL0001 (trained on DS0001) at its frozen threshold 0.395 on DS0001 test and four other datasets. Fake-only datasets have no FPR; real-onl... | `09_Figures/specs/FIG0018_spec.md` | Exported (PNG + PDF) |
+| `FIG0019` | MODEL0008 (EXP0002) was trained without Stable Diffusion; recall on Stable Diffusion test images at its val-chosen threshold, against seen g... | `09_Figures/specs/FIG0019_spec.md` | Exported (PNG + PDF) |
+| `FIG0020` | One-factor ablations of the EXP0001 ResNet-50 baseline on the SPLIT0001 test split, each at its own val-chosen threshold. The band shows the... | `09_Figures/specs/FIG0020_spec.md` | Exported (PNG + PDF) |
+| `FIG0021` | Test ROC curves for EXP0001 and the one-factor runs on the same split. Intervals and the decision to make no superiority claim are in the ST... | `09_Figures/specs/FIG0021_spec.md` | Exported (PNG + PDF) |
+| `FIG0022` | Test precision-recall curves for EXP0001 and the one-factor runs. Chance is the fake share of the SPLIT0001 test split, not 0.5. | `09_Figures/specs/FIG0022_spec.md` | Exported (PNG + PDF) |
+| `FIG0023` | SPLIT0001 test metrics for experiments that share DS0001 / v1.0 / PP0001 / SPLIT0001. No bar is marked as a winner. Statistical intervals ar... | `09_Figures/specs/FIG0023_spec.md` | Exported (PNG + PDF) |
+| `FIG0024` | Validation ROC-AUC during the completed EXP0001 session. Earlier sessions in the same log file are abandoned runs and are not plotted. | `09_Figures/specs/FIG0024_spec.md` | Exported (PNG + PDF) |
+| `FIG0025` | Train and validation loss for the completed EXP0001 session. The best epoch is chosen by validation ROC-AUC, not by the lowest validation lo... | `09_Figures/specs/FIG0025_spec.md` | Exported (PNG + PDF) |
+| `FIG0026` | End-to-end reproducible research and evaluation pipeline spanning public dataset curation (`DS0001`–`DS0005`), seven-stage preprocessing (`P... | `09_Figures/specs/FIG0026_spec.md` | Exported (PNG + PDF) |
+| `FIG0027` | Architecture and trust boundaries of the 18-module AI Forensic Analyst (`MOD001`–`MOD018`). Raw image bytes are accessible only to intake (`... | `09_Figures/specs/FIG0027_spec.md` | Exported (PNG + PDF) |
+| `FIG0028` | Reliability-weighted evidence fusion (`MOD007`, `DEC0009`), four-dimensional validation-calibrated confidence estimation (`MOD009`, `DEC0010... | `09_Figures/specs/FIG0028_spec.md` | Exported (PNG + PDF) |
+| `FIG0029` | Three-tier system architecture connecting the React 18 frontend (`12_Web`, `MOD014`, 14 pages, 24 accessible components), the seven-app Djan... | `09_Figures/specs/FIG0029_spec.md` | Exported (PNG + PDF) |
+| `FIG0030` | Config-driven FastAI training and fault-tolerant checkpoint architecture (`17_Automation/training/`). Every run validates immutable YAML con... | `09_Figures/specs/FIG0030_spec.md` | Exported (PNG + PDF) |
 
 ---
 
@@ -926,7 +926,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0001
 
-> **Policy A.9 Figure Placement (`FIG0001`):** Human-exported asset expected at `09_Figures/assets/FIG0001_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0001](../../09_Figures/assets/FIG0001_v1.png)
 
 - **Caption:** Class distribution of DS0001 (ArtiFact 50k face subset): balanced real/fake split used for primary training.
 - **Specification:** `09_Figures/specs/FIG0001_spec.md`
@@ -935,7 +935,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0002
 
-> **Policy A.9 Figure Placement (`FIG0002`):** Human-exported asset expected at `09_Figures/assets/FIG0002_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0002](../../09_Figures/assets/FIG0002_v1.png)
 
 - **Caption:** Generator distribution in DS0001: real images labeled `none`; synthetic faces span 13 generators at near-equal counts.
 - **Specification:** `09_Figures/specs/FIG0002_spec.md`
@@ -944,7 +944,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0003
 
-> **Policy A.9 Figure Placement (`FIG0003`):** Human-exported asset expected at `09_Figures/assets/FIG0003_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0003](../../09_Figures/assets/FIG0003_v1.png)
 
 - **Caption:** DS0002 DiFF official TEST composition across 13 generators and four synthesis conditions (all synthetic; pristine excluded).
 - **Specification:** `09_Figures/specs/FIG0003_spec.md`
@@ -953,7 +953,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0004
 
-> **Policy A.9 Figure Placement (`FIG0004`):** Human-exported asset expected at `09_Figures/assets/FIG0004_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0004](../../09_Figures/assets/FIG0004_v1.png)
 
 - **Caption:** DS0003 class distribution (StyleGAN fakes vs real faces) used for rapid baseline training on Kaggle.
 - **Specification:** `09_Figures/specs/FIG0004_spec.md`
@@ -962,7 +962,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0005
 
-> **Policy A.9 Figure Placement (`FIG0005`):** Human-exported asset expected at `09_Figures/assets/FIG0005_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0005](../../09_Figures/assets/FIG0005_v1.png)
 
 - **Caption:** DS0004 Synthbuster composition: ~1k RAISE JPEG reals and 1k images per synthetic generator.
 - **Specification:** `09_Figures/specs/FIG0005_spec.md`
@@ -971,7 +971,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0006
 
-> **Policy A.9 Figure Placement (`FIG0006`):** Human-exported asset expected at `09_Figures/assets/FIG0006_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0006](../../09_Figures/assets/FIG0006_v1.png)
 
 - **Caption:** DS0005 FairFace race distribution (padding 0.25) used for demographic fairness checks of the forensic analyst.
 - **Specification:** `09_Figures/specs/FIG0006_spec.md`
@@ -980,7 +980,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0007
 
-> **Policy A.9 Figure Placement (`FIG0007`):** Human-exported asset expected at `09_Figures/assets/FIG0007_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0007](../../09_Figures/assets/FIG0007_v1.png)
 
 - **Caption:** Image resolution distributions from STEP-023 EDA pixel samples; DS0001/DS0003/DS0005 are fixed-size while DS0002/DS0004 vary.
 - **Specification:** `09_Figures/specs/FIG0007_spec.md`
@@ -989,7 +989,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0008
 
-> **Policy A.9 Figure Placement (`FIG0008`):** Human-exported asset expected at `09_Figures/assets/FIG0008_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0008](../../09_Figures/assets/FIG0008_v1.png)
 
 - **Caption:** Per-dataset brightness summary from stratified EDA pixel samples (thumbnail ≤256 px).
 - **Specification:** `09_Figures/specs/FIG0008_spec.md`
@@ -998,7 +998,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0009
 
-> **Policy A.9 Figure Placement (`FIG0009`):** Human-exported asset expected at `09_Figures/assets/FIG0009_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0009](../../09_Figures/assets/FIG0009_v1.png)
 
 - **Caption:** Per-dataset contrast summary from stratified EDA pixel samples.
 - **Specification:** `09_Figures/specs/FIG0009_spec.md`
@@ -1007,7 +1007,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0010
 
-> **Policy A.9 Figure Placement (`FIG0010`):** Human-exported asset expected at `09_Figures/assets/FIG0010_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0010](../../09_Figures/assets/FIG0010_v1.png)
 
 - **Caption:** Compression and container formats observed in STEP-023 EDA pixel samples.
 - **Specification:** `09_Figures/specs/FIG0010_spec.md`
@@ -1016,7 +1016,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0011
 
-> **Policy A.9 Figure Placement (`FIG0011`):** Human-exported asset expected at `09_Figures/assets/FIG0011_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0011](../../09_Figures/assets/FIG0011_v1.png)
 
 - **Caption:** Reliability of MODEL0001 P(fake) on the EXP0001 test split, 15 equal-width bins. ECE and MCE in the caption come from `calibration_summary.csv`.
 - **Specification:** `09_Figures/specs/FIG0011_spec.md`
@@ -1025,7 +1025,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0012
 
-> **Policy A.9 Figure Placement (`FIG0012`):** Human-exported asset expected at `09_Figures/assets/FIG0012_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0012](../../09_Figures/assets/FIG0012_v1.png)
 
 - **Caption:** Confidence is max(p, 1 − p) for the predicted class at threshold 0.395. Where accuracy sits below mean confidence, the model is overconfident.
 - **Specification:** `09_Figures/specs/FIG0012_spec.md`
@@ -1034,7 +1034,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0013
 
-> **Policy A.9 Figure Placement (`FIG0013`):** Human-exported asset expected at `09_Figures/assets/FIG0013_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0013](../../09_Figures/assets/FIG0013_v1.png)
 
 - **Caption:** Error rates and scores on the EXP0001 test split across thresholds. Markers are thresholds chosen on val and applied to test unchanged.
 - **Specification:** `09_Figures/specs/FIG0013_spec.md`
@@ -1043,7 +1043,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0014
 
-> **Policy A.9 Figure Placement (`FIG0014`):** Human-exported asset expected at `09_Figures/assets/FIG0014_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0014](../../09_Figures/assets/FIG0014_v1.png)
 
 - **Caption:** Confusion matrix of MODEL0001 on the EXP0001 test split (n = 7505) at threshold 0.395, chosen on val. Cells show count and share of the true class.
 - **Specification:** `09_Figures/specs/FIG0014_spec.md`
@@ -1052,7 +1052,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0015
 
-> **Policy A.9 Figure Placement (`FIG0015`):** Human-exported asset expected at `09_Figures/assets/FIG0015_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0015](../../09_Figures/assets/FIG0015_v1.png)
 
 - **Caption:** Error rates by generator (false negatives) and real source (false positives) on the EXP0001 test split at threshold 0.395. Intervals are per group, not corrected for multiple comparisons.
 - **Specification:** `09_Figures/specs/FIG0015_spec.md`
@@ -1061,7 +1061,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0016
 
-> **Policy A.9 Figure Placement (`FIG0016`):** Human-exported asset expected at `09_Figures/assets/FIG0016_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0016](../../09_Figures/assets/FIG0016_v1.png)
 
 - **Caption:** Balanced accuracy (frozen threshold 0.395) and ROC-AUC of MODEL0001 under graded perturbations of the EXP0001 test split (n = 7505 per condition). Where ROC-AUC holds while balanced accuracy falls, the probabilities shifted rather than the ranking.
 - **Specification:** `09_Figures/specs/FIG0016_spec.md`
@@ -1070,7 +1070,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0017
 
-> **Policy A.9 Figure Placement (`FIG0017`):** Human-exported asset expected at `09_Figures/assets/FIG0017_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0017](../../09_Figures/assets/FIG0017_v1.png)
 
 - **Caption:** Change in error rate per generator and real source at each perturbation's worst level, EXP0001 test split, threshold 0.395. Clean rates are in FIG0015.
 - **Specification:** `09_Figures/specs/FIG0017_spec.md`
@@ -1079,7 +1079,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0018
 
-> **Policy A.9 Figure Placement (`FIG0018`):** Human-exported asset expected at `09_Figures/assets/FIG0018_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0018](../../09_Figures/assets/FIG0018_v1.png)
 
 - **Caption:** MODEL0001 (trained on DS0001) at its frozen threshold 0.395 on DS0001 test and four other datasets. Fake-only datasets have no FPR; real-only datasets have no FNR. DS0005 is a fixed 10,000-image sample.
 - **Specification:** `09_Figures/specs/FIG0018_spec.md`
@@ -1088,7 +1088,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0019
 
-> **Policy A.9 Figure Placement (`FIG0019`):** Human-exported asset expected at `09_Figures/assets/FIG0019_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0019](../../09_Figures/assets/FIG0019_v1.png)
 
 - **Caption:** MODEL0008 (EXP0002) was trained without Stable Diffusion; recall on Stable Diffusion test images at its val-chosen threshold, against seen generators on val. Panel B compares MODEL0001 and MODEL0008 on the 299 Stable Diffusion images in the EXP0001 test split.
 - **Specification:** `09_Figures/specs/FIG0019_spec.md`
@@ -1097,7 +1097,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0020
 
-> **Policy A.9 Figure Placement (`FIG0020`):** Human-exported asset expected at `09_Figures/assets/FIG0020_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0020](../../09_Figures/assets/FIG0020_v1.png)
 
 - **Caption:** One-factor ablations of the EXP0001 ResNet-50 baseline on the SPLIT0001 test split, each at its own val-chosen threshold. The band shows the change caused by the training seed alone (EXP0003). Single runs; paired tests are in `08_Evaluation/statistics/statistics_report.md` and do not support a superiority claim.
 - **Specification:** `09_Figures/specs/FIG0020_spec.md`
@@ -1106,7 +1106,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0021
 
-> **Policy A.9 Figure Placement (`FIG0021`):** Human-exported asset expected at `09_Figures/assets/FIG0021_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0021](../../09_Figures/assets/FIG0021_v1.png)
 
 - **Caption:** Test ROC curves for EXP0001 and the one-factor runs on the same split. Intervals and the decision to make no superiority claim are in the STEP-049 statistics report.
 - **Specification:** `09_Figures/specs/FIG0021_spec.md`
@@ -1115,7 +1115,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0022
 
-> **Policy A.9 Figure Placement (`FIG0022`):** Human-exported asset expected at `09_Figures/assets/FIG0022_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0022](../../09_Figures/assets/FIG0022_v1.png)
 
 - **Caption:** Test precision-recall curves for EXP0001 and the one-factor runs. Chance is the fake share of the SPLIT0001 test split, not 0.5.
 - **Specification:** `09_Figures/specs/FIG0022_spec.md`
@@ -1124,7 +1124,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0023
 
-> **Policy A.9 Figure Placement (`FIG0023`):** Human-exported asset expected at `09_Figures/assets/FIG0023_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0023](../../09_Figures/assets/FIG0023_v1.png)
 
 - **Caption:** SPLIT0001 test metrics for experiments that share DS0001 / v1.0 / PP0001 / SPLIT0001. No bar is marked as a winner. Statistical intervals are in `08_Evaluation/statistics/paired_tests.csv`.
 - **Specification:** `09_Figures/specs/FIG0023_spec.md`
@@ -1133,7 +1133,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0024
 
-> **Policy A.9 Figure Placement (`FIG0024`):** Human-exported asset expected at `09_Figures/assets/FIG0024_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0024](../../09_Figures/assets/FIG0024_v1.png)
 
 - **Caption:** Validation ROC-AUC during the completed EXP0001 session. Earlier sessions in the same log file are abandoned runs and are not plotted.
 - **Specification:** `09_Figures/specs/FIG0024_spec.md`
@@ -1142,7 +1142,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0025
 
-> **Policy A.9 Figure Placement (`FIG0025`):** Human-exported asset expected at `09_Figures/assets/FIG0025_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0025](../../09_Figures/assets/FIG0025_v1.png)
 
 - **Caption:** Train and validation loss for the completed EXP0001 session. The best epoch is chosen by validation ROC-AUC, not by the lowest validation loss.
 - **Specification:** `09_Figures/specs/FIG0025_spec.md`
@@ -1151,7 +1151,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0026
 
-> **Policy A.9 Figure Placement (`FIG0026`):** Human-exported asset expected at `09_Figures/assets/FIG0026_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0026](../../09_Figures/assets/FIG0026_v1.png)
 
 - **Caption:** End-to-end reproducible research and evaluation pipeline spanning public dataset curation (`DS0001`–`DS0005`), seven-stage preprocessing (`PP0001`–`PP0006`), leakage-checked grouped (`SPLIT0001`) and leave-one-generator-out (`SPLIT0002`) splitting, six GPU experiments (`EXP0001`–`EXP0006`), Phases E1–E18 evaluation (`EVAL0001`–`EVAL0006`), and whole-platform AI Forensic Analyst verification (`EVAL0007`).
 - **Specification:** `09_Figures/specs/FIG0026_spec.md`
@@ -1160,7 +1160,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0027
 
-> **Policy A.9 Figure Placement (`FIG0027`):** Human-exported asset expected at `09_Figures/assets/FIG0027_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0027](../../09_Figures/assets/FIG0027_v1.png)
 
 - **Caption:** Architecture and trust boundaries of the 18-module AI Forensic Analyst (`MOD001`–`MOD018`). Raw image bytes are accessible only to intake (`MOD001`), validation (`MOD002`), and isolated evidence collectors (`MOD003`, `MOD004`); the Decision Engine (`MOD008`) reads validated `EV` identifiers only, while `MOD016` records all eight canonical failure modes without silent fallback.
 - **Specification:** `09_Figures/specs/FIG0027_spec.md`
@@ -1169,7 +1169,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0028
 
-> **Policy A.9 Figure Placement (`FIG0028`):** Human-exported asset expected at `09_Figures/assets/FIG0028_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0028](../../09_Figures/assets/FIG0028_v1.png)
 
 - **Caption:** Reliability-weighted evidence fusion (`MOD007`, `DEC0009`), four-dimensional validation-calibrated confidence estimation (`MOD009`, `DEC0010`), and image-blind four-way decision rules (`MOD008`). Unusable supporting evidence or specialist conflict caps `decision_confidence` below `0.50`, routing high raw detector scores to `Inconclusive` rather than forcing an unverified binary verdict; missing directional evidence yields `Unknown` with `null` prediction and decision confidence.
 - **Specification:** `09_Figures/specs/FIG0028_spec.md`
@@ -1178,7 +1178,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0029
 
-> **Policy A.9 Figure Placement (`FIG0029`):** Human-exported asset expected at `09_Figures/assets/FIG0029_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0029](../../09_Figures/assets/FIG0029_v1.png)
 
 - **Caption:** Three-tier system architecture connecting the React 18 frontend (`12_Web`, `MOD014`, 14 pages, 24 accessible components), the seven-app Django/DRF REST API (`13_Backend`, `MOD013`, 10 endpoints, `_PIPELINE_LOCK` thread safety), and the 18-module AI Forensic Analyst core (`11_AI_Forensic_System`) with append-only CSV registries and versioned per-case media storage.
 - **Specification:** `09_Figures/specs/FIG0029_spec.md`
@@ -1187,7 +1187,7 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ## FIG0030
 
-> **Policy A.9 Figure Placement (`FIG0030`):** Human-exported asset expected at `09_Figures/assets/FIG0030_v1.png` (and vector `.pdf`). Generate via `09_Figures/FIGURE_RENDERING_RUNBOOK.md` and re-run `python 17_Automation/assemble_thesis.py` to auto-embed.
+![FIG0030](../../09_Figures/assets/FIG0030_v1.png)
 
 - **Caption:** Config-driven FastAI training and fault-tolerant checkpoint architecture (`17_Automation/training/`). Every run validates immutable YAML configs and dataset splits prior to GPU execution, writes never-overwritten SHA-256 recovery checkpoints (`EXPxxxx_epoch_NNN.pth`) with full RNG/optimizer restoration and automatic corrupt-file quarantine, freezes operating thresholds strictly on validation, and enforces Policy A.6 binary separation between GitHub and Kaggle.
 - **Specification:** `09_Figures/specs/FIG0030_spec.md`

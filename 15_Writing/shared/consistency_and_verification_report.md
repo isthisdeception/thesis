@@ -2,17 +2,17 @@
 
 **Date:** 2026-11-22  
 **Runner:** `17_Automation/verify_writing_consistency.py`  
-**Status:** **PASS (automated & W13 revision checks clean; Policy A.9 human figure export pending)**
+**Status:** **PASS**
 
 ## 1. Automated Check Summary
 
 - **Thesis Files Checked:** 10 (`19,663` total words; `1,971` canonical ID citations)
-- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** Present (`24,552` words, 0 em-dashes, 0 AI filler, 0 unknown IDs)
+- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** Present (`23,862` words, 0 em-dashes, 0 AI filler, 0 unknown IDs)
 - **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs
 - **Bibliography (`15_Writing/references/references.bib`):** 28 entries, 0 duplicate keys, 0 duplicate DOIs, 28/28 Paper IDs matched to `papers.csv`
 - **Claim Database (`02_Literature/claims/claim_database.csv`):** 8/8 claims `verified` with supporting literature + experimental/figure/table evidence
 - **Tables (Checklist 15):** 3/3 specs (`TAB0001`–`TAB0003`), CSV data files, rendered Markdown files, and thesis citations verified
-- **Figures (Checklist 14 / Policy A.9):** 30/30 specs (`FIG0001`–`FIG0030`) cited in thesis; 5 valid Draw.io architectural sources (`FIG0026`–`FIG0030`); `09_Figures/scripts/render_figures.py` ready for human execution (`0` assets rendered, `30` awaiting human Policy A.9 export)
+- **Figures (Checklist 14 / Policy A.9):** 30/30 specs (`FIG0001`–`FIG0030`) cited in thesis; 5 valid Draw.io architectural sources (`FIG0026`–`FIG0030`); `09_Figures/scripts/render_figures.py` ready for human execution (`30` assets rendered, `0` awaiting human Policy A.9 export)
 - **Hard Consistency Issues:** **0**
 - **Advisory Warnings:** **1**
 
