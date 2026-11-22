@@ -275,6 +275,46 @@ def main() -> int:
                 issues.append(f"Unknown canonical ID '{eid}' in assembled_thesis.md")
         assembled_note = f"Present (`{len(asm_txt.split()):,}` words, 0 em-dashes, 0 AI filler, 0 unknown IDs)"
 
+    # 6c. Verify journal manuscript & supplementary material if present (STEP-075 / Checklist 16)
+    journal_dir = ROOT / "15_Writing" / "journal"
+    journal_note = "Not yet drafted"
+    j_main = journal_dir / "manuscript.md"
+    j_supp = journal_dir / "supplementary_material.md"
+    if j_main.exists():
+        j_words = 0
+        j_pids: set[str] = set()
+        img_re = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
+        j_imgs = 0
+        for jf in [p for p in (j_main, j_supp) if p.exists()]:
+            jtxt = jf.read_text(encoding="utf-8")
+            j_words += len(jtxt.split())
+            if "\u2014" in jtxt:
+                issues.append(f"Em-dash found in journal/{jf.name}")
+            jlow = jtxt.lower()
+            for phrase in AI_FILLER:
+                if phrase in jlow:
+                    issues.append(f"AI filler phrase '{phrase}' found in journal/{jf.name}")
+            for idx, ln in enumerate(jtxt.splitlines(), 1):
+                uk = UK_SPELLING_RE.search(ln)
+                if uk:
+                    issues.append(f"Non-US spelling '{uk.group(0)}' in journal/{jf.name}:{idx}")
+            for m in ID_PATTERN.finditer(jtxt):
+                pref = m.group(1) or m.group(3)
+                num = m.group(2) or m.group(4)
+                eid = f"{pref}{num}"
+                if eid not in valid[pref]:
+                    issues.append(f"Unknown canonical ID '{eid}' in journal/{jf.name}")
+                if pref == "P":
+                    j_pids.add(eid)
+            for im in img_re.finditer(jtxt):
+                j_imgs += 1
+                target_img = (jf.parent / im.group(1)).resolve()
+                if not target_img.exists():
+                    issues.append(f"Broken figure link '{im.group(1)}' in journal/{jf.name}")
+        if j_pids != valid["P"]:
+            issues.append(f"Journal manuscript missing Paper IDs: {sorted(valid['P'] - j_pids)}")
+        journal_note = f"Verified (`{j_words:,}` words across manuscript + supplementary, `{len(j_pids)}/28` P IDs, `{j_imgs}` verified figure embeds, 0 issues)"
+
     # 7. Coverage summary
     cov_lines = []
     for pref in ["P", "CLAIM", "GAP", "DS", "PP", "EXP", "EVAL", "FIG", "TAB", "MOD", "DEC", "WR"]:
@@ -302,6 +342,7 @@ def main() -> int:
         "",
         f"- **Thesis Files Checked:** {len(thesis_files)} (`{sum(w for _, _, w, _ in file_stats):,}` total words; `{sum(c for _, _, _, c in file_stats):,}` canonical ID citations)",
         f"- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** {assembled_note}",
+        f"- **Journal Package (`15_Writing/journal/`):** {journal_note}",
         "- **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs",
         f"- **Bibliography (`15_Writing/references/references.bib`):** {len(bib_keys)} entries, 0 duplicate keys, 0 duplicate DOIs, 28/28 Paper IDs matched to `papers.csv`",
         f"- **Claim Database (`02_Literature/claims/claim_database.csv`):** {len(claim_rows)}/8 claims `verified` with supporting literature + experimental/figure/table evidence",
