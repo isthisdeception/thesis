@@ -205,42 +205,42 @@ All images pass through a deterministic seven-stage preprocessing pipeline (fixe
 \node[box, text width=4.3cm] (m3) at (9.4,0) {\textbf{M3: 9 Signal Collectors}\\Metadata, stats, face, quality, FFT,\\compression, color, texture, XAI input};
 \node[amberbox, text width=3.2cm] (m4) at (14.25,0) {\textbf{M4: DL Specialist}\\ResNet-50: emits $P(\text{fake})$\\\textit{(Zero verdict authority)}};
 
-\node[crimsonbox, text width=7.65cm, minimum height=0.78cm] (f1) at (2.22,-1.48) {\textbf{Early Validation Stops (M16):} \texttt{unsupported\_format} $|$ \texttt{corrupted\_image} $|$ \texttt{no\_face} $|$ \texttt{multiple\_faces}\\\textit{Halt before collectors; omit verdict; append failed case record to M15}};
+\node[crimsonbox, text width=7.65cm, minimum height=0.80cm] (f1) at (2.22,-1.62) {\textbf{Early Validation Stops (M16):} \texttt{unsupported\_format} $|$ \texttt{corrupted\_image} $|$ \texttt{no\_face} $|$ \texttt{multiple\_faces}\\\textit{Halt before collectors; omit verdict; append failed case record to M15}};
 
 % ================= BAND B: TRUST BOUNDARY B =================
-\node[box, text width=3.4cm] (m5) at (0,-3.55) {\textbf{M5: Evidence Ledger}\\Append-only \texttt{EVxxxxxx} IDs\\Immutable CSV storage};
-\node[box, text width=3.4cm] (m6) at (4.65,-3.55) {\textbf{M6: Evidence Validator}\\High / Med / Low / Unusable\\Conflict cross-citation};
-\node[box, text width=3.6cm] (m7) at (9.4,-3.55) {\textbf{M7: Evidence Fusion}\\Pluggable \texttt{FusionStrategy}\\Rule-based conclusion};
-\node[amberbox, text width=3.4cm] (m9) at (14.15,-3.55) {\textbf{M9: 4D Confidence}\\Val-calibrated $C_{\text{pred}}, C_{\text{ev}},$\\$C_{\text{sys}}$, capped $C_{\text{dec}}$};
+\node[box, text width=3.4cm] (m5) at (0,-4.15) {\textbf{M5: Evidence Ledger}\\Append-only \texttt{EVxxxxxx} IDs\\Immutable CSV storage};
+\node[box, text width=3.4cm] (m6) at (4.65,-4.15) {\textbf{M6: Evidence Validator}\\High / Med / Low / Unusable\\Conflict cross-citation};
+\node[box, text width=3.6cm] (m7) at (9.4,-4.15) {\textbf{M7: Evidence Fusion}\\Pluggable \texttt{FusionStrategy}\\Rule-based conclusion};
+\node[amberbox, text width=3.4cm] (m9) at (14.15,-4.15) {\textbf{M9: 4D Confidence}\\Val-calibrated $C_{\text{pred}}, C_{\text{ev}},$\\$C_{\text{sys}}$, capped $C_{\text{dec}}$};
 
-\node[crimsonbox, text width=3.4cm] (m8) at (0,-5.45) {\textbf{M8: Decision Engine}\\\textit{Sole Verdict Authority}\\Real $|$ Fake $|$ Inconcl.\ $|$ Unk.};
-\node[box, text width=3.4cm] (m10) at (4.65,-5.45) {\textbf{M10: Explainability}\\Structured data-only JSON\\\texttt{no\_data} when absent};
-\node[box, text width=3.6cm] (m11) at (9.4,-5.45) {\textbf{M11: Grounded Reasoning}\\Programmatic verification of\\every cited EV ID \& value};
-\node[box, text width=3.4cm] (m12) at (14.15,-5.45) {\textbf{M12: Report Generator}\\JSON, Markdown \& HTML\\Git + model provenance};
+\node[crimsonbox, text width=3.4cm] (m8) at (0,-6.05) {\textbf{M8: Decision Engine}\\\textit{Sole Verdict Authority}\\Real $|$ Fake $|$ Inconcl.\ $|$ Unk.};
+\node[box, text width=3.4cm] (m10) at (4.65,-6.05) {\textbf{M10: Explainability}\\Structured data-only JSON\\\texttt{no\_data} when absent};
+\node[box, text width=3.6cm] (m11) at (9.4,-6.05) {\textbf{M11: Grounded Reasoning}\\Programmatic verification of\\every cited EV ID \& value};
+\node[box, text width=3.4cm] (m12) at (14.15,-6.05) {\textbf{M12: Report Generator}\\JSON, Markdown \& HTML\\Git + model provenance};
 
 % ================= BAND C: DELIVERY & GOVERNANCE =================
-\node[slatebox, text width=2.45cm, minimum height=1.05cm] (m13) at (-0.42,-7.65) {\textbf{M13: REST API}\\7 Django apps\\10 endpoints};
-\node[slatebox, text width=2.55cm, minimum height=1.05cm] (m14) at (2.55,-7.65) {\textbf{M14: Web UI}\\14 pages, 24 comp.\\4 conf.\ gauges};
-\node[box, text width=2.45cm, minimum height=1.05cm] (m15) at (5.55,-7.65) {\textbf{M15: Audit Trail}\\Append-only\\case ledger};
-\node[crimsonbox, text width=2.55cm, minimum height=1.05cm] (m16) at (8.55,-7.65) {\textbf{M16: Failures}\\8 failure modes\\0 silent fails};
-\node[box, text width=2.45cm, minimum height=1.05cm] (m17) at (11.55,-7.65) {\textbf{M17: Registry}\\Contract \& spec\\validator};
-\node[tealbox, text width=2.45cm, minimum height=1.05cm] (m18) at (14.55,-7.65) {\textbf{M18: Extensible}\\Audio / video /\\text hooks};
+\node[slatebox, text width=2.45cm, minimum height=1.05cm] (m13) at (-0.42,-8.60) {\textbf{M13: REST API}\\7 Django apps\\10 endpoints};
+\node[slatebox, text width=2.55cm, minimum height=1.05cm] (m14) at (2.55,-8.60) {\textbf{M14: Web UI}\\14 pages, 24 comp.\\4 conf.\ gauges};
+\node[box, text width=2.45cm, minimum height=1.05cm] (m15) at (5.55,-8.60) {\textbf{M15: Audit Trail}\\Append-only\\case ledger};
+\node[crimsonbox, text width=2.55cm, minimum height=1.05cm] (m16) at (8.55,-8.60) {\textbf{M16: Failures}\\8 failure modes\\0 silent fails};
+\node[box, text width=2.45cm, minimum height=1.05cm] (m17) at (11.55,-8.60) {\textbf{M17: Registry}\\Contract \& spec\\validator};
+\node[tealbox, text width=2.45cm, minimum height=1.05cm] (m18) at (14.55,-8.60) {\textbf{M18: Extensible}\\Audio / video /\\text hooks};
 
 % ================= BACKGROUND CONTAINERS =================
 \begin{scope}[on background layer]
   \node[draw=slatestroke, fill=slatefill, dashed, rounded corners=4pt, line width=0.9pt,
-        fit=(m1)(m2)(m3)(m4)(f1), inner xsep=7pt, inner ysep=16pt, yshift=9pt] (ba) {};
+        fit=(m1)(m2)(m3)(m4)(f1), inner xsep=7pt, inner ysep=16pt, yshift=8pt] (ba) {};
   \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=slatetext] at ([xshift=4pt,yshift=-3pt]ba.north west)
         {TRUST BOUNDARY A: Image-Reading Layer (Per-Collector Isolation, Zero Decision Authority)};
 
   \node[draw=tealstroke, fill=tealfill, dashed, rounded corners=4pt, line width=0.9pt,
-        fit=(m5)(m6)(m7)(m9)(m8)(m10)(m11)(m12), inner xsep=7pt, inner ysep=10pt, yshift=4pt] (bb) {};
-  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=4pt,yshift=-2pt]bb.north west)
+        fit=(m5)(m6)(m7)(m9)(m8)(m10)(m11)(m12), inner xsep=7pt, inner ysep=13pt, yshift=6pt] (bb) {};
+  \node[anchor=north east, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=-6pt,yshift=-3pt]bb.north east)
         {TRUST BOUNDARY B: Image-Blind Evidence, Reasoning, Decision \& Reporting Layer (Validated EV IDs Only)};
 
   \node[draw=neutralstroke, fill=neutralfill, rounded corners=4pt, line width=0.9pt,
-        fit=(m13)(m14)(m15)(m16)(m17)(m18), inner xsep=7pt, inner ysep=10pt, yshift=4pt] (bc) {};
-  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=neutraltext] at ([xshift=4pt,yshift=-2pt]bc.north west)
+        fit=(m13)(m14)(m15)(m16)(m17)(m18), inner xsep=7pt, inner ysep=13pt, yshift=6pt] (bc) {};
+  \node[anchor=north east, font=\sffamily\scriptsize\bfseries, text=neutraltext] at ([xshift=-6pt,yshift=-3pt]bc.north east)
         {DELIVERY, AUDIT \& EXTENSIBILITY LAYER (M13--M18)};
 \end{scope}
 
@@ -248,15 +248,15 @@ All images pass through a deterministic seven-stage preprocessing pipeline (fixe
 % Band A internal
 \draw[arr] (m1) -- node[lbl] {accept} (m2);
 \draw[arr] (m2) -- node[lbl] {pass} (m3);
-\draw[arr] ([yshift=2pt]m2.north) -- ++(0,0.22) -| node[lbl, pos=0.25] {pass (isolated)} (m4.north);
+\draw[arr] ([yshift=2pt]m2.north) -- ++(0,0.24) -| node[lbl, pos=0.25] {pass (isolated)} (m4.north);
 \draw[darr] (m1.south) -- node[lbl, text=crimsontext] {reject} (m1.south |- f1.north);
 \draw[darr] (m2.south) -- node[lbl, text=crimsontext] {fail} (m2.south |- f1.north);
 
-% Trust Boundary A -> B bus (open corridor y = -2.42)
-\draw[arr] (m3.south) |- (6.8,-2.42) -| node[lbl, pos=0.18] {EV items} (m5.north);
-\draw[arr] (m4.south) |- (6.8,-2.42);
+% Trust Boundary A -> B bus cleanly centered in open white corridor (y = -2.74)
+\draw[arr] (m3.south) |- (6.8,-2.74) -| node[lbl, pos=0.18] {EV items} (m5.north);
+\draw[arr] (m4.south) |- (6.8,-2.74);
 
-% Band B Row 1 -> Row 2 (open corridor y = -4.50)
+% Band B Row 1 -> Row 2 (open corridor y = -5.10)
 \draw[arr] (m5) -- (m6);
 \draw[arr] (m6) -- (m7);
 \draw[arr] (m7) -- (m9);
@@ -265,9 +265,9 @@ All images pass through a deterministic seven-stage preprocessing pipeline (fixe
 \draw[arr] (m10) -- (m11);
 \draw[arr] (m11) -- (m12);
 
-% Band B -> Band C (open corridor y = -6.58)
-\draw[arr] (m12.south) -- ++(0,-0.45) -| node[lbl, pos=0.22] {reports \& status} (m13.north);
-\draw[arr] (m12.south) -- ++(0,-0.45) -| (m15.north);
+% Band B -> Band C cleanly centered in open white corridor (y = -7.32)
+\draw[arr] (m12.south) |- (6.8,-7.32) -| node[lbl, pos=0.16] {reports \& status} (m13.north);
+\draw[arr] (6.8,-7.32) -| (m15.north);
 \draw[arr] (m13) -- (m14);
 
 \end{tikzpicture}%
@@ -297,54 +297,54 @@ Figure~\ref{fig:architecture} illustrates the architectural boundary enforcing f
 ]
 
 % ================= STAGE 1 (TOP LEFT) =================
-\node[card, text width=7.5cm] (s1a) at (0,0) {\textbf{Directional Specialist (M4):} ResNet-50 $P(\text{fake}) = p$, validation-frozen threshold $t = 0.3951$ (or \texttt{model\_unavailable} / \texttt{timeout}).};
-\node[card, text width=7.5cm] (s1b) at (0,-1.05) {\textbf{Contextual Evidence (M3):} 9 independent collectors (metadata, stats, face, FFT, compression, color, texture, XAI input); cited as context only.};
-\node[card, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.5cm] (s1c) at (0,-2.05) {\textbf{Validator Weights (M6):} $\text{high}=1.0$, $\text{med}=0.6$, $\text{low}=0.3$, $\text{unusable}=0.0$; non-destructive conflict cross-citation (source rows immutable).};
+\node[card, text width=7.4cm] (s1a) at (0,0) {\textbf{Directional Specialist (M4):} ResNet-50 $P(\text{fake}) = p$, validation-frozen threshold $t = 0.3951$ (or \texttt{model\_unavailable} / \texttt{timeout}).};
+\node[card, text width=7.4cm] (s1b) at (0,-1.08) {\textbf{Contextual Evidence (M3):} 9 independent collectors (metadata, stats, face, FFT, compression, color, texture, XAI input); cited as context only.};
+\node[card, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.4cm] (s1c) at (0,-2.16) {\textbf{Validator Weights (M6):} $\text{high}=1.0$, $\text{med}=0.6$, $\text{low}=0.3$, $\text{unusable}=0.0$; non-destructive conflict cross-citation (source rows immutable).};
 
-% ================= STAGE 2 (TOP RIGHT) =================
-\node[card, text width=7.6cm] (s2a) at (9.1,0) {\textbf{Pluggable \texttt{FusionStrategy} (M7):} Active \texttt{rule\_based} v0.1.0 (\texttt{weighted}, \texttt{bayesian} reserved; unknown ID $\rightarrow$ M16 error).};
-\node[card, text width=7.6cm] (s2b) at (9.1,-1.05) {\textbf{Weighted Directional Aggregation:} $p \ge t \Rightarrow +w_i$ (\texttt{positive\_class}); $p < t \Rightarrow -w_i$ (\texttt{negative\_class}); unusable items excluded ($w=0$).};
-\node[card, text width=7.6cm] (s2c) at (9.1,-2.05) {\textbf{Fused Conclusion EV Item (Zero Verdict Words):} \texttt{positive\_class}, \texttt{negative\_class}, \texttt{contested} ($|\text{bal}|<0.5$), or \texttt{no\_directional\_evidence}.};
+% ================= STAGE 2 (TOP RIGHT, wider 1.3cm horizontal gutter) =================
+\node[card, text width=7.5cm] (s2a) at (9.45,0) {\textbf{Pluggable \texttt{FusionStrategy} (M7):} Active \texttt{rule\_based} v0.1.0 (\texttt{weighted}, \texttt{bayesian} reserved; unknown ID $\rightarrow$ M16 error).};
+\node[card, text width=7.5cm] (s2b) at (9.45,-1.08) {\textbf{Weighted Directional Aggregation:} $p \ge t \Rightarrow +w_i$ (\texttt{positive\_class}); $p < t \Rightarrow -w_i$ (\texttt{negative\_class}); unusable items excluded ($w=0$).};
+\node[card, text width=7.5cm] (s2c) at (9.45,-2.16) {\textbf{Fused Conclusion EV Item (Zero Verdict Words):} \texttt{positive\_class}, \texttt{negative\_class}, \texttt{contested} ($|\text{bal}|<0.5$), or \texttt{no\_directional\_evidence}.};
 
-% ================= STAGE 3 (BOTTOM LEFT) =================
-\node[card, text width=7.5cm] (s3a) at (0,-4.25) {\textbf{1.\ Prediction ($C_{\text{pred}}$):} $r = p$ if $p \ge t$ else $1-p$; lookup val reliability bin accuracy $A_{\text{val}}(r)$; $C_{\text{pred}} = w_{\text{det}}\,A_{\text{val}}(r)$ (\texttt{null} if absent).};
-\node[card, text width=7.5cm] (s3b) at (0,-5.28) {\textbf{2.\ Evidence ($C_{\text{ev}}$) \& 3.\ System ($C_{\text{sys}}$):} $C_{\text{ev}} = \bar{w}\times 0.5^{\text{conflict}}$; $C_{\text{sys}} = N_{\text{usable}} / (N_{\text{att}} + N_{\text{ref}} + N_{\text{err}})$.};
-\node[card, text width=7.5cm] (s3c) at (0,-6.38) {\textbf{4.\ Decision ($C_{\text{dec}}$):} $C_{\text{base}} = 0.5 C_{\text{pred}} + 0.3 C_{\text{ev}} + 0.2 C_{\text{sys}}$; cap at $\min(C_{\text{ev}}, C_{\text{sys}})$ if either $\le 0.50$ or $0$ usable non-DL; $\times 0.85$ single-source; $\times 0.50$ contested.};
-\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.4cm] (s3d) at (0,-7.48) {Safety Override Verified: $p = 0.99$ with unusable collectors $\Rightarrow C_{\text{dec}} = 0.3333$ (\textit{Inconclusive})};
+% ================= STAGE 3 (BOTTOM LEFT - generous 1.25cm corridor below top row!) =================
+\node[card, text width=7.4cm] (s3a) at (0,-5.00) {\textbf{1.\ Prediction ($C_{\text{pred}}$):} $r = p$ if $p \ge t$ else $1-p$; lookup val reliability bin accuracy $A_{\text{val}}(r)$; $C_{\text{pred}} = w_{\text{det}}\,A_{\text{val}}(r)$ (\texttt{null} if absent).};
+\node[card, text width=7.4cm] (s3b) at (0,-6.05) {\textbf{2.\ Evidence ($C_{\text{ev}}$) \& 3.\ System ($C_{\text{sys}}$):} $C_{\text{ev}} = \bar{w}\times 0.5^{\text{conflict}}$; $C_{\text{sys}} = N_{\text{usable}} / (N_{\text{att}} + N_{\text{ref}} + N_{\text{err}})$.};
+\node[card, text width=7.4cm] (s3c) at (0,-7.15) {\textbf{4.\ Decision ($C_{\text{dec}}$):} $C_{\text{base}} = 0.5 C_{\text{pred}} + 0.3 C_{\text{ev}} + 0.2 C_{\text{sys}}$; cap at $\min(C_{\text{ev}}, C_{\text{sys}})$ if either $\le 0.50$ or $0$ usable non-DL; $\times 0.85$ single-source; $\times 0.50$ contested.};
+\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.3cm] (s3d) at (0,-8.25) {Safety Override Verified: $p = 0.99$ with unusable collectors $\Rightarrow C_{\text{dec}} = 0.3333$ (\textit{Inconclusive})};
 
 % ================= STAGE 4 (BOTTOM RIGHT) =================
-\node[card, text width=7.6cm] (s4a) at (9.1,-4.15) {\textbf{Image-Blind Decision Engine (M8, Sole Verdict Authority):} Reads \textit{only} validated fused conclusion and 4D confidence EV IDs (zero image/weight access).};
-\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.5cm] (o1) at (9.1,-5.10) {FAKE \quad (\texttt{positive\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
-\node[pill, draw=tealstroke, fill=tealfill, text=tealtext, text width=7.5cm] (o2) at (9.1,-5.88) {REAL \quad (\texttt{negative\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
-\node[pill, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.5cm] (o3) at (9.1,-6.66) {INCONCLUSIVE \quad (\texttt{contested}, conflict active, or $C_{\text{dec}} < 0.50$)};
-\node[pill, draw=neutralstroke, fill=neutralfill, text=neutraltext, text width=7.5cm] (o4) at (9.1,-7.44) {UNKNOWN \quad (\texttt{no\_directional\_evidence}; $C_{\text{dec}} = \texttt{null}$)};
+\node[card, text width=7.5cm] (s4a) at (9.45,-4.95) {\textbf{Image-Blind Decision Engine (M8, Sole Verdict Authority):} Reads \textit{only} validated fused conclusion and 4D confidence EV IDs (zero image/weight access).};
+\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.4cm] (o1) at (9.45,-5.92) {FAKE \quad (\texttt{positive\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
+\node[pill, draw=tealstroke, fill=tealfill, text=tealtext, text width=7.4cm] (o2) at (9.45,-6.70) {REAL \quad (\texttt{negative\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
+\node[pill, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.4cm] (o3) at (9.45,-7.48) {INCONCLUSIVE \quad (\texttt{contested}, conflict active, or $C_{\text{dec}} < 0.50$)};
+\node[pill, draw=neutralstroke, fill=neutralfill, text=neutraltext, text width=7.4cm] (o4) at (9.45,-8.26) {UNKNOWN \quad (\texttt{no\_directional\_evidence}; $C_{\text{dec}} = \texttt{null}$)};
 
 % ================= STAGE CONTAINERS =================
 \begin{scope}[on background layer]
   \node[draw=slatestroke, fill=slatefill, dashed, rounded corners=4pt, line width=0.9pt,
-        fit=(s1a)(s1b)(s1c), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g1) {};
-  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=slatetext] at ([xshift=4pt,yshift=-2pt]g1.north west)
+        fit=(s1a)(s1b)(s1c), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g1) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=slatetext] at ([xshift=5pt,yshift=-3pt]g1.north west)
         {Stage 1: Validated Evidence Ledger (M3--M6)};
 
   \node[draw=tealstroke, fill=tealfill, dashed, rounded corners=4pt, line width=0.9pt,
-        fit=(s2a)(s2b)(s2c), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g2) {};
-  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=4pt,yshift=-2pt]g2.north west)
+        fit=(s2a)(s2b)(s2c), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g2) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=5pt,yshift=-3pt]g2.north west)
         {Stage 2: Reliability-Weighted Evidence Fusion (M7)};
 
   \node[draw=amberstroke, fill=amberfill, dashed, rounded corners=4pt, line width=0.9pt,
-        fit=(s3a)(s3b)(s3c)(s3d), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g3) {};
-  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=ambertext] at ([xshift=4pt,yshift=-2pt]g3.north west)
+        fit=(s3a)(s3b)(s3c)(s3d), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g3) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=ambertext] at ([xshift=5pt,yshift=-3pt]g3.north west)
         {Stage 3: Validation-Calibrated 4D Confidence (M9)};
 
   \node[draw=crimsonstroke, fill=crimsonfill, dashed, rounded corners=4pt, line width=0.9pt,
-        fit=(s4a)(o1)(o2)(o3)(o4), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g4) {};
-  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=crimsontext] at ([xshift=4pt,yshift=-2pt]g4.north west)
+        fit=(s4a)(o1)(o2)(o3)(o4), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g4) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=crimsontext] at ([xshift=5pt,yshift=-3pt]g4.north west)
         {Stage 4: Image-Blind Four-Way Decision Issuance (M8)};
 \end{scope}
 
-% ================= CLEAN INTER-STAGE ARROWS =================
+% ================= CLEAN INTER-STAGE ARROWS (CENTERED IN WIDE CORRIDORS) =================
 \draw[arr] (g1.east) -- node[lbl] {$w_i$} (g2.west);
-\draw[arr] (g2.south) -- ++(0,-0.32) -| node[lbl, pos=0.25] {logged \& graded fused conclusion} (g3.north);
+\draw[arr] (g2.south) |- (4.7,-3.48) -| node[lbl, pos=0.0] {logged \& graded fused conclusion} (g3.north);
 \draw[arr] (g3.east) -- node[lbl] {EV IDs} (g4.west);
 
 \end{tikzpicture}%
