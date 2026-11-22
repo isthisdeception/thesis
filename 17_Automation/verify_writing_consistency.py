@@ -137,8 +137,9 @@ def main() -> int:
             target = Path(row["Target File"].strip()).name
             progress_versions[target] = row["Version"].strip()
 
-    # 3. Scan all 10 thesis files (Phases W7, W8, W9, W10, W12, W13, W15)
-    thesis_files = sorted(THESIS_DIR.glob("*.md"))
+    # 3. Scan all 10 source thesis chapter files (exclude compiled assembled_thesis.md from per-chapter table)
+    thesis_files = sorted(fp for fp in THESIS_DIR.glob("*.md") if fp.name != "assembled_thesis.md")
+    assembled_fp = THESIS_DIR / "assembled_thesis.md"
     cited_all: set[str] = set()
     file_stats: list[tuple[str, str, int, int]] = []
     for fp in thesis_files:
@@ -256,6 +257,24 @@ def main() -> int:
                 if None in r or any(v is None for v in r.values()):
                     issues.append(f"CSV column count mismatch in {rel} line {idx}")
 
+    # 6b. Verify assembled_thesis.md if present (STEP-073)
+    assembled_note = "Not yet assembled"
+    if assembled_fp.exists():
+        asm_txt = assembled_fp.read_text(encoding="utf-8")
+        if "\u2014" in asm_txt:
+            issues.append("Em-dash found in assembled_thesis.md")
+        asm_low = asm_txt.lower()
+        for phrase in AI_FILLER:
+            if phrase in asm_low:
+                issues.append(f"AI filler phrase '{phrase}' found in assembled_thesis.md")
+        for m in ID_PATTERN.finditer(asm_txt):
+            pref = m.group(1) or m.group(3)
+            num = m.group(2) or m.group(4)
+            eid = f"{pref}{num}"
+            if eid not in valid[pref]:
+                issues.append(f"Unknown canonical ID '{eid}' in assembled_thesis.md")
+        assembled_note = f"Present (`{len(asm_txt.split()):,}` words, 0 em-dashes, 0 AI filler, 0 unknown IDs)"
+
     # 7. Coverage summary
     cov_lines = []
     for pref in ["P", "CLAIM", "GAP", "DS", "PP", "EXP", "EVAL", "FIG", "TAB", "MOD", "DEC", "WR"]:
@@ -263,8 +282,11 @@ def main() -> int:
         hit = len(valid[pref] & cited_all)
         cov_lines.append(f"| `{pref}` | {tot} | {hit} | {tot - hit} |")
 
+    audit_p = ROOT / "15_Writing/writing_audit.md"
+    c13_confirmed = audit_p.exists() and "PASS — Human-Confirmed" in audit_p.read_text(encoding="utf-8")
+    pending_note = "Policy A.9 human figure export pending" if c13_confirmed else "Policy A.9 human figure export & supervisor sign-off pending"
     overall = (
-        "PASS (automated & W13 revision checks clean; Policy A.9 human figure export & supervisor sign-off pending)"
+        f"PASS (automated & W13 revision checks clean; {pending_note})"
         if not issues and pending_figs
         else ("PASS" if not issues else "FAIL")
     )
@@ -279,6 +301,7 @@ def main() -> int:
         "## 1. Automated Check Summary",
         "",
         f"- **Thesis Files Checked:** {len(thesis_files)} (`{sum(w for _, _, w, _ in file_stats):,}` total words; `{sum(c for _, _, _, c in file_stats):,}` canonical ID citations)",
+        f"- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** {assembled_note}",
         "- **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs",
         f"- **Bibliography (`15_Writing/references/references.bib`):** {len(bib_keys)} entries, 0 duplicate keys, 0 duplicate DOIs, 28/28 Paper IDs matched to `papers.csv`",
         f"- **Claim Database (`02_Literature/claims/claim_database.csv`):** {len(claim_rows)}/8 claims `verified` with supporting literature + experimental/figure/table evidence",
