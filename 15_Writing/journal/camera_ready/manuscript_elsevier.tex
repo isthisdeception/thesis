@@ -1,14 +1,37 @@
-% Toggle between Elsevier single-column review mode and double-column print preview:
-\documentclass[preprint,12pt]{elsarticle}
-% \documentclass[final,5p,times,twocolumn]{elsarticle}
+% Official Elsevier Q1 two-column journal layout (compact margins, full-width figures & tables):
+\documentclass[final,5p,times,twocolumn]{elsarticle}
+% For single-column review submission, swap line 2 with:
+% \documentclass[preprint,11pt]{elsarticle}
+% \usepackage[margin=0.8in]{geometry}
 
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
+\usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{multirow}
 \usepackage{microtype}
 \usepackage{url}
+\usepackage{xcolor}
+\usepackage{flushend}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,shapes.geometric}
+
+% Colorblind-safe IEEE / Elsevier palette for native vector TikZ diagrams
+\definecolor{slatefill}{HTML}{EBF3F9}
+\definecolor{slatestroke}{HTML}{1F618D}
+\definecolor{slatetext}{HTML}{154360}
+\definecolor{tealfill}{HTML}{E8F6F3}
+\definecolor{tealstroke}{HTML}{117A65}
+\definecolor{tealtext}{HTML}{0E6251}
+\definecolor{amberfill}{HTML}{FEF5E7}
+\definecolor{amberstroke}{HTML}{B9770E}
+\definecolor{ambertext}{HTML}{7E5109}
+\definecolor{crimsonfill}{HTML}{FDEDEC}
+\definecolor{crimsonstroke}{HTML}{922B21}
+\definecolor{crimsontext}{HTML}{641E16}
+\definecolor{neutralfill}{HTML}{F4F6F9}
+\definecolor{neutralstroke}{HTML}{566573}
+\definecolor{neutraltext}{HTML}{212F3C}
 
 \journal{Forensic Science International: Digital Investigation}
 
@@ -28,16 +51,15 @@
   country={Country}
 }
 
-\begin{highlights}
-\item Reframes synthetic face detection into an 18-module evidence-driven forensic platform.
-\item Isolates deep learning inference from an image-blind four-way Decision Engine.
-\item Introduces validation-calibrated four-dimensional confidence overriding blind scores.
-\item Quantifies cross-dataset real-face FPR up to 82.6\% and unseen diffusion drop to 13.7\%.
-\item Verifies 16 forensic scenarios, 135 evidence-grounded sentences, and full-stack UAT.
-\end{highlights}
+% Editorial Manager Highlights (5 bullets, <= 85 characters each):
+% 1. Reframes synthetic face detection into an 18-module evidence-driven forensic platform.
+% 2. Isolates deep learning inference from an image-blind four-way Decision Engine.
+% 3. Introduces validation-calibrated four-dimensional confidence overriding blind scores.
+% 4. Quantifies cross-dataset real-face FPR up to 82.6% and unseen diffusion drop to 13.7%.
+% 5. Verifies 16 forensic scenarios, 135 evidence-grounded sentences, and full-stack UAT.
 
 \begin{abstract}
-Standalone deep learning detectors for synthetic human faces routinely attain high in-distribution discrimination yet fail unpredictably under unseen generative architectures, external real-image domain shift, and lossy post-processing \cite{Bammey_2024,Khan_2024,Altamimi_2026,Guarnera_2024,Cheng_2024}. In operational digital forensics, returning an uncalibrated binary probability without provenance, uncertainty bounds, or abstention capability exposes investigators to silent false accusations and missed forgeries. This paper introduces the \textbf{AI Forensic Analyst}, an 18-module evidence-driven forensic architecture (M1--M18) that demotes the neural detector to one isolated, replaceable specialist (M4) inside a trust-bounded pipeline separating image-reading collectors from an image-blind four-way Decision Engine (M8: \textit{Real}, \textit{Fake}, \textit{Inconclusive}, \textit{Unknown}). First, we establish a strictly public-only, open-license five-dataset benchmark (ArtiFact faces, DiFF official test, 140k Real and Fake Faces, Synthbuster, and FairFace; over 250,000 processed images) with leakage-verified grouped and leave-one-generator-out splits and systematically stress-test a standardized ResNet-50 baseline. Although the baseline attains ROC-AUC 0.9261, PR-AUC 0.9348, balanced accuracy 0.8483, MCC 0.6978, and ECE 0.0525 on in-distribution ArtiFact test images ($n=7{,}505$, validation-frozen threshold $0.3951$), stress testing exposes 43.7\% FNR on StyleGAN3, balanced accuracy collapse toward 0.50 under fine-detail degradation (53 perturbations), 48.1\% unseen-generator cross-dataset FNR (50.2\% on DiFF), 30.4\%--82.6\% external real-face FPR, and a paired recall drop from 96.3\% to 13.7\% under controlled Stable Diffusion holdout. Second, we implement and verify the 18-module platform featuring reliability-weighted fusion (M7), validation-calibrated four-dimensional confidence (M9), programmatically evidence-verified reasoning (M11), structured eight-mode failure handling (M16), and a three-tier Django/React web application (M13--M14). Across 16 end-to-end verification scenarios, the platform passes all nine quality dimensions (135 verified reasoning sentences, zero ungrounded claims, 60.02 ms mean latency), explicitly overriding a 0.99 detector score into \textit{Inconclusive} ($\text{decision\_confidence}=0.3333$) when supporting evidence is unusable and degrading cleanly to \textit{Unknown} when specialists are unavailable. All code, registries, verification scripts, and datasets are publicly reproducible.
+Standalone deep learning detectors for synthetic human faces routinely attain high in-distribution discrimination yet fail unpredictably under unseen generative architectures, external real-image domain shift, and lossy post-processing \cite{Bammey_2024,Khan_2024,Altamimi_2026,Guarnera_2024,Cheng_2024}. In operational digital forensics, returning an uncalibrated binary probability without provenance, uncertainty bounds, or abstention capability exposes investigators to silent false accusations and missed forgeries. This paper introduces the \textbf{AI Forensic Analyst}, an 18-module evidence-driven forensic architecture (M1--M18) that demotes the neural detector to one isolated, replaceable specialist (M4) inside a trust-bounded pipeline separating image-reading collectors from an image-blind four-way Decision Engine (M8: \textit{Real}, \textit{Fake}, \textit{Inconclusive}, \textit{Unknown}). First, we establish a strictly public-only, open-license five-dataset benchmark (ArtiFact faces, DiFF official test, 140k Real and Fake Faces, Synthbuster, and FairFace; over 250,000 processed images) with leakage-verified grouped and leave-one-generator-out splits and systematically stress-test a standardized ResNet-50 baseline. Although the baseline attains ROC-AUC 0.9261, PR-AUC 0.9348, balanced accuracy 0.8483, MCC 0.6978, and ECE 0.0525 on in-distribution ArtiFact test images ($n=7{,}505$, validation-frozen threshold $0.3951$), stress testing exposes 43.7\% FNR on StyleGAN3, balanced accuracy collapse toward 0.50 under fine-detail degradation (53 perturbations), 48.1\% unseen-generator cross-dataset FNR (50.2\% on DiFF), 30.4\%--82.6\% external real-face FPR, and a paired recall drop from 96.3\% to 13.7\% under controlled Stable Diffusion holdout. Second, we implement and verify the 18-module platform featuring reliability-weighted fusion (M7), validation-calibrated four-dimensional confidence (M9), programmatically evidence-verified reasoning (M11), structured eight-mode failure handling (M16), and a three-tier Django/React web application (M13--M14). Across 16 end-to-end verification scenarios, the platform passes all nine quality dimensions (135 verified reasoning sentences, zero ungrounded claims, 60.02 ms mean latency), explicitly overriding a 0.99 detector score into \textit{Inconclusive} ($C_{\text{dec}}=0.3333$) when supporting evidence is unusable and degrading cleanly to \textit{Unknown} when specialists are unavailable. All code, registries, verification scripts, and datasets are publicly reproducible.
 \end{abstract}
 
 \begin{keyword}
@@ -84,17 +106,19 @@ To eliminate license ambiguity and dataset shortcut blindness, we assemble five 
 \caption{Strictly public, open-license multi-dataset benchmark used for in-distribution training, cross-dataset evaluation, demographic real-face auditing, and controlled unseen-generator holdout.}
 \label{tab:datasets}
 \footnotesize
-\begin{tabular}{@{}llrrll@{}}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}l l r X l@{}}
 \toprule
-\textbf{Corpus} & \textbf{Evaluation Role} & \textbf{Processed Images} & \textbf{Composition} & \textbf{License} \\
+\textbf{Corpus} & \textbf{Evaluation Role} & \textbf{Images} & \textbf{Class / Generator Composition} & \textbf{License} \\
 \midrule
-ArtiFact (face subset) & In-dist.\ train/val/test \& LOGO & 50,000 & 25k real / 25k fake (13 GAN + diffusion gens) & MIT \\
+ArtiFact (face subset) & In-dist.\ train/val/test \& LOGO & 50,000 & 25k real / 25k fake across 13 GAN and diffusion generators & MIT \\
 DiFF (official test) \cite{Cheng_2024} & Cross-dataset unseen diffusion & 51,452 & Fake-only across 13 diffusion generators & Research Open \\
-140k Real and Fake Faces & Cross-dataset GAN/FFHQ & 140,000 & 70k FFHQ real / 70k StyleGAN fake & Public Open \\
-Synthbuster \cite{Bammey_2024} & Cross-dataset diffusion + scenes & 9,999 & 9,000 diffusion fakes (9 models) / 999 RAISE real & CC BY 4.0 \\
-FairFace & Demographic real-face FPR & 97,698 & Real-only faces balanced across 7 race groups & CC BY 4.0 \\
+140k Real and Fake Faces & Cross-dataset GAN / FFHQ & 140,000 & 70k FFHQ real / 70k StyleGAN fake & Public Open \\
+Synthbuster \cite{Bammey_2024} & Cross-dataset diffusion + scenes & 9,999 & 9,000 diffusion fakes (9 models) / 999 RAISE real scenes & CC BY 4.0 \\
+FairFace & Demographic real-face FPR & 97,698 & Real-only faces balanced across 7 demographic groups & CC BY 4.0 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table*}
 
 All images pass through a deterministic seven-stage preprocessing pipeline (fixed seed 42): integrity verification, pre-modification metadata capture, EXIF stripping, minimum resolution filtering ($\ge 64$\,px), RGB PNG conversion, and $224\times 224$ resizing with zero denoising or sharpening so high-frequency forensic traces remain intact. On ArtiFact, we generate two leakage-verified splits: a grouped random split ($34{,}993$ train / $7{,}502$ validation / $7{,}505$ test) and a controlled leave-one-generator-out (LOGO) split holding out all $1{,}923$ Stable Diffusion images exclusively for testing. Automated hash and identifier checks confirm zero cross-split overlap (exploratory audits in Supplementary Material S2).
@@ -102,10 +126,95 @@ All images pass through a deterministic seven-stage preprocessing pipeline (fixe
 \subsection{Trust-Bounded 18-Module Forensic Pipeline}
 
 \begin{figure*}[t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/FIG0027_v1.pdf}
-  \caption{Eighteen-module AI Forensic Analyst architecture separating Trust Boundary A (image-reading intake, validation, nine independent signal collectors, and isolated deep learning specialist) from Trust Boundary B (image-blind append-only evidence ledger, reliability validator, fusion engine, four-dimensional confidence estimator, sole four-way Decision Engine, data-only explainability, grounded reasoning, and report generator) and delivery/governance modules (M13--M18).}
-  \label{fig:architecture}
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\scriptsize,
+  box/.style={draw=neutralstroke, fill=white, rounded corners=3pt, line width=0.8pt, align=center, minimum height=1.22cm, inner sep=3.5pt},
+  amberbox/.style={box, draw=amberstroke, fill=amberfill, text=ambertext},
+  crimsonbox/.style={box, draw=crimsonstroke, fill=crimsonfill, text=crimsontext},
+  slatebox/.style={box, draw=slatestroke, fill=slatefill, text=slatetext},
+  tealbox/.style={box, draw=tealstroke, fill=tealfill, text=tealtext},
+  arr/.style={-{Stealth[length=2.2mm,width=1.6mm]}, line width=0.8pt, draw=neutraltext, rounded corners=2pt},
+  darr/.style={arr, dashed, draw=crimsonstroke},
+  lbl/.style={font=\sffamily\tiny\bfseries, fill=white, inner sep=1.2pt, text=neutraltext}
+]
+
+% ================= BAND A: TRUST BOUNDARY A =================
+\node[box, text width=3.2cm] (m1) at (0,0) {\textbf{M1: Input Intake}\\Format \& $\le 20$\,MB cap\\SHA-256 + metadata};
+\node[box, text width=3.3cm] (m2) at (4.45,0) {\textbf{M2: Image Validation}\\Decode, RGB, noise,\\single-face gate};
+\node[box, text width=4.3cm] (m3) at (9.4,0) {\textbf{M3: 9 Signal Collectors}\\Metadata, stats, face, quality, FFT,\\compression, color, texture, XAI input};
+\node[amberbox, text width=3.2cm] (m4) at (14.25,0) {\textbf{M4: DL Specialist}\\ResNet-50: emits $P(\text{fake})$\\\textit{(Zero verdict authority)}};
+
+\node[crimsonbox, text width=7.65cm, minimum height=0.78cm] (f1) at (2.22,-1.48) {\textbf{Early Validation Stops (M16):} \texttt{unsupported\_format} $|$ \texttt{corrupted\_image} $|$ \texttt{no\_face} $|$ \texttt{multiple\_faces}\\\textit{Halt before collectors; omit verdict; append failed case record to M15}};
+
+% ================= BAND B: TRUST BOUNDARY B =================
+\node[box, text width=3.4cm] (m5) at (0,-3.55) {\textbf{M5: Evidence Ledger}\\Append-only \texttt{EVxxxxxx} IDs\\Immutable CSV storage};
+\node[box, text width=3.4cm] (m6) at (4.65,-3.55) {\textbf{M6: Evidence Validator}\\High / Med / Low / Unusable\\Conflict cross-citation};
+\node[box, text width=3.6cm] (m7) at (9.4,-3.55) {\textbf{M7: Evidence Fusion}\\Pluggable \texttt{FusionStrategy}\\Rule-based conclusion};
+\node[amberbox, text width=3.4cm] (m9) at (14.15,-3.55) {\textbf{M9: 4D Confidence}\\Val-calibrated $C_{\text{pred}}, C_{\text{ev}},$\\$C_{\text{sys}}$, capped $C_{\text{dec}}$};
+
+\node[crimsonbox, text width=3.4cm] (m8) at (0,-5.45) {\textbf{M8: Decision Engine}\\\textit{Sole Verdict Authority}\\Real $|$ Fake $|$ Inconcl.\ $|$ Unk.};
+\node[box, text width=3.4cm] (m10) at (4.65,-5.45) {\textbf{M10: Explainability}\\Structured data-only JSON\\\texttt{no\_data} when absent};
+\node[box, text width=3.6cm] (m11) at (9.4,-5.45) {\textbf{M11: Grounded Reasoning}\\Programmatic verification of\\every cited EV ID \& value};
+\node[box, text width=3.4cm] (m12) at (14.15,-5.45) {\textbf{M12: Report Generator}\\JSON, Markdown \& HTML\\Git + model provenance};
+
+% ================= BAND C: DELIVERY & GOVERNANCE =================
+\node[slatebox, text width=2.45cm, minimum height=1.05cm] (m13) at (-0.42,-7.65) {\textbf{M13: REST API}\\7 Django apps\\10 endpoints};
+\node[slatebox, text width=2.55cm, minimum height=1.05cm] (m14) at (2.55,-7.65) {\textbf{M14: Web UI}\\14 pages, 24 comp.\\4 conf.\ gauges};
+\node[box, text width=2.45cm, minimum height=1.05cm] (m15) at (5.55,-7.65) {\textbf{M15: Audit Trail}\\Append-only\\case ledger};
+\node[crimsonbox, text width=2.55cm, minimum height=1.05cm] (m16) at (8.55,-7.65) {\textbf{M16: Failures}\\8 failure modes\\0 silent fails};
+\node[box, text width=2.45cm, minimum height=1.05cm] (m17) at (11.55,-7.65) {\textbf{M17: Registry}\\Contract \& spec\\validator};
+\node[tealbox, text width=2.45cm, minimum height=1.05cm] (m18) at (14.55,-7.65) {\textbf{M18: Extensible}\\Audio / video /\\text hooks};
+
+% ================= BACKGROUND CONTAINERS =================
+\begin{scope}[on background layer]
+  \node[draw=slatestroke, fill=slatefill, dashed, rounded corners=4pt, line width=0.9pt,
+        fit=(m1)(m2)(m3)(m4)(f1), inner xsep=7pt, inner ysep=16pt, yshift=9pt] (ba) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=slatetext] at ([xshift=4pt,yshift=-3pt]ba.north west)
+        {TRUST BOUNDARY A: Image-Reading Layer (Per-Collector Isolation, Zero Decision Authority)};
+
+  \node[draw=tealstroke, fill=tealfill, dashed, rounded corners=4pt, line width=0.9pt,
+        fit=(m5)(m6)(m7)(m9)(m8)(m10)(m11)(m12), inner xsep=7pt, inner ysep=10pt, yshift=4pt] (bb) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=4pt,yshift=-2pt]bb.north west)
+        {TRUST BOUNDARY B: Image-Blind Evidence, Reasoning, Decision \& Reporting Layer (Validated EV IDs Only)};
+
+  \node[draw=neutralstroke, fill=neutralfill, rounded corners=4pt, line width=0.9pt,
+        fit=(m13)(m14)(m15)(m16)(m17)(m18), inner xsep=7pt, inner ysep=10pt, yshift=4pt] (bc) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=neutraltext] at ([xshift=4pt,yshift=-2pt]bc.north west)
+        {DELIVERY, AUDIT \& EXTENSIBILITY LAYER (M13--M18)};
+\end{scope}
+
+% ================= CLEAN NON-OVERLAPPING ARROWS =================
+% Band A internal
+\draw[arr] (m1) -- node[lbl] {accept} (m2);
+\draw[arr] (m2) -- node[lbl] {pass} (m3);
+\draw[arr] ([yshift=2pt]m2.north) -- ++(0,0.22) -| node[lbl, pos=0.25] {pass (isolated)} (m4.north);
+\draw[darr] (m1.south) -- node[lbl, text=crimsontext] {reject} (m1.south |- f1.north);
+\draw[darr] (m2.south) -- node[lbl, text=crimsontext] {fail} (m2.south |- f1.north);
+
+% Trust Boundary A -> B bus (open corridor y = -2.42)
+\draw[arr] (m3.south) |- (6.8,-2.42) -| node[lbl, pos=0.18] {EV items} (m5.north);
+\draw[arr] (m4.south) |- (6.8,-2.42);
+
+% Band B Row 1 -> Row 2 (open corridor y = -4.50)
+\draw[arr] (m5) -- (m6);
+\draw[arr] (m6) -- (m7);
+\draw[arr] (m7) -- (m9);
+\draw[arr] (m9.south) -- ++(0,-0.34) -| node[lbl, pos=0.25] {validated EV IDs (no image access)} (m8.north);
+\draw[arr] (m8) -- (m10);
+\draw[arr] (m10) -- (m11);
+\draw[arr] (m11) -- (m12);
+
+% Band B -> Band C (open corridor y = -6.58)
+\draw[arr] (m12.south) -- ++(0,-0.45) -| node[lbl, pos=0.22] {reports \& status} (m13.north);
+\draw[arr] (m12.south) -- ++(0,-0.45) -| (m15.north);
+\draw[arr] (m13) -- (m14);
+
+\end{tikzpicture}%
+}
+\caption{Eighteen-module AI Forensic Analyst architecture separating Trust Boundary A (image-reading intake, validation, nine independent signal collectors, and isolated deep learning specialist) from Trust Boundary B (image-blind append-only evidence ledger, reliability validator, fusion engine, four-dimensional confidence estimator, sole four-way Decision Engine, data-only explainability, grounded reasoning, and report generator) and delivery/governance modules (M13--M18).}
+\label{fig:architecture}
 \end{figure*}
 
 Figure~\ref{fig:architecture} illustrates the architectural boundary enforcing forensic accountability across all 18 modules (M1--M18; complete interface summary in Supplementary Material S4):
@@ -118,10 +227,71 @@ Figure~\ref{fig:architecture} illustrates the architectural boundary enforcing f
 \subsection{Reliability-Weighted Fusion, 4D Calibrated Confidence, and 4-Way Decisioning}
 
 \begin{figure*}[t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/FIG0028_v1.pdf}
-  \caption{Mathematical flow from the validated evidence ledger through reliability-weighted rule-based fusion (M7), validation-calibrated four-dimensional confidence (M9), and image-blind four-way verdict issuance (M8). Safety caps override a raw $0.99$ detector score into \textit{Inconclusive} ($C_{\text{dec}}=0.3333$) whenever supporting evidence is unusable.}
-  \label{fig:fusion}
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\scriptsize,
+  card/.style={draw=neutralstroke, fill=white, rounded corners=3pt, line width=0.75pt, align=left, inner sep=4.5pt},
+  pill/.style={rounded corners=6pt, line width=0.8pt, align=center, font=\sffamily\scriptsize\bfseries, inner sep=3.5pt},
+  arr/.style={-{Stealth[length=2.4mm,width=1.7mm]}, line width=1.0pt, draw=neutraltext, rounded corners=3pt},
+  lbl/.style={font=\sffamily\scriptsize\bfseries, fill=white, inner sep=1.5pt, text=neutraltext}
+]
+
+% ================= STAGE 1 (TOP LEFT) =================
+\node[card, text width=7.5cm] (s1a) at (0,0) {\textbf{Directional Specialist (M4):} ResNet-50 $P(\text{fake}) = p$, validation-frozen threshold $t = 0.3951$ (or \texttt{model\_unavailable} / \texttt{timeout}).};
+\node[card, text width=7.5cm] (s1b) at (0,-1.05) {\textbf{Contextual Evidence (M3):} 9 independent collectors (metadata, stats, face, FFT, compression, color, texture, XAI input); cited as context only.};
+\node[card, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.5cm] (s1c) at (0,-2.05) {\textbf{Validator Weights (M6):} $\text{high}=1.0$, $\text{med}=0.6$, $\text{low}=0.3$, $\text{unusable}=0.0$; non-destructive conflict cross-citation (source rows immutable).};
+
+% ================= STAGE 2 (TOP RIGHT) =================
+\node[card, text width=7.6cm] (s2a) at (9.1,0) {\textbf{Pluggable \texttt{FusionStrategy} (M7):} Active \texttt{rule\_based} v0.1.0 (\texttt{weighted}, \texttt{bayesian} reserved; unknown ID $\rightarrow$ M16 error).};
+\node[card, text width=7.6cm] (s2b) at (9.1,-1.05) {\textbf{Weighted Directional Aggregation:} $p \ge t \Rightarrow +w_i$ (\texttt{positive\_class}); $p < t \Rightarrow -w_i$ (\texttt{negative\_class}); unusable items excluded ($w=0$).};
+\node[card, text width=7.6cm] (s2c) at (9.1,-2.05) {\textbf{Fused Conclusion EV Item (Zero Verdict Words):} \texttt{positive\_class}, \texttt{negative\_class}, \texttt{contested} ($|\text{bal}|<0.5$), or \texttt{no\_directional\_evidence}.};
+
+% ================= STAGE 3 (BOTTOM LEFT) =================
+\node[card, text width=7.5cm] (s3a) at (0,-4.25) {\textbf{1.\ Prediction ($C_{\text{pred}}$):} $r = p$ if $p \ge t$ else $1-p$; lookup val reliability bin accuracy $A_{\text{val}}(r)$; $C_{\text{pred}} = w_{\text{det}}\,A_{\text{val}}(r)$ (\texttt{null} if absent).};
+\node[card, text width=7.5cm] (s3b) at (0,-5.28) {\textbf{2.\ Evidence ($C_{\text{ev}}$) \& 3.\ System ($C_{\text{sys}}$):} $C_{\text{ev}} = \bar{w}\times 0.5^{\text{conflict}}$; $C_{\text{sys}} = N_{\text{usable}} / (N_{\text{att}} + N_{\text{ref}} + N_{\text{err}})$.};
+\node[card, text width=7.5cm] (s3c) at (0,-6.38) {\textbf{4.\ Decision ($C_{\text{dec}}$):} $C_{\text{base}} = 0.5 C_{\text{pred}} + 0.3 C_{\text{ev}} + 0.2 C_{\text{sys}}$; cap at $\min(C_{\text{ev}}, C_{\text{sys}})$ if either $\le 0.50$ or $0$ usable non-DL; $\times 0.85$ single-source; $\times 0.50$ contested.};
+\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.4cm] (s3d) at (0,-7.48) {Safety Override Verified: $p = 0.99$ with unusable collectors $\Rightarrow C_{\text{dec}} = 0.3333$ (\textit{Inconclusive})};
+
+% ================= STAGE 4 (BOTTOM RIGHT) =================
+\node[card, text width=7.6cm] (s4a) at (9.1,-4.15) {\textbf{Image-Blind Decision Engine (M8, Sole Verdict Authority):} Reads \textit{only} validated fused conclusion and 4D confidence EV IDs (zero image/weight access).};
+\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.5cm] (o1) at (9.1,-5.10) {FAKE \quad (\texttt{positive\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
+\node[pill, draw=tealstroke, fill=tealfill, text=tealtext, text width=7.5cm] (o2) at (9.1,-5.88) {REAL \quad (\texttt{negative\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
+\node[pill, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.5cm] (o3) at (9.1,-6.66) {INCONCLUSIVE \quad (\texttt{contested}, conflict active, or $C_{\text{dec}} < 0.50$)};
+\node[pill, draw=neutralstroke, fill=neutralfill, text=neutraltext, text width=7.5cm] (o4) at (9.1,-7.44) {UNKNOWN \quad (\texttt{no\_directional\_evidence}; $C_{\text{dec}} = \texttt{null}$)};
+
+% ================= STAGE CONTAINERS =================
+\begin{scope}[on background layer]
+  \node[draw=slatestroke, fill=slatefill, dashed, rounded corners=4pt, line width=0.9pt,
+        fit=(s1a)(s1b)(s1c), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g1) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=slatetext] at ([xshift=4pt,yshift=-2pt]g1.north west)
+        {Stage 1: Validated Evidence Ledger (M3--M6)};
+
+  \node[draw=tealstroke, fill=tealfill, dashed, rounded corners=4pt, line width=0.9pt,
+        fit=(s2a)(s2b)(s2c), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g2) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=4pt,yshift=-2pt]g2.north west)
+        {Stage 2: Reliability-Weighted Evidence Fusion (M7)};
+
+  \node[draw=amberstroke, fill=amberfill, dashed, rounded corners=4pt, line width=0.9pt,
+        fit=(s3a)(s3b)(s3c)(s3d), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g3) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=ambertext] at ([xshift=4pt,yshift=-2pt]g3.north west)
+        {Stage 3: Validation-Calibrated 4D Confidence (M9)};
+
+  \node[draw=crimsonstroke, fill=crimsonfill, dashed, rounded corners=4pt, line width=0.9pt,
+        fit=(s4a)(o1)(o2)(o3)(o4), inner xsep=6pt, inner ysep=11pt, yshift=5pt] (g4) {};
+  \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=crimsontext] at ([xshift=4pt,yshift=-2pt]g4.north west)
+        {Stage 4: Image-Blind Four-Way Decision Issuance (M8)};
+\end{scope}
+
+% ================= CLEAN INTER-STAGE ARROWS =================
+\draw[arr] (g1.east) -- node[lbl] {$w_i$} (g2.west);
+\draw[arr] (g2.south) -- ++(0,-0.32) -| node[lbl, pos=0.25] {logged \& graded fused conclusion} (g3.north);
+\draw[arr] (g3.east) -- node[lbl] {EV IDs} (g4.west);
+
+\end{tikzpicture}%
+}
+\caption{Mathematical flow from the validated evidence ledger (Stage 1) through reliability-weighted rule-based fusion (Stage 2), validation-calibrated four-dimensional confidence (Stage 3), and image-blind four-way verdict issuance (Stage 4). Conservative caps override a raw $0.99$ detector score into \textit{Inconclusive} ($C_{\text{dec}}=0.3333$) whenever supporting evidence is unusable.}
+\label{fig:fusion}
 \end{figure*}
 
 As illustrated in Figure~\ref{fig:fusion}, the mathematical decision core operates in three transparent stages:
@@ -173,17 +343,17 @@ On the ArtiFact test split ($n=7{,}505$: $3{,}753$ fake, $3{,}752$ real), the Ba
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures/FIG0011_v1.pdf}
+  \includegraphics[width=0.96\linewidth]{figures/FIG0011_v1.pdf}
   \caption{Calibration reliability diagram on ArtiFact test ($n=7{,}505$, $\text{ECE}=0.0525$, $\text{MCE}=0.1544$), illustrating mid-to-high confidence miscalibration that motivates validation-bin confidence mapping in M9.}
   \label{fig:calibration}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures/FIG0015_v1.pdf}
+  \includegraphics[width=0.86\textwidth]{figures/FIG0015_v1.pdf}
   \caption{In-distribution subgroup error profile exposing severe heterogeneity across seen generators (0.0\% FNR on StarGAN/CIPS vs.\ 43.7\% on StyleGAN3, 42.2\% on Projected GAN, 38.8\% on StyleGAN2, and 38.6\% on MAT) and real sources (36.7\% FPR on artistic MetFaces vs.\ 10.9\% on CelebA-HQ and 11.1\% on FFHQ).}
   \label{fig:subgroups}
-\end{figure}
+\end{figure*}
 
 Even inside the training distribution, Figure~\ref{fig:calibration} documents clear mid-to-high confidence miscalibration, while Figure~\ref{fig:subgroups} shows that aggregate accuracy hides $>38\%$ false negative rates on high-realism GANs (StyleGAN3, Projected GAN, StyleGAN2, MAT) and $36.7\%$ false positive rates on non-photographic MetFaces portraits.
 
@@ -200,19 +370,21 @@ Across all 53 perturbations (Figure~\ref{fig:robustness}), robustness splits int
 
 \subsection{Cross-Dataset Shift and Controlled Unseen-Generator Holdout}
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures/FIG0018_v1.pdf}
-  \caption{Cross-dataset error rates of Baseline ResNet-50 at frozen threshold $0.3951$ across four external benchmarks, exposing 50.2\% unseen diffusion FNR on DiFF and 30.4\%--82.6\% false positive rates on authentic external images.}
-  \label{fig:cross_dataset}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/FIG0019_v1.pdf}
-  \caption{Controlled leave-one-generator-out holdout of Stable Diffusion. Recall drops from 83.3\% on 12 seen generators to 15.2\% (293/1,923) on unseen Stable Diffusion, and from 96.3\% (Baseline, seen) to 13.7\% (LOGO Holdout, unseen) on the identical 299 test images.}
-  \label{fig:unseen_logo}
-\end{figure}
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/FIG0018_v1.pdf}
+    \caption{Cross-dataset error rates of Baseline ResNet-50 at frozen threshold $0.3951$ across four external benchmarks, exposing 50.2\% unseen diffusion FNR on DiFF and 30.4\%--82.6\% FPR on authentic external images.}
+    \label{fig:cross_dataset}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/FIG0019_v1.pdf}
+    \caption{Controlled LOGO holdout of Stable Diffusion: recall drops from 83.3\% on 12 seen generators to 15.2\% (293/1,923) unseen, and from 96.3\% to 13.7\% on the identical 299 test images.}
+    \label{fig:unseen_logo}
+  \end{minipage}
+\end{figure*}
 
 Cross-dataset testing (Figure~\ref{fig:cross_dataset}) confirms both halves of detector fragility: across 17 unseen generators, FNR rises from $18.3\%$ in-distribution to $48.1\%$ ($50.2\%$ on DiFF diffusion faces, reaching $81.5\%$ on FreeDoM\_I), whereas familiar StyleGAN-family fakes in 140k Real and Fake Faces incur only $9.0\%$ FNR. Simultaneously, external authentic images trigger extreme false alarms: $30.4\%$ FPR on 140k FFHQ, $76.7\%$ FPR on Synthbuster RAISE scenes (overall Synthbuster ROC-AUC $0.5172$, near chance), and $82.6\%$ FPR on FairFace across all seven demographic groups. Controlled Stable Diffusion holdout (Figure~\ref{fig:unseen_logo}) isolates pure unseen-generator failure without dataset shift: while the LOGO model retains validation ROC-AUC $0.937$ on its 12 seen generators, held-out Stable Diffusion recall drops to $15.2\%$ ($293/1{,}923$), falling from $96.3\%$ to $13.7\%$ on the exact same 299 test images \cite{Khan_2024,Altamimi_2026,Cheng_2024}. Consequently, the standalone detector is explicitly classified as unsuitable for autonomous deployment.
 
@@ -232,6 +404,9 @@ Tables~\ref{tab:ranked} and \ref{tab:stats} report the fairness-compatible compa
 \caption{Fairness-compatible ranked comparison on the ArtiFact grouped test split ($n=7{,}505$; saved-run metrics, no cross-seed superiority claim).}
 \label{tab:ranked}
 \footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}rlrrrrrrr@{}}
 \toprule
 \textbf{Rank} & \textbf{Run Variant} & \textbf{ROC-AUC} & \textbf{PR-AUC} & \textbf{Bal.\ Acc.} & \textbf{MCC} & \textbf{FNR} & \textbf{FPR} & \textbf{ECE} \\
@@ -242,7 +417,8 @@ Tables~\ref{tab:ranked} and \ref{tab:stats} report the fairness-compatible compa
 4 & Reduced Resolution ($160\times 160$) & 0.8885 & 0.9053 & 0.8039 & 0.6082 & 0.2170 & 0.1753 & 0.0944 \\
 5 & No ImageNet Pretraining & 0.7017 & 0.7092 & 0.6452 & 0.2912 & 0.3162 & 0.3935 & 0.0230 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table*}
 
 \begin{table*}[t]
@@ -250,6 +426,9 @@ Tables~\ref{tab:ranked} and \ref{tab:stats} report the fairness-compatible compa
 \caption{Paired ROC-AUC bootstrap differences (10,000 resamples, seed 49) and exact two-sided McNemar tests against Baseline ResNet-50 ($n=7{,}505$; saved-run differences only).}
 \label{tab:stats}
 \footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrlrrl@{}}
 \toprule
 \textbf{Challenger vs.\ Baseline} & \textbf{$\Delta$ROC-AUC} & \textbf{CI Level} & \textbf{Bootstrap CI} & \textbf{McNemar Adj.\ $p$} & \textbf{Disagreements ($b/c$)} & \textbf{Saved-Run Status} \\
@@ -259,7 +438,8 @@ No Augmentation & $-0.0336$ & 98.3\% & $[-0.0396, -0.0279]$ & $8.34\times 10^{-2
 No ImageNet Pretraining & $-0.2243$ & 98.3\% & $[-0.2383, -0.2101]$ & $7.1\times 10^{-217}$ & 2,012 / 491 & Challenger lower \\
 Reduced Resolution ($160$\,px) & $-0.0376$ & 98.3\% & $[-0.0447, -0.0307]$ & $1.36\times 10^{-21}$ & 991 / 596 & Challenger lower \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table*}
 
 Seed replication establishes a tight run-to-run repeatability floor ($\Delta\text{ROC-AUC}=+0.0011$, 95\% CI crossing zero, two-seed SD $0.0008$, decision agreement $0.9334$, Cohen's $\kappa=0.8662$, McNemar $p=0.964$). Every factor removal degrades discrimination an order of magnitude beyond this floor with Bonferroni-adjusted 98.3\% intervals strictly below zero (Figure~\ref{fig:ablation}): ImageNet-1k pretraining contributes the largest gain ($-0.2243$ ROC-AUC under the fixed 11-epoch budget), $224$\,px resolution preserves both discrimination ($-0.0376$) and calibration ($\text{ECE } 0.0525$ vs.\ $0.0944$), and train-only augmentation prevents early epoch-3 overfitting ($-0.0336$).
