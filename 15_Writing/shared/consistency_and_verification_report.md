@@ -1,12 +1,13 @@
-# Verification & Consistency Report (STEP-071 / Phases W8–W11, W15)
+# Verification & Consistency Report (STEP-071 / STEP-072 — Phases W8–W13, W15, W17)
 
 **Date:** 2026-11-22  
 **Runner:** `17_Automation/verify_writing_consistency.py`  
-**Status:** **PASS (automated checks clean; Policy A.9 human figure export pending)**
+**Status:** **PASS (automated & W13 revision checks clean; Policy A.9 human figure export & supervisor sign-off pending)**
 
 ## 1. Automated Check Summary
 
-- **Thesis Draft Files Checked:** 10 (`19,632` total words; `1,967` canonical ID citations)
+- **Thesis Files Checked:** 10 (`19,663` total words; `1,971` canonical ID citations)
+- **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs
 - **Bibliography (`15_Writing/references/references.bib`):** 28 entries, 0 duplicate keys, 0 duplicate DOIs, 28/28 Paper IDs matched to `papers.csv`
 - **Claim Database (`02_Literature/claims/claim_database.csv`):** 8/8 claims `verified` with supporting literature + experimental/figure/table evidence
 - **Tables (Checklist 15):** 3/3 specs (`TAB0001`–`TAB0003`), CSV data files, rendered Markdown files, and thesis citations verified
@@ -14,22 +15,22 @@
 - **Hard Consistency Issues:** **0**
 - **Advisory Warnings:** **1**
 
-## 2. Per-File Thesis Metrics
+## 2. Per-File Thesis Metrics & Version Tracking (Phase W12)
 
-| File | Words | Canonical ID Citations |
-|---|---:|---:|
-| `abstract.md` | 560 | 89 |
-| `appendices_and_references.md` | 1,969 | 179 |
-| `chapter1_introduction.md` | 1,933 | 223 |
-| `chapter2_literature_review.md` | 2,618 | 348 |
-| `chapter3_methodology.md` | 2,942 | 271 |
-| `chapter4_implementation.md` | 2,233 | 153 |
-| `chapter5_evaluation.md` | 2,080 | 194 |
-| `chapter6_results.md` | 2,963 | 176 |
-| `chapter7_discussion.md` | 1,254 | 162 |
-| `chapter8_conclusion.md` | 1,080 | 172 |
+| File | SemVer | Words | Canonical ID Citations |
+|---|---|---:|---:|
+| `abstract.md` | `0.2.0` | 562 | 89 |
+| `appendices_and_references.md` | `0.2.0` | 1,973 | 179 |
+| `chapter1_introduction.md` | `0.2.0` | 1,935 | 223 |
+| `chapter2_literature_review.md` | `0.2.0` | 2,620 | 348 |
+| `chapter3_methodology.md` | `0.3.0` | 2,944 | 271 |
+| `chapter4_implementation.md` | `0.3.0` | 2,235 | 153 |
+| `chapter5_evaluation.md` | `0.2.0` | 2,082 | 194 |
+| `chapter6_results.md` | `0.2.0` | 2,968 | 178 |
+| `chapter7_discussion.md` | `0.2.0` | 1,262 | 164 |
+| `chapter8_conclusion.md` | `0.2.0` | 1,082 | 172 |
 
-## 3. Canonical Identifier Coverage Across Thesis Drafts
+## 3. Canonical Identifier Coverage Across Thesis Chapters
 
 | Prefix | Registered | Cited in Thesis | Uncited |
 |---|---:|---:|---:|
@@ -39,7 +40,7 @@
 | `DS` | 5 | 5 | 0 |
 | `PP` | 6 | 6 | 0 |
 | `EXP` | 6 | 6 | 0 |
-| `EVAL` | 7 | 6 | 1 |
+| `EVAL` | 7 | 7 | 0 |
 | `FIG` | 30 | 30 | 0 |
 | `TAB` | 3 | 3 | 0 |
 | `MOD` | 18 | 18 | 0 |
@@ -53,4 +54,5 @@
 ## 5. Advisory Warnings & Human Action Items (Policy A.8 / A.9)
 
 - Minor DOI string discrepancy for P0012: papers.csv has '10.1016/jjksuci.2024.102036' while references.bib carries the canonical CrossRef DOI.
-- **Human Figure Rendering (Policy A.9):** Follow `09_Figures/FIGURE_RENDERING_RUNBOOK.md` to export `FIG0026`–`FIG0030` from Draw.io and run `09_Figures/scripts/render_figures.py` for `FIG0001`–`FIG0025`, then re-run `python 17_Automation/verify_writing_consistency.py`.
+- **Human Figure Rendering (Policy A.9 / Checklist 14):** Follow `09_Figures/FIGURE_RENDERING_RUNBOOK.md` to export `FIG0026`–`FIG0030` from Draw.io and run `09_Figures/scripts/render_figures.py` for `FIG0001`–`FIG0025`, then re-run `python 17_Automation/verify_writing_consistency.py`.
+- **Supervisor Review & Checklist 13 Sign-off (Phase W13):** Share `15_Writing/revisions/supervisor_review_pack.md`, log comments in `15_Writing/reviewer_responses/review_response.md`, and confirm Checklist 13 PASS in `15_Writing/writing_audit.md`.

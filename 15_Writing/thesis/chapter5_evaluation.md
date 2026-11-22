@@ -1,6 +1,6 @@
 # Chapter 5: Evaluation
 
-> **Version:** `0.1.0` | **Status:** Draft (Pending Human Review) | **Last Updated:** 2026-11-21
+> **Version:** `0.2.0` | **Status:** Revised (W13 Reviewed; Pending Supervisor Sign-off) | **Last Updated:** 2026-11-22
 > **Writing Units:** `WR0025`, `WR0026`, `WR0027`, `WR0028`
 > **Traceability:** Every paragraph in this chapter traces to evaluation configurations, decision logs (`DEC0006`–`DEC0008`), audit gates (`08_Evaluation/evaluation_audit.md`, `08_Evaluation/forensic_audit.md`), test specifications (`16_Documentation/test_plan.md`), figure/table specs (`FIG0011`, `FIG0013`, `FIG0016`, `FIG0018`–`FIG0020`, `TAB0002`, `TAB0003`), and `15_Writing/shared/knowledge_index.csv` (`KI0016`, `KI0018`, `KI0026`, `KI0035`).
 

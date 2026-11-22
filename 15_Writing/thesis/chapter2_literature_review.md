@@ -1,6 +1,6 @@
 # Chapter 2: Literature Review
 
-> **Version:** `0.1.0` | **Status:** Draft (Pending Human Review) | **Last Updated:** 2026-11-21
+> **Version:** `0.2.0` | **Status:** Revised (W13 Reviewed; Pending Supervisor Sign-off) | **Last Updated:** 2026-11-22
 > **Writing Units:** `WR0007`, `WR0008`, `WR0009`, `WR0010`, `WR0011`, `WR0012`
 > **Traceability:** Every paragraph in this chapter traces to registered identifiers in `02_Literature/metadata/papers.csv` (`P0001`–`P0028`), `02_Literature/claims/claim_database.csv` (`CLAIM0001`–`CLAIM0008`), `02_Literature/research_gap/research_gap.csv` (`GAP0001`–`GAP0008`), `10_Tables/specs/TAB0001_spec.md` (`TAB0001`), and `15_Writing/shared/knowledge_index.csv` (`KI0005`–`KI0013`).
 
