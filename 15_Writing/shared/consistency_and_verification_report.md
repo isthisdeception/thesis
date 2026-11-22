@@ -2,11 +2,12 @@
 
 **Date:** 2026-11-22  
 **Runner:** `17_Automation/verify_writing_consistency.py`  
-**Status:** **PASS (automated & W13 revision checks clean; Policy A.9 human figure export & supervisor sign-off pending)**
+**Status:** **PASS (automated & W13 revision checks clean; Policy A.9 human figure export pending)**
 
 ## 1. Automated Check Summary
 
 - **Thesis Files Checked:** 10 (`19,663` total words; `1,971` canonical ID citations)
+- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** Present (`24,552` words, 0 em-dashes, 0 AI filler, 0 unknown IDs)
 - **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs
 - **Bibliography (`15_Writing/references/references.bib`):** 28 entries, 0 duplicate keys, 0 duplicate DOIs, 28/28 Paper IDs matched to `papers.csv`
 - **Claim Database (`02_Literature/claims/claim_database.csv`):** 8/8 claims `verified` with supporting literature + experimental/figure/table evidence
