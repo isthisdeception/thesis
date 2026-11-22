@@ -70,6 +70,15 @@ specs/FIGxxxx_spec.md, assets/FIGxxxx_v1.png
 | FIG0024 | EXP0001 validation ROC-AUC | `06_Experiments/EXP0001/logs/EXP0001_epochs.csv` |
 | FIG0025 | EXP0001 train and validation loss | `06_Experiments/EXP0001/logs/EXP0001_epochs.csv` |
 
-Specs live in `09_Figures/specs/`. **Do not commit AI-rendered publication figures** ([A.9](../MASTER_RESEARCH_OPERATING_SYSTEM.md#a9-canonical-figure-policy)).
+## STEP-071 / Publication Architecture & Methodology Diagrams (Draw.io sources in `09_Figures/diagrams/`)
+| FIG ID | Topic | Source Diagram |
+|--------|-------|----------------|
+| FIG0026 | End-to-end research & evaluation methodology pipeline | `09_Figures/diagrams/FIG0026.drawio` |
+| FIG0027 | 18-module AI Forensic Analyst architecture & trust boundaries | `09_Figures/diagrams/FIG0027.drawio` |
+| FIG0028 | Evidence fusion, 4D E4 confidence & 4-way decision logic (Journal Fig. 1) | `09_Figures/diagrams/FIG0028.drawio` |
+| FIG0029 | Three-tier full-stack web architecture (`12_Web` ↔ `13_Backend` ↔ Core) | `09_Figures/diagrams/FIG0029.drawio` |
+| FIG0030 | Reproducible FastAI training, SHA-256 checkpointing & Policy A.6 sync | `09_Figures/diagrams/FIG0030.drawio` |
+
+Specs live in `09_Figures/specs/`. Human rendering runbook: `09_Figures/FIGURE_RENDERING_RUNBOOK.md`. **Do not commit AI-rendered publication figures** ([A.9](../MASTER_RESEARCH_OPERATING_SYSTEM.md#a9-canonical-figure-policy)).
 
 > *This folder follows the canonical repository hygiene and naming rules defined in `MASTER_RESEARCH_OPERATING_SYSTEM.md`. Please refer to the handbook for full policy details.*
