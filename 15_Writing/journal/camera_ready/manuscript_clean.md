@@ -234,7 +234,7 @@ Trustworthy synthetic face forensics requires shifting from standalone binary cl
 ## Statements and Declarations
 
 - **Reproducibility Statement:** All preprocessing pipelines, experiment configurations, statistical bootstrap/McNemar calculations, forensic platform tests, figure rendering scripts, and consistency verifiers are deterministically scripted with fixed seeds, SHA-256 manifests, and locked software dependencies (Supplementary Material S5).
-- **Code Availability:** Complete source code for the 18-module AI Forensic Analyst, Django/DRF REST API, React frontend, training/evaluation automation, and editable diagram sources is publicly available under the MIT License at `https://github.com/isthisdeception/thesis`.
+- **Code Availability:** Complete source code for the 18-module AI Forensic Analyst, Django/DRF REST API, React frontend, training/evaluation automation, and editable diagram sources will be made publicly available under the MIT License upon acceptance (and is available to editors and reviewers upon request).
 - **Data Availability:** This study uses strictly public, open-license benchmark datasets: ArtiFact faces (MIT), DiFF official test [23] (Research Open), 140k Real and Fake Faces (Public Open), Synthbuster [3] (CC BY 4.0), and FairFace (CC BY 4.0). All preprocessing parameters, exclusion logs, and split manifests are published in the repository.
 - **Ethics and Privacy Statement:** No private photographs or human-subjects experiments were collected. All analyses use publicly licensed academic corpora, and EXIF metadata is stripped during preprocessing.
 - **Declaration of Competing Interest:** The authors declare no competing financial or personal interests.
