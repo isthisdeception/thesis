@@ -1,0 +1,5 @@
+Baseline,Challenger,Factor,Role,n,Baseline ROC-AUC,Challenger ROC-AUC,Delta ROC-AUC,95% CI,Claim CI Level,Claim CI,Run Difference,Larger Than Seed Pair,Bootstrap Resamples,Bootstrap Seed,Superiority Claim
+EXP0001,EXP0003,random_seed,seed_replicate,7505,0.9261,0.9272,+0.0011,"[-0.0012, +0.0035]",95.0%,"[-0.0012, +0.0035]",not_supported,False,10000,49,none
+EXP0001,EXP0004,augmentation,ablation,7505,0.9261,0.8925,-0.0336,"[-0.0385, -0.0287]",98.3%,"[-0.0396, -0.0279]",challenger_lower,True,10000,49,none
+EXP0001,EXP0005,pretraining,ablation,7505,0.9261,0.7017,-0.2243,"[-0.2359, -0.2127]",98.3%,"[-0.2383, -0.2101]",challenger_lower,True,10000,49,none
+EXP0001,EXP0006,image_size,ablation,7505,0.9261,0.8885,-0.0376,"[-0.0434, -0.0319]",98.3%,"[-0.0447, -0.0307]",challenger_lower,True,10000,49,none

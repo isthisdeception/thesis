@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-11-22" version="24.0.0">
+  <diagram id="FIG0030_Training_Checkpoint_Sync" name="FIG0030_Training_Checkpoint_Sync">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1320" pageHeight="520" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Swimlane 1: GitHub Source Tier (Single Source of Truth — Zero Large Binaries)" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=6;spacingLeft=10;fontFamily=Helvetica;fontSize=12;fontStyle=1;fillColor=#EBF3F9;strokeColor=#1F618D;fontColor=#154360;strokeWidth=1.5;dashed=1;dashPattern=6 4;" vertex="1" parent="1">
+          <mxGeometry x="20" y="25" width="1280" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="&lt;b&gt;Immutable Config&lt;/b&gt;&lt;br/&gt;EXPxxxx/config.yaml&lt;br/&gt;47 Validator Tests PASS" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FFFFFF;strokeColor=#2C3E50;fontColor=#1C2833;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="45" y="70" width="220" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="&lt;b&gt;Frozen Split &amp;amp; Env Lock&lt;/b&gt;&lt;br/&gt;SPLIT0001 / SPLIT0002&lt;br/&gt;versions.lock.md (plum 2.5.7)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FFFFFF;strokeColor=#2C3E50;fontColor=#1C2833;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="315" y="70" width="240" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="&lt;b&gt;Synced Lightweight Outputs&lt;/b&gt;&lt;br/&gt;predictions/*.csv | metrics/*.json&lt;br/&gt;logs/EXPxxxx_epochs.csv" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FFFFFF;strokeColor=#2C3E50;fontColor=#1C2833;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="630" y="70" width="270" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="&lt;b&gt;Updated Registries&lt;/b&gt;&lt;br/&gt;experiment_registry.csv&lt;br/&gt;model_registry.csv | 07_Checkpoints/" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FFFFFF;strokeColor=#2C3E50;fontColor=#1C2833;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="975" y="70" width="295" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Swimlane 2: Kaggle T4 GPU Execution (17_Automation/training/ — Thin Notebook Wrapper)" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=6;spacingLeft=10;fontFamily=Helvetica;fontSize=12;fontStyle=1;fillColor=#E8F6F3;strokeColor=#117A65;fontColor=#0E6251;strokeWidth=1.5;dashed=1;dashPattern=6 4;" vertex="1" parent="1">
+          <mxGeometry x="20" y="195" width="1280" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="&lt;b&gt;Pre-Flight Guards&lt;/b&gt;&lt;br/&gt;Config Hash + Git Ancestry&lt;br/&gt;Fresh vs. Resume Output Guard&lt;br/&gt;Dataset &amp;amp; Leakage Check" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FFFFFF;strokeColor=#2C3E50;fontColor=#1C2833;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="45" y="245" width="220" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="&lt;b&gt;LR Finder &amp;amp; FastAI Learner&lt;/b&gt;&lt;br/&gt;ResNet-50 (ImageNet-1k)&lt;br/&gt;Adam (wd=0.01) + FP16&lt;br/&gt;fine_tune (1 frozen + 10 unfrozen)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FFFFFF;strokeColor=#2C3E50;fontColor=#1C2833;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="310" y="245" width="245" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="&lt;b&gt;Atomic CheckpointStore&lt;/b&gt;&lt;br/&gt;EXPxxxx_epoch_NNN.pth&lt;br/&gt;Weights + Opt + RNG + SHA-256&lt;br/&gt;Auto-Quarantine Corrupt Resume" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FEF5E7;strokeColor=#B9770E;fontColor=#7E5109;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="600" y="245" width="260" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="&lt;b&gt;Finalize &amp;amp; Val-Only Threshold&lt;/b&gt;&lt;br/&gt;Load Best Epoch (valid_loss)&lt;br/&gt;Freeze Threshold on Val ONLY&lt;br/&gt;Write Predictions, ECE, Summary" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=6;fontFamily=Helvetica;fontSize=11;fontStyle=0;fillColor=#FFFFFF;strokeColor=#2C3E50;fontColor=#1C2833;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="910" y="245" width="360" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="Swimlane 3: Kaggle Data &amp;amp; Artifact Tiers (Policy A.6 — Git-Ignored Binaries)" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingTop=6;spacingLeft=10;fontFamily=Helvetica;fontSize=12;fontStyle=1;fillColor=#F4F6F9;strokeColor=#566573;fontColor=#212F3C;strokeWidth=1.5;dashed=1;dashPattern=6 4;" vertex="1" parent="1">
+          <mxGeometry x="20" y="405" width="1280" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="Kaggle Data Tier: Processed 224x224 PNG Datasets (ds0001-pp0001 ... ds0005-pp0005)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=10;fontStyle=1;fillColor=#EBF3F9;strokeColor=#1F618D;fontColor=#154360;strokeWidth=1.3;" vertex="1" parent="1">
+          <mxGeometry x="45" y="442" width="540" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="Kaggle Artifact Tier: EXPxxxx_best.pth | EXPxxxx_last.pth | MODELxxxx_export.pkl (~105 MB)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=10;fontStyle=1;fillColor=#FEF5E7;strokeColor=#B9770E;fontColor=#7E5109;strokeWidth=1.3;" vertex="1" parent="1">
+          <mxGeometry x="625" y="442" width="645" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="3" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;exitX=0.2;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="read-only mount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;dashed=1;dashPattern=5 3;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="13" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="8" target="9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="every epoch" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;exitX=1;exitY=0.35;exitDx=0;exitDy=0;entryX=0;entryY=0.35;entryDx=0;entryDy=0;" edge="1" parent="1" source="9" target="10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="resume" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#B9770E;strokeColor=#B9770E;strokeWidth=1.4;endArrow=block;endFill=1;dashed=1;dashPattern=5 3;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="10" target="9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="10" target="11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="binary push" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;dashed=1;dashPattern=5 3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="10" target="14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="export.pkl" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;dashed=1;dashPattern=5 3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="binary-guarded git sync" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Helvetica;fontSize=10;fontColor=#34495E;strokeColor=#34495E;strokeWidth=1.4;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="5" target="6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
