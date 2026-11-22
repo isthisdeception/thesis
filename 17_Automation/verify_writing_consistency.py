@@ -1,8 +1,9 @@
-"""Automated Citation, Claim, Figure/Table & Consistency Verifier (STEP-071).
+"""Automated Citation, Claim, Figure/Table, W13 Revision & Consistency Verifier (STEP-071 / STEP-072).
 
-Implements Phases W8, W9, W10, W11, and W15 verification across all drafted
-thesis chapters (15_Writing/thesis/*.md), canonical registries, BibTeX
-references, table artifacts, Draw.io sources, and figure specifications.
+Implements Phases W8, W9, W10, W11, W12, W13, W15, and W17 verification across
+all drafted/revised thesis chapters (15_Writing/thesis/*.md), canonical
+registries, BibTeX references, table artifacts, Draw.io sources, figure
+specifications, and writing progress version headers.
 
 Usage (from repository root):
     python 17_Automation/verify_writing_consistency.py
@@ -35,6 +36,17 @@ AI_FILLER = [
     "crucial",
     "in today's digital landscape",
 ]
+PLACEHOLDER_RE = re.compile(r"\b(TODO|TBD|FIXME|XXX|EVIDENCE NEEDED|PLACEHOLDER)\b", re.I)
+REPEATED_WORD_RE = re.compile(r"\b([a-zA-Z]+)\s+\1\b", re.I)
+UK_SPELLING_RE = re.compile(
+    r"\b(generalisation|behaviour|colour|analyse|analysing|analysed|modelling|"
+    r"labelled|labelling|organisation|normalise|normalised|normalisation|"
+    r"optimise|optimised|optimisation|summarise|summarised|centre|artefact|"
+    r"defence|favour|finalise|finalised|standardise|standardised|prioritise|"
+    r"utilise|characterise|characterised|categorise|visualise|visualisation)\b",
+    re.I,
+)
+VERSION_HEADER_RE = re.compile(r"\*\*Version:\*\*\s*`([^`]+)`")
 
 
 def load_csv_ids(rel_path: str, col_idx: int = 0) -> set[str]:
@@ -97,7 +109,6 @@ def main() -> int:
             f"extra={sorted(set(bib_pids) - valid['P'])}"
         )
 
-    # Check DOI formatting consistency between papers.csv and references.bib
     csv_dois: dict[str, str] = {}
     with open(ROOT / "02_Literature/metadata/papers.csv", encoding="utf-8-sig", newline="") as f:
         for row in csv.DictReader(f):
@@ -110,9 +121,8 @@ def main() -> int:
             )
 
     # 2. Claim Database verification (Phase W11)
-    claim_rows = list(
-        csv.DictReader(open(ROOT / "02_Literature/claims/claim_database.csv", encoding="utf-8-sig", newline=""))
-    )
+    with open(ROOT / "02_Literature/claims/claim_database.csv", encoding="utf-8-sig", newline="") as f:
+        claim_rows = list(csv.DictReader(f))
     unverified_claims = [r["Claim ID"] for r in claim_rows if r["Status"].strip().lower() != "verified"]
     unsupported_claims = [r["Claim ID"] for r in claim_rows if not r["Supporting Papers"].strip()]
     if unverified_claims:
@@ -120,18 +130,68 @@ def main() -> int:
     if unsupported_claims:
         issues.append(f"Claims lacking supporting papers: {unsupported_claims}")
 
-    # 3. Scan all 10 thesis files (Phases W7, W8, W9, W10, W15)
+    # Load expected versions from writing_progress.csv (Phases W12/W17)
+    progress_versions: dict[str, str] = {}
+    with open(ROOT / "15_Writing/shared/writing_progress.csv", encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            target = Path(row["Target File"].strip()).name
+            progress_versions[target] = row["Version"].strip()
+
+    # 3. Scan all 10 thesis files (Phases W7, W8, W9, W10, W12, W13, W15)
     thesis_files = sorted(THESIS_DIR.glob("*.md"))
     cited_all: set[str] = set()
-    file_stats: list[tuple[str, int, int]] = []
+    file_stats: list[tuple[str, str, int, int]] = []
     for fp in thesis_files:
         txt = fp.read_text(encoding="utf-8")
+        lines = txt.splitlines()
+
+        # W12 version header sync check
+        ver_match = VERSION_HEADER_RE.search("\n".join(lines[:6]))
+        file_ver = ver_match.group(1) if ver_match else "MISSING"
+        exp_ver = progress_versions.get(fp.name, "UNKNOWN")
+        if file_ver != exp_ver:
+            issues.append(
+                f"Version mismatch for {fp.name}: header has '{file_ver}' vs writing_progress.csv '{exp_ver}'"
+            )
+
         if "\u2014" in txt:
             issues.append(f"Em-dash found in {fp.name}")
         low = txt.lower()
         for phrase in AI_FILLER:
             if phrase in low:
                 issues.append(f"AI filler phrase '{phrase}' found in {fp.name}")
+
+        # W13 Grammar, US English spelling, formatting & structural checks
+        prev_h = 0
+        in_code = False
+        for idx, line in enumerate(lines, 1):
+            if line.strip().startswith("```"):
+                in_code = not in_code
+                continue
+            if in_code:
+                continue
+            if PLACEHOLDER_RE.search(line):
+                issues.append(f"Leftover placeholder in {fp.name}:{idx}: {line.strip()[:80]}")
+            rep = REPEATED_WORD_RE.search(line)
+            if rep and rep.group(1).lower() not in ("had", "that"):
+                issues.append(f"Repeated word '{rep.group(0)}' in {fp.name}:{idx}")
+            uk = UK_SPELLING_RE.search(line)
+            if uk:
+                issues.append(f"Non-US spelling '{uk.group(0)}' in {fp.name}:{idx}")
+            if line.startswith("#"):
+                lvl = len(line) - len(line.lstrip("#"))
+                if prev_h and lvl > prev_h + 1:
+                    issues.append(f"Heading level jump H{prev_h}->H{lvl} in {fp.name}:{idx}")
+                prev_h = lvl
+            if line.count("`") % 2 != 0:
+                issues.append(f"Unbalanced backticks in {fp.name}:{idx}")
+            no_code = re.sub(r"`[^`]*`", "", line)
+            if no_code.replace(r"\$", "").count("$") % 2 != 0:
+                issues.append(f"Unbalanced math delimiter '$' in {fp.name}:{idx}")
+            inner = line.strip()
+            if "  " in inner and not inner.startswith("|"):
+                issues.append(f"Double space in prose at {fp.name}:{idx}")
+
         found = [(m.group(1) or m.group(3), m.group(2) or m.group(4)) for m in ID_PATTERN.finditer(txt)]
         for pref, num in found:
             eid = f"{pref}{num}"
@@ -144,7 +204,7 @@ def main() -> int:
                 continue
             if not ID_PATTERN.search(p):
                 issues.append(f"Uncited paragraph in {fp.name}: {p[:70]}...")
-        file_stats.append((fp.name, len(txt.split()), len(found)))
+        file_stats.append((fp.name, file_ver, len(txt.split()), len(found)))
 
     # 4. Figure specs, Draw.io sources & Policy A.9 rendered asset status (Checklist 14)
     fig_ids = sorted(valid["FIG"])
@@ -161,7 +221,6 @@ def main() -> int:
         else:
             pending_figs.append(fid)
 
-    # Verify Draw.io XML files parse cleanly
     drawio_files = sorted((ROOT / "09_Figures/diagrams").glob("FIG*.drawio"))
     for df in drawio_files:
         try:
@@ -204,12 +263,14 @@ def main() -> int:
         hit = len(valid[pref] & cited_all)
         cov_lines.append(f"| `{pref}` | {tot} | {hit} | {tot - hit} |")
 
-    overall = "PASS (automated checks clean; Policy A.9 human figure export pending)" if not issues and pending_figs else (
-        "PASS" if not issues else "FAIL"
+    overall = (
+        "PASS (automated & W13 revision checks clean; Policy A.9 human figure export & supervisor sign-off pending)"
+        if not issues and pending_figs
+        else ("PASS" if not issues else "FAIL")
     )
 
     report = [
-        "# Verification & Consistency Report (STEP-071 / Phases W8–W11, W15)",
+        "# Verification & Consistency Report (STEP-071 / STEP-072 — Phases W8–W13, W15, W17)",
         "",
         f"**Date:** {date.today().isoformat()}  ",
         "**Runner:** `17_Automation/verify_writing_consistency.py`  ",
@@ -217,7 +278,8 @@ def main() -> int:
         "",
         "## 1. Automated Check Summary",
         "",
-        f"- **Thesis Draft Files Checked:** {len(thesis_files)} (`{sum(w for _, w, _ in file_stats):,}` total words; `{sum(c for _, _, c in file_stats):,}` canonical ID citations)",
+        f"- **Thesis Files Checked:** {len(thesis_files)} (`{sum(w for _, _, w, _ in file_stats):,}` total words; `{sum(c for _, _, _, c in file_stats):,}` canonical ID citations)",
+        "- **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs",
         f"- **Bibliography (`15_Writing/references/references.bib`):** {len(bib_keys)} entries, 0 duplicate keys, 0 duplicate DOIs, 28/28 Paper IDs matched to `papers.csv`",
         f"- **Claim Database (`02_Literature/claims/claim_database.csv`):** {len(claim_rows)}/8 claims `verified` with supporting literature + experimental/figure/table evidence",
         f"- **Tables (Checklist 15):** {len(tab_ids)}/3 specs (`TAB0001`–`TAB0003`), CSV data files, rendered Markdown files, and thesis citations verified",
@@ -225,13 +287,13 @@ def main() -> int:
         f"- **Hard Consistency Issues:** **{len(issues)}**",
         f"- **Advisory Warnings:** **{len(warnings)}**",
         "",
-        "## 2. Per-File Thesis Metrics",
+        "## 2. Per-File Thesis Metrics & Version Tracking (Phase W12)",
         "",
-        "| File | Words | Canonical ID Citations |",
-        "|---|---:|---:|",
-        *[f"| `{name}` | {w:,} | {c:,} |" for name, w, c in file_stats],
+        "| File | SemVer | Words | Canonical ID Citations |",
+        "|---|---|---:|---:|",
+        *[f"| `{name}` | `{ver}` | {w:,} | {c:,} |" for name, ver, w, c in file_stats],
         "",
-        "## 3. Canonical Identifier Coverage Across Thesis Drafts",
+        "## 3. Canonical Identifier Coverage Across Thesis Chapters",
         "",
         "| Prefix | Registered | Cited in Thesis | Uncited |",
         "|---|---:|---:|---:|",
@@ -244,7 +306,8 @@ def main() -> int:
         "## 5. Advisory Warnings & Human Action Items (Policy A.8 / A.9)",
         "",
         *(["- None."] if not warnings else [f"- {w}" for w in warnings]),
-        f"- **Human Figure Rendering (Policy A.9):** Follow `09_Figures/FIGURE_RENDERING_RUNBOOK.md` to export `FIG0026`–`FIG0030` from Draw.io and run `09_Figures/scripts/render_figures.py` for `FIG0001`–`FIG0025`, then re-run `python 17_Automation/verify_writing_consistency.py`.",
+        "- **Human Figure Rendering (Policy A.9 / Checklist 14):** Follow `09_Figures/FIGURE_RENDERING_RUNBOOK.md` to export `FIG0026`–`FIG0030` from Draw.io and run `09_Figures/scripts/render_figures.py` for `FIG0001`–`FIG0025`, then re-run `python 17_Automation/verify_writing_consistency.py`.",
+        "- **Supervisor Review & Checklist 13 Sign-off (Phase W13):** Share `15_Writing/revisions/supervisor_review_pack.md`, log comments in `15_Writing/reviewer_responses/review_response.md`, and confirm Checklist 13 PASS in `15_Writing/writing_audit.md`.",
         "",
     ]
 

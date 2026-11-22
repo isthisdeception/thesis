@@ -1,8 +1,8 @@
 # Appendices and References
 
-> **Version:** `0.1.0` | **Status:** Draft (Pending Human Review) | **Last Updated:** 2026-11-21
+> **Version:** `0.2.0` | **Status:** Revised (W13 Reviewed; Pending Supervisor Sign-off) | **Last Updated:** 2026-11-22
 > **Writing Units:** `WR0039`, `WR0040`
-> **Traceability:** Compiled directly from canonical registries and specifications: `03_Datasets/metadata/datasets.csv`, `03_Datasets/reports/split_report.md`, `04_Preprocessing/preprocessing_registry.csv`, `01_Project_Management/decision_log/` (`DEC0001`–`DEC0010`), `11_AI_Forensic_System/module_registry.csv`, `16_Documentation/api_guide.md`, `02_Literature/metadata/papers.csv`, `02_Literature/metadata/papers.bib`, and `15_Writing/shared/knowledge_index.csv` (`KI0004`, `KI0005`, `KI0014`, `KI0015`, `KI0019`, `KI0024`–`KI0026`).
+> **Traceability:** Compiled directly from canonical registries and specifications: `03_Datasets/metadata/datasets.csv`, `03_Datasets/reports/split_report.md`, `04_Preprocessing/preprocessing_registry.csv`, `01_Project_Management/decision_log/` (`DEC0001`–`DEC0010`), `11_AI_Forensic_System/module_registry.csv`, `16_Documentation/api_guide.md`, `02_Literature/metadata/papers.csv`, `02_Literature/metadata/papers.bib`, `15_Writing/references/references.bib`, and `15_Writing/shared/knowledge_index.csv` (`KI0004`, `KI0005`, `KI0014`, `KI0015`, `KI0019`, `KI0024`–`KI0026`).
 
 ---
 
@@ -76,7 +76,7 @@ The 10 REST endpoints mounted identically at `/api/v1/` and `/` in `13_Backend/a
 
 ### B.3 Verified Bibliography (`P0001`–`P0028`)
 
-All 28 cited references trace one-to-one to `02_Literature/metadata/papers.csv` and `02_Literature/metadata/papers.bib`, supporting `CLAIM0001`–`CLAIM0008` and `TAB0001` (`WR0040`; `KI0005`):
+All 28 cited references trace one-to-one to `02_Literature/metadata/papers.csv`, `02_Literature/metadata/papers.bib`, and `15_Writing/references/references.bib`, supporting `CLAIM0001`–`CLAIM0008` and `TAB0001` (`WR0040`; `KI0005`):
 
 1. **`P0001`** (`Cho_2026`): J. Cho, D. Kong, J. Nam, and H. Cho, "A Synthetic Defect Image Generation Method for Enhanced Industrial Defect Detection Based on Inpainting Diffusion and Context-aware Mask Generation," *Journal of Intelligent Manufacturing*, 2026. DOI: `10.1007/s10845-026-02915-2`.
 2. **`P0002`** (`Taeb_2022`): M. Taeb and H. Chi, "Comparison of Deepfake Detection Techniques through Deep Learning," *Journal of Cybersecurity and Privacy*, 2022. DOI: `10.3390/jcp2010007`.
@@ -89,7 +89,7 @@ All 28 cited references trace one-to-one to `02_Literature/metadata/papers.csv` 
 9. **`P0009`** (`Abbas_2026`): F. Abbas and A. Taeihagh, "Improved latent diffusion-based IC-DGAN framework for high-resolution multi-feature and expression manipulation," *Neural Networks*, 2026. DOI: `10.1016/j.neunet.2025.108199`.
 10. **`P0010`** (`Giudice_2021`): O. Giudice, L. Guarnera, and S. Battiato, "Fighting Deepfakes by Detecting GAN DCT Anomalies," *Journal of Imaging*, 2021. DOI: `10.3390/jimaging7080128`.
 11. **`P0011`** (`Safwat_2024`): S. Safwat, A. Mahmoud, I. E. Fattoh, and F. Ali, "Hybrid Deep Learning Model Based on GAN and RESNET for Detecting Fake Faces," *IEEE Access*, 2024. DOI: `10.1109/ACCESS.2024.3416910`.
-12. **`P0012`** (`Ul_Ghani_2024`): M. A. N. Ul Ghani, K. She, M. A. Rauf, M. Alajmi, Y. Y. Ghadi, and A. Algarni, "Securing Synthetic Faces: A GAN-blockchain Approach to Privacy-Enhanced Facial Recognition," *Journal of King Saud University - Computer and Information Sciences*, 2024. DOI: `10.1016/jjksuci.2024.102036`.
+12. **`P0012`** (`Ul_Ghani_2024`): M. A. N. Ul Ghani, K. She, M. A. Rauf, M. Alajmi, Y. Y. Ghadi, and A. Algarni, "Securing Synthetic Faces: A GAN-blockchain Approach to Privacy-Enhanced Facial Recognition," *Journal of King Saud University - Computer and Information Sciences*, 2024. DOI: `10.1016/j.jksuci.2024.102036`.
 13. **`P0013`** (`Sharma_2025`): P. Sharma, M. Kumar, and H. K. Sharma, "A robust ensemble model for Deepfake detection of GAN-generated images on social media," *Discover Computing*, 2025. DOI: `10.1007/s10791-025-09538-w`.
 14. **`P0014`** (`Guarnera_2022`): L. Guarnera et al., "The Face Deepfake Detection Challenge," *Journal of Imaging*, 2022. DOI: `10.3390/jimaging8100263`.
 15. **`P0015`** (`Xue_2023`): Z. Xue, X. Jiang, Q. Liu, and Z. Wei, "Global-Local Facial Fusion Based GAN Generated Fake Face Detection," *Sensors*, 2023. DOI: `10.3390/s23020616`.

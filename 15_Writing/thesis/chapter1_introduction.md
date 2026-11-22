@@ -1,6 +1,6 @@
 # Chapter 1: Introduction
 
-> **Version:** `0.1.0` | **Status:** Draft (Pending Human Review) | **Last Updated:** 2026-11-21
+> **Version:** `0.2.0` | **Status:** Revised (W13 Reviewed; Pending Supervisor Sign-off) | **Last Updated:** 2026-11-22
 > **Writing Units:** `WR0002`, `WR0003`, `WR0004`, `WR0005`, `WR0006`
 > **Traceability:** Every paragraph in this chapter traces to registered identifiers in `15_Writing/shared/writing_database.csv`, `15_Writing/shared/knowledge_index.csv`, `02_Literature/metadata/papers.csv`, `02_Literature/claims/claim_database.csv`, `02_Literature/research_gap/research_gap.csv`, and `01_Project_Management/decision_log/`.
 
