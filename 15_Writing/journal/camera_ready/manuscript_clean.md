@@ -1,7 +1,19 @@
 # AI Forensic Analyst: An Evidence-Driven, Calibrated, and Auditable Architecture for Cross-Generator Synthetic Face Forensics
 
 **Target Venue:** *Forensic Science International: Digital Investigation* / *Computers & Security* (Elsevier Q1)  
-**Author(s):** *[Author Name(s), Department, Institution, Email]*
+
+**Authors:** Md. Assaduzzaman$^1$, Nushamd-A-Shawmeem$^1$, Sourav Saha$^1$, Masud Rana Nayeem$^1$, Tapasy Rabeya$^1$, Md. Mizanur Rahman$^{1,2*}$, Md Ali Hossain$^{1,2}$, Ahmed Moustafa$^{3,4,6*}$, Suman Ahmmed$^5$, Ohidujjaman$^5$
+
+**Affiliations:**  
+$^1$ Faculty of Science and Information Technology, Daffodil International University, Dhaka, Bangladesh.  
+$^2$ NanoBio Technology Center, Daffodil International University, Dhaka, Bangladesh.  
+$^3$ Centre for Data Analytics and School of Psychology, Bond University, Gold Coast, Queensland, Australia.  
+$^4$ Department of Human Anatomy and Physiology, Faculty of Health Sciences, University of Johannesburg, Johannesburg, South Africa.  
+$^5$ Department of Computer Science & Engineering, United International University, Dhaka, Bangladesh.  
+$^6$ Faculty of Psychology, University College of Professional Education, Wrocław, Poland.
+
+$^*$Corresponding authors: `mizanurrahman.cse@diu.edu.bd`; `amoustaf@bond.edu.au`  
+Contributing authors: `assaduzzaman23105101233@diu.edu.bd`; `shawmeem2305101823@diu.edu.bd`; `saha2305101978@diu.edu.bd`; `masudrananayeem86@gmail.com`; `tapasyrabeya.cse@diu.edu.bd`; `ali.cse@diu.edu.bd`; `suman@cse.uiu.ac.bd`; `ohidujjaman@cse.uiu.ac.bd`.
 
 ---
 
