@@ -247,7 +247,7 @@ def render_fig0011() -> None:
     ax1.plot([0, 1], [0, 1], "--", color=PALETTE["gray"], label="Perfect calibration")
     ax1.plot(xs, ys, "o-", color=PALETTE["slate"], label=f"Test (ECE={float(summ['ece']):.4f}, MCE={float(summ['mce']):.4f})")
     ax1.set_ylabel("Observed fraction fake")
-    ax1.set_title("Reliability Diagram — MODEL0001 (EXP0001 Test)")
+    ax1.set_title("Calibration Reliability Diagram (Baseline ResNet-50, Test)")
     ax1.legend(loc="upper left")
     ax2.bar(xs, cnts, width=0.055, color=PALETTE["slate"], alpha=0.75)
     ax2.set_xlabel("Mean predicted P(fake)")
@@ -327,7 +327,7 @@ def render_fig0015() -> None:
     fig, ax = plt.subplots(figsize=(7.0, 5.2))
     ax.barh(labels, rates, xerr=[lo, hi], color=colors, capsize=2.5, alpha=0.9)
     ax.set_xlabel("Error rate (%) with 95% Wilson CI (FNR for fake, FPR for real)")
-    ax.set_title("Subgroup Error Rates by Generator & Real Source (EXP0001 Test)")
+    ax.set_title("Subgroup Error Rates by Generator & Real Source (ArtiFact Test)")
     save_fig(fig, "FIG0015")
 
 
@@ -338,19 +338,39 @@ def render_fig0016() -> None:
     for r in rows:
         by_p[r["perturbation"]].append(r)
     perts = sorted(by_p)
-    fig, axes = plt.subplots(3, 5, figsize=(11.5, 6.8), sharey=True)
+    pretty = {
+        "brightness_down": "Brightness Down",
+        "brightness_up": "Brightness Up",
+        "center_crop": "Center Crop",
+        "contrast_down": "Contrast Down",
+        "contrast_up": "Contrast Up",
+        "desaturate": "Desaturate",
+        "gaussian_blur": "Gaussian Blur",
+        "gaussian_noise": "Gaussian Noise",
+        "jpeg": "JPEG Quality",
+        "low_quality_upload": "Low-Quality Upload",
+        "occlusion": "Occlusion",
+        "oversaturate": "Oversaturate",
+        "resolution": "Downscaling",
+        "rotation": "Rotation (deg)",
+        "upscaling": "Upscaling",
+    }
+    fig, axes = plt.subplots(3, 5, figsize=(12.4, 8.2), sharey=True)
     for ax, p in zip(axes.flat, perts):
         seq = sorted(by_p[p], key=lambda x: int(x["rank"]))
-        lvls = [r["level"] for r in seq]
-        ax.plot(lvls, [float(r["balanced_accuracy"]) for r in seq], "o-", color=PALETTE["slate"], label="BA")
-        ax.plot(lvls, [float(r["roc_auc"]) for r in seq], "s--", color=PALETTE["teal"], label="ROC-AUC")
+        lvls = [r["level"].replace("_", "/q") if p == "low_quality_upload" else r["level"] for r in seq]
+        ax.plot(lvls, [float(r["balanced_accuracy"]) for r in seq], "o-", color=PALETTE["slate"], lw=1.5, ms=4.5, label="BA")
+        ax.plot(lvls, [float(r["roc_auc"]) for r in seq], "s--", color=PALETTE["teal"], lw=1.5, ms=4.5, label="ROC-AUC")
         ax.axhline(float(clean["balanced_accuracy"]), color=PALETTE["gray"], ls=":", lw=1)
-        ax.set_title(p, fontsize=8)
+        ax.set_title(pretty.get(p, p), fontsize=9, fontweight="bold", pad=6)
         ax.set_ylim(0.45, 1.0)
-        ax.tick_params(axis="x", labelrotation=35, labelsize=7)
-    axes[0, 0].legend(fontsize=7)
-    fig.supylabel("Score (0-1)")
-    fig.suptitle("Phase E7 Robustness Curves Across 15 Perturbation Families (53 Conditions)", fontsize=11)
+        ax.tick_params(axis="x", labelrotation=30, labelsize=7.5)
+        for lbl in ax.get_xticklabels():
+            lbl.set_ha("right")
+    axes[0, 0].legend(fontsize=7.5, loc="lower left")
+    fig.supylabel("Score (0–1)", fontsize=10, x=0.015)
+    fig.suptitle("Robustness Curves Across 15 Perturbation Families (53 Conditions)", fontsize=12, fontweight="bold", y=0.97)
+    fig.subplots_adjust(hspace=0.62, wspace=0.14, top=0.90, bottom=0.09, left=0.065, right=0.985)
     save_fig(fig, "FIG0016")
 
 
@@ -377,24 +397,31 @@ def render_fig0017() -> None:
 
 def render_fig0018() -> None:
     rows = read_csv("08_Evaluation/EVAL0001/generalization/cross_dataset_metrics.csv")
-    ds = [r["dataset"] for r in rows]
+    ds_names = {
+        "DS0001": "ArtiFact\n(In-Dist.)",
+        "DS0002": "DiFF\n(Diffusion)",
+        "DS0003": "140k Faces\n(GAN/FFHQ)",
+        "DS0004": "Synthbuster\n(Diff./Scenes)",
+        "DS0005": "FairFace\n(Real Only)",
+    }
+    ds = [ds_names.get(r["dataset"], r["dataset"]) for r in rows]
     fnr = [float(r["fnr"]) * 100 if r["fnr"] else np.nan for r in rows]
     fpr = [float(r["fpr"]) * 100 if r["fpr"] else np.nan for r in rows]
     x = np.arange(len(ds))
     w = 0.35
-    fig, ax = plt.subplots(figsize=(6.8, 3.8))
+    fig, ax = plt.subplots(figsize=(6.8, 4.0))
     ax.bar(x - w / 2, np.nan_to_num(fnr), w, label="FNR (missed fakes)", color=PALETTE["fake"])
     ax.bar(x + w / 2, np.nan_to_num(fpr), w, label="FPR (real flagged fake)", color=PALETTE["real"])
     for i, (vn, vp) in enumerate(zip(fnr, fpr)):
         if not np.isnan(vn):
-            ax.text(i - w / 2, vn + 1.5, f"{vn:.1f}%", ha="center", fontsize=7.5)
+            ax.text(i - w / 2, vn + 1.8, f"{vn:.1f}%", ha="center", fontsize=8, fontweight="bold")
         if not np.isnan(vp):
-            ax.text(i + w / 2, vp + 1.5, f"{vp:.1f}%", ha="center", fontsize=7.5)
-    ax.set_xticks(x, ds)
+            ax.text(i + w / 2, vp + 1.8, f"{vp:.1f}%", ha="center", fontsize=8, fontweight="bold")
+    ax.set_xticks(x, ds, fontsize=8)
     ax.set_ylabel("Error rate (%) at frozen threshold 0.3951")
-    ax.set_ylim(0, 98)
-    ax.set_title("Phase E8 Cross-Dataset Error Rates (MODEL0001)")
-    ax.legend()
+    ax.set_ylim(0, 100)
+    ax.set_title("Cross-Dataset Error Rates (Baseline ResNet-50)")
+    ax.legend(loc="upper left")
     save_fig(fig, "FIG0018")
 
 
@@ -402,42 +429,58 @@ def render_fig0019() -> None:
     det = read_csv("08_Evaluation/EVAL0002/unseen_generator/unseen_detection.csv")
     paired = read_csv("08_Evaluation/EVAL0002/unseen_generator/unseen_paired.csv")[0]
     det_fakes = [r for r in det if r["group"] in {"stable_diffusion", "all seen generators", "real"}]
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.2, 3.6))
-    labels1 = [r["group"] for r in det_fakes]
+    pretty_grp = {
+        "stable_diffusion": "Held-Out\nStable Diff.",
+        "all seen generators": "12 Seen\nGenerators",
+        "real": "Real Faces\n(Specificity)",
+    }
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.4, 3.8))
+    labels1 = [pretty_grp.get(r["group"], r["group"]) for r in det_fakes]
     vals1 = [float(r["rate"]) * 100 for r in det_fakes]
     colors1 = [PALETTE["crimson"] if r["group"] == "stable_diffusion" else PALETTE["slate"] for r in det_fakes]
     ax1.bar(labels1, vals1, color=colors1, width=0.55)
-    ax1.set_ylabel("Detection / Specificity (%)")
-    ax1.set_ylim(0, 105)
-    ax1.set_title("EXP0002 (MODEL0008) Seen vs. Held-Out")
-    ax1.tick_params(axis="x", labelrotation=15)
+    for i, v in enumerate(vals1):
+        ax1.text(i, v + 2.0, f"{v:.1f}%", ha="center", fontsize=8.5, fontweight="bold")
+    ax1.set_ylabel("Recall / Specificity (%)")
+    ax1.set_ylim(0, 108)
+    ax1.set_title("LOGO ResNet-50: Seen vs. Held-Out")
+    vals2 = [float(paired["recall_reference"]) * 100, float(paired["recall_held_out"]) * 100]
     ax2.bar(
-        ["MODEL0001\n(seen in train)", "MODEL0008\n(held out)"],
-        [float(paired["recall_reference"]) * 100, float(paired["recall_held_out"]) * 100],
+        ["Baseline\n(seen in train)", "LOGO Holdout\n(unseen)"],
+        vals2,
         color=[PALETTE["teal"], PALETTE["crimson"]],
         width=0.5,
     )
+    for i, v in enumerate(vals2):
+        ax2.text(i, v + 2.0, f"{v:.1f}%", ha="center", fontsize=8.5, fontweight="bold")
     ax2.set_ylim(0, 108)
     ax2.set_ylabel("Recall (%) on identical 299 SD images")
-    ax2.set_title("Paired Stable Diffusion Recall (n=299)")
+    ax2.set_title("Paired Stable Diffusion Recall (n = 299)")
+    fig.subplots_adjust(wspace=0.28)
     save_fig(fig, "FIG0019")
 
 
 def render_fig0020() -> None:
     rows = [r for r in read_csv("08_Evaluation/ablations/ablation_results.csv") if r["experiment_id"] != "EXP0001"]
-    labels = [f"{r['experiment_id']}\n({r['factor']})" for r in rows]
+    nice_factor = {
+        "EXP0003": "Seed 43\n(Noise Floor)",
+        "EXP0004": "No\nAugmentation",
+        "EXP0005": "No ImageNet\nPretraining",
+        "EXP0006": "Reduced Res.\n(160 x 160)",
+    }
+    labels = [nice_factor.get(r["experiment_id"], r["factor"]) for r in rows]
     metrics = [("delta_roc_auc", "ΔROC-AUC", PALETTE["slate"]), ("delta_balanced_accuracy", "ΔBA", PALETTE["teal"]), ("delta_mcc", "ΔMCC", PALETTE["amber"])]
     x = np.arange(len(rows))
     w = 0.25
-    fig, ax = plt.subplots(figsize=(7.2, 3.8))
+    fig, ax = plt.subplots(figsize=(7.2, 4.0))
     for k, (col, lbl, colr) in enumerate(metrics):
         vals = [float(r[col]) for r in rows]
         ax.bar(x + (k - 1) * w, vals, w, label=lbl, color=colr)
     ax.axhline(0, color="black", lw=0.8)
-    ax.set_xticks(x, labels)
-    ax.set_ylabel("Delta vs. EXP0001 baseline")
-    ax.set_title("Phase E10 One-Factor Ablations Against Seed Noise Floor")
-    ax.legend()
+    ax.set_xticks(x, labels, fontsize=8.5)
+    ax.set_ylabel("Delta vs. Baseline ResNet-50")
+    ax.set_title("One-Factor Ablations Against Two-Seed Noise Floor")
+    ax.legend(loc="lower left")
     save_fig(fig, "FIG0020")
 
 
