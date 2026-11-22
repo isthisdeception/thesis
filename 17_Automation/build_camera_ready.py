@@ -28,8 +28,6 @@ BIB_PATH = ROOT / "15_Writing" / "references" / "references.bib"
 ASSETS_DIR = ROOT / "09_Figures" / "assets"
 
 JOURNAL_FIGS = [
-    "FIG0027_v1.pdf",
-    "FIG0028_v1.pdf",
     "FIG0011_v1.pdf",
     "FIG0015_v1.pdf",
     "FIG0016_v1.pdf",
