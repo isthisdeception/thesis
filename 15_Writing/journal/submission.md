@@ -38,8 +38,8 @@
 
 ## Pending (Human Author Actions for Portal Upload — STEP-076)
 
-- [ ] **Author Metadata & Affiliations:** Fill in author name(s), institutional affiliation(s), ORCID ID(s), and corresponding email on the cover sheet / Elsevier Editorial Manager.
-- [ ] **Compile Final Journal PDF / LaTeX Source:** Export using the journal template command below (Elsevier `elsarticle` LaTeX or `.docx`), attaching vector `.pdf` figures from `09_Figures/assets/` (no live cloud VPS hosting is required).
+- [x] **Author Metadata & Affiliations:** Added all 10 authors, affiliations (DIU, Bond University, University of Johannesburg, UIU, University College of Professional Education Wrocław), corresponding authors (`Md. Mizanur Rahman`, `Ahmed Moustafa`), and emails into `15_Writing/journal/camera_ready/manuscript_elsevier.tex` and `manuscript_clean.md`.
+- [ ] **Compile Final Journal PDF / LaTeX Source:** Export via `15_Writing/journal/camera_ready/overleaf_bundle.zip` (Overleaf) or Pandoc `.docx` below (no live cloud VPS hosting is required).
 - [ ] **Confirm Checklist 16 PASS & Upload to Journal Portal:** Submit manuscript, supplementary PDF, highlights, and cover letter below, then track peer reviews in `15_Writing/reviewer_responses/review_response.md` (`STEP-076`).
 
 ---
@@ -73,7 +73,8 @@ pandoc 15_Writing/journal/supplementary_material.md `
 > This manuscript is original, has not been published previously, and is not under consideration elsewhere. The authors declare no competing interests.  
 >  
 > Sincerely,  
-> *[Author Name(s) & Affiliation]*
+> **Md. Assaduzzaman, Nushamd-A-Shawmeem, Sourav Saha, Masud Rana Nayeem, Tapasy Rabeya, Md. Mizanur Rahman\*, Md Ali Hossain, Ahmed Moustafa\*, Suman Ahmmed, and Ohidujjaman**  
+> *\*Corresponding authors: `mizanurrahman.cse@diu.edu.bd`, `amoustaf@bond.edu.au`*
 
 ---
 
