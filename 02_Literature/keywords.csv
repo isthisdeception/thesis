@@ -19,3 +19,105 @@ Stable Diffusion face,seed,2026-07-30
 out-of-distribution detection,seed,2026-07-30
 deep learning forensics,seed,2026-07-30
 biometric face spoofing,seed,2026-07-30
+abnormality module,P0029,2026-11-26
+U-Net,P0029,2026-11-26
+Vision Transformer,P0029,2026-11-26
+attention heatmap,P0029,2026-11-26
+reconstruction residual,P0029,2026-11-26
+CDDB,P0029,2026-11-26
+uncertainty calibration,P0030,2026-11-26
+packed-ensembles,P0030,2026-11-26
+expected calibration error,P0030,2026-11-26
+Brier score,P0030,2026-11-26
+SRM filters,P0030,2026-11-26
+Eigen-CAM,P0030,2026-11-26
+out-of-domain,P0030,2026-11-26
+judicial evidence verification,P0031,2026-11-26
+criminal justice,P0031,2026-11-26
+confidence threshold,P0031,2026-11-26
+heatmap visualization,P0031,2026-11-26
+human-AI collaboration,P0031,2026-11-26
+attack-aware detection,P0032,2026-11-26
+counter-forensics,P0032,2026-11-26
+two-stream network,P0032,2026-11-26
+randomized test-time defense,P0032,2026-11-26
+weak localization,P0032,2026-11-26
+probability calibration,P0032,2026-11-26
+AURC,P0032,2026-11-26
+DeepFakeFace,P0032,2026-11-26
+AI-generated image detection,P0033,2026-11-26
+dual frequency branch,P0033,2026-11-26
+DWT,P0033,2026-11-26
+FFT phase,P0033,2026-11-26
+sliding window attention,P0033,2026-11-26
+synthetic image detection,P0034,2026-11-26
+language-guided contrastive learning,P0034,2026-11-26
+CLIP,P0034,2026-11-26
+linear probe,P0034,2026-11-26
+cross-domain generalization,P0034,2026-11-26
+image forensics,P0034,2026-11-26
+textual label augmentation,P0034,2026-11-26
+artifact purification,P0035,2026-11-26
+frequency-band proposal,P0035,2026-11-26
+orthogonal decomposition,P0035,2026-11-26
+mutual information minimization,P0035,2026-11-26
+GenImage,P0035,2026-11-26
+DiffusionForensics,P0035,2026-11-26
+reliability-guided fusion,P0036,2026-11-26
+low-level forensic cues,P0036,2026-11-26
+operator-response fusion,P0036,2026-11-26
+ColorQuant,P0036,2026-11-26
+JPEGProbe,P0036,2026-11-26
+CrossGen-38,P0036,2026-11-26
+demographic fairness,P0037,2026-11-26
+diffusion models,P0037,2026-11-26
+DiffSynFace,P0037,2026-11-26
+out-of-distribution evaluation,P0037,2026-11-26
+ethnicity bias,P0037,2026-11-26
+gender bias,P0037,2026-11-26
+age bias,P0037,2026-11-26
+fairness,P0038,2026-11-26
+attribute bias,P0038,2026-11-26
+MAAD-Face,P0038,2026-11-26
+corrected relative performance,P0038,2026-11-26
+FaceForensics++,P0038,2026-11-26
+Celeb-DF,P0038,2026-11-26
+DFDC,P0038,2026-11-26
+ARC-Net,P0039,2026-11-26
+EfficientNetB0,P0039,2026-11-26
+attention residual network,P0039,2026-11-26
+fairness generalization,P0039,2026-11-26
+out-of-distribution,P0039,2026-11-26
+Grad-CAM,P0039,2026-11-26
+LIME,P0039,2026-11-26
+deepfake forensics,P0040,2026-11-26
+weakly supervised attention,P0040,2026-11-26
+CNN ensemble,P0040,2026-11-26
+2D DFT,P0040,2026-11-26
+DCT Laplace beta,P0040,2026-11-26
+space-frequency interactive convolution,P0041,2026-11-26
+SFIConv,P0041,2026-11-26
+MCSConv,P0041,2026-11-26
+constrained convolution,P0041,2026-11-26
+cross-dataset generalization,P0041,2026-11-26
+manipulation traces,P0041,2026-11-26
+deepfake localization,P0042,2026-11-26
+FakeLocator,P0042,2026-11-26
+GAN upsampling artifacts,P0042,2026-11-26
+gray-scale fakeness map,P0042,2026-11-26
+DeepLabv3,P0042,2026-11-26
+face parsing attention,P0042,2026-11-26
+partial data augmentation,P0042,2026-11-26
+degradation robustness,P0042,2026-11-26
+deepfake survey,P0043,2026-11-26
+deepfake generation,P0043,2026-11-26
+out-of-distribution generalization,P0043,2026-11-26
+BioDeepAV,P0043,2026-11-26
+multimodal fusion,P0043,2026-11-26
+person-of-interest detection,P0043,2026-11-26
+deepfake benchmark,P0044,2026-11-26
+uniform evaluation,P0044,2026-11-26
+ID test set,P0044,2026-11-26
+perturbation robustness,P0044,2026-11-26
+computational complexity,P0044,2026-11-26
+face forensics,P0044,2026-11-26

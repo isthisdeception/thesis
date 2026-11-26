@@ -4,7 +4,7 @@ TEMPLATE NAME: Template 12 — Table Specification
 PURPOSE: Comparison table of detection methods for related work.
 WHEN USED: Literature review (STEP-017) and thesis writing.
 OWNER: Literature Writer Agent
-INPUTS: papers.csv, summaries (P0001–P0028)
+INPUTS: papers.csv, summaries (P0001–P0044)
 OUTPUTS: TAB0001_spec.md (this file), TAB0001.csv (data), TAB0001.md (rendered)
 REQUIRED SECTIONS: Table ID, Title, Source, Supporting experiment, Formatting, Consistency, Units
 VALIDATION RULES: Every row traces to a registered Paper ID.
@@ -20,7 +20,7 @@ RELATED TEMPLATES: Template 11 (Figure Specification)
 
 **Title:** Comparison of AI-Generated Face Detection Methods
 
-**Source:** `02_Literature/metadata/papers.csv` (papers P0002–P0023, excluding surveys and generation-only papers). Data extracted from structured summaries in `02_Literature/summaries/`.
+**Source:** `02_Literature/metadata/papers.csv` (28 primary detection-method papers from P0001–P0044, excluding surveys/empirical audits and generation/privacy/proactive/superseded works). Data extracted from structured summaries in `02_Literature/summaries/`.
 
 **Supporting experiment:** None (literature-derived). To be updated with experimental results in STEP-042+.
 
@@ -48,9 +48,9 @@ RELATED TEMPLATES: Template 11 (Figure Specification)
 | Public Code | Yes / No / Unknown | Category | papers.csv |
 | Public Dataset | Yes / No / Unknown | Category | papers.csv |
 
-**Rows (detection methods only, excluding surveys P0024–P0028 and generation/privacy papers P0001, P0004, P0009, P0012, P0017, P0020, P0025):**
+**Rows (28 detection methods only, excluding surveys/audits P0022, P0024, P0026, P0027, P0028, P0037, P0038, P0043, P0044 and generation/privacy/proactive/superseded papers P0001, P0004, P0009, P0012, P0017, P0020, P0025):**
 
-P0002, P0003, P0005, P0006, P0007, P0008, P0010, P0011, P0013, P0014, P0015, P0016, P0018, P0019, P0021, P0023
+P0002, P0003, P0005, P0006, P0007, P0008, P0010, P0011, P0013, P0014, P0015, P0016, P0018, P0019, P0021, P0023, P0029, P0030, P0031, P0032, P0033, P0034, P0035, P0036, P0039, P0040, P0041, P0042
 
 **Formatting:**
 - Landscape orientation for thesis/journal inclusion.
