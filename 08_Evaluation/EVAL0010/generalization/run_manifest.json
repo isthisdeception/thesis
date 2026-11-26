@@ -1,0 +1,32 @@
+{
+  "evaluation_id": "EVAL0010",
+  "model_id": "MODEL0004",
+  "export_sha256": "3fce14e32dcdf32672ce874b453673c253351856ff054c0d249b7ab61f012185",
+  "config": "config.yaml",
+  "config_sha256": "ec4e37a9dabec4ec42377aa4ea2d9fbaebfcdf91970a6d9a8a051c33b38acbd8",
+  "sanity_check": {
+    "images": 200,
+    "max_abs_diff": 9.557051086073187e-07,
+    "atol": 0.002
+  },
+  "datasets": {
+    "DS0002": 7364,
+    "DS0003": 20000,
+    "DS0004": 1500,
+    "DS0005": 10000
+  },
+  "processed_roots": {
+    "DS0002": "/kaggle/input/datasets/isthisdeception/ds0002-pp0002/DS0002_PP0002",
+    "DS0003": "/kaggle/input/datasets/isthisdeception/ds0003-pp0003/DS0003_PP0003",
+    "DS0004": "/kaggle/input/datasets/isthisdeception/ds0004-pp0006/DS0004_PP0006",
+    "DS0005": "/kaggle/input/datasets/isthisdeception/ds0005-pp0005/DS0005_PP0005"
+  },
+  "seconds": {
+    "DS0002": 174.1,
+    "DS0003": 537.4,
+    "DS0004": 36.8,
+    "DS0005": 248.2
+  },
+  "device": "cuda",
+  "python": "3.13.16"
+}

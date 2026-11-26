@@ -6,58 +6,78 @@
 
 ## S1. Systematic Literature Comparison Matrix
 
-The complete 16-method comparative literature matrix covering detection families, generator coverage, datasets, reported metrics, cross-generator evaluation, robustness testing, explainability, and primary limitations across references [2, 3, 5–8, 10, 11, 13–21, 23] is distributed as machine-readable CSV and Markdown tables in the public repository (`10_Tables/data/TAB0001.csv`).
+The complete 28-method comparative literature matrix extracted across the 44 reviewed studies [1–44], covering detection families, generator coverage, evaluation datasets, reported metrics, cross-generator generalization, compression robustness, explainability mechanisms, and primary limitations, is distributed in machine-readable CSV and Markdown formats in the companion repository (`10_Tables/data/TAB0001.csv`).
 
 ---
 
-## S2. Multi-Dataset Exploratory Data Analysis and Preprocessing
+## S2. Complete 42-Subgroup Dataset Visual Atlas and Exploratory Data Analysis
 
-All five public corpora (ArtiFact faces, DiFF official test, 140k Real and Fake Faces, Synthbuster, and FairFace) were audited prior to modeling under deterministic preprocessing (seed 42, EXIF stripped, minimum resolution 64 px, RGB PNG conversion, 224x224 resizing without denoising).
+Whereas Figure 1 in the main manuscript contrasts the lowest-error and highest-error subgroups per dataset, Figure S1 provides an exhaustive 42-panel ($6 \times 7$) visual reference atlas displaying one preprocessed sample ($224 \times 224$ px) from every evaluated authentic source and synthetic generator across all five corpora: ArtiFact (3 authentic sources and 13 synthetic generators), DiFF official test (12 unseen diffusion generators), 140k Real and Fake Faces (FFHQ real and StyleGAN fake), Synthbuster (RAISE authentic scenes and 9 diffusion generators), and FairFace (true-negative and false-positive authentic portraits).
 
-![Figure S1: ArtiFact Generator Composition](../../../09_Figures/assets/FIG0002_v1.png)
+![Figure S1: Complete 42-Subgroup Dataset Visual Atlas](../../../09_Figures/assets/FIG0032_v1.png)
 
-*Figure S1: Generator distribution across the 50,000-image ArtiFact face benchmark (13 GAN and diffusion models).*
+*Figure S1: Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators (1) through (42) across the five benchmark datasets.*
 
-![Figure S2: FairFace Demographic Distribution](../../../09_Figures/assets/FIG0006_v1.png)
+All five public corpora were audited prior to modeling under deterministic seven-stage preprocessing (fixed seed 42, EXIF stripped, minimum resolution 64 px, RGB PNG conversion, and $224 \times 224$ bilinear resizing without spatial denoising). Figure S2 illustrates the 13-generator and authentic composition of the 50,000-image ArtiFact face benchmark.
 
-*Figure S2: Balanced seven-group demographic composition of FairFace (97,698 authentic faces) used to audit real-face false positive bias.*
+![Figure S2: ArtiFact Generator Composition](../../../09_Figures/assets/FIG0002_v1.png)
+
+*Figure S2: Generator distribution across the 50,000-image ArtiFact face benchmark.*
+
+To establish demographic fairness evaluation coverage, Figure S3 presents the balanced seven-group demographic composition of FairFace (97,698 authentic portraits).
+
+![Figure S3: FairFace Demographic Distribution](../../../09_Figures/assets/FIG0006_v1.png)
+
+*Figure S3: Balanced seven-group demographic composition of FairFace (97,698 authentic faces).*
 
 ---
 
 ## S3. Extended System Architecture, Training Infrastructure, and Evaluation Curves
 
-![Figure S3: End-to-End Methodology Pipeline](../../../09_Figures/assets/FIG0026_v1.png)
+While the main manuscript presents eleven primary figures, the companion archive includes all 34 publication-grade figures. Figure S4 summarizes the end-to-end research methodology pipeline from benchmark curation through platform verification.
 
-*Figure S3: End-to-end public benchmark curation, preprocessing, controlled training, multi-axis evaluation, and AI Forensic Analyst verification pipeline.*
+![Figure S4: End-to-End Methodology Pipeline](../../../09_Figures/assets/FIG0026_v1.png)
 
-![Figure S4: Three-Tier Full-Stack Web Architecture](../../../09_Figures/assets/FIG0029_v1.png)
+*Figure S4: End-to-end benchmark curation, preprocessing, controlled training, stress evaluation, and forensic verification pipeline.*
 
-*Figure S4: Three-tier architectural separation connecting the React frontend (M14), seven-app Django/DRF REST API (M13), and 18-module AI Forensic Core with append-only audit registries.*
+Figure S5 illustrates the three-tier architectural separation connecting the React investigation interface (M14), seven-app Django/DRF REST API (M13), and eighteen-module AI Forensic Core (M1–M18).
 
-![Figure S5: Reproducible Training and SHA-256 Checkpointing Architecture](../../../09_Figures/assets/FIG0030_v1.png)
+![Figure S5: Three-Tier Full-Stack Web Architecture](../../../09_Figures/assets/FIG0029_v1.png)
 
-*Figure S5: Config-driven FastAI training pipeline with SHA-256 atomic checkpointing, validation-only threshold freezing, and binary-guarded synchronization.*
+*Figure S5: Three-tier architectural separation connecting the React frontend (M14), Django/DRF REST API (M13), and 18-module forensic core.*
 
-![Figure S6: Fairness-Compatible ROC Curves](../../../09_Figures/assets/FIG0021_v1.png)
+Figure S6 depicts the configuration-driven FastAI training pipeline, SHA-256 atomic checkpointing, and validation-only threshold freezing workflow.
 
-*Figure S6: Paired ROC curves across the Baseline ResNet-50 and all four one-factor ablations on the ArtiFact grouped test split ($n=7,505$).*
+![Figure S6: Reproducible Training and SHA-256 Checkpointing Architecture](../../../09_Figures/assets/FIG0030_v1.png)
+
+*Figure S6: Config-driven FastAI training pipeline with SHA-256 atomic checkpointing and validation-only threshold freezing.*
+
+Finally, Figure S7 compares paired receiver operating characteristic curves across the Baseline ResNet-50 and all four one-factor ablations on the ArtiFact grouped test split ($n = 7,505$).
+
+![Figure S7: Fairness-Compatible ROC Curves](../../../09_Figures/assets/FIG0021_v1.png)
+
+*Figure S7: Paired ROC curves across the Baseline ResNet-50 and four one-factor ablations on the ArtiFact test split ($n = 7,505$).*
 
 ---
 
-## S4. Complete 18-Module Interface Summary and 16-Scenario Verification Matrix
+## S4. Complete 18-Module Interface Summary and Verification Matrix
 
 ### S4.1 Module Summary (M1–M18)
 
+Table S1 summarizes the single-responsibility contracts across all eighteen modules (M1–M18) of the AI Forensic Analyst.
+
+**Table S1:** Complete single-responsibility interface contracts across modules M1 through M18.
+
 | Module | Name | Primary Responsibility |
 |---|---|---|
-| M1 | Input Intake | Format and 20 MB upload validation, SHA-256 hashing, rejection without persistence |
-| M2 | Image Validation | Decode, RGB, resolution, noise, and single-face gate before collectors execute |
+| M1 | Input Intake Manager | Format and 20 MB upload validation, SHA-256 hashing, rejection without disk persistence |
+| M2 | Image Validation Gate | Decode, RGB, resolution, noise, and single-face gate prior to collector execution |
 | M3 | Nine Signal Collectors | Independent metadata, stats, face detection/quality, FFT, compression, color, texture, XAI input |
-| M4 | Deep Learning Specialist | Isolated ResNet-50 inference emitting raw $P(\text{fake})$ and provenance only (zero verdict authority) |
+| M4 | Deep Learning Specialist | Isolated neural inference emitting raw $P(\text{fake})$ and provenance only (zero verdict authority) |
 | M5 | Evidence Ledger | Sequential immutable `EVxxxxxx` record storage (append-only) |
 | M6 | Evidence Validator | Non-destructive reliability grading (`high`, `medium`, `low`, `unusable`) and conflict cross-citation |
 | M7 | Evidence Fusion | Pluggable `FusionStrategy` (active rule-based v0.1.0; weighted and Bayesian reserved) |
-| M8 | Decision Engine | Image-blind sole verdict authority (`Real`, `Fake`, `Inconclusive`, `Unknown`) |
+| M8 | Decision Engine | Image-blind sole verdict authority (*Real*, *Fake*, *Inconclusive*, *Unknown*) |
 | M9 | 4D Confidence Estimator | Validation-calibrated $C_{\text{pred}}$, $C_{\text{ev}}$, $C_{\text{sys}}$, and capped $C_{\text{dec}}$ |
 | M10 | Explainability Engine | Structured data-only attribution JSON (`no_data` when unrecorded; zero fabricated maps) |
 | M11 | Grounded Reasoning | Programmatic sentence verification checking every cited evidence ID and numeric value |
@@ -69,19 +89,20 @@ All five public corpora (ArtiFact faces, DiFF official test, 140k Real and Fake 
 | M17 | Module Registry | Interface contract and specification integrity validation across M1–M18 |
 | M18 | Extensibility Registry | Modality onboarding hooks for future audio, video, and text forensic specialists |
 
-### S4.2 Whole-Platform 16-Scenario Verification Summary
+### S4.2 Whole-Platform 16-Scenario Fault Matrix and 2,700-Case Multi-Specialist Benchmark
 
-All 16 end-to-end scenarios passed across nine quality dimensions (135 programmatically verified reasoning sentences, zero ungrounded leaks, 60.02 ms mean latency): (1) clean Fake (`0.95` -> `Fake`), (2) clean Real (`0.05` -> `Real`), (3) unsupported format stop, (4) corrupted bytes stop, (5) zero-face image stop, (6) multi-face image stop, (7) missing model export (`Unknown`), (8) specialist timeout (`Unknown`), (9) borderline low confidence (`Inconclusive`), (10) `0.99` score with unusable collectors overridden to `Inconclusive` ($C_{\text{dec}}=0.3333$), (11) contested opposing evidence (`Inconclusive`), (12) injected ungrounded sentence rejection, (13) conflict cross-citation preservation, (14) missing visual explainability recorded as `no_data`, (15) audit ledger completeness across completed and failed cases, and (16) deterministic byte-identical report reproducibility.
+All 16 deterministic fault scenarios passed across nine quality dimensions (135 programmatically verified reasoning sentences, zero ungrounded leaks, 60.02 ms unloaded mean latency), complemented by 2,700 real and degraded single-specialist ($K = 1$) and cross-paradigm multi-specialist ($K = 3$: ResNet-50, EfficientNet-B4, and ViT-B/16) benchmark case executions across ArtiFact, DiFF, 140k Faces, Synthbuster, and FairFace.
 
 ---
 
 ## S5. Reproducibility Commands and Locked Software Environment
 
-- **Locked ML Environment:** Python 3.12, PyTorch 2.10.0+cu128, FastAI 2.8.7 (NVIDIA T4 GPU).
-- **Web Tier:** Django 5.2.19, Django REST Framework 3.18.3, React 18.3, Vite 6, Tailwind CSS 3.4.
-- **Full Verification Commands (from repository root):**
-  ```powershell
-  python 17_Automation/run_all_tests.py
-  python 17_Automation/verify_writing_consistency.py
-  python 17_Automation/compute_publication_readiness.py
-  ```
+All model training, figure rendering, and platform verification checks execute under Python 3.12, PyTorch 2.10.0+cu128, FastAI 2.8.7 (NVIDIA T4 GPU), Django 5.2.19, Django REST Framework 3.18.3, React 18.3, Vite 6, and Tailwind CSS 3.4 via the following repository-root commands:
+
+```powershell
+python 17_Automation/run_all_tests.py
+python 11_AI_Forensic_System/evaluate_benchmark_abstention.py
+python 17_Automation/verify_writing_consistency.py
+python 17_Automation/build_camera_ready.py
+python 09_Figures/scripts/render_figures.py
+```

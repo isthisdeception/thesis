@@ -111,78 +111,200 @@
 }
 
 % Editorial Manager Highlights (5 bullets, <= 85 characters each):
-% 1. Reframes synthetic face detection into an 18-module evidence-driven forensic platform.
-% 2. Isolates deep learning inference from an image-blind four-way Decision Engine.
-% 3. Introduces validation-calibrated four-dimensional confidence overriding blind scores.
-% 4. Quantifies cross-dataset real-face FPR up to 82.6% and unseen diffusion drop to 13.7%.
-% 5. Verifies 16 forensic scenarios, 135 evidence-grounded sentences, and full-stack UAT.
+% 1. Decouples synthetic face classification from an image-blind four-way decision engine.
+% 2. Benchmarks ResNet-50, EfficientNet-B4, and ViT-B/16 across five open-license corpora.
+% 3. Shows ViT-B/16 hits 0.9750 AUC in-domain yet misses 64.0% to 82.1% unseen diffusion.
+% 4. Fuses cross-paradigm specialists with 4D confidence to cut silent errors up to 93.9%.
+% 5. Enforces append-only evidence provenance and programmatic reasoning verification.
 
 \begin{abstract}
-Standalone deep learning detectors for synthetic human faces routinely attain high in-distribution discrimination yet fail unpredictably under unseen generative architectures, external real-image domain shift, and lossy post-processing \cite{Bammey_2024,Khan_2024,Altamimi_2026,Guarnera_2024,Cheng_2024}. In operational digital forensics, returning an uncalibrated binary probability without provenance, uncertainty bounds, or abstention capability exposes investigators to silent false accusations and missed forgeries. This paper introduces the \textbf{AI Forensic Analyst}, an 18-module evidence-driven forensic architecture (M1--M18) that demotes the neural detector to one isolated, replaceable specialist (M4) inside a trust-bounded pipeline separating image-reading collectors from an image-blind four-way Decision Engine (M8: \textit{Real}, \textit{Fake}, \textit{Inconclusive}, \textit{Unknown}). First, we establish a strictly public-only, open-license five-dataset benchmark (ArtiFact faces, DiFF official test, 140k Real and Fake Faces, Synthbuster, and FairFace; over 250,000 processed images) with leakage-verified grouped and leave-one-generator-out splits and systematically stress-test a standardized ResNet-50 baseline. Although the baseline attains ROC-AUC 0.9261, PR-AUC 0.9348, balanced accuracy 0.8483, MCC 0.6978, and ECE 0.0525 on in-distribution ArtiFact test images ($n=7{,}505$, validation-frozen threshold $0.3951$), stress testing exposes 43.7\% FNR on StyleGAN3, balanced accuracy collapse toward 0.50 under fine-detail degradation (53 perturbations), 48.1\% unseen-generator cross-dataset FNR (50.2\% on DiFF), 30.4\%--82.6\% external real-face FPR, and a paired recall drop from 96.3\% to 13.7\% under controlled Stable Diffusion holdout. Second, we implement and verify the 18-module platform featuring reliability-weighted fusion (M7), validation-calibrated four-dimensional confidence (M9), programmatically evidence-verified reasoning (M11), structured eight-mode failure handling (M16), and a three-tier Django/React web application (M13--M14). Across 16 end-to-end verification scenarios, the platform passes all nine quality dimensions (135 verified reasoning sentences, zero ungrounded claims, 60.02 ms mean latency), explicitly overriding a 0.99 detector score into \textit{Inconclusive} ($C_{\text{dec}}=0.3333$) when supporting evidence is unusable and degrading cleanly to \textit{Unknown} when specialists are unavailable. All code, registries, verification scripts, and datasets are publicly reproducible.
+Synthetic human faces produced by generative adversarial networks and denoising diffusion models increasingly challenge digital media authentication, identity verification, and courtroom evidentiary review. Existing detection methods predominantly rely on standalone deep neural networks trained for binary classification. Although such classifiers achieve high accuracy on test splits matched to their training distributions, their predictions degrade sharply under unseen generative architectures, external authentic face distributions, and lossy social-media compression. Returning an uncalibrated binary probability without provenance, uncertainty bounds, or an abstention mechanism exposes forensic examiners to silent false accusations and missed manipulations. This paper proposes the AI Forensic Analyst, a modular, evidence-driven forensic architecture that separates image-reading signal extraction from an image-blind four-way decision engine capable of issuing Real, Fake, Inconclusive, or Unknown outcomes. Using a public, open-license five-dataset benchmark spanning ArtiFact, Diffusion Facial Forgery, 140k Real and Fake Faces, Synthbuster, and FairFace, we train and stress-test three distinct neural architectures under identical fairness invariants: ResNet-50, EfficientNet-B4, and Vision Transformer ViT-B/16. While scaling from ResNet-50 (0.9261 area under the receiver operating characteristic curve) to ViT-B/16 raises in-distribution area under the curve to 0.9750, balanced accuracy to 0.9153, and calibration error down to 0.0211, zero-shot cross-dataset evaluation across 46,369 test images per model reveals that even ViT-B/16 misses 64.0\% of unseen diffusion faces, misses 82.1\% of Synthbuster syntheses, and falsely accuses 62.5\% of FairFace authentic portraits, polarizing in the opposite direction from convolutional baselines. We then formalize reliability-weighted multi-specialist fusion, validation-calibrated four-dimensional confidence estimation, and programmatically verified forensic reasoning across eighteen decoupled modules. Across sixteen fault scenarios and a 2,700-case nine-track governance benchmark, cross-paradigm multi-specialist fusion reduces silent erroneous verdicts to 3.0\% on clean ArtiFact, 1.3\% on 140k Faces, 3.0\% on Synthbuster, 22.3\% on FairFace, and 33.3\% on unseen diffusion faces, eliminates 48.7\% to 100.0\% of silent degradation errors, and prevents ungrounded textual claims.
 \end{abstract}
 
 \begin{keyword}
-Synthetic face detection \sep Digital forensics \sep Cross-generator generalization \sep Evidence fusion \sep Confidence calibration \sep Explainable forensic systems \sep Diffusion models \sep Generative Adversarial Networks
+Synthetic face forensics \sep Deepfake detection \sep Cross-generator generalization \sep Uncertainty calibration \sep Evidence fusion \sep Explainable digital forensics \sep Diffusion models
 \end{keyword}
 
 \end{frontmatter}
 
 \section{Introduction}
 
-High-fidelity facial synthesis has progressed rapidly from Generative Adversarial Networks (GANs) \cite{Guarnera_2020,Giudice_2021,Melnik_2024} to latent and denoising diffusion models \cite{Bammey_2024,Zeng_2025,Abbas_2026,Cheng_2024}, creating severe risks for identity verification, journalistic integrity, and judicial evidence authentication \cite{Heidari_2023,Edwards_2024,Malik_2022}. Despite strong benchmark accuracies reported on matched test splits, empirical evaluations consistently show that standalone classifiers overfit generator-specific spectral traces or dataset acquisition shortcuts \cite{Khan_2024,Altamimi_2026,Guarnera_2024}. When evaluated on unseen generative paradigms, demographically diverse external real images, or social-media compression pipelines, both false negative rates (missed forgeries) and false positive rates (authentic faces flagged as fake) spike sharply \cite{Bammey_2024,Sharma_2025,Altamimi_2026}.
+Recent advances in deep generative modeling have transformed facial synthesis from coarse image editing into photorealistic portrait generation \cite{Croitoru_2026}. Early synthesis pipelines relied primarily on Generative Adversarial Networks (GANs), where adversarial training progressively refined spatial fidelity across architectures such as StyleGAN and its successors \cite{Melnik_2024}. More recently, denoising and latent diffusion models have enabled text-conditioned, image-conditioned, and inpainting-based facial generation with substantially fewer geometric or blending flaws \cite{Cheng_2024}. While these tools support creative media and privacy-preserving data workflows, their misuse for impersonation, fabricated journalism, and manipulated legal evidence poses a serious challenge for digital forensic examiners \cite{Hydara_2024}.
 
-This failure pattern reveals a structural flaw in how synthetic media detection is typically engineered. Most published systems conflate four distinct responsibilities inside a single black-box classifier: signal extraction, evidence reliability grading, uncertainty calibration, and final verdict issuance. A bare fake-class probability (for example, $0.99$) provides neither empirical reliability calibration nor a mechanism to abstain when input quality is degraded, corroborating signals are absent, or a specialist encounters an out-of-distribution domain \cite{Altamimi_2026,Guarnera_2024}.
+In current research practice, synthetic face detection is overwhelmingly formulated as standalone binary classification \cite{Heidari_2023}. A convolutional neural network (CNN) or Vision Transformer (ViT) ingests a cropped face image and outputs a single scalar probability indicating whether the sample is authentic or synthetic \cite{Malik_2022}. On test partitions drawn from the same generator family and camera source as the training set, supervised detectors routinely exceed 95\% accuracy \cite{Khan_2024}. However, controlled cross-domain evaluations demonstrate that these classifiers frequently latch onto generator-specific upsampling traces \cite{Guarnera_2020} or superficial dataset shortcuts such as compression history and color statistics \cite{Altamimi_2026}. When deployed against unseen diffusion models \cite{Cheng_2024}, demographically diverse authentic portraits \cite{Xu_2024}, or heavily re-encoded social-media uploads \cite{Guo_2024}, standalone detectors experience steep spikes in both false negative rates (FNR, missed forgeries) and false positive rates (FPR, authentic faces misclassified as synthetic).
 
-To bridge the gap between model-centric detection research and auditable digital forensics, this study makes four concrete contributions:
+From an operational digital forensics standpoint, this fragility reflects an architectural flaw rather than merely a backbone limitation \cite{Silva_2022}. Monolithic classifiers conflate four distinct forensic responsibilities inside a single opaque pass: raw signal extraction, evidentiary reliability assessment, probability calibration, and final verdict issuance. When a standalone network outputs a raw softmax score of $0.99$ on a degraded or out-of-distribution image, an investigator receives no measure of empirical calibration \cite{Jin_2025}, no corroborating signal audit, and no structured mechanism to abstain \cite{Maiano_2026}. Conversely, enforcing a naive high probability cutoff to suppress false positives can cause severe recall collapse in judicial screening workflows \cite{Hydara_2024}.
+
+To address these limitations, this study re-examines synthetic face authentication from both an empirical failure-analysis perspective and a systems-forensics perspective. Specifically, this work makes four main contributions:
 
 \begin{enumerate}
-  \item \textbf{Controlled Cross-Paradigm Stress Benchmark:} We curate a strictly public-only, open-license five-dataset evaluation benchmark (ArtiFact faces, DiFF official test, 140k Real and Fake Faces, Synthbuster, and FairFace) under deterministic preprocessing and leakage-verified grouped and leave-one-generator-out (LOGO) splits, and quantify exact failure modes of a standardized ResNet-50 detector across calibration, 53 image perturbations, four external corpora, controlled Stable Diffusion holdout, four one-factor ablations, and paired statistical tests.
-  \item \textbf{18-Module Trust-Bounded Forensic Architecture (M1--M18):} We design and implement the \textbf{AI Forensic Analyst}, separating image-reading intake, validation, nine independent non-detector collectors (M3), and an isolated deep learning specialist (M4) from an image-blind downstream core governed by an append-only evidence ledger (M5), non-destructive reliability validator (M6), pluggable fusion engine (M7), and four-way Decision Engine (M8: \textit{Real}, \textit{Fake}, \textit{Inconclusive}, \textit{Unknown}).
-  \item \textbf{Validation-Calibrated Four-Dimensional Confidence and Anti-Hallucination Reasoning:} We formalize a four-dimensional calibration framework (M9) separating raw detector probability from empirical validation bin accuracy ($C_{\text{pred}}$), collector reliability ($C_{\text{ev}}$), execution completeness ($C_{\text{sys}}$), and capped decision confidence ($C_{\text{dec}}$). Downstream reasoning (M11) programmatically verifies every generated sentence against cited evidence ledger records, while explainability (M10) emits structured data-only outputs and explicitly records \texttt{no\_data} rather than fabricating visual maps.
-  \item \textbf{End-to-End Platform Verification and Open Reproducibility:} We verify the complete system across 16 whole-platform forensic scenarios and nine quality dimensions, deliver an interactive three-tier Django/DRF and React web platform (M13--M14) validated by 85 automated unit/API/UI tests, live cross-tier HTTP integration, and six live User Acceptance Tests (UAT), and release all reproducible configurations, registries, and verification scripts under the MIT license.
+  \item \textbf{Open-License Cross-Paradigm and Multi-Backbone Stress Benchmark:} We assemble and audit a strictly public, open-license five-dataset benchmark (ArtiFact, Diffusion Facial Forgery, 140k Real and Fake Faces, Synthbuster, and FairFace) under deterministic seven-stage preprocessing and leakage-verified grouped and leave-one-generator-out (LOGO) splits. Using this benchmark, we quantify the failure modes of three distinct neural architectures (ResNet-50, EfficientNet-B4, and Vision Transformer ViT-B/16) across calibration, subgroup heterogeneity, 53 synthetic perturbations, four external corpora, controlled Stable Diffusion holdout, and paired statistical ablations.
+  \item \textbf{Trust-Bounded Eighteen-Module Forensic Architecture:} We design and implement the AI Forensic Analyst across eighteen single-responsibility modules (denoted M1 through M18), enforcing an explicit trust boundary between image-reading intake (M1), validation (M2), nine independent contextual collectors (M3), and an isolated deep learning specialist (M4) on one side, and an image-blind downstream core governed by an append-only evidence ledger (M5), non-destructive reliability validator (M6), pluggable fusion engine (M7), and sole four-way Decision Engine (M8: \textit{Real}, \textit{Fake}, \textit{Inconclusive}, \textit{Unknown}) on the other.
+  \item \textbf{Validation-Calibrated Four-Dimensional Confidence and Abstention:} We formulate a transparent calibration framework (M9) that separates raw neural probability from empirical validation-bin accuracy ($C_{\text{pred}}$), collector reliability ($C_{\text{ev}}$), and pipeline execution completeness ($C_{\text{sys}}$), combining them into a conservatively capped decision confidence ($C_{\text{dec}}$) that prevents uncorroborated or contested neural scores from producing overconfident binary verdicts.
+  \item \textbf{Programmatically Grounded Forensic Reasoning and End-to-End Verification:} We introduce an anti-hallucination reasoning engine (M11) that verifies every generated claim against immutable ledger identifiers alongside structured data-only explainability (M10), provenance-stamped reporting (M12), and full-stack web delivery (M13--M14), verifying the complete architecture across 16 end-to-end forensic fault and decision scenarios.
 \end{enumerate}
 
+The remainder of this paper is organized as follows. Section~\ref{sec:related} reviews 44 peer-reviewed studies across frequency forensics, spatial and foundation-model detectors, biometric and reconstruction cues, fairness and robustness benchmarks, and uncertainty calibration. Section~\ref{sec:method} details the five-dataset benchmark, trust-bounded architecture, mathematical fusion and calibration equations, and grounded reporting pipeline. Section~\ref{sec:setup} describes the experimental setup and statistical evaluation protocols. Section~\ref{sec:results} presents and discusses the empirical stress-testing and platform verification results. Section~\ref{sec:limitations} outlines scope limitations, and Section~\ref{sec:conclusion} concludes the paper.
+
 \section{Related Work}
+\label{sec:related}
 
-We synthesize 28 peer-reviewed studies spanning legacy GAN forensics through modern diffusion detection \cite{Cho_2026,Taeb_2022,Bammey_2024,Ghani_2024,Guarnera_2020,Zeng_2025,Khan_2024,Pasquini_2023,Abbas_2026,Giudice_2021,Safwat_2024,Ul_Ghani_2024,Sharma_2025,Guarnera_2022,Xue_2023,Altamimi_2026,Preeti_2023,Guarnera_2024,Alkishri_2024,Nadimpalli_2024,Arshed_2024,Gragnaniello_2022,Cheng_2024,Heidari_2023,Melnik_2024,Edwards_2024,Dang_2023,Malik_2022} (full 16-method comparative matrix in Supplementary Material S1).
+Research on synthetic face and AI-generated image forensics has expanded substantially across the transition from early GAN architectures to modern diffusion and foundation-model pipelines \cite{Croitoru_2026}. To establish a rigorous, traceable foundation without relying on unexamined citation clusters, we review 44 peer-reviewed studies organized across five methodological themes: frequency and convolutional trace analysis, spatial and foundation-model classification, biometric localization and proactive provenance, fairness and perturbation benchmarking, and uncertainty calibration with forensic governance.
 
-\textbf{Frequency-Domain and Convolutional Trace Detectors.} Early forensic pipelines exploited transposed-convolution upsampling footprints via Expectation-Maximization \cite{Guarnera_2020} and Discrete Cosine Transform (DCT) beta-statistics \cite{Giudice_2021}, achieving strong intra-GAN discrimination. Subsequent diffusion forensics revealed that iterative denoising alters high-frequency spectral signatures relative to GANs \cite{Bammey_2024}, motivating multi-level frequency and spatial hierarchies \cite{Guarnera_2024,Gragnaniello_2022}. However, frequency cues degrade sharply under JPEG recompression, resizing, and anti-forensic fingerprint removal \cite{Sharma_2025,Alkishri_2024}.
+\subsection{Frequency-Domain, Spectral, and Convolutional Trace Forensics}
 
-\textbf{Spatial Classifiers, Pretraining Paradigms, and Source Attribution.} Spatial CNNs (ResNet, Xception, EfficientNet) and Vision Transformers dominate large-scale benchmarks \cite{Taeb_2022,Safwat_2024,Guarnera_2022,Preeti_2023,Arshed_2024,Cheng_2024}. Systematic cross-architecture studies demonstrate that pretraining strategy (notably CLIP and self-supervised visual encoders) strongly influences cross-generator transfer \cite{Khan_2024}, while hierarchical classifiers attempt generator-family attribution \cite{Guarnera_2024,Arshed_2024}. Nevertheless, recent multi-paradigm audits confirm that classifiers trained on GAN corpora suffer severe accuracy drops on diffusion faces and exhibit demographic and dataset-origin bias shortcuts \cite{Altamimi_2026,Cheng_2024}.
+Signal-processing forensic methods inspect deterministic mathematical traces left by upsampling or iterative denoising operators rather than relying exclusively on opaque spatial representations \cite{Gragnaniello_2022}. In early GAN forensics, Guarnera et al.\ \cite{Guarnera_2020} modeled local pixel correlations with an Expectation-Maximization algorithm to extract convolutional fingerprints across five GAN architectures, showing that transposed-convolution layers imprint separable generator traces. Extending spectral inspection, Giudice et al.\ \cite{Giudice_2021} fitted Laplace beta distributions to $8\times 8$ Discrete Cosine Transform (DCT) alternating-current coefficients, achieving lightweight, inherently interpretable GAN detection without deep neural training. However, Alkishri et al.\ \cite{Alkishri_2024} demonstrated that targeted GAN fingerprint removal perturbations substantially degrade trace-based detectors, exposing their vulnerability to intentional anti-forensic laundering.
 
-\textbf{Physiological Biometrics, Reconstruction Error, and Proactive Defenses.} Alternative paradigms target facial landmark geometry and GAN-inversion biometrics \cite{Pasquini_2023,Xue_2023}, diffusion reconstruction error \cite{Zeng_2025}, synthetic inpainting generation \cite{Cho_2026}, and proactive watermarking or blockchain provenance \cite{Ghani_2024,Ul_Ghani_2024,Nadimpalli_2024}. Biometric cues lose discriminative margin on high-fidelity StyleGAN3 and diffusion synthesis \cite{Melnik_2024}, reconstruction error imposes heavy multi-step inference cost \cite{Zeng_2025}, and proactive schemes require control over image generation \cite{Nadimpalli_2024}. Existing surveys \cite{Heidari_2023,Melnik_2024,Edwards_2024,Dang_2023,Malik_2022} comprehensively catalog neural architectures yet rarely address system-level forensic decision governance.
+Because denoising diffusion models synthesize imagery through iterative score matching rather than single-pass transposed convolutions, GAN-calibrated spectral rules do not transfer directly to diffusion outputs. Addressing diffusion artifacts directly, Bammey \cite{Bammey_2024} proposed Synthbuster, a training-free pipeline applying cross-difference high-pass filtering and Fast Fourier Transform (FFT) peak analysis across nine diffusion generators, avoiding supervised training-set bias at the cost of sensitivity to heavy post-processing. Within learned architectures, Guo et al.\ \cite{Guo_2024} designed Space-Frequency Interactive Convolution (SFIConv) alongside Multichannel Constrained Separable Convolution to couple spatial and high-frequency features inside standard CNN backbones, reaching 96.47\% area under the receiver operating characteristic curve (ROC-AUC) on low-quality FaceForensics++ videos yet only 71.0\% ROC-AUC on unseen Celeb-DF. More recently, Yan et al.\ \cite{Yan_2026} combined four-subband Discrete Wavelet Transform window tiling with phase-only FFT attention across 65 generative models, achieving 92.1\% mean accuracy overall while observing sharp degradation to 44.1\%--52.1\% on face-swapping subsets and 54.6\%--60.8\% on social-media subsets.
 
-\textbf{Synthesized Gaps.} Four interlocking gaps motivate the AI Forensic Analyst: (1) cross-generator generalization collapse between GAN and diffusion families, (2) real-source shortcut learning causing high false positive rates on out-of-distribution authentic faces, (3) insufficient uncertainty calibration and explainability transparency \cite{Altamimi_2026}, and (4) absence of modular, auditable evidence-fusion architectures capable of safe abstention.
+\subsection{Spatial CNNs, Vision Transformers, and Cross-Domain Generalization}
 
-\section{Methodology: The AI Forensic Analyst Architecture}
+Supervised spatial-domain classifiers represent the dominant paradigm in facial forgery detection \cite{Heidari_2023}. Early comparative studies evaluated standard convolutional architectures on constrained datasets: Taeb and Chi \cite{Taeb_2022} compared VGG19, DenseNet-121, and custom CNNs on a small augmented face dataset without cross-dataset testing, while Safwat et al.\ \cite{Safwat_2024} paired GAN feature extraction with ResNet classification on only 2,041 images. In social-media contexts, Preeti et al.\ \cite{Preeti_2023} explored an initial GAN-based social-media detector on a single distribution, which Sharma et al.\ \cite{Sharma_2025} subsequently extended into a multi-classifier ensemble improving compression resilience on GAN images while leaving diffusion synthesis untested. Competition benchmarks such as the Face Deepfake Detection Challenge organized by Guarnera et al.\ \cite{Guarnera_2022} standardized multi-GAN evaluation and confirmed the strong intra-domain performance of EfficientNet backbones, yet remained restricted to GAN-era distributions.
 
-\subsection{Public-Only Multi-Dataset Benchmark and Leakage-Free Splitting}
+When evaluated across unseen datasets and generative families, spatial classifiers suffer pronounced generalization drops. Khan and Dang-Nguyen \cite{Khan_2024} benchmarked eight supervised CNNs and two self-supervised transformers (DINO and CLIP) across four manipulation corpora, reporting that cross-dataset accuracy falls from above 95\% in-domain to 60\%--70\% out-of-domain and that pretraining diversity outweighs backbone complexity. On diffusion-generated faces, Cheng et al.\ \cite{Cheng_2024} introduced the 500,000-image Diffusion Facial Forgery (DiFF) dataset across 13 diffusion methods and showed that conventional detectors score below 30\% accuracy before proposing edge-graph regularization. Exploring transformer patch tokens, Arshed et al.\ \cite{Arshed_2024} reported 99.90\% F1 using a patch-wise ViT on a four-class StyleGAN2 and Stable Diffusion split, although cross-dataset validation was omitted. For structured source attribution, Guarnera et al.\ \cite{Guarnera_2024} arranged ResNet-101 modules into a three-level hierarchy separating authenticity, paradigm (GAN versus diffusion), and specific generator on an 83,000-image proprietary corpus.
 
-To eliminate license ambiguity and dataset shortcut blindness, we assemble five strictly public, open-license corpora summarized in Table~\ref{tab:datasets} (full methodology pipeline in Supplementary Figure S3).
+Recent cross-domain studies seek invariant forensic representations through feature purification, vision-language alignment, and operator probing. Meng et al.\ \cite{Meng_2024} proposed the Artifact Purification Network, combining Hermitian-symmetric DFT band proposals, orthogonal spatial decomposition, and mutual-information minimization to reach 80.4\% cross-generator accuracy on GenImage, though without compression stress testing or face-specific evaluation. Wu et al.\ \cite{Wu_2026} introduced LASTED, pairing main authenticity labels with ClipCap domain-caption supervision under bidirectional contrastive learning to attain 0.913--0.974 average precision across four cross-domain benchmarks, while recording its lowest subset precision (0.873) on facial deepfakes. Complementing heavy foundation backbones, Shen and Tian \cite{Shen_2026} developed PORI-Gate, an 11.77M-parameter ResNet-18 architecture that dynamically gates color-quantization, low-bit-plane, and JPEG-residual probes to achieve 92.86\% mean accuracy across 38 subsets, while transparently documenting severe accuracy drops on Improved-Diffusion (60.38\%) and threshold-shifted DDPM samples (76.37\% accuracy despite 90.16\% ROC-AUC).
+
+\subsection{Biometric Localization, Reconstruction Dynamics, and Proactive Provenance}
+
+Alternative forensic strategies target anatomical consistency, generative manifold reconstruction, spatial localization, or proactive source authentication. Pasquini et al.\ \cite{Pasquini_2023} combined GAN inversion with biometric trait analysis to expose identity-level anomalies on synthetic portraits. Focusing on ocular physiology, Xue et al.\ \cite{Xue_2023} proposed GLFNet, fusing local iris and pupil features with global ResNeSt residuals on CelebA-HQ. For pixel-level localization, Huang et al.\ \cite{Huang_2022} designed FakeLocator using a DeepLabv3-ResNet101 encoder-decoder and face-parsing attention to regress full-resolution gray-scale fakeness maps across seven GANs, achieving 0.9846 ROC-AUC on FaceForensics++ while remaining tied to GAN upsampling textures. As Melnik et al.\ \cite{Melnik_2024} documented in their survey of StyleGAN architectures, and as Abbas and Taeihagh \cite{Abbas_2026} illustrated through hybrid latent-diffusion IC-DGAN facial expression synthesis, modern generators increasingly eliminate overt biometric and blending defects.
+
+Reconstruction-error methods instead test whether an input lies near a generative manifold. Zeng et al.\ \cite{Zeng_2025} extracted latent diffusion reconstruction residuals for synthetic face identification, demonstrating feasibility while noting that multi-step denoising reconstruction introduces substantial inference latency. Outside facial forensics, Cho et al.\ \cite{Cho_2026} applied context-aware diffusion inpainting to industrial defect synthesis, illustrating how localized diffusion masks blend seamlessly into surrounding textures. In contrast, proactive provenance frameworks alter media prior to release: Nadimpalli and Rattani \cite{Nadimpalli_2024} embedded GAN-based visible watermarks for proactive deepfake detection, while Ghani et al.\ \cite{Ghani_2024} and Ul Ghani et al.\ \cite{Ul_Ghani_2024} integrated GAN synthesis with distributed blockchain ledgers to secure facial recognition templates. Although effective within closed ecosystems, proactive watermarking and blockchain registration cannot authenticate unwatermarked images encountered in reactive forensic investigations.
+
+\subsection{Demographic Fairness, Compression Robustness, and Evaluation Benchmarks}
+
+Fairness audits and uniform benchmarks reveal that dataset bias and post-processing sensitivity systematically inflate published metrics. Altamimi et al.\ \cite{Altamimi_2026} audited ResNet-101, EfficientNet-B4, and Xception across GAN and diffusion faces, discovering that a zero-learning statistical audit achieved 85\% accuracy due to low-level dataset bias while EfficientNet-B4 dropped to 86.75\% on diffusion faces. At massive scale, Xu et al.\ \cite{Xu_2024} transferred 65.3 million facial attribute annotations across five deepfake databases and proved via imbalance-corrected metrics that both demographic and non-demographic attributes induce pronounced detector bias. Evaluating 22 pretrained checkpoints of six diffusion detectors on 40,000 DiffSynFace images paired with FairFace, CelebA-HQ, and Adience, Panda et al.\ \cite{Panda_2026} observed strong average precision alongside severe fixed-threshold miscalibration (such as 50\% accuracy despite 81.5\% average precision). Targeting South Asian representation, Reza et al.\ \cite{Reza_2026} introduced ARC-Net (EfficientNet-B0 with residual and attention blocks), reducing real-face FPR on Bangladeshi portraits from 22.0\% to 10.0\% and validating Grad-CAM overlap quantitatively (0.8396 mean intersection-over-union), though without diffusion or compression testing.
+
+Broader surveys and uniform benchmarks reinforce these structural concerns. Malik et al.\ \cite{Malik_2022} and Dang and Nguyen \cite{Dang_2023} cataloged pre-diffusion image and video manipulation detectors, while Edwards et al.\ \cite{Edwards_2024} reviewed generation and detection datasets through early diffusion models. Under uniform retraining of 11 detectors across seven datasets (644 training runs), Deng et al.\ \cite{Deng_2024} demonstrated that every evaluated detector falls to 51.2\%--60.5\% average ROC-AUC on an independent human-vetted test set and degrades sharply under Gaussian noise and compression. Extending this benchmark lens to modern generative AI, Croitoru et al.\ \cite{Croitoru_2026} showed that seven state-of-the-art detectors lose more than 30\% ROC-AUC on unseen diffusion and 3D talking-face generators, highlighting uncertainty calibration and modular late fusion as urgent open priorities.
+
+\subsection{Uncertainty Calibration, Out-of-Distribution Detection, and Forensic Governance}
+
+Despite high legal stakes, very few studies address predictive uncertainty, out-of-distribution (OOD) rejection, or human-auditable forensic governance. Silva et al.\ \cite{Silva_2022} proposed an explainable hierarchical ensemble combining Xception and EfficientNet-B3 with weakly supervised attention cropping/dropping, Grad-CAM region extraction, and secondary 2D DFT and DCT beta inspection; notably, while attaining 92.20\% accuracy on DFDC, their ensemble dropped to 72.73\% on unconstrained WildDeepfake videos and revealed that 60\% of misclassifications occurred within a narrow probability margin below $0.5$. In a judicial prototype pairing Django with a pretrained ViT, Hydara et al.\ \cite{Hydara_2024} found that raising the confidence threshold to 80\%--85\% to protect courtroom precision caused detection recall to collapse to 18\%.
+
+Three recent studies directly investigate OOD detection, calibration, and selective abstention. Maiano et al.\ \cite{Maiano_2026} cascaded U-Net and Tiny DeiT classifiers with reconstruction- and attention-residual Abnormality modules on an 82,000-image continual deepfake benchmark, reaching 91.6\%--93.77\% OOD AUROC on content shifts while observing unsupervised OOD drops to 60.14\%--63.35\% and transformer attention collapse on cross-generator splits. Jin et al.\ \cite{Jin_2025} introduced PE-DD, embedding four Packed-Ensembles estimators with Steganalysis-Rich Model (SRM) filters to lower expected calibration error (ECE) to $0.005$--$0.020$ in-domain and achieve the lowest Brier score across four unseen benchmarks, although ECE still degraded six- to ten-fold under heavy compression without an explicit abstention state. Fatima et al.\ \cite{Fatima_2026} combined a semantic-plus-SRM two-stream network with worst-of-$K$ counter-forensic red-teaming and test-time defense on DeepFakeFace ($\text{ECE}\le 0.0196$), yet evaluated only 240 held-out test pairs without cross-dataset or GAN baselines. Table~\ref{tab:related_work} summarizes 21 representative detection and forensic frameworks across the reviewed literature.
 
 \begin{table*}[t]
 \centering
-\caption{Strictly public, open-license multi-dataset benchmark used for in-distribution training, cross-dataset evaluation, demographic real-face auditing, and controlled unseen-generator holdout.}
+\caption{Summary of representative synthetic face and AI-generated image detection methods in the reviewed literature.}
+\label{tab:related_work}
+\scriptsize
+\setlength{\tabcolsep}{3.8pt}
+\renewcommand{\arraystretch}{1.12}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}l r l l l l l l l@{}}
+\toprule
+\textbf{Study} & \textbf{Year} & \textbf{Core Method / Backbone} & \textbf{Domain} & \textbf{GAN / Diffusion Scope} & \textbf{Cross-Data} & \textbf{Calib.\ / Abstain} & \textbf{Explainability} & \textbf{Key Reported Limitation} \\
+\midrule
+Guarnera et al.\ \cite{Guarnera_2020} & 2020 & EM convolutional trace extractor & Trace & 5 GANs / None & No & No / No & Inherent traces & Fails on diffusion synthesis \\
+Giudice et al.\ \cite{Giudice_2021} & 2021 & $8\times 8$ DCT Laplace beta statistics & Frequency & Multi-GAN / None & No & No / No & Inherent DCT & Degrades under heavy JPEG \\
+Huang et al.\ \cite{Huang_2022} & 2022 & FakeLocator (DeepLabv3 + parsing) & Spatial/Trace & 7 GANs, FF++ / None & Partial & No / No & Fakeness map & Requires paired masks; no DMs \\
+Silva et al.\ \cite{Silva_2022} & 2022 & Hierarchical CNN + WS-DAN + DFT/DCT & Hybrid & DFDC, Celeb-DF / None & Yes & Margin / No & Grad-CAM + DFT & Drops to 72.73\% on WildDeepfake \\
+Xue et al.\ \cite{Xue_2023} & 2023 & GLFNet (iris/pupil + ResNeSt) & Biometric+S & CelebA-HQ GAN / None & No & No / No & Physiological & Needs clear ocular landmarks \\
+Bammey \cite{Bammey_2024} & 2024 & Synthbuster residual FFT peaks & Frequency & None / 9 DMs & No & No / No & Spectral peaks & Sensitive to compression; no GANs \\
+Khan \& Dang-Nguyen \cite{Khan_2024} & 2024 & 8 CNNs + DINO/CLIP transformers & Spatial & 4 benchmarks / None & Yes & No / No & None & Cross-dataset drop to 60\%--70\% \\
+Guarnera et al.\ \cite{Guarnera_2024} & 2024 & 3-level hierarchical ResNet-101 & Hierarchical & 9 GANs / 4 DMs & No & No / No & Paradigm tree & Proprietary 83k dataset \\
+Cheng et al.\ \cite{Cheng_2024} & 2024 & Edge-graph regularization (DiFF) & Spatial/Graph & None / 13 DMs & No & No / No & Edge focus & Baselines $<30\%$ acc.; no GANs \\
+Hydara et al.\ \cite{Hydara_2024} & 2024 & Judicial ViT + Django prototype & Spatial & Pooled video / None & No & Cutoff / No & OpenCV heatmap & 18\% recall at 80\%--85\% cutoff \\
+Meng et al.\ \cite{Meng_2024} & 2024 & APN (DFT bands + orthogonal + MI) & Hybrid & BigGAN / 8 DMs & Yes & No / No & Layer-CAM & No compression or face audit \\
+Guo et al.\ \cite{Guo_2024} & 2024 & SFIConv + MCSConv CNN backbones & Space-Freq & HFF, FF++, DFDC / None & Yes & No / No & AFAM maps & 71.0\% Celeb-DF AUC; no DMs \\
+Zeng et al.\ \cite{Zeng_2025} & 2025 & Latent diffusion reconstruction error & Reconstruct. & None / DMs & No & No / No & Residual map & High multi-step latency \\
+Jin et al.\ \cite{Jin_2025} & 2025 & PE-DD (Packed-Ensembles + SRM) & Space-Freq & FF++, WDF / GenImage & Yes & ECE, Brier / No & Eigen-CAM & CNN-only; no OOD abstention \\
+Altamimi et al.\ \cite{Altamimi_2026} & 2026 & ResNet-101, EffNet-B4, Xception & Spatial & GAN / DM faces & No & No / No & Grad-CAM & 85\% zero-learning dataset bias \\
+Maiano et al.\ \cite{Maiano_2026} & 2026 & U-Net / Tiny DeiT + Abnormality OOD & Hybrid+OOD & CDDB GAN / non-GAN & Yes & No / OOD score & Attention map & ViT OOD fails on generator shift \\
+Fatima et al.\ \cite{Fatima_2026} & 2026 & Two-stream + worst-of-$K$ + TTD & Space-Freq & None / 4 DFF tasks & No & ECE / AURC & Weak FPN map & Small single dataset ($n=240$) \\
+Yan et al.\ \cite{Yan_2026} & 2026 & DWT window tiling + FFT phase & Dual-Freq & GANGen / 65 models & Yes & No / No & Branch visuals & 44.1\%--52.1\% on face-swapping \\
+Wu et al.\ \cite{Wu_2026} & 2026 & LASTED CLIP contrastive + probe & Vision-Lang & ForenSynths / DMs & Yes & No / No & None & AP-only; weakest on Deepfake \\
+Shen \& Tian \cite{Shen_2026} & 2026 & PORI-Gate 3-operator fusion & Trace/Gate & 9 GANs / CrossGen-38 & Yes & Diag.\ / No & Gate weights & DDPM threshold shift (76.4\% acc.) \\
+Reza et al.\ \cite{Reza_2026} & 2026 & ARC-Net (EffNet-B0 + attention) & Spatial & 140k + BD / None & Yes & Brier / No & IoU-checked CAM & No diffusion or JPEG tests \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+Synthesizing Table~\ref{tab:related_work} across all 44 studies reveals four interlocking gaps that motivate our methodology: (1) severe cross-paradigm failure between GAN and diffusion distributions, (2) pervasive real-image domain and demographic shortcut bias, (3) uncalibrated neural probabilities that suffer threshold-shift collapse without safe abstention, and (4) the absence of an auditable, trust-bounded forensic architecture that decouples neural perception from evidence validation, multi-dimensional confidence, and programmatically verified reporting.
+
+\section{Proposed Forensic Methodology}
+\label{sec:method}
+
+To overcome the fragility of standalone binary classifiers in evidentiary settings, our methodology couples rigorous empirical failure characterization with a trust-bounded, multi-module forensic decision architecture. Rather than treating a convolutional neural network as an autonomous arbiter, we treat neural inference as one fallible specialist signal that must be logged in an immutable ledger, graded for reliability alongside independent image-integrity collectors, calibrated against empirical validation accuracy, and evaluated by an image-blind four-way Decision Engine.
+
+The proposed methodology is structured in four parts. Subsection~\ref{subsec:benchmark} establishes our strictly public five-dataset benchmark, visual sample diversity, deterministic seven-stage preprocessing pipeline, and leakage-verified evaluation splits. Subsection~\ref{subsec:architecture} defines all eighteen modules (denoted M1 through M18) and formalizes the architectural trust boundaries separating raw image access from verdict authority. Subsection~\ref{subsec:fusion} derives the mathematical formulations governing reliability-weighted evidence fusion, validation-calibrated four-dimensional confidence estimation, and four-way abstention. Subsection~\ref{subsec:explain} details structured explainability, anti-hallucination sentence verification, and reproducible web delivery.
+
+\subsection{Public Multi-Dataset Benchmark, Visual Samples, and Leakage-Free Splitting}
+\label{subsec:benchmark}
+
+To eliminate license ambiguity and single-dataset shortcut blindness, we curate five strictly public, open-license corpora totaling more than 250,000 processed images. Each corpus fulfills a distinct forensic stress-testing role, as summarized in Table~\ref{tab:datasets}.
+
+\begin{table*}[t]
+\centering
+\caption{Composition and evaluation roles of the five public benchmark datasets.}
 \label{tab:datasets}
 \footnotesize
 \setlength{\tabcolsep}{5pt}
 \renewcommand{\arraystretch}{1.15}
 \begin{tabularx}{\textwidth}{@{}l l r X l@{}}
 \toprule
-\textbf{Corpus} & \textbf{Evaluation Role} & \textbf{Images} & \textbf{Class / Generator Composition} & \textbf{License} \\
+\textbf{Benchmark Corpus} & \textbf{Primary Forensic Role} & \textbf{Processed Images} & \textbf{Class and Generator Composition} & \textbf{License} \\
 \midrule
-ArtiFact (face subset) & In-dist.\ train/val/test \& LOGO & 50,000 & 25k real / 25k fake across 13 GAN and diffusion generators & MIT \\
-DiFF (official test) \cite{Cheng_2024} & Cross-dataset unseen diffusion & 51,452 & Fake-only across 13 diffusion generators & Research Open \\
-140k Real and Fake Faces & Cross-dataset GAN / FFHQ & 140,000 & 70k FFHQ real / 70k StyleGAN fake & Public Open \\
-Synthbuster \cite{Bammey_2024} & Cross-dataset diffusion + scenes & 9,999 & 9,000 diffusion fakes (9 models) / 999 RAISE real scenes & CC BY 4.0 \\
-FairFace & Demographic real-face FPR & 97,698 & Real-only faces balanced across 7 demographic groups & CC BY 4.0 \\
+ArtiFact (face subset) & In-dist.\ train/val/test and LOGO & 50,000 & 25,000 real (FFHQ, CelebA-HQ, MetFaces) / 25,000 fake (13 GAN + DM gens) & MIT \\
+DiFF (official test) \cite{Cheng_2024} & Cross-dataset unseen diffusion stress & 51,452 & Fake-only faces across 13 diffusion generators (4 synthesis conditions) & Research Open \\
+140k Real and Fake Faces & Cross-dataset GAN and FFHQ benchmark & 140,000 & 70,000 FFHQ real / 70,000 StyleGAN fake portraits & Public Open \\
+Synthbuster \cite{Bammey_2024} & Cross-dataset diffusion and scenes & 9,999 & 9,000 synthetic images (9 diffusion models) / 999 RAISE real photographs & CC BY 4.0 \\
+FairFace & Demographic authentic-face FPR audit & 97,698 & Real-only portraits balanced across 7 race/ethnicity groups & CC BY 4.0 \\
 \bottomrule
 \end{tabularx}
 \end{table*}
 
-All images pass through a deterministic seven-stage preprocessing pipeline (fixed seed 42): integrity verification, pre-modification metadata capture, EXIF stripping, minimum resolution filtering ($\ge 64$\,px), RGB PNG conversion, and $224\times 224$ resizing with zero denoising or sharpening so high-frequency forensic traces remain intact. On ArtiFact, we generate two leakage-verified splits: a grouped random split ($34{,}993$ train / $7{,}502$ validation / $7{,}505$ test) and a controlled leave-one-generator-out (LOGO) split holding out all $1{,}923$ Stable Diffusion images exclusively for testing. Automated hash and identifier checks confirm zero cross-split overlap (exploratory audits in Supplementary Material S2).
+To illustrate the visual realism and error-mode diversity across these five benchmarks without arbitrary cherry-picking, Figure~\ref{fig:samples} presents ten criterion-selected preprocessed samples ($224\times 224$ pixels) pairing the lowest-error and highest-error subgroup within each corpus (an exhaustive 42-panel visual atlas covering every individual generator and authentic source across all five datasets is provided in Supplementary Material Figure~S1). Panels Figure~\ref{fig:samples}(a) and Figure~\ref{fig:samples}(f) contrast the lowest-FPR authentic source (CelebA-HQ, $7.0\%$ FPR) against the highest-FNR seen generator (StyleGAN3, $43.7\%$ FNR) in ArtiFact. Panels Figure~\ref{fig:samples}(b) and Figure~\ref{fig:samples}(g) pair the most detectable unseen diffusion method (DCFace, $0.0\%$ FNR) with the most elusive (FreeDoM\_I, $81.5\%$ FNR) in DiFF. Panels Figure~\ref{fig:samples}(c) and Figure~\ref{fig:samples}(h) show FFHQ real ($30.4\%$ FPR) versus StyleGAN fake ($9.2\%$ FNR) in 140k Real and Fake Faces, whereas Figure~\ref{fig:samples}(d) and Figure~\ref{fig:samples}(i) contrast an uncompressed RAISE landscape ($76.7\%$ FPR) against DALL-E~3 synthesis ($46.9\%$ FNR) in Synthbuster. Finally, Figure~\ref{fig:samples}(e) and Figure~\ref{fig:samples}(j) contrast a correctly accepted authentic portrait (True Negative) against a shadow-lit profile falsely flagged at extreme neural confidence (False Positive) in FairFace ($82.6\%$ overall FPR).
 
-\subsection{Trust-Bounded 18-Module Forensic Pipeline}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/FIG0031_v1.pdf}
+\caption{Criterion-selected lowest-error and highest-error authentic and synthetic samples ($224\times 224$\,px) across the five benchmark datasets, labeled (a) through (j).}
+\label{fig:samples}
+\end{figure*}
+
+Every raw image passes through a deterministic seven-stage preprocessing pipeline (fixed random seed 42): (1) file integrity verification, (2) pre-modification metadata capture, (3) EXIF stripping, (4) minimum resolution filtering requiring side length at least $64$\,px, (5) lossless three-channel RGB PNG conversion, (6) bilinear resizing to $224\times 224$ pixels, and (7) runtime-only ImageNet channel normalization. Specifically, spatial denoising, sharpening, and histogram equalization are strictly forbidden so subtle high-frequency generative residuals remain intact. On ArtiFact, two leakage-verified splits are constructed: a grouped random partition stratified by identity and generator ($34{,}993$ train, $7{,}502$ validation, and $7{,}505$ test images), and a controlled leave-one-generator-out (LOGO) partition holding out all $1{,}923$ Stable Diffusion images exclusively for testing while training and validating on the remaining 12 seen generators plus real faces. Automated SHA-256 content-hash and identity-stem audits verify zero cross-split leakage across all partitions (exploratory distributions in Supplementary Material S2).
+
+\subsection{Trust-Bounded Eighteen-Module Forensic Architecture (M1--M18)}
+\label{subsec:architecture}
+
+To prevent any single neural classifier from silently issuing unverified verdicts, the AI Forensic Analyst decomposes digital image authentication into eighteen single-responsibility modules, denoted concisely as M1 through M18. For complete notation clarity throughout this paper, Table~\ref{tab:modules} defines every module identifier, its canonical name, its assigned architectural layer, and whether it is permitted to read raw image bytes or issue a forensic verdict.
+
+\begin{table*}[t]
+\centering
+\caption{Module definitions and trust-boundary permissions across the eighteen-module AI Forensic Analyst (M1--M18).}
+\label{tab:modules}
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}l X l l l@{}}
+\toprule
+\textbf{Module Notation} & \textbf{Module Name} & \textbf{Architectural Layer} & \textbf{Reads Image Bytes} & \textbf{Verdict Authority} \\
+\midrule
+M1 & Input Intake Manager & Trust Boundary A & Yes & No \\
+M2 & Image Validation Gate & Trust Boundary A & Yes & No \\
+M3 & Contextual Signal Collectors (9 independent units) & Trust Boundary A & Yes (isolated) & No \\
+M4 & Deep Learning Specialist & Trust Boundary A & Yes (isolated) & No \\
+M5 & Append-Only Evidence Ledger & Trust Boundary B & No & No \\
+M6 & Evidence Reliability Validator & Trust Boundary B & No & No \\
+M7 & Pluggable Evidence Fusion Engine & Trust Boundary B & No & No \\
+M8 & Four-Way Forensic Decision Engine & Trust Boundary B & No & Sole Authority \\
+M9 & Four-Dimensional Confidence Estimator & Trust Boundary B & No & No \\
+M10 & Data-Only Explainability Engine & Trust Boundary B & No & No \\
+M11 & Grounded Forensic Reasoning Engine & Trust Boundary B & No & No \\
+M12 & Provenance Case Report Generator & Trust Boundary B & No & No \\
+M13 & REST API Service Wrapper & Delivery \& Governance & No & No \\
+M14 & Interactive Investigation Web UI & Delivery \& Governance & No & No \\
+M15 & Immutable Case Audit Trail & Delivery \& Governance & No & No \\
+M16 & Structured Eight-Mode Failure Handler & Delivery \& Governance & No & No \\
+M17 & Module Contract \& Schema Validator & Delivery \& Governance & No & No \\
+M18 & Multimodal Extensibility Registry & Delivery \& Governance & No & No \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+As detailed in Table~\ref{tab:modules}, the module permissions enforce two strict structural invariants across the platform. First, raw pixel and container access is confined exclusively to M1 through M4 inside Trust Boundary A, yet none of those four modules is permitted to emit a forensic verdict word. Second, sole verdict authority is vested in M8 inside Trust Boundary B, which has zero programmatic access to image bytes or model weights, while M13 through M18 handle web delivery, immutable case auditing, structured failure handling, and multimodal extensibility without duplicating decision rules. Figure~\ref{fig:architecture} illustrates the end-to-end dataflow and isolation barriers connecting Figure~\ref{fig:architecture}(a) Trust Boundary A, Figure~\ref{fig:architecture}(b) Trust Boundary B, and Figure~\ref{fig:architecture}(c) the Delivery and Governance Layer.
 
 \begin{figure*}[t]
 \centering
@@ -231,32 +353,29 @@ All images pass through a deterministic seven-stage preprocessing pipeline (fixe
   \node[draw=slatestroke, fill=slatefill, dashed, rounded corners=4pt, line width=0.9pt,
         fit=(m1)(m2)(m3)(m4)(f1), inner xsep=7pt, inner ysep=16pt, yshift=8pt] (ba) {};
   \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=slatetext] at ([xshift=4pt,yshift=-3pt]ba.north west)
-        {TRUST BOUNDARY A: Image-Reading Layer (Per-Collector Isolation, Zero Decision Authority)};
+        {(a) TRUST BOUNDARY A: Image-Reading Layer (Per-Collector Isolation, Zero Decision Authority)};
 
   \node[draw=tealstroke, fill=tealfill, dashed, rounded corners=4pt, line width=0.9pt,
         fit=(m5)(m6)(m7)(m9)(m8)(m10)(m11)(m12), inner xsep=7pt, inner ysep=13pt, yshift=6pt] (bb) {};
   \node[anchor=north east, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=-6pt,yshift=-3pt]bb.north east)
-        {TRUST BOUNDARY B: Image-Blind Evidence, Reasoning, Decision \& Reporting Layer (Validated EV IDs Only)};
+        {(b) TRUST BOUNDARY B: Image-Blind Evidence, Reasoning, Decision \& Reporting Layer (Validated EV IDs Only)};
 
   \node[draw=neutralstroke, fill=neutralfill, rounded corners=4pt, line width=0.9pt,
         fit=(m13)(m14)(m15)(m16)(m17)(m18), inner xsep=7pt, inner ysep=13pt, yshift=6pt] (bc) {};
   \node[anchor=north east, font=\sffamily\scriptsize\bfseries, text=neutraltext] at ([xshift=-6pt,yshift=-3pt]bc.north east)
-        {DELIVERY, AUDIT \& EXTENSIBILITY LAYER (M13--M18)};
+        {(c) DELIVERY, AUDIT \& EXTENSIBILITY LAYER (M13--M18)};
 \end{scope}
 
 % ================= CLEAN NON-OVERLAPPING ARROWS =================
-% Band A internal
 \draw[arr] (m1) -- node[lbl] {accept} (m2);
 \draw[arr] (m2) -- node[lbl] {pass} (m3);
 \draw[arr] ([yshift=2pt]m2.north) -- ++(0,0.24) -| node[lbl, pos=0.25] {pass (isolated)} (m4.north);
 \draw[darr] (m1.south) -- node[lbl, text=crimsontext] {reject} (m1.south |- f1.north);
 \draw[darr] (m2.south) -- node[lbl, text=crimsontext] {fail} (m2.south |- f1.north);
 
-% Trust Boundary A -> B bus cleanly centered in open white corridor (y = -2.74)
 \draw[arr] (m3.south) |- (6.8,-2.74) -| node[lbl, pos=0.18] {EV items} (m5.north);
 \draw[arr] (m4.south) |- (6.8,-2.74);
 
-% Band B Row 1 -> Row 2 (open corridor y = -5.10)
 \draw[arr] (m5) -- (m6);
 \draw[arr] (m6) -- (m7);
 \draw[arr] (m7) -- (m9);
@@ -265,25 +384,24 @@ All images pass through a deterministic seven-stage preprocessing pipeline (fixe
 \draw[arr] (m10) -- (m11);
 \draw[arr] (m11) -- (m12);
 
-% Band B -> Band C cleanly centered in open white corridor (y = -7.32)
 \draw[arr] (m12.south) |- (6.8,-7.32) -| node[lbl, pos=0.16] {reports \& status} (m13.north);
 \draw[arr] (6.8,-7.32) -| (m15.north);
 \draw[arr] (m13) -- (m14);
 
 \end{tikzpicture}%
 }
-\caption{Eighteen-module AI Forensic Analyst architecture separating Trust Boundary A (image-reading intake, validation, nine independent signal collectors, and isolated deep learning specialist) from Trust Boundary B (image-blind append-only evidence ledger, reliability validator, fusion engine, four-dimensional confidence estimator, sole four-way Decision Engine, data-only explainability, grounded reasoning, and report generator) and delivery/governance modules (M13--M18).}
+\caption{Trust-bounded architecture of the eighteen-module AI Forensic Analyst across layers (a), (b), and (c).}
 \label{fig:architecture}
 \end{figure*}
 
-Figure~\ref{fig:architecture} illustrates the architectural boundary enforcing forensic accountability across all 18 modules (M1--M18; complete interface summary in Supplementary Material S4):
+Within Figure~\ref{fig:architecture}(a) Trust Boundary A (the image-reading perception layer), M1 enforces file-extension allowlists and a $20$\,MB upload cap while recording cryptographic SHA-256 file digests and rejecting malformed payloads without disk persistence. M2 then verifies image decodability, RGB channel integrity, spatial resolution, noise bounds, and single-face presence; inputs violating these preconditions trigger immediate structured halts via M16 (\texttt{unsupported\_format}, \texttt{corrupted\_image}, \texttt{no\_face}, or \texttt{multiple\_faces}) prior to collector execution, omitting any verdict while recording an auditable failed case row in M15. Validated portraits proceed in parallel to nine decoupled non-detector collectors under M3 (covering EXIF/container metadata, pixel statistics, face detection geometry, face quality, 2D FFT spectral energy, compression blockiness, color-channel distribution, local texture, and explainability tensor intake) and to the isolated Deep Learning Specialist M4. Collectors are prohibited from importing one another, and M4 emits only raw fake-class probability $p$, inference latency, and model provenance without applying any decision threshold or verdict label.
 
-\begin{itemize}
-  \item \textbf{Trust Boundary A (Image-Reading Layer, Zero Decision Authority):} Input Intake (M1) enforces format and 20\,MB upload limits while computing SHA-256 hashes and rejecting unsafe files without persistence. Image Validation (M2) verifies decodability, RGB channels, resolution, noise, and single-face availability; violations trigger immediate structured stops (\texttt{unsupported\_format}, \texttt{corrupted\_image}, \texttt{no\_face}, \texttt{multiple\_faces}) before collectors run, omitting verdicts while logging a failed case record (M15). Passing inputs reach nine strictly decoupled non-detector collectors (M3: metadata, image statistics, face detection, face quality, FFT frequency domain, compression, color distribution, texture, and explainability input; zero inter-collector coupling) and the isolated Deep Learning Specialist (M4), which emits raw $P(\text{fake})$, latency, and model provenance without applying any decision threshold or verdict word.
-  \item \textbf{Trust Boundary B (Image-Blind Evidence and Decision Layer):} The Evidence Ledger (M5) assigns sequential immutable identifiers (\texttt{EVxxxxxx}) in an append-only ledger. The Evidence Validator (M6) appends separate validation records grading each item as \texttt{high}, \texttt{medium}, \texttt{low}, or \texttt{unusable} and cross-citing conflicts without mutating source rows or substituting defaults for \texttt{null} confidences. Downstream modules read strictly validated evidence IDs and never access raw images or model weights.
-\end{itemize}
+Crossing into Figure~\ref{fig:architecture}(b) Trust Boundary B (the image-blind evidentiary and decision core), M5 assigns sequential immutable identifiers (\texttt{EVxxxxxx}) in an append-only ledger. M6 appends separate validation records grading each item's reliability tier as \texttt{high}, \texttt{medium}, \texttt{low}, or \texttt{unusable} and cross-referencing inter-collector conflicts without overwriting source records or imputing \texttt{null} values. All downstream reasoning, confidence, decision, and reporting modules (M7--M12) operate exclusively on validated \texttt{EV} ledger records and possess zero programmatic access to raw image bytes or neural weights, while Figure~\ref{fig:architecture}(c) governs API delivery, UI visualization, case auditing, and multimodal extensibility (M13--M18).
 
-\subsection{Reliability-Weighted Fusion, 4D Calibrated Confidence, and 4-Way Decisioning}
+\subsection{Reliability-Weighted Fusion, Calibrated 4D Confidence, and 4-Way Decisioning}
+\label{subsec:fusion}
+
+The mathematical core of Trust Boundary B converts heterogeneous ledger records into a calibrated four-way forensic verdict through four sequential stages, depicted in Figure~\ref{fig:fusion}(a) through Figure~\ref{fig:fusion}(d).
 
 \begin{figure*}[t]
 \centering
@@ -301,22 +419,22 @@ Figure~\ref{fig:architecture} illustrates the architectural boundary enforcing f
 \node[card, text width=7.4cm] (s1b) at (0,-1.08) {\textbf{Contextual Evidence (M3):} 9 independent collectors (metadata, stats, face, FFT, compression, color, texture, XAI input); cited as context only.};
 \node[card, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.4cm] (s1c) at (0,-2.16) {\textbf{Validator Weights (M6):} $\text{high}=1.0$, $\text{med}=0.6$, $\text{low}=0.3$, $\text{unusable}=0.0$; non-destructive conflict cross-citation (source rows immutable).};
 
-% ================= STAGE 2 (TOP RIGHT, wider 1.3cm horizontal gutter) =================
+% ================= STAGE 2 (TOP RIGHT) =================
 \node[card, text width=7.5cm] (s2a) at (9.45,0) {\textbf{Pluggable \texttt{FusionStrategy} (M7):} Active \texttt{rule\_based} v0.1.0 (\texttt{weighted}, \texttt{bayesian} reserved; unknown ID $\rightarrow$ M16 error).};
-\node[card, text width=7.5cm] (s2b) at (9.45,-1.08) {\textbf{Weighted Directional Aggregation:} $p \ge t \Rightarrow +w_i$ (\texttt{positive\_class}); $p < t \Rightarrow -w_i$ (\texttt{negative\_class}); unusable items excluded ($w=0$).};
-\node[card, text width=7.5cm] (s2c) at (9.45,-2.16) {\textbf{Fused Conclusion EV Item (Zero Verdict Words):} \texttt{positive\_class}, \texttt{negative\_class}, \texttt{contested} ($|\text{bal}|<0.5$), or \texttt{no\_directional\_evidence}.};
+\node[card, text width=7.5cm] (s2b) at (9.45,-1.08) {\textbf{Weighted Directional Aggregation:} $p \ge t \Rightarrow +w_k$ (\texttt{positive\_class}); $p < t \Rightarrow -w_k$ (\texttt{negative\_class}); unusable items excluded ($w=0$).};
+\node[card, text width=7.5cm] (s2c) at (9.45,-2.16) {\textbf{Fused Conclusion EV Item (Zero Verdict Words):} \texttt{positive\_class}, \texttt{negative\_class}, \texttt{contested} ($|B|<0.5$), or \texttt{no\_directional\_evidence}.};
 
-% ================= STAGE 3 (BOTTOM LEFT - generous 1.25cm corridor below top row!) =================
+% ================= STAGE 3 (BOTTOM LEFT) =================
 \node[card, text width=7.4cm] (s3a) at (0,-5.00) {\textbf{1.\ Prediction ($C_{\text{pred}}$):} $r = p$ if $p \ge t$ else $1-p$; lookup val reliability bin accuracy $A_{\text{val}}(r)$; $C_{\text{pred}} = w_{\text{det}}\,A_{\text{val}}(r)$ (\texttt{null} if absent).};
-\node[card, text width=7.4cm] (s3b) at (0,-6.05) {\textbf{2.\ Evidence ($C_{\text{ev}}$) \& 3.\ System ($C_{\text{sys}}$):} $C_{\text{ev}} = \bar{w}\times 0.5^{\text{conflict}}$; $C_{\text{sys}} = N_{\text{usable}} / (N_{\text{att}} + N_{\text{ref}} + N_{\text{err}})$.};
-\node[card, text width=7.4cm] (s3c) at (0,-7.15) {\textbf{4.\ Decision ($C_{\text{dec}}$):} $C_{\text{base}} = 0.5 C_{\text{pred}} + 0.3 C_{\text{ev}} + 0.2 C_{\text{sys}}$; cap at $\min(C_{\text{ev}}, C_{\text{sys}})$ if either $\le 0.50$ or $0$ usable non-DL; $\times 0.85$ single-source; $\times 0.50$ contested.};
+\node[card, text width=7.4cm] (s3b) at (0,-6.05) {\textbf{2.\ Evidence ($C_{\text{ev}}$) \& 3.\ System ($C_{\text{sys}}$):} $C_{\text{ev}} = \bar{w}\,(1 - 0.5\,\delta_{\text{conf}})$; $C_{\text{sys}} = N_{\text{usable}} / (N_{\text{att}} + N_{\text{ref}} + N_{\text{err}})$.};
+\node[card, text width=7.4cm] (s3c) at (0,-7.15) {\textbf{4.\ Decision ($C_{\text{dec}}$):} $C_{\text{base}} = 0.5 C_{\text{pred}} + 0.3 C_{\text{ev}} + 0.2 C_{\text{sys}}$; cap at $\min(C_{\text{ev}}, C_{\text{sys}})$ if either $\le 0.50$ or $N_{\text{ctx}}=0$; $\times 0.85$ single-source; $\times 0.50$ contested.};
 \node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.3cm] (s3d) at (0,-8.25) {Safety Override Verified: $p = 0.99$ with unusable collectors $\Rightarrow C_{\text{dec}} = 0.3333$ (\textit{Inconclusive})};
 
 % ================= STAGE 4 (BOTTOM RIGHT) =================
 \node[card, text width=7.5cm] (s4a) at (9.45,-4.95) {\textbf{Image-Blind Decision Engine (M8, Sole Verdict Authority):} Reads \textit{only} validated fused conclusion and 4D confidence EV IDs (zero image/weight access).};
-\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.4cm] (o1) at (9.45,-5.92) {FAKE \quad (\texttt{positive\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
-\node[pill, draw=tealstroke, fill=tealfill, text=tealtext, text width=7.4cm] (o2) at (9.45,-6.70) {REAL \quad (\texttt{negative\_class}, no conflict, $C_{\text{dec}} \ge 0.50$)};
-\node[pill, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.4cm] (o3) at (9.45,-7.48) {INCONCLUSIVE \quad (\texttt{contested}, conflict active, or $C_{\text{dec}} < 0.50$)};
+\node[pill, draw=crimsonstroke, fill=crimsonfill, text=crimsontext, text width=7.4cm] (o1) at (9.45,-5.92) {FAKE \quad (\texttt{positive\_class}, $\delta_{\text{conf}}=0$, $C_{\text{dec}} \ge 0.50$)};
+\node[pill, draw=tealstroke, fill=tealfill, text=tealtext, text width=7.4cm] (o2) at (9.45,-6.70) {REAL \quad (\texttt{negative\_class}, $\delta_{\text{conf}}=0$, $C_{\text{dec}} \ge 0.50$)};
+\node[pill, draw=amberstroke, fill=amberfill, text=ambertext, text width=7.4cm] (o3) at (9.45,-7.48) {INCONCLUSIVE \quad (\texttt{contested}, $\delta_{\text{conf}}=1$, or $C_{\text{dec}} < 0.50$)};
 \node[pill, draw=neutralstroke, fill=neutralfill, text=neutraltext, text width=7.4cm] (o4) at (9.45,-8.26) {UNKNOWN \quad (\texttt{no\_directional\_evidence}; $C_{\text{dec}} = \texttt{null}$)};
 
 % ================= STAGE CONTAINERS =================
@@ -324,215 +442,350 @@ Figure~\ref{fig:architecture} illustrates the architectural boundary enforcing f
   \node[draw=slatestroke, fill=slatefill, dashed, rounded corners=4pt, line width=0.9pt,
         fit=(s1a)(s1b)(s1c), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g1) {};
   \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=slatetext] at ([xshift=5pt,yshift=-3pt]g1.north west)
-        {Stage 1: Validated Evidence Ledger (M3--M6)};
+        {(a) Stage 1: Validated Evidence Ledger (M3--M6)};
 
   \node[draw=tealstroke, fill=tealfill, dashed, rounded corners=4pt, line width=0.9pt,
         fit=(s2a)(s2b)(s2c), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g2) {};
   \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=tealtext] at ([xshift=5pt,yshift=-3pt]g2.north west)
-        {Stage 2: Reliability-Weighted Evidence Fusion (M7)};
+        {(b) Stage 2: Reliability-Weighted Evidence Fusion (M7)};
 
   \node[draw=amberstroke, fill=amberfill, dashed, rounded corners=4pt, line width=0.9pt,
         fit=(s3a)(s3b)(s3c)(s3d), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g3) {};
   \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=ambertext] at ([xshift=5pt,yshift=-3pt]g3.north west)
-        {Stage 3: Validation-Calibrated 4D Confidence (M9)};
+        {(c) Stage 3: Validation-Calibrated 4D Confidence (M9)};
 
   \node[draw=crimsonstroke, fill=crimsonfill, dashed, rounded corners=4pt, line width=0.9pt,
         fit=(s4a)(o1)(o2)(o3)(o4), inner xsep=6pt, inner ysep=13pt, yshift=6pt] (g4) {};
   \node[anchor=north west, font=\sffamily\scriptsize\bfseries, text=crimsontext] at ([xshift=5pt,yshift=-3pt]g4.north west)
-        {Stage 4: Image-Blind Four-Way Decision Issuance (M8)};
+        {(d) Stage 4: Image-Blind Four-Way Decision Issuance (M8)};
 \end{scope}
 
-% ================= CLEAN INTER-STAGE ARROWS (CENTERED IN WIDE CORRIDORS) =================
+% ================= CLEAN INTER-STAGE ARROWS =================
 \draw[arr] (g1.east) -- node[lbl] {$w_i$} (g2.west);
 \draw[arr] (g2.south) |- (4.7,-3.48) -| node[lbl, pos=0.0] {logged \& graded fused conclusion} (g3.north);
 \draw[arr] (g3.east) -- node[lbl] {EV IDs} (g4.west);
 
 \end{tikzpicture}%
 }
-\caption{Mathematical flow from the validated evidence ledger (Stage 1) through reliability-weighted rule-based fusion (Stage 2), validation-calibrated four-dimensional confidence (Stage 3), and image-blind four-way verdict issuance (Stage 4). Conservative caps override a raw $0.99$ detector score into \textit{Inconclusive} ($C_{\text{dec}}=0.3333$) whenever supporting evidence is unusable.}
+\caption{Four-stage mathematical workflow from validated ledger records (a) through fusion (b), calibrated confidence (c), and four-way decisioning (d).}
 \label{fig:fusion}
 \end{figure*}
 
-As illustrated in Figure~\ref{fig:fusion}, the mathematical decision core operates in three transparent stages:
-
-\textbf{1. Reliability-Weighted Evidence Fusion (M7).} Under a pluggable \texttt{FusionStrategy} interface (active strategy: interpretable \texttt{rule\_based} v0.1.0; \texttt{weighted} and \texttt{bayesian} strategies reserved; unknown IDs fail loudly via M16), each validated item receives weight $w_i \in \{1.0, 0.6, 0.3, 0.0\}$ for \texttt{high}, \texttt{medium}, \texttt{low}, and \texttt{unusable} respectively. Only calibrated directional specialists vote on class polarity: for M4 with fake probability $p$ and validation-frozen threshold $t = 0.3951$, $p \ge t$ contributes $+w_i$ (\texttt{positive\_class}) and $p < t$ contributes $-w_i$ (\texttt{negative\_class}). The nine contextual M3 collectors are cited as corroborating context without fabricating directional votes. When opposing directional evidence yields normalized $|\text{balance}| < 0.5$, the fused lean is \texttt{contested}; when no usable directional specialist exists, the lean is \texttt{no\_directional\_evidence}. The emitted fused conclusion contains zero verdict words and is itself logged (M5) and graded (M6).
-
-\textbf{2. Validation-Calibrated Four-Dimensional Confidence (M9).} To break the equivalence between raw softmax probability and forensic certainty \cite{Altamimi_2026}, M9 computes four distinct metrics:
+In Figure~\ref{fig:fusion}(a) and Figure~\ref{fig:fusion}(b) (M6--M7), each validated collector item $i$ is mapped from its discrete M6 reliability grade (\texttt{high}, \texttt{medium}, \texttt{low}, \texttt{unusable}) to a deterministic reliability weight $w_i \in \{1.0, 0.6, 0.3, 0.0\}$. Under the active interpretable \texttt{rule\_based} fusion strategy (with \texttt{weighted} and \texttt{bayesian} strategies reserved under the \texttt{FusionStrategy} contract), only calibrated directional specialists cast class-polarity votes, whereas the nine contextual M3 collectors provide reliability-graded corroborating context without fabricating directional votes. For $K$ usable directional specialists ($w_k > 0$), each specialist $k$ with fake-class probability $p_k$ and validation-frozen operating threshold $t_k$ (for the baseline ResNet-50, $t_1 = 0.3951$) yields polarity sign $s_k = +1$ if $p_k \ge t_k$ and $s_k = -1$ if $p_k < t_k$. The normalized directional polarity balance $B \in [-1, 1]$ is computed as:
 \begin{equation}
-  C_{\text{pred}} = w_{\text{det}} \cdot A_{\text{val}}(r), \quad
-  r = \begin{cases} p & \text{if } p \ge t, \\ 1 - p & \text{if } p < t, \end{cases}
+  B = \frac{\sum_{k=1}^{K} s_k \, w_k}{\sum_{k=1}^{K} w_k}.
+  \label{eq:balance}
 \end{equation}
-where $A_{\text{val}}(r)$ is the empirical bin accuracy queried from validation-split reliability bins (\texttt{null} if no usable detector item exists). For example, baseline output $p = 0.99$ maps to $C_{\text{pred}} = 0.971745$ rather than $0.99$. Next, evidence reliability confidence is the mean validator weight across all collector items (\texttt{unusable} $= 0.0$), halved whenever a conflict flag is active:
-\begin{equation}
-  C_{\text{ev}} = \left(\frac{1}{N} \sum_{i=1}^{N} w_i\right) \cdot \begin{cases} 0.5 & \text{if conflict}, \\ 1.0 & \text{otherwise}. \end{cases}
-\end{equation}
-System execution completeness measures pipeline health:
-\begin{equation}
-  C_{\text{sys}} = \frac{N_{\text{usable}}}{N_{\text{attempted}} + N_{\text{refused}} + N_{\text{errors}}}.
-\end{equation}
-Finally, overall decision confidence combines the three dimensions with explicit conservative caps and discounts:
-\begin{equation}
-  C_{\text{base}} = 0.5\,C_{\text{pred}} + 0.3\,C_{\text{ev}} + 0.2\,C_{\text{sys}}.
-\end{equation}
-If $C_{\text{pred}}$ is \texttt{null}, then $C_{\text{dec}}$ remains \texttt{null}. Otherwise, whenever $C_{\text{ev}} \le 0.50$, $C_{\text{sys}} \le 0.50$, or zero usable non-detector collectors exist, $C_{\text{dec}}$ is capped at $\min(C_{\text{ev}}, C_{\text{sys}})$; single-source leans receive a $\times 0.85$ discount and contested leans receive a $\times 0.50$ discount.
+In Eq.~\eqref{eq:balance}, $K$ denotes the count of directional specialist items with positive reliability weight ($w_k > 0$), $s_k \in \{-1, +1\}$ denotes the thresholded directional polarity of specialist $k$, and $w_k \in \{0.3, 0.6, 1.0\}$ is the M6 reliability weight assigned to specialist $k$. When $K = 0$, no division is performed and M7 emits a \texttt{fused\_conclusion} lean of \texttt{no\_directional\_evidence}. When $K \ge 1$ and opposing specialists yield $|B| < 0.5$, M7 emits \texttt{contested}; otherwise, $B \ge 0.5$ yields \texttt{positive\_class} and $B \le -0.5$ yields \texttt{negative\_class}. Importantly, the fused conclusion record contains zero verdict labels (\textit{Real} or \textit{Fake}) and is itself logged in M5 and validated by M6.
 
-\textbf{3. Image-Blind Four-Way Decision Engine (M8).} Reading solely the validated fused conclusion and confidence ledger IDs, M8 emits: \textit{Unknown} if \texttt{no\_directional\_evidence} (or $C_{\text{dec}}$ is \texttt{null}); \textit{Inconclusive} if the lean is \texttt{contested}, a conflict flag is active, or $C_{\text{dec}} < 0.50$; \textit{Fake} if \texttt{positive\_class}, no conflict, and $C_{\text{dec}} \ge 0.50$; and \textit{Real} if \texttt{negative\_class}, no conflict, and $C_{\text{dec}} \ge 0.50$.
+In Figure~\ref{fig:fusion}(c) (M9), to prevent raw neural softmax scores from masquerading as calibrated forensic certainty \cite{Jin_2025}, M9 computes four distinct confidence dimensions. First, validation-calibrated prediction confidence $C_{\text{pred}} \in [0, 1]$ maps raw specialist output onto empirical validation accuracy:
+\begin{equation}
+  C_{\text{pred}} = w_{\text{det}} \cdot A_{\text{val}}(r), \quad \text{where } r = \begin{cases} p & \text{if } p \ge t, \\ 1 - p & \text{if } p < t. \end{cases}
+  \label{eq:cpred}
+\end{equation}
+In Eq.~\eqref{eq:cpred}, $p \in [0, 1]$ is the raw fake-class probability emitted by M4, $t \in (0, 1)$ is the frozen validation threshold ($t = 0.3951$), $r \in [0, 1]$ is the directional raw confidence aligned with the predicted side of $t$, $A_{\text{val}}(r) \in [0, 1]$ is the empirical accuracy looked up from the corresponding 15-bin validation reliability table, and $w_{\text{det}} \in \{0.3, 0.6, 1.0\}$ is the M6 reliability weight of the usable detector item (if no usable detector item exists, $C_{\text{pred}}$ is recorded as \texttt{null}). For instance, a raw baseline output of $p = 0.99$ with \texttt{high} reliability ($w_{\text{det}} = 1.0$) maps to $C_{\text{pred}} = 0.9717$ rather than $0.99$.
 
-\subsection{Grounded Reasoning, Data-Only Explainability, and Web Delivery}
+Second, evidentiary corroboration confidence $C_{\text{ev}} \in [0, 1]$ aggregates collector quality across all $N$ registered collector items:
+\begin{equation}
+  C_{\text{ev}} = \left(\frac{1}{N} \sum_{i=1}^{N} w_i\right) \cdot (1 - 0.5\,\delta_{\text{conf}}).
+  \label{eq:cev}
+\end{equation}
+In Eq.~\eqref{eq:cev}, $N \ge 1$ is the total number of registered collector items (including \texttt{unusable} items with $w_i = 0.0$), $w_i \in \{0.0, 0.3, 0.6, 1.0\}$ is the M6 reliability weight of collector item $i$, and $\delta_{\text{conf}} \in \{0, 1\}$ is a binary conflict indicator equal to $1$ if M6 flagged any inter-evidence contradiction and $0$ otherwise.
 
-Explainability (M10) emits structured JSON across Grad-CAM, attention maps, saliency, and integrated gradients (with SHAP, LIME, and counterfactuals reserved), explicitly recording \texttt{no\_data} (\texttt{data: null}) for unrecorded visual maps and refusing fabricated overlays or verdict strings. Grounded Reasoning (M11) constructs \texttt{reasoning.json} strictly from validated ledger records and executes programmatic verification on every sentence to confirm that every cited evidence ID and numeric value matches the ledger; any ungrounded claim raises a structured M16 error. The Report Generator (M12) outputs reproducible JSON, Markdown, and HTML reports stamped with byte-identical system, model, dataset, experiment, and Git commit provenance. Full-stack web delivery (Supplementary Figure S4) exposes 10 canonical endpoints across a seven-app Django/DRF backend (M13, zero duplicated forensic logic, thread-safe lock serialization) consumed by a 14-page, 24-component React/Vite/Tailwind UI (M14) rendering nine live pipeline stages, four-way verdicts, all four calibrated confidence gauges, cited evidence IDs, and explicit limitations.
+Third, system execution completeness $C_{\text{sys}} \in [0, 1]$ quantifies operational pipeline health:
+\begin{equation}
+  C_{\text{sys}} = \frac{N_{\text{usable}}}{N_{\text{attempted}} + N_{\text{refused}} + N_{\text{errors}}},
+  \label{eq:csys}
+\end{equation}
+where $N_{\text{usable}}$ is the count of collector executions yielding usable (\texttt{high}, \texttt{medium}, or \texttt{low}) evidence, $N_{\text{attempted}}$ is the count of invoked collectors, $N_{\text{refused}}$ is the count of collectors refusing out-of-contract inputs, and $N_{\text{errors}}$ is the count of structured M16 execution failures.
+
+Fourth, base composite confidence $C_{\text{base}} \in [0, 1]$ and conservative capped decision confidence $C_{\text{dec}} \in [0, 1]$ are computed when $C_{\text{pred}}$ is non-null ($C_{\text{dec}} = \texttt{null}$ whenever $C_{\text{pred}} = \texttt{null}$):
+\begin{equation}
+  C_{\text{base}} = 0.5\,C_{\text{pred}} + 0.3\,C_{\text{ev}} + 0.2\,C_{\text{sys}},
+  \label{eq:cbase}
+\end{equation}
+\begin{equation}
+  C_{\text{dec}} = \gamma_{\text{src}} \cdot \gamma_{\text{lean}} \cdot \tilde{C}, \quad
+  \tilde{C} = \begin{cases}
+    \min(C_{\text{base}},\, C_{\text{ev}},\, C_{\text{sys}}) & \text{if } C_{\text{ev}} \le 0.50 \lor C_{\text{sys}} \le 0.50 \lor N_{\text{ctx}} = 0, \\
+    C_{\text{base}} & \text{otherwise}.
+  \end{cases}
+  \label{eq:cdec}
+\end{equation}
+In Eqs.~\eqref{eq:cbase} and \eqref{eq:cdec}, the convex weights $(0.5, 0.3, 0.2)$ prioritize calibrated specialist accuracy while reserving half of total weight for evidentiary reliability and pipeline health; $N_{\text{ctx}}$ denotes the count of usable non-detector contextual collectors (M3); $\tilde{C}$ enforces a strict safety ceiling at $\min(C_{\text{ev}}, C_{\text{sys}})$ whenever supporting evidence or execution health falls at or below $0.50$ (or when zero contextual collectors are usable); $\gamma_{\text{src}} \in \{0.85, 1.0\}$ applies a $0.85$ single-source discount when directional polarity rests on a single specialist ($K = 1$, otherwise $1.0$); and $\gamma_{\text{lean}} \in \{0.50, 1.0\}$ applies a $0.50$ contested-evidence discount when the fused lean is \texttt{contested} (otherwise $1.0$).
+
+In Figure~\ref{fig:fusion}(d) (M8), reading exclusively the validated \texttt{fused\_conclusion} and \texttt{confidence} \texttt{EV} identifiers, the image-blind Decision Engine issues exactly one of four forensic outcomes: \textit{Unknown} if the lean is \texttt{no\_directional\_evidence} or $C_{\text{dec}}$ is \texttt{null}; \textit{Inconclusive} if the lean is \texttt{contested}, $\delta_{\text{conf}} = 1$, or $C_{\text{dec}} < 0.50$; \textit{Fake} if the lean is \texttt{positive\_class}, $\delta_{\text{conf}} = 0$, and $C_{\text{dec}} \ge 0.50$; and \textit{Real} if the lean is \texttt{negative\_class}, $\delta_{\text{conf}} = 0$, and $C_{\text{dec}} \ge 0.50$.
+
+\subsection{Data-Only Explainability, Anti-Hallucination Reasoning, and Delivery}
+\label{subsec:explain}
+
+Downstream transparency is enforced by M10, M11, and M12. Explainability module M10 emits structured JSON (\texttt{explanation.json}) across Grad-CAM, attention maps, saliency, and integrated gradients (reserving SHAP, LIME, and counterfactual slots), explicitly marking uncomputed visual tensors as \texttt{"no\_data"} (\texttt{data: null}) rather than fabricating synthetic heatmaps \cite{Altamimi_2026}. Grounded Reasoning module M11 generates human-readable case narratives (\texttt{reasoning.json}) strictly from validated ledger entries and runs a programmatic \texttt{verify\_sentence()} check confirming that every sentence cites valid \texttt{EV} identifiers whose exact numeric values match the ledger; any ungrounded statement immediately raises a structured M16 error. Report Generator M12 compiles deterministic JSON, Markdown, and HTML forensic reports stamped with model, dataset, threshold, and Git commit provenance. For interactive investigative workflows, M13 wraps the forensic pipeline behind a thread-safe Django REST Framework API exposing ten canonical endpoints with zero duplicated decision logic, and M14 provides an accessible React interface displaying live stage progression, four-way verdicts, all four confidence dimensions, and explicit evidentiary limitations (Supplementary Material S3).
 
 \section{Experimental Setup}
+\label{sec:setup}
 
-All neural training ran on NVIDIA T4 GPUs under a locked environment (Python 3.12, PyTorch 2.10.0+cu128, FastAI 2.8.7) governed by immutable YAML configurations (47 schema validation tests) and SHA-256 atomic checkpoints (Supplementary Figure S5). Six controlled experiments were executed:
+All model training and perturbation evaluations were executed on NVIDIA Tesla T4 GPUs under a locked software environment (Python 3.12, PyTorch 2.10.0+cu128, and FastAI 2.8.7) governed by immutable YAML experiment configurations and SHA-256-verified atomic checkpoints (Supplementary Material S3). For the primary baseline ResNet-50, an ImageNet-1k pretrained ResNet-50 architecture was trained on the ArtiFact grouped random split ($34{,}993$ training, $7{,}502$ validation, and $7{,}505$ test images at $224\times 224$ pixels) using cross-entropy loss, the Adam optimizer with decoupled weight decay $0.01$, FP16 mixed precision, batch size 64, and FastAI's two-stage transfer schedule comprising 1 frozen-head epoch followed by 10 unfrozen one-cycle epochs (base learning rate $3.3113\times 10^{-4}$, early-stopping patience 3 on validation loss). Train-only geometric and photometric augmentations included horizontal flipping, rotation up to 10 degrees, zoom up to $1.05$, and brightness/contrast jitter up to $0.10$. Following strict validation-only threshold selection, the primary operating threshold maximizing validation balanced accuracy was frozen at $t = 0.3951$ (exact $0.395057$), supplemented by validation-selected screening ($t = 0.089$, targeting validation $\text{FNR} \le 0.05$) and flag-for-review ($t = 0.629$, targeting validation $\text{FPR} \le 0.05$) reference points.
 
-\begin{itemize}
-  \item \textbf{Baseline ResNet-50:} ImageNet-1k pretrained ResNet-50 trained on the ArtiFact grouped random split ($224\times 224$, Adam $\text{wd}=0.01$, FP16 mixed precision, 1 frozen + 10 unfrozen epochs, train-only geometric/photometric augmentation, early-stopping patience 3). Operating threshold $t = 0.3951$ (exact $0.395057$) maximizing balanced accuracy was frozen strictly on the validation split.
-  \item \textbf{Unseen-Generator Holdout (LOGO):} Identical baseline hyperparameters trained on the ArtiFact LOGO split excluding all Stable Diffusion images, evaluated on all $1{,}923$ held-out Stable Diffusion images and paired directly against the Baseline ResNet-50 on the identical 299 Stable Diffusion test images shared by both splits.
-  \item \textbf{Controlled One-Factor Ablations:} Four variants each mutating exactly one baseline hyperparameter on the identical ArtiFact split: (1) random seed $42 \rightarrow 43$ (repeatability noise floor), (2) train-only augmentation disabled, (3) ImageNet-1k pretraining disabled under the fixed 11-epoch budget, and (4) input spatial resolution reduced ($224 \rightarrow 160$\,px).
-  \item \textbf{Stress Testing and Paired Statistics:} Baseline evaluation covers calibration (ECE, MCE, Brier), operating points (screening $0.089$, frozen $0.3951$, flag-for-review $0.629$), subgroup error breakdowns, 53 synthetic perturbations across all $7{,}505$ test images, and four external benchmarks (DiFF, 140k Real and Fake Faces, Synthbuster, FairFace). Paired statistical tests match all $7{,}505$ test predictions via 10,000 percentile bootstrap resamples (seed 49) on ROC-AUC (95\% CI for the seed replicate; Bonferroni-adjusted 98.3\% CIs across the three factor ablations) and exact two-sided McNemar tests. Because each ablation ran for one seed and Wilcoxon signed-rank across seeds requires at least six pairs ($n=2<6$), all comparisons report saved-run differences with no cross-seed superiority claim.
-  \item \textbf{Whole-Platform and Full-Stack Verification:} The 18-module system was verified across 16 end-to-end forensic scenarios spanning nine quality dimensions, 85 automated unit/API/UI tests, live cross-tier HTTP integration, and six live UAT scenarios.
-\end{itemize}
+To isolate pure unseen-generator failure from cross-dataset acquisition shifts, a controlled leave-one-generator-out (LOGO) experiment trained an identical ResNet-50 configuration on the ArtiFact LOGO partition, where all Stable Diffusion images were excluded from training ($40{,}873$ images across 12 seen generators plus real faces) and validation ($7{,}204$ images), and evaluated recall both on all $1{,}923$ held-out Stable Diffusion images and in a paired comparison against the baseline ResNet-50 on the exact 299 Stable Diffusion images common to both test sets. Furthermore, four controlled one-factor ablations were trained on the grouped random split by mutating exactly one factor of the baseline per run: the Seed-43 Replicate changed the random seed from 42 to 43 to measure run-to-run repeatability; the No-Augmentation Ablation disabled training data augmentation; the No-Pretraining Ablation disabled ImageNet-1k pretraining under the fixed 11-epoch training budget; and the Reduced-Resolution Ablation reduced spatial input resolution from $224\times 224$ to $160\times 160$ pixels. To test whether compound-scaled convolutional or self-attention backbones resolve cross-domain brittleness under identical grouped-split ($224\times 224$, seed 42, 1 frozen + 10 unfrozen epochs, Adam weight decay $0.01$, validation-only threshold freezing) fairness invariants, two additional architectures were trained on Tesla T4 GPUs: an ImageNet-1k pretrained EfficientNet-B4 (base learning rate $3.0\times 10^{-4}$, frozen threshold $t_3 = 0.5161$) and an ImageNet-21k-ft-1k pretrained Vision Transformer ViT-B/16 (base learning rate $2.0\times 10^{-4}$, frozen threshold $t_4 = 0.4906$).
 
-\section{Results}
+Comprehensive stress testing evaluated each trained specialist at its frozen ArtiFact validation threshold without target-domain retuning across five axes: 15-bin probability calibration (ECE, MCE, and Brier score), per-generator FNR and per-real-source FPR with 95\% Wilson confidence intervals, 53 synthetic image degradations spanning 15 perturbation families across all $7{,}505$ test images, and zero-shot cross-dataset evaluation ($46{,}369$ total test images per backbone) on DiFF ($7{,}364$ stratified official test images; $51{,}452$ full processed pool audited), 140k Real and Fake Faces ($20{,}000$ held-out validation images), Synthbuster ($1{,}500$ stratified test images), and FairFace ($10{,}000$ stratified demographic portraits). Paired statistical comparisons on the $7{,}505$ grouped test predictions used $10{,}000$ percentile bootstrap resamples (seed 49) for ROC-AUC differences (reporting 95\% confidence intervals for the Seed-43 Replicate and cross-backbone comparators alongside Bonferroni-adjusted 98.3\% intervals across the three factor ablations) and exact two-sided McNemar tests on binary decisions. Because each ablation and comparator used a single random seed (yielding $n = 2 < 6$ baseline seeds, below the minimum sample size for a two-sided Wilcoxon signed-rank test at $\alpha = 0.05$), all comparisons report saved-run differences with no cross-seed superiority claim. Finally, whole-platform verification tested the complete eighteen-module AI Forensic Analyst across 16 deterministic fault-injection scenarios and a $2{,}700$-case nine-track governance benchmark comparing single-specialist ($K = 1$) and cross-paradigm multi-specialist ($K = 3$: ResNet-50, EfficientNet-B4, and ViT-B/16) fusion, reinforced by 85 automated unit, API, and frontend tests plus six live User Acceptance Tests.
 
-\subsection{In-Distribution Baseline Performance, Calibration, and Subgroup Failures}
+\section{Results and Discussion}
+\label{sec:results}
 
-On the ArtiFact test split ($n=7{,}505$: $3{,}753$ fake, $3{,}752$ real), the Baseline ResNet-50 attains ROC-AUC $0.9261$, PR-AUC $0.9348$, balanced accuracy $0.8483$, MCC $0.6978$, FNR $0.1829$ (686 missed fakes), FPR $0.1205$ (452 false alarms), Brier score $0.1131$, ECE $0.0525$, and MCE $0.1544$ (additional curves in Supplementary Material S3).
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.96\linewidth]{figures/FIG0011_v1.pdf}
-  \caption{Calibration reliability diagram on ArtiFact test ($n=7{,}505$, $\text{ECE}=0.0525$, $\text{MCE}=0.1544$), illustrating mid-to-high confidence miscalibration that motivates validation-bin confidence mapping in M9.}
-  \label{fig:calibration}
-\end{figure}
-
-\begin{figure*}[t]
-  \centering
-  \includegraphics[width=0.86\textwidth]{figures/FIG0015_v1.pdf}
-  \caption{In-distribution subgroup error profile exposing severe heterogeneity across seen generators (0.0\% FNR on StarGAN/CIPS vs.\ 43.7\% on StyleGAN3, 42.2\% on Projected GAN, 38.8\% on StyleGAN2, and 38.6\% on MAT) and real sources (36.7\% FPR on artistic MetFaces vs.\ 10.9\% on CelebA-HQ and 11.1\% on FFHQ).}
-  \label{fig:subgroups}
-\end{figure*}
-
-Even inside the training distribution, Figure~\ref{fig:calibration} documents clear mid-to-high confidence miscalibration, while Figure~\ref{fig:subgroups} shows that aggregate accuracy hides $>38\%$ false negative rates on high-realism GANs (StyleGAN3, Projected GAN, StyleGAN2, MAT) and $36.7\%$ false positive rates on non-photographic MetFaces portraits.
-
-\subsection{Perturbation Robustness Across 53 Image Distortions}
-
-\begin{figure*}[t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/FIG0016_v1.pdf}
-  \caption{Balanced accuracy and ROC-AUC under 53 synthetic perturbations ($n=7{,}505$ test images per condition). Fine-detail degradations (low-quality upload, downscaling, Gaussian blur, strong noise, and JPEG quality 10) collapse balanced accuracy toward 0.50 by driving FPR toward 1.0, whereas moderate photometric changes cost under 0.10.}
-  \label{fig:robustness}
-\end{figure*}
-
-Across all 53 perturbations (Figure~\ref{fig:robustness}), robustness splits into two distinct regimes: (1) \textbf{catastrophic fine-detail collapse}, where low-quality uploads, downscaling, Gaussian blur, strong noise, and JPEG quality 10 push balanced accuracy to $\approx 0.50$ because the baseline flags nearly every degraded real image as fake ($\text{FPR}\rightarrow 1.0$), and (2) \textbf{moderate photometric resilience}, where brightness, contrast, color jitter, and small rotations reduce balanced accuracy by $<0.10$. Separating ROC-AUC from thresholded balanced accuracy shows that mild compression/resizing introduces threshold shift alongside genuine ranking erosion under heavy blur and noise.
-
-\subsection{Cross-Dataset Shift and Controlled Unseen-Generator Holdout}
-
-\begin{figure*}[t]
-  \centering
-  \begin{minipage}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/FIG0018_v1.pdf}
-    \caption{Cross-dataset error rates of Baseline ResNet-50 at frozen threshold $0.3951$ across four external benchmarks, exposing 50.2\% unseen diffusion FNR on DiFF and 30.4\%--82.6\% FPR on authentic external images.}
-    \label{fig:cross_dataset}
-  \end{minipage}\hfill
-  \begin{minipage}[t]{0.49\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{figures/FIG0019_v1.pdf}
-    \caption{Controlled LOGO holdout of Stable Diffusion: recall drops from 83.3\% on 12 seen generators to 15.2\% (293/1,923) unseen, and from 96.3\% to 13.7\% on the identical 299 test images.}
-    \label{fig:unseen_logo}
-  \end{minipage}
-\end{figure*}
-
-Cross-dataset testing (Figure~\ref{fig:cross_dataset}) confirms both halves of detector fragility: across 17 unseen generators, FNR rises from $18.3\%$ in-distribution to $48.1\%$ ($50.2\%$ on DiFF diffusion faces, reaching $81.5\%$ on FreeDoM\_I), whereas familiar StyleGAN-family fakes in 140k Real and Fake Faces incur only $9.0\%$ FNR. Simultaneously, external authentic images trigger extreme false alarms: $30.4\%$ FPR on 140k FFHQ, $76.7\%$ FPR on Synthbuster RAISE scenes (overall Synthbuster ROC-AUC $0.5172$, near chance), and $82.6\%$ FPR on FairFace across all seven demographic groups. Controlled Stable Diffusion holdout (Figure~\ref{fig:unseen_logo}) isolates pure unseen-generator failure without dataset shift: while the LOGO model retains validation ROC-AUC $0.937$ on its 12 seen generators, held-out Stable Diffusion recall drops to $15.2\%$ ($293/1{,}923$), falling from $96.3\%$ to $13.7\%$ on the exact same 299 test images \cite{Khan_2024,Altamimi_2026,Cheng_2024}. Consequently, the standalone detector is explicitly classified as unsuitable for autonomous deployment.
-
-\subsection{One-Factor Ablations and Paired Statistical Comparisons}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/FIG0020_v1.pdf}
-  \caption{One-factor ablation ROC-AUC differences relative to Baseline ResNet-50 against the two-seed repeatability floor ($+0.0011$, 95\% CI crossing zero), with Bonferroni-adjusted 98.3\% paired bootstrap intervals excluding zero for all three factor ablations.}
-  \label{fig:ablation}
-\end{figure}
-
-Tables~\ref{tab:ranked} and \ref{tab:stats} report the fairness-compatible comparison on the ArtiFact grouped random test split (excluding the LOGO model trained on a distinct split; ROC/PR curves in Supplementary Material S3).
+To provide a unified view of how empirical neural fragility motivates and validates our system architecture, we first summarize the quantitative outcomes across all experimental and verification tracks in Table~\ref{tab:master_results} before examining each evaluation dimension in detail in Subsections~\ref{subsec:indist} through \ref{subsec:synthesis}.
 
 \begin{table*}[t]
 \centering
-\caption{Fairness-compatible ranked comparison on the ArtiFact grouped test split ($n=7{,}505$; saved-run metrics, no cross-seed superiority claim).}
-\label{tab:ranked}
-\footnotesize
-\setlength{\tabcolsep}{6pt}
+\caption{Summary of empirical outcomes across all baseline, stress-testing, ablation, multi-backbone, and platform verification tracks.}
+\label{tab:master_results}
+\scriptsize
+\setlength{\tabcolsep}{4.5pt}
 \renewcommand{\arraystretch}{1.15}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}rlrrrrrrr@{}}
+\begin{tabular}{@{}l l r l l l@{}}
 \toprule
-\textbf{Rank} & \textbf{Run Variant} & \textbf{ROC-AUC} & \textbf{PR-AUC} & \textbf{Bal.\ Acc.} & \textbf{MCC} & \textbf{FNR} & \textbf{FPR} & \textbf{ECE} \\
+\textbf{Evaluation Track} & \textbf{Dataset / Scope} & \textbf{Sample Size} & \textbf{Primary Quantitative Outcome} & \textbf{Secondary / Error Metrics} & \textbf{Forensic Implication} \\
 \midrule
-1 & Seed Replicate (Seed 43) & 0.9272 & 0.9363 & 0.8481 & 0.6978 & 0.1881 & 0.1157 & 0.0545 \\
-2 & Baseline ResNet-50 (Seed 42) & 0.9261 & 0.9348 & 0.8483 & 0.6978 & 0.1829 & 0.1205 & 0.0525 \\
-3 & No Augmentation & 0.8925 & 0.9042 & 0.8059 & 0.6120 & 0.2056 & 0.1825 & 0.0378 \\
-4 & Reduced Resolution ($160\times 160$) & 0.8885 & 0.9053 & 0.8039 & 0.6082 & 0.2170 & 0.1753 & 0.0944 \\
-5 & No ImageNet Pretraining & 0.7017 & 0.7092 & 0.6452 & 0.2912 & 0.3162 & 0.3935 & 0.0230 \\
+In-Distribution Baseline & ArtiFact grouped test & 7,505 & ROC-AUC 0.9261, PR-AUC 0.9348, Bal.\ Acc.\ 0.8483 & MCC 0.6978, FNR 18.29\%, FPR 12.05\%, ECE 0.0525 & Strong aggregate score masks subgroup \& bin errors \\
+Subgroup Heterogeneity & ArtiFact seen gens \& reals & 7,505 & 0.0\% FNR on StarGAN/CIPS vs.\ 43.7\% StyleGAN3 & Projected GAN 42.1\% FNR; MetFaces 36.7\% FPR & High-realism GANs \& artistic reals break cutoff \\
+Perturbation Stress & 53 conditions (15 families) & $7{,}505\times 53$ & Photometric shifts cost $<0.10$ Bal.\ Acc. & Blur, noise, downscale \& JPEG-10 push Bal.\ Acc.\ $\approx 0.50$ & Fine-detail loss drives authentic $\text{FPR}\rightarrow 1.0$ \\
+Cross-Dataset Shift & 4 external corpora & 38,864+ & 48.1\% unseen-gen FNR (50.2\% on DiFF) & Authentic FPR: 30.4\% FFHQ, 76.7\% RAISE, 82.6\% FairFace & Severe false accusations on external real faces \\
+Controlled Unseen Holdout & ArtiFact LOGO (SD held out) & 1,923 / 299 & Seen-gen recall 83.3\% vs.\ held-out SD 15.2\% & Paired 299-image SD recall drops $96.3\% \rightarrow 13.7\%$ & Pure generator shift collapses recall \\
+Controlled Ablations & ArtiFact grouped test (paired) & 7,505 & Seed floor $+0.0011$ AUC ($p=0.964$, $\kappa=0.8662$) & No-pretrain $-0.2243$, 160\,px $-0.0376$, no-aug $-0.0336$ AUC & Pretraining, 224\,px detail, and aug essential \\
+Multi-Backbone Comparators & 5 corpora across 3 backbones & $46{,}369\times 3$ & ViT-B/16 hits 0.9750 ID AUC (0.9893 on 140k) & ViT misses 64.0\% DiFF, 82.1\% Synth., 62.5\% FairFace FPR & Backbone scaling alone cannot cure OOD failure \\
+Whole-Platform Audit & 16 faults + 2,700 cases ($K=1,3$) & 2,716 & 16/16 faults passed; $K=3$ cuts clean error to 3.0\% & Cuts 140k error to 1.3\%, Synth.\ 3.0\%, FairFace 22.3\%, JPEG 100\% & Cross-paradigm fusion \& 4D caps stop errors \\
 \bottomrule
 \end{tabular}%
 }
 \end{table*}
 
+As Table~\ref{tab:master_results} demonstrates, even scaling from a convolutional ResNet-50 ($0.9261$ ROC-AUC) to a Vision Transformer ($0.9750$ ROC-AUC, $0.0211$ ECE) leaves standalone classifiers vulnerable to severe unseen-diffusion misses and external demographic false alarms, directly validating the multi-specialist fusion and abstention architecture enforced by M1--M18.
+
+\subsection{In-Distribution Discrimination, Calibration, and Subgroup Failure Profile}
+\label{subsec:indist}
+
+On the held-out ArtiFact test partition ($n = 7{,}505$: $3{,}779$ synthetic and $3{,}726$ authentic faces), the baseline ResNet-50 achieves ROC-AUC $0.9261$, area under the precision-recall curve (PR-AUC) $0.9348$, balanced accuracy $0.8483$, Matthews correlation coefficient (MCC) $0.6978$, Brier score $0.1131$, ECE $0.0525$, and maximum calibration error (MCE) $0.1544$. At the validation-frozen threshold $t = 0.3951$, the classifier misses 691 synthetic faces ($\text{FNR} = 18.29\%$) and falsely flags 449 authentic faces ($\text{FPR} = 12.05\%$). Figure~\ref{fig:calibration} illustrates the 15-bin calibration profile on this test split.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.96\linewidth]{figures/FIG0011_v1.pdf}
+  \caption{Calibration reliability curve (a) and bin sample count histogram (b) on the ArtiFact test split.}
+  \label{fig:calibration}
+\end{figure}
+
+Examining Figure~\ref{fig:calibration}(a) alongside the bimodal probability histogram in Figure~\ref{fig:calibration}(b) reveals an important forensic nuance: although overall ECE ($0.0525$) is low because most predictions concentrate in the extreme $0.0$ and $1.0$ bins (Figure~\ref{fig:calibration}(b)), intermediate bins exhibit substantial miscalibration ($\text{MCE} = 0.1544$), where observed fake proportions diverge noticeably from raw predicted probabilities. This empirical discrepancy directly justifies M9, which replaces raw $p$ with empirical validation-bin lookup $A_{\text{val}}(r)$ before computing decision confidence. Even more revealing is the subgroup error decomposition across individual seen generators and authentic sources shown in Figure~\ref{fig:subgroups}.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.86\textwidth]{figures/FIG0015_v1.pdf}
+  \caption{In-distribution false negative rates by synthetic generator and false positive rates by authentic source with 95\% Wilson intervals.}
+  \label{fig:subgroups}
+\end{figure*}
+
+As Figure~\ref{fig:subgroups} demonstrates, an aggregate $18.29\%$ FNR conceals extreme intra-dataset heterogeneity. Legacy and lower-fidelity generators such as StarGAN and CIPS incur $0.0\%$ FNR, whereas modern alias-free and perceptual GANs suffer severe miss rates even though their generator families were present during training: $43.7\%$ FNR on StyleGAN3, $42.1\%$ on Projected GAN, $38.3\%$ on StyleGAN2, and $38.2\%$ on Mask-Aware Transformer (MAT). Simultaneously, authentic portraits from CelebA-HQ ($7.0\%$ FPR) and FFHQ ($14.6\%$ FPR) incur moderate error rates, whereas scanned artistic portraits from MetFaces trigger a $36.7\%$ FPR because non-photographic brush and scan textures deviate from studio camera statistics \cite{Wu_2026}.
+
+\subsection{Perturbation Robustness Across Fifty-Three Image Degradations}
+\label{subsec:robustness}
+
+In operational investigations, facial images rarely arrive as uncompressed studio crops; they routinely undergo resizing, filtering, and lossy re-encoding across messaging and social platforms \cite{Guo_2024}. Figure~\ref{fig:robustness} plots balanced accuracy and ROC-AUC trajectories across all 53 synthetic degradation conditions spanning 15 perturbation families ($n = 7{,}505$ test images per condition).
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/FIG0016_v1.pdf}
+  \caption{Balanced accuracy and ROC-AUC trajectories across fifteen perturbation families (a) through (o) on the ArtiFact test split.}
+  \label{fig:robustness}
+\end{figure*}
+
+Inspecting the fifteen panels Figure~\ref{fig:robustness}(a) through Figure~\ref{fig:robustness}(o) separates detector sensitivity into two distinct regimes. First, moderate photometric and geometric adjustments, including brightness reduction and elevation (Figure~\ref{fig:robustness}(a), \ref{fig:robustness}(b)), contrast reduction and elevation (Figure~\ref{fig:robustness}(d), \ref{fig:robustness}(e)), desaturation and oversaturation (Figure~\ref{fig:robustness}(f), \ref{fig:robustness}(l)), mild occlusion (Figure~\ref{fig:robustness}(k)), and small in-plane rotations (Figure~\ref{fig:robustness}(n)), reduce balanced accuracy by less than $0.10$ while preserving ROC-AUC near $0.90$. Second, fine-detail and high-frequency degradations induce catastrophic failure: Gaussian blur (Figure~\ref{fig:robustness}(g)), additive Gaussian noise (Figure~\ref{fig:robustness}(h)), heavy JPEG compression down to quality factor 10 (Figure~\ref{fig:robustness}(i)), compound low-quality social-media uploads (Figure~\ref{fig:robustness}(j)), and aggressive spatial downscaling (Figure~\ref{fig:robustness}(m)) drive balanced accuracy down toward the $0.50$ chance floor. Importantly, comparing threshold-free ROC-AUC against fixed-threshold balanced accuracy in Figure~\ref{fig:robustness}(c) (center crop), Figure~\ref{fig:robustness}(i) (moderate JPEG), and Figure~\ref{fig:robustness}(o) (upscaling) reveals substantial operating-point drift: even when ranking separability partially survives, distortion shifts raw $P(\text{fake})$ upward on authentic faces until nearly every degraded real image is falsely accused as synthetic ($\text{FPR} \rightarrow 1.0$). Within our forensic architecture, M2 quality checks and M3 compression/noise/FFT reliability grading directly intercept degraded inputs so M6 and M9 cap decision confidence rather than trusting shifted neural logits \cite{Shen_2026}.
+
+\subsection{Cross-Dataset Generalization and Controlled Unseen-Generator Holdout}
+\label{subsec:cross}
+
+Evaluating the baseline ResNet-50 zero-shot at its frozen threshold ($t = 0.3951$) across the four external benchmarks exposes both directions of cross-domain failure, plotted in Figure~\ref{fig:cross_dataset}.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/FIG0018_v1.pdf}
+  \caption{Cross-dataset false negative and false positive rates of the baseline ResNet-50 across ArtiFact and four external benchmarks.}
+  \label{fig:cross_dataset}
+\end{figure}
+
+On the synthetic-detection axis in Figure~\ref{fig:cross_dataset}, familiar StyleGAN portraits in 140k Real and Fake Faces incur only $9.2\%$ FNR because StyleGAN spectral footprints closely resemble ArtiFact training fakes. By contrast, across 17 unseen generator families, overall FNR jumps from $18.3\%$ in-distribution to $48.1\%$, reaching $50.2\%$ FNR on unseen diffusion faces in DiFF (and climbing to $81.5\%$ FNR on the FreeDoM\_I subset \cite{Cheng_2024}). Even more alarming from a judicial standpoint is the authentic-image false-alarm rate: external real faces suffer $30.4\%$ FPR on 140k FFHQ JPEGs, $76.7\%$ FPR on Synthbuster RAISE photographs (yielding near-chance overall Synthbuster ROC-AUC of $0.5172$ alongside $23.7\%$ diffusion FNR), and $82.6\%$ FPR on FairFace across all seven demographic subgroups. Consistent with the attribute-shortcut findings of Xu et al.\ \cite{Xu_2024}, because ArtiFact authentic images are dominated by high-resolution aligned portraits, the standalone CNN misinterprets legitimate in-the-wild lighting, skin-tone diversity, and native JPEG histories in FairFace as synthetic anomalies.
+
+Because external benchmarks simultaneously vary generator architecture and camera acquisition pipeline, Figure~\ref{fig:unseen_logo} isolates pure unseen-generator shift on the identical ArtiFact acquisition pipeline via controlled Stable Diffusion holdout.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.82\textwidth]{figures/FIG0019_v1.pdf}
+  \caption{Controlled leave-one-generator-out evaluation comparing (a) seen-generator versus held-out Stable Diffusion recall and (b) paired recall on 299 shared test images.}
+  \label{fig:unseen_logo}
+\end{figure*}
+
+As Figure~\ref{fig:unseen_logo}(a) shows, the LOGO ResNet-50 maintains $83.3\%$ recall across its 12 seen generators and $88.6\%$ specificity on real faces (validation ROC-AUC $0.937$), proving that the model learned seen distributions effectively. Yet when presented with the $1{,}923$ held-out Stable Diffusion faces from the exact same ArtiFact preprocessing pipeline, recall plunges to $15.2\%$ ($293 / 1{,}923$). Figure~\ref{fig:unseen_logo}(b) sharpens this comparison on the exact 299 Stable Diffusion test images shared by both splits: the baseline ResNet-50 (which saw Stable Diffusion during training) detects $96.3\%$, whereas the LOGO model (unseen) detects only $13.7\%$. This $82.6$-percentage-point paired collapse confirms that supervised spatial features learned from GANs and other generators do not automatically generalize to an unseen latent diffusion family \cite{Yan_2026}, justifying why the standalone ResNet-50 is unsuitable for autonomous deployment.
+
+\subsection{Controlled One-Factor Ablations and Multi-Backbone Cross-Paradigm Comparison}
+\label{subsec:ablations}
+
+To verify which training design choices govern baseline discrimination and calibration, Table~\ref{tab:ranked} reports the fairness-compatible ranked comparison across the baseline ResNet-50 and the four single-factor ablations on the identical ArtiFact grouped test partition (paired ROC and PR curves in Supplementary Material S3).
+
 \begin{table*}[t]
 \centering
-\caption{Paired ROC-AUC bootstrap differences (10,000 resamples, seed 49) and exact two-sided McNemar tests against Baseline ResNet-50 ($n=7{,}505$; saved-run differences only).}
+\caption{Fairness-compatible performance comparison across baseline and one-factor ablation runs on the ArtiFact test split ($n=7{,}505$).}
+\label{tab:ranked}
+\footnotesize
+\setlength{\tabcolsep}{5.5pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}r l l r r r r r r r@{}}
+\toprule
+\textbf{Rank} & \textbf{Run Variant} & \textbf{Single Mutated Factor} & \textbf{ROC-AUC} & \textbf{PR-AUC} & \textbf{Bal.\ Acc.} & \textbf{MCC} & \textbf{FNR} & \textbf{FPR} & \textbf{ECE} \\
+\midrule
+1 & Seed-43 Replicate & Random seed ($42\rightarrow 43$) & 0.9272 & 0.9363 & 0.8481 & 0.6978 & 0.1881 & 0.1157 & 0.0545 \\
+2 & Baseline ResNet-50 & Baseline configuration ($\text{seed}=42$) & 0.9261 & 0.9348 & 0.8483 & 0.6978 & 0.1829 & 0.1205 & 0.0525 \\
+3 & No-Augmentation Ablation & Training augmentation disabled & 0.8925 & 0.9042 & 0.8059 & 0.6120 & 0.2056 & 0.1825 & 0.0378 \\
+4 & Reduced-Resolution Ablation & Input resolution ($160\times 160$\,px) & 0.8885 & 0.9053 & 0.8039 & 0.6082 & 0.2170 & 0.1753 & 0.0944 \\
+5 & No-Pretraining Ablation & ImageNet-1k pretraining disabled (11 epochs) & 0.7017 & 0.7092 & 0.6452 & 0.2912 & 0.3162 & 0.3935 & 0.0230 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+Inspecting the ranked point estimates in Table~\ref{tab:ranked} shows that the baseline ResNet-50 (ROC-AUC $0.9261$, balanced accuracy $0.8483$) and its independent Seed-43 Replicate (ROC-AUC $0.9272$, balanced accuracy $0.8481$) achieve identical MCC ($0.6978$) and nearly identical calibration ($0.0525$ vs.\ $0.0545$ ECE). By contrast, every single-factor removal substantially degrades discrimination: omitting training augmentation lowers balanced accuracy by $4.24$ percentage points and elevates FPR from $12.05\%$ to $18.25\%$, downscaling inputs to $160\times 160$ pixels increases both FNR ($21.70\%$) and calibration error ($0.0944$ ECE), and training from random initialization reduces balanced accuracy to $0.6452$. To verify that these drops exceed stochastic run-to-run variance on the same test items, Table~\ref{tab:stats} presents paired 10,000-resample bootstrap ROC-AUC differences and exact two-sided McNemar disagreement tests against the baseline ResNet-50 across all $7{,}505$ paired test predictions.
+
+\begin{table*}[t]
+\centering
+\caption{Paired bootstrap ROC-AUC differences (10,000 resamples, seed 49) and exact McNemar tests relative to the baseline ResNet-50 ($n=7{,}505$).}
 \label{tab:stats}
 \footnotesize
 \setlength{\tabcolsep}{5pt}
 \renewcommand{\arraystretch}{1.15}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}lrrlrrl@{}}
+\begin{tabular}{@{}l r r l r r l@{}}
 \toprule
-\textbf{Challenger vs.\ Baseline} & \textbf{$\Delta$ROC-AUC} & \textbf{CI Level} & \textbf{Bootstrap CI} & \textbf{McNemar Adj.\ $p$} & \textbf{Disagreements ($b/c$)} & \textbf{Saved-Run Status} \\
+\textbf{Challenger vs.\ Baseline} & \textbf{$\Delta$ROC-AUC} & \textbf{CI Level} & \textbf{Paired Bootstrap CI} & \textbf{Exact McNemar Adj.\ $p$} & \textbf{Disagreements ($b/c$)} & \textbf{Saved-Run Assessment} \\
 \midrule
-Seed Replicate (Seed 43) & $+0.0011$ & 95.0\% & $[-0.0012, +0.0035]$ & 0.964 & 251 / 249 & Not distinguishable \\
-No Augmentation & $-0.0336$ & 98.3\% & $[-0.0396, -0.0279]$ & $8.34\times 10^{-23}$ & 977 / 573 & Challenger lower \\
-No ImageNet Pretraining & $-0.2243$ & 98.3\% & $[-0.2383, -0.2101]$ & $7.1\times 10^{-217}$ & 2,012 / 491 & Challenger lower \\
-Reduced Resolution ($160$\,px) & $-0.0376$ & 98.3\% & $[-0.0447, -0.0307]$ & $1.36\times 10^{-21}$ & 991 / 596 & Challenger lower \\
+Seed-43 Replicate vs.\ Baseline & $+0.0011$ & 95.0\% & $[-0.0012, +0.0035]$ & 0.964 & 251 / 249 & Indistinguishable noise floor \\
+No-Augmentation vs.\ Baseline & $-0.0336$ & 98.3\% & $[-0.0396, -0.0279]$ & $8.34\times 10^{-23}$ & 977 / 573 & Statistically lower on split \\
+No-Pretraining vs.\ Baseline & $-0.2243$ & 98.3\% & $[-0.2383, -0.2101]$ & $7.10\times 10^{-217}$ & 2,012 / 491 & Statistically lower on split \\
+Reduced-Resolution (160\,px) vs.\ Baseline & $-0.0376$ & 98.3\% & $[-0.0447, -0.0307]$ & $1.36\times 10^{-21}$ & 991 / 596 & Statistically lower on split \\
 \bottomrule
 \end{tabular}%
 }
 \end{table*}
 
-Seed replication establishes a tight run-to-run repeatability floor ($\Delta\text{ROC-AUC}=+0.0011$, 95\% CI crossing zero, two-seed SD $0.0008$, decision agreement $0.9334$, Cohen's $\kappa=0.8662$, McNemar $p=0.964$). Every factor removal degrades discrimination an order of magnitude beyond this floor with Bonferroni-adjusted 98.3\% intervals strictly below zero (Figure~\ref{fig:ablation}): ImageNet-1k pretraining contributes the largest gain ($-0.2243$ ROC-AUC under the fixed 11-epoch budget), $224$\,px resolution preserves both discrimination ($-0.0376$) and calibration ($\text{ECE } 0.0525$ vs.\ $0.0944$), and train-only augmentation prevents early epoch-3 overfitting ($-0.0336$).
+The paired discordant counts ($b / c$, representing test samples correct under the baseline but wrong under the challenger versus the reverse) in Table~\ref{tab:stats} confirm a sharp statistical separation between seed noise and genuine factor degradation. Whereas the Seed-43 Replicate produces virtually symmetric disagreements ($251 / 249$, adjusted McNemar $p = 0.964$) with its 95\% bootstrap interval straddling zero, all three factor ablations exhibit heavily lopsided error increases ($977 / 573$, $2{,}012 / 491$, and $991 / 596$, all adjusted $p \le 1.36\times 10^{-21}$) whose Bonferroni-adjusted 98.3\% intervals lie strictly below zero. Figure~\ref{fig:ablation} visualizes these multi-metric deltas ($\Delta$ROC-AUC, $\Delta$Balanced Accuracy, and $\Delta$MCC) directly against the two-seed repeatability floor.
 
-\subsection{Whole-Platform Forensic Analyst and Full-Stack Verification}
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/FIG0020_v1.pdf}
+  \caption{One-factor ablation metric differences relative to the baseline ResNet-50 and the Seed-43 repeatability floor.}
+  \label{fig:ablation}
+\end{figure}
 
-In whole-platform evaluation (16 end-to-end scenarios in Supplementary Material S4), the AI Forensic Analyst passes \textbf{16/16 scenarios} and \textbf{9/9 quality dimensions} with \textbf{135 programmatically verified reasoning sentences}, \textbf{zero ungrounded leaks}, \textbf{zero silent failures}, and \textbf{60.02\,ms mean latency}. Key verified safety behaviors include:
+Comparing Tables~\ref{tab:ranked} and \ref{tab:stats} with Figure~\ref{fig:ablation} yields three clear methodological conclusions: the Seed-43 Replicate confirms tight deterministic stability ($+0.0011$ ROC-AUC, Cohen's $\kappa = 0.8662$), removing ImageNet-1k initialization reduces ROC-AUC by $-0.2243$ \cite{Khan_2024}, and reducing input resolution or omitting augmentation degrades both discrimination and calibration \cite{Huang_2022}. To test whether replacing the residual CNN with compound-scaled convolutional or global self-attention backbones eliminates cross-domain failure under the exact same $224\times 224$ grouped-split fairness contract, Table~\ref{tab:backbones} compares ResNet-50, EfficientNet-B4, and Vision Transformer ViT-B/16 across $46{,}369$ evaluated test images per model.
 
-\begin{itemize}
-  \item \textbf{High-Confidence Safety Override:} When M4 emits $P(\text{fake})=0.99$ ($C_{\text{pred}}=0.9717$) while supporting collectors are unusable ($C_{\text{ev}}=0.3333$), the conservative cap overrides the raw neural score to $C_{\text{dec}}=0.3333$ and M8 issues \textit{Inconclusive} instead of a blind \textit{Fake} verdict.
-  \item \textbf{Graceful Specialist Degradation:} Missing model weights or specialist timeouts degrade cleanly to \textit{Unknown} with \texttt{null} prediction and decision confidences while preserving all nine contextual collectors.
-  \item \textbf{Anti-Hallucination Reasoning Enforcement:} Deliberately injected ungrounded claims or invalid evidence references are deterministically rejected by M11 via M16.
-  \item \textbf{Full-Stack Web Verification:} All 85 automated unit/API/frontend tests (55 forensic core, 18 Django/DRF backend, 12 React frontend), production Vite build, live cross-tier async HTTP integration, and all six live UAT scenarios pass with zero leaked stack traces.
-\end{itemize}
+\begin{table*}[t]
+\centering
+\caption{Multi-backbone in-distribution discrimination, paired statistical differences against ResNet-50, and zero-shot cross-dataset error rates ($n=46{,}369$ test images per model).}
+\label{tab:backbones}
+\footnotesize
+\setlength{\tabcolsep}{4.5pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}l r r r l l r l l r@{}}
+\toprule
+\textbf{Architecture} & \textbf{ID AUC} & \textbf{ID Bal.\ Acc.} & \textbf{ID ECE} & \textbf{$\Delta$ROC-AUC vs.\ ResNet-50 (95\% CI)} & \textbf{McNemar $p$ ($b/c$)} & \textbf{DiFF FNR (\%)} & \textbf{140k AUC / FPR (\%)} & \textbf{Synth.\ FNR / FPR (\%)} & \textbf{FairFace FPR (\%)} \\
+\midrule
+ViT-B/16 & 0.9750 & 0.9153 & 0.0211 & $+0.0489$ $[+0.0439, +0.0541]$ & $5.20\times 10^{-53}$ (285 / 788) & 64.03 & 0.9893 / 0.99 & 82.07 / 8.67 & 62.52 \\
+ResNet-50 & 0.9261 & 0.8483 & 0.0525 & $+0.0000$ (Reference) & N/A & 50.24 & 0.9012 / 30.37 & 23.70 / 76.67 & 82.59 \\
+EfficientNet-B4 & 0.8247 & 0.7429 & 0.0272 & $-0.1014$ $[-0.1100, -0.0930]$ & $7.43\times 10^{-81}$ (1,264 / 470) & 68.20 & 0.7414 / 22.09 & 9.78 / 94.00 & 76.53 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
 
-\section{Discussion and Limitations}
+Table~\ref{tab:backbones} provides decisive empirical evidence that cross-domain fragility is not an artifact of an underpowered baseline. On in-distribution ArtiFact test images, Vision Transformer ViT-B/16 achieves $0.9750$ ROC-AUC ($+0.0489$ above ResNet-50, $p = 5.20\times 10^{-53}$), $0.9153$ balanced accuracy, and $0.0211$ ECE, while lowering external 140k FFHQ false positives from $30.37\%$ to $0.99\%$ ($0.9893$ ROC-AUC); conversely, forcing EfficientNet-B4 (pretraining resolution $320$--$380$\,px) onto the fixed $224\times 224$ input grid compresses its MBConv receptive fields to $0.8247$ ROC-AUC \cite{Altamimi_2026}. Yet on truly unseen generative families and camera pipelines, ViT-B/16 still misses $64.03\%$ of DiFF diffusion portraits, misses $82.07\%$ of Synthbuster diffusion syntheses ($\text{ECE} = 0.6806$), and falsely accuses $62.52\%$ of FairFace portraits. Figure~\ref{fig:backbones} visualizes both the in-distribution ROC separation and this cross-paradigm OOD polarization.
 
-Our empirical findings underscore a foundational principle for digital forensics: even a well-calibrated, leakage-free neural detector ($\text{ROC-AUC } 0.9261$, $\text{ECE } 0.0525$) exhibits catastrophic failures once exposed to unseen diffusion generators ($13.7\%$ paired recall), external authentic face distributions ($82.6\%$ FairFace FPR), or heavy post-processing ($\approx 0.50$ balanced accuracy). Deploying such a classifier as an autonomous binary arbiter is scientifically indefensible. Structurally isolating perception (M3--M4) from immutable evidence logging (M5--M6), validation-calibrated four-dimensional confidence (M9), and an image-blind four-way Decision Engine (M8) transforms silent model failure into explicit \textit{Inconclusive} or \textit{Unknown} abstentions backed by auditable provenance.
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/FIG0034_v1.pdf}
+  \caption{Multi-backbone comparison across ResNet-50, EfficientNet-B4, and ViT-B/16 showing (a) in-distribution ROC curves and (b) cross-dataset error polarization.}
+  \label{fig:backbones}
+\end{figure*}
 
-Six Version 1 scope boundaries are disclosed transparently: (1) only one CNN backbone family (ResNet-50) was trained across six runs, leaving Xception, EfficientNet-B4, and self-supervised ViT-B/16 \cite{Khan_2024} for Version 2; (2) factor ablations ran for one seed each (two baseline seeds total, so Wilcoxon across seeds is deferred and no cross-seed superiority is claimed), and the no-pretraining run reflects a fixed 11-epoch single-factor comparison rather than a separately tuned schedule; (3) the nine non-detector collectors currently provide reliability-graded context under interpretable rule-based fusion, whereas learned weighted or Bayesian fusion awaits curated labeled multi-collector forensic corpora; (4) LOGO evaluation held out Stable Diffusion only (fake-only recall), and perturbations were applied post-preprocessing to $224$\,px crops; (5) runtime Grad-CAM/SHAP/LIME tensor producers remain reserved for Version 2 (M10 accurately records \texttt{no\_data} when visual maps are absent); and (6) Version 1 is scoped to static single-face images and local execution, with multimodal video/audio/text extensions via M18, production TLS/authentication hardening, and practitioner human-factors trials planned for Version 2.
+Examining Figure~\ref{fig:backbones}(a) alongside Figure~\ref{fig:backbones}(b) uncovers a complementary architectural phenomenon that directly powers multi-specialist fusion in M7. While Figure~\ref{fig:backbones}(a) confirms smooth Pareto dominance of ViT-B/16 over both CNNs across all operating thresholds on ArtiFact, Figure~\ref{fig:backbones}(b) reveals diametrically opposite OOD failure biases on Synthbuster: both CNNs (ResNet-50 and EfficientNet-B4) over-predict the synthetic class ($76.67\%$ and $94.00\%$ FPR), whereas ViT-B/16 over-predicts the authentic class ($82.07\%$ FNR, $8.67\%$ FPR). Because patch self-attention and local spatial convolutions latch onto different shortcut statistics \cite{Maiano_2026}, combining them inside M7 converts silent single-backbone errors into explicit inter-specialist disagreement.
+
+\subsection{Whole-Platform Forensic Verification and Multi-Specialist Abstention Benchmark}
+\label{subsec:platform}
+
+Evaluating the complete eighteen-module AI Forensic Analyst first across all 16 deterministic fault and governance scenarios (full scenario matrix in Supplementary Material S4) confirms 16/16 scenario passes across all nine quality dimensions, generating 135 programmatically ledger-verified reasoning sentences with zero ungrounded claims, zero silent failures, and a mean unloaded orchestration latency of $60.02$\,ms across M1--M18. Specifically, when M4 emits $p = 0.99$ ($C_{\text{pred}} = 0.9717$) while supporting collectors are unusable ($C_{\text{ev}} = 0.3333$), Eq.~\eqref{eq:cdec} caps $C_{\text{dec}}$ at $0.3333$ and M8 issues \textit{Inconclusive}; missing weights or specialist timeouts degrade cleanly to \textit{Unknown} with \texttt{null} confidences; malformed, corrupted, zero-face, or multi-face uploads halt inside Trust Boundary A; and injected ungrounded sentences are deterministically rejected by M11 via M16 (85 automated unit/API/UI tests and six live User Acceptance Tests passing).
+
+To quantify end-to-end error suppression across both physical degradations and cross-dataset shifts, we executed $2{,}700$ M1--M18 investigations across nine tracks ($300$ stratified cases per track) using M6 reliability bounds calibrated strictly on ArtiFact validation quantiles with zero test or external tuning. Table~\ref{tab:abstention} compares standalone ResNet-50 and ViT-B/16 error rates against single-specialist ($K = 1$) and cross-paradigm multi-specialist ($K = 3$: ResNet-50, EfficientNet-B4, and ViT-B/16 on clean tracks; $K = 1$ on perturbed tracks) post-governance erroneous verdict rates.
+
+\begin{table*}[t]
+\centering
+\caption{Quantitative comparison of standalone neural errors versus single-specialist ($K=1$) and multi-specialist ($K=3$) M1--M18 governance across 2,700 benchmark cases.}
+\label{tab:abstention}
+\footnotesize
+\setlength{\tabcolsep}{4.3pt}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}l r r r r r r r l@{}}
+\toprule
+\textbf{Benchmark Track} & \textbf{Cases ($n$)} & \textbf{ResNet Err.\ (\%)} & \textbf{ViT Err.\ (\%)} & \textbf{$K=1$ Wrong (\%)} & \textbf{$K=3$ Cov.\ (\%)} & \textbf{$K=3$ Abstain (\%)} & \textbf{$K=3$ Wrong (\%)} & \textbf{Error Red.\ vs.\ ResNet / ViT (\%)} \\
+\midrule
+ArtiFact Clean & 300 & 14.33 & 8.00 & 14.00 & 64.00 & 36.00 & 3.00 & 79.07 / 62.50 \\
+ArtiFact Severe JPEG ($Q=10$) & 300 & 39.33 & N/A & 0.00 & 0.00 & 100.00 & 0.00 & 100.00 / N/A \\
+ArtiFact Gaussian Blur ($r=3.0$) & 300 & 49.67 & N/A & 13.67 & 25.67 & 74.33 & 13.67 & 72.48 / N/A \\
+ArtiFact Gaussian Noise ($\sigma=0.10$) & 300 & 49.33 & N/A & 0.00 & 0.00 & 100.00 & 0.00 & 100.00 / N/A \\
+ArtiFact Downscaling ($0.25\times$) & 300 & 50.00 & N/A & 25.67 & 45.00 & 55.00 & 25.67 & 48.67 / N/A \\
+DiFF Unseen Diffusion & 300 & 49.33 & 59.33 & 46.67 & 50.00 & 50.00 & 33.33 & 32.43 / 43.82 \\
+140k Real and Fake Faces & 300 & 18.67 & 12.00 & 18.33 & 50.67 & 49.33 & 1.33 & 92.86 / 88.89 \\
+Synthbuster Commercial DM & 300 & 49.33 & 43.33 & 29.00 & 10.33 & 89.67 & 3.00 & 93.92 / 93.08 \\
+FairFace Demographic Real & 300 & 80.00 & 60.33 & 36.67 & 32.33 & 67.67 & 22.33 & 72.08 / 62.98 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+Table~\ref{tab:abstention} demonstrates the synergistic power of combining physical integrity collectors (M3/M6) with cross-paradigm specialist fusion (M4/M7). On severely degraded inputs, physical quality bounds alone ($K = 1$) eliminate $100.00\%$ of silent errors under JPEG $Q = 10$ and Gaussian noise $\sigma = 0.10$, $72.48\%$ under Gaussian blur $r = 3.0$, and $48.67\%$ under $0.25\times$ downscaling. On clean and cross-dataset tracks, upgrading from $K = 1$ to $K = 3$ (ResNet-50, EfficientNet-B4, and ViT-B/16) yields dramatic gains: silent wrong verdicts drop from $14.00\%$ to $3.00\%$ on ArtiFact Clean ($95.31\%$ selective accuracy on decided cases), from $18.33\%$ to $1.33\%$ on 140k Faces ($97.37\%$ selective accuracy), from $29.00\%$ to $3.00\%$ on Synthbuster ($93.92\%$ reduction vs.\ ResNet-50 and $93.08\%$ vs.\ ViT-B/16), from $36.67\%$ to $22.33\%$ on FairFace ($72.08\%$ reduction), and from $46.67\%$ down to $33.33\%$ on visually crisp unseen diffusion faces in DiFF (a six-fold improvement in error suppression over $K = 1$'s $5.41\%$, cutting ViT-B/16 misses by $43.82\%$). Figure~\ref{fig:governance} illustrates both this nine-track error suppression and the selective risk-coverage curve.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/FIG0033_v1.pdf}
+  \caption{End-to-end M1--M18 governance across 2,700 cases comparing (a) standalone, $K=1$, and $K=3$ erroneous verdict rates and (b) selective risk-coverage trajectories.}
+  \label{fig:governance}
+\end{figure*}
+
+Inspecting Figure~\ref{fig:governance}(a) alongside Figure~\ref{fig:governance}(b) across the $1{,}500$ pooled clean and degraded ArtiFact cases explains why raw neural probability fails as an abstention criterion. While Figure~\ref{fig:governance}(a) highlights the consistent step-down in wrong verdicts from standalone ResNet-50 to $K = 1$ physical gating and $K = 3$ cross-paradigm consensus, Figure~\ref{fig:governance}(b) shows that because blur, noise, and downscaling push raw $P(\text{fake})$ toward $0.999$ on authentic faces ($|p - t| \rightarrow 0.60$), ranking cases by raw margin $|p - t|$ leaves selective error flat near $39.47\%$--$40.84\%$ across all coverage levels. By contrast, filtering on M9 four-dimensional calibrated confidence $C_{\text{dec}}$ drives selective error monotonically down from $40.53\%$ at full coverage to $4.21\%$ ($95.79\%$ selective accuracy) at high-certainty multi-specialist consensus ($C_{\text{dec}} \ge 0.80$).
+
+\subsection{Comparative Forensic Synthesis and Operational Implications}
+\label{subsec:synthesis}
+
+Situating our empirical and architectural results alongside the recent literature highlights why calibration and system governance must complement backbone research. Prior uncertainty-focused detectors such as PE-DD \cite{Jin_2025} reduce Brier score and ECE inside CNN ensembles yet still emit binary outputs that degrade under severe compression, while OOD abnormality modules \cite{Maiano_2026} struggle when transformer attention maps flatten across generator groups. Similarly, reliability-gated operator fusion in PORI-Gate \cite{Shen_2026} and fairness audits on DiffSynFace \cite{Panda_2026} both reveal that strong ranking AUC/AP frequently coexists with severe fixed-threshold accuracy collapse under score shift, mirroring the exact phenomenon we observed across all three backbones (Figure~\ref{fig:robustness}(c), \ref{fig:robustness}(i); Figure~\ref{fig:backbones}(b)). Whereas raising a single probability threshold to 80\%--85\% in judicial screening collapses recall to 18\% \cite{Hydara_2024}, decoupling M4 perception from M6 reliability grading, M7 cross-paradigm consensus, M9 four-dimensional calibrated confidence, and M8 four-way abstention (\textit{Real}, \textit{Fake}, \textit{Inconclusive}, \textit{Unknown}) routes ambiguous, degraded, or contested cases to human forensic review \cite{Silva_2022} without sacrificing verified provenance.
+
+\section{Limitations}
+\label{sec:limitations}
+
+In accordance with transparent forensic reporting, six scope boundaries of this study warrant explicit discussion. First, while our GPU comparator matrix spans three distinct neural paradigms (ResNet-50, EfficientNet-B4, and ViT-B/16), all three were evaluated under a fixed $224\times 224$ input contract to preserve strict grouped-split fairness; evaluating higher native resolutions ($299$\,px Xception \cite{Altamimi_2026}, $380$\,px EfficientNet-B4 \cite{Silva_2022}), space-frequency networks \cite{Guo_2024}, and vision-language encoders \cite{Wu_2026} remains scheduled for Version 2, and no multi-seed superiority is claimed. Second, two baseline seeds established run-to-run repeatability, whereas each ablation and backbone comparator ran for one seed, precluding multi-seed Wilcoxon signed-rank claims, and the from-scratch run reflects a fixed 11-epoch single-factor budget rather than an extended convergence schedule.
+
+Third, within Version 1 of the forensic core, the nine M3 signal collectors supply reliability-graded contextual corroboration while M4 specialists ($K = 1$ or $K = 3$) cast directional votes under interpretable \texttt{rule\_based} fusion; training calibrated directional spectral \cite{Yan_2026}, operator-probe \cite{Shen_2026}, and biometric \cite{Xue_2023} specialists alongside learned \texttt{weighted} and \texttt{bayesian} fusion requires multi-collector ground-truth corpora in Version 2. Fourth, controlled LOGO evaluation held out Stable Diffusion only, and synthetic perturbations were applied to $224\times 224$ preprocessed crops rather than raw pre-crop camera uploads. Fifth, M10 currently enforces the structured explainability schema and honestly records \texttt{"no\_data"} when live Grad-CAM, LIME \cite{Reza_2026}, or pixel-fakeness tensors \cite{Huang_2022} are uncomputed at runtime. Finally, Version 1 targets single-face static images in a local deployment profile; temporal video, audio, and multimodal extensions registered via M18 \cite{Croitoru_2026}, production authentication hardening, and certified forensic-examiner usability trials \cite{Hydara_2024} represent direct avenues for future work.
 
 \section{Conclusion}
+\label{sec:conclusion}
 
-Trustworthy synthetic face forensics requires shifting from standalone binary classification to auditable, uncertainty-aware forensic systems. Across five public datasets, six controlled GPU experiments, and multi-axis stress testing, we quantified the exact unseen-generator ($13.7\%$ paired Stable Diffusion recall), external authentic-face ($82.6\%$ FairFace FPR), and fine-detail perturbation failures of a standardized ResNet-50 baseline. We then designed, implemented, and verified the 18-module AI Forensic Analyst (M1--M18), demonstrating across 16 end-to-end scenarios (135 verified reasoning sentences, zero ungrounded leaks, 60.02\,ms mean latency) and full-stack web verification (85 automated tests plus six live UAT scenarios) how trust-boundary isolation, reliability-weighted fusion, validation-calibrated four-dimensional confidence, and four-way abstention prevent overconfident neural probabilities from becoming silent forensic errors.
+This study demonstrated that reliable synthetic face authentication requires moving beyond standalone binary neural classification toward calibrated, auditable, and abstention-capable multi-specialist forensic systems. Across a strictly public five-dataset benchmark and eight controlled GPU experiments spanning ResNet-50, EfficientNet-B4, and Vision Transformer ViT-B/16, we proved that even scaling in-distribution performance from $0.9261$ ROC-AUC (ResNet-50) to $0.9750$ ROC-AUC and $0.0211$ ECE (ViT-B/16) fails to prevent $64.0\%$ unseen DiFF diffusion misses, $82.1\%$ Synthbuster misses, and $62.5\%$ external FairFace false accusations. By designing and verifying the eighteen-module AI Forensic Analyst (M1--M18) across 16 fault scenarios (135 ledger-verified sentences, zero ungrounded claims) and a $2{,}700$-case nine-track governance benchmark, we showed that combining physical integrity validation (M3/M6), cross-paradigm multi-specialist fusion (M7), validation-calibrated four-dimensional confidence (M9), and image-blind four-way decisioning (M8) reduces silent erroneous verdicts to $1.3\%$--$3.0\%$ on ArtiFact, 140k Faces, and Synthbuster, cuts FairFace false accusations by $72.1\%$, reduces unseen DiFF wrong verdicts by $32.4\%$--$43.8\%$, and eliminates $48.7\%$--$100.0\%$ of silent degradation errors. Future work will integrate foundation-model and dual-frequency directional specialists, learned Bayesian fusion, runtime localization maps, and multimodal audio-visual verification via M18.
 
 \section*{Statements and Declarations}
 
-\textbf{Reproducibility Statement.} All preprocessing pipelines, experiment configurations, statistical bootstrap/McNemar calculations, forensic platform tests, figure rendering scripts, and consistency verifiers are deterministically scripted with fixed seeds, SHA-256 manifests, and locked software dependencies (Supplementary Material S5).
+\textbf{Reproducibility Statement.} All dataset preprocessing pipelines, split generators, training configurations, paired bootstrap and exact McNemar statistical scripts, figure renderers, and consistency verifiers are deterministically scripted with fixed random seeds, SHA-256 checksum manifests, and locked dependencies (Supplementary Material S5).
 
-\textbf{Code Availability.} Complete source code for the 18-module AI Forensic Analyst, Django/DRF REST API, React frontend, training/evaluation automation, and editable diagram sources will be made publicly available under the MIT License upon acceptance (and is available to editors and reviewers upon request).
+\textbf{Code Availability.} Complete source code for the eighteen-module AI Forensic Analyst, Django/DRF backend, React frontend, evaluation/verification scripts, and editable diagram sources will be made publicly available under the MIT License upon acceptance (and is available to editors and reviewers upon request).
 
-\textbf{Data Availability.} This study uses strictly public, open-license benchmark datasets: ArtiFact faces (MIT), DiFF official test \cite{Cheng_2024} (Research Open), 140k Real and Fake Faces (Public Open), Synthbuster \cite{Bammey_2024} (CC BY 4.0), and FairFace (CC BY 4.0). All preprocessing parameters, exclusion logs, and split manifests are published in the repository.
+\textbf{Data Availability.} This study uses strictly public, open-license benchmark datasets: ArtiFact faces (MIT), DiFF official test \cite{Cheng_2024} (Research Open), 140k Real and Fake Faces (Public Open), Synthbuster \cite{Bammey_2024} (CC BY 4.0), and FairFace (CC BY 4.0). All split manifests, preprocessing logs, and exclusion lists are published in the companion repository.
 
-\textbf{Ethics and Privacy Statement.} No private photographs or human-subjects experiments were collected. All analyses use publicly licensed academic corpora, and EXIF metadata is stripped during preprocessing.
+\textbf{Ethics and Privacy Statement.} No private photographs or human-subjects experiments were conducted. All analyses rely on publicly licensed academic corpora with EXIF metadata stripped during deterministic preprocessing.
 
 \textbf{Declaration of Competing Interest.} The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 

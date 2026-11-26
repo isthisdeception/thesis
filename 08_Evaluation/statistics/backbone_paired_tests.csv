@@ -1,0 +1,4 @@
+challenger_exp,challenger_arch,reference_exp,reference_arch,delta_roc_auc,delta_roc_auc_ci_low,delta_roc_auc_ci_high,delta_bal_acc,delta_bal_acc_ci_low,delta_bal_acc_ci_high,mcnemar_ref_right_chal_wrong,mcnemar_ref_wrong_chal_right,mcnemar_p_two_sided
+EXP0008,ViT-B/16,EXP0001,ResNet-50,0.048923,0.043917,0.054109,0.066953,0.058651,0.075347,285,788,5.195928432542848e-53
+EXP0007,EfficientNet-B4,EXP0001,ResNet-50,-0.10141,-0.109962,-0.092973,-0.105466,-0.116008,-0.094557,1264,470,7.427017011452343e-81
+EXP0008,ViT-B/16,EXP0007,EfficientNet-B4,0.150333,0.141666,0.159024,0.172419,0.162121,0.182636,249,1546,1.6867761448111803e-205

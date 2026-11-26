@@ -34,6 +34,9 @@ JOURNAL_FIGS = [
     "FIG0018_v1.pdf",
     "FIG0019_v1.pdf",
     "FIG0020_v1.pdf",
+    "FIG0031_v1.pdf",
+    "FIG0033_v1.pdf",
+    "FIG0034_v1.pdf",
 ]
 
 FORBIDDEN_JARGON_RE = re.compile(
@@ -80,6 +83,8 @@ def clean_thesis_text(text: str) -> str:
         (r"`?EXP0004`?", "No-Augmentation Ablation"),
         (r"`?EXP0005`?", "No-Pretraining Ablation"),
         (r"`?EXP0006`?", "160px Resolution Ablation"),
+        (r"`?EXP0007`?", "EfficientNet-B4 Comparator"),
+        (r"`?EXP0008`?", "ViT-B/16 Comparator"),
         (r"`?MODEL0001`?", "Baseline ResNet-50"),
         (r"`?MODEL0002`?", "Xception"),
         (r"`?MODEL0003`?", "EfficientNet-B4"),
@@ -97,7 +102,10 @@ def clean_thesis_text(text: str) -> str:
         (r"`?PP0001`?[–\-]`?PP0006`?", "deterministic preprocessing pipeline"),
         (r"`?PP000[1-6]`?", "preprocessing pipeline"),
         (r"`?EVAL0007`?", "whole-platform verification"),
-        (r"`?EVAL000[1-6]`?[–\-]`?EVAL000[1-7]`?", "evaluation suite"),
+        (r"`?EVAL0008`?", "large-scale governance benchmark"),
+        (r"`?EVAL0009`?", "EfficientNet-B4 evaluation"),
+        (r"`?EVAL0010`?", "ViT-B/16 evaluation"),
+        (r"`?EVAL000[1-8]`?[–\-]`?EVAL00(?:0[1-9]|10)`?", "evaluation suite"),
         (r"`?EVAL000[1-6]`?", "evaluation suite"),
         (r"(?<![A-Za-z0-9_/])`?FIG00(\d{2})`?(?!_)", lambda m: f"Figure {int(m.group(1))}"),
         (r"(?<![A-Za-z0-9_/])`?TAB000(\d)`?(?![_.])", lambda m: f"Table {int(m.group(1))}"),
@@ -206,7 +214,8 @@ def main() -> int:
         for i in issues:
             print("ISSUE:", i)
         return 1
-    print("Camera-ready audit: PASS (0 internal jargon hits, 0 em-dashes, 0 broken images, 28/28 BibTeX keys matched)")
+    bib_count = len(re.findall(r"@\w+\{([^,]+),", BIB_PATH.read_text(encoding="utf-8")))
+    print(f"Camera-ready audit: PASS (0 internal jargon hits, 0 em-dashes, 0 broken images, {bib_count}/{bib_count} BibTeX keys matched)")
     return 0
 
 

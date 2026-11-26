@@ -12,6 +12,37 @@ class ValidationConfig:
     min_sharpness: float = 1.0
     uncertainty_band: float = 0.05
     conflict_tolerance: float = 0.0
+    threshold_center: float = 0.5
+    unusable_sharpness_below: float | None = None
+    max_sharpness: float | None = None
+    max_blockiness: float | None = None
+    min_freq_change: float | None = None
+    max_freq_change: float | None = None
+    min_texture: float | None = None
+    max_texture: float | None = None
+    physical_integrity_conflict: bool = False
+    detector_polarity_conflict: bool = False
+
+    @classmethod
+    def calibrated_artifact_val(cls) -> "ValidationConfig":
+        """Strictly validation-derived bounds from DS0001 SPLIT0001 val quantiles (zero test/OOD tuning)."""
+        return cls(
+            low_confidence_below=0.3,
+            medium_confidence_below=0.6,
+            min_sharpness=3.00,
+            unusable_sharpness_below=2.65,
+            max_sharpness=11.50,
+            max_blockiness=1.20,
+            min_freq_change=2.55,
+            max_freq_change=10.80,
+            min_texture=2.35,
+            max_texture=10.40,
+            threshold_center=0.395057,
+            uncertainty_band=0.10,
+            conflict_tolerance=0.0,
+            physical_integrity_conflict=True,
+            detector_polarity_conflict=True,
+        )
 
 
 @dataclass(frozen=True)
@@ -44,12 +75,40 @@ def findings_for(item: dict, config: ValidationConfig) -> list[Finding]:
         found.append(Finding("unusable", "incomplete_metadata"))
     if evidence_type == "deep_learning_prediction":
         probability = _number(value)
-        if probability is not None and abs(probability - 0.5) <= config.uncertainty_band:
+        center = (
+            _number(item["processed_output"].get("threshold"))
+            if config.detector_polarity_conflict and _number(item["processed_output"].get("threshold")) is not None
+            else config.threshold_center
+        )
+        if probability is not None and abs(probability - center) <= config.uncertainty_band:
             found.append(Finding("low", "model_uncertainty"))
     if evidence_type == "face_quality":
         sharpness = _number(value)
-        if sharpness is not None and sharpness < config.min_sharpness:
-            found.append(Finding("low", "poor_image_quality"))
+        if sharpness is not None:
+            if config.unusable_sharpness_below is not None and sharpness < config.unusable_sharpness_below:
+                found.append(Finding("unusable", "poor_image_quality"))
+            elif config.max_sharpness is not None and sharpness > config.max_sharpness:
+                found.append(Finding("unusable", "excessive_noise"))
+            elif sharpness < config.min_sharpness:
+                found.append(Finding("low", "poor_image_quality"))
+    if evidence_type == "compression_artifacts" and config.max_blockiness is not None:
+        blockiness = _number(value)
+        if blockiness is not None and blockiness > config.max_blockiness:
+            found.append(Finding("unusable", "compression_degradation"))
+    if evidence_type == "frequency_domain":
+        freq = _number(value)
+        if freq is not None:
+            if config.min_freq_change is not None and freq < config.min_freq_change:
+                found.append(Finding("unusable", "spectral_detail_loss"))
+            elif config.max_freq_change is not None and freq > config.max_freq_change:
+                found.append(Finding("unusable", "spectral_noise_spike"))
+    if evidence_type == "texture_analysis":
+        tex = _number(value)
+        if tex is not None:
+            if config.min_texture is not None and tex < config.min_texture:
+                found.append(Finding("unusable", "texture_degradation"))
+            elif config.max_texture is not None and tex > config.max_texture:
+                found.append(Finding("unusable", "texture_noise_spike"))
     if evidence_type == "image_statistics":
         variance = _number(raw.get("luminance_variance"))
         if variance == 0:
@@ -109,6 +168,29 @@ def conflicts(items: list[dict], config: ValidationConfig) -> dict[str, list[str
                 right_value = _number(right["processed_output"].get("value"))
                 if right_value is None:
                     continue
-                if abs(left_value - right_value) > config.conflict_tolerance:
+                if config.detector_polarity_conflict and left["evidence_type"] == "deep_learning_prediction":
+                    t_left = _number(left["processed_output"].get("threshold"))
+                    t_right = _number(right["processed_output"].get("threshold"))
+                    c_left = config.threshold_center if t_left is None else t_left
+                    c_right = config.threshold_center if t_right is None else t_right
+                    if (left_value >= c_left) != (right_value >= c_right):
+                        partners[left["evidence_id"]].append(right["evidence_id"])
+                elif abs(left_value - right_value) > config.conflict_tolerance:
                     partners[left["evidence_id"]].append(right["evidence_id"])
+    if config.physical_integrity_conflict:
+        physical_types = {"compression_artifacts", "face_quality", "frequency_domain", "texture_analysis"}
+        corrupted_ids = [
+            item["evidence_id"]
+            for item in items
+            if item["evidence_type"] in physical_types
+            and any(f.quality == "unusable" for f in findings_for(item, config))
+        ]
+        dl_ids = [item["evidence_id"] for item in items if item["evidence_type"] == "deep_learning_prediction"]
+        if corrupted_ids and dl_ids:
+            for cid in corrupted_ids:
+                for did in dl_ids:
+                    if did not in partners[cid]:
+                        partners[cid].append(did)
+                    if cid not in partners[did]:
+                        partners[did].append(cid)
     return partners
