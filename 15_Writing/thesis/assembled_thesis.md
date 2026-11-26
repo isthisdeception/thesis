@@ -6,7 +6,7 @@
 |---|---|
 | **Manuscript Version** | `1.0.0-rc1` (Assembled from Checklist 13 Approved Chapters) |
 | **Assembly Date** | `2026-11-27` |
-| **Source Git Revision** | `004fba1` |
+| **Source Git Revision** | `9ab5067` |
 | **Research Direction** | Direction 1 (`DEC0003`): System-Level AI Forensic Analyst + Generalization Focus (`DEC0002`) |
 | **Quality Gates Passed** | Checklists 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13 (Human-Confirmed) |
 | **Bibliography Source** | `15_Writing/references/references.bib` (`44` verified entries, `P0001`–`P0028`) |
@@ -100,8 +100,8 @@ This thesis manuscript is compiled deterministically from the ten Checklist 13 a
 | `FIG0028` | Reliability-weighted evidence fusion (`MOD007`, `DEC0009`), four-dimensional validation-calibrated confidence estimation (`MOD009`, `DEC0010... | `09_Figures/specs/FIG0028_spec.md` | Exported (PNG + PDF) |
 | `FIG0029` | Three-tier system architecture connecting the React 18 frontend (`12_Web`, `MOD014`, 14 pages, 24 accessible components), the seven-app Djan... | `09_Figures/specs/FIG0029_spec.md` | Exported (PNG + PDF) |
 | `FIG0030` | Config-driven FastAI training and fault-tolerant checkpoint architecture (`17_Automation/training/`). Every run validates immutable YAML con... | `09_Figures/specs/FIG0030_spec.md` | Exported (PNG + PDF) |
-| `FIG0031` | Representative preprocessed samples (`224 x 224` px) across the five public benchmark datasets, labeled `(a)` through `(j)`. | `09_Figures/specs/FIG0031_spec.md` | Exported (PNG + PDF) |
-| `FIG0032` | Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators `(1)` through `(42)` across `DS0001`–`DS0... | `09_Figures/specs/FIG0032_spec.md` | Exported (PNG + PDF) |
+| `FIG0031` | Preprocessed authentic and synthetic samples (`224 x 224` px) covering every generator, source, and demographic subgroup across `(a)` ArtiFa... | `09_Figures/specs/FIG0031_spec.md` | Exported (PNG + PDF) |
+| `FIG0032` | Criterion-selected lowest-error `(a)`–`(e)` versus highest-error `(f)`–`(j)` diagnostic samples (`224 x 224` px) across `DS0001`–`DS0005`. | `09_Figures/specs/FIG0032_spec.md` | Exported (PNG + PDF) |
 | `FIG0033` | End-to-end `M1`–`M18` governance across 2,700 cases comparing `(a)` standalone, single-specialist (`K = 1`), and multi-specialist (`K = 3`) ... | `09_Figures/specs/FIG0033_spec.md` | Exported (PNG + PDF) |
 | `FIG0034` | Multi-backbone comparison across ResNet-50, EfficientNet-B4, and ViT-B/16 showing `(a)` paired in-distribution ROC curves (`n = 7,505`) and ... | `09_Figures/specs/FIG0034_spec.md` | Exported (PNG + PDF) |
 
@@ -308,7 +308,7 @@ These converging findings directly justify the selection of **Direction 1 (Evide
 
 To prevent the reproducibility bottlenecks and benchmark biases documented in the literature (`P0003`; `P0016`; `P0023`; `CLAIM0003`), dataset selection was governed by a strict public-only policy ratified in `DEC0004` (`WR0013`; `KI0004`). Seventeen candidate corpora were scored across 16 Phase D2 dimensions in `03_Datasets/metadata/dataset_evaluation.csv` covering license permissiveness, open availability, generator diversity, resolution, and alignment with Version 1 static face forensics. Restricted or non-functional academic hosts (including Guarnera MFD), gated video face-swap benchmarks (FaceForensics++, Celeb-DF v2, DFDC, FakeAVCeleb), redundant subsets (Augmented Real and Fake), and low-resolution 32x32 corpora (CIFAKE) were explicitly excluded (`DEC0004`). During raw-lock verification, source inspection revealed that AI-Face-FairnessBench required a signed EULA under a CC BY-NC-ND 4.0 license forbidding derivative preprocessing; `DEC0005` therefore replaced it with FairFace (CC BY 4.0, 97,698 real faces across seven demographic groups) to preserve open reproducibility while retaining demographic bias auditing.
 
-The resulting five-dataset portfolio (`DS0001`–`DS0005`, version `v1.0`, representative samples in `FIG0031` and complete 42-subgroup atlas in `FIG0032`) assigns a distinct scientific role to each corpus (`WR0013`; `KI0014`; `03_Datasets/metadata/datasets.csv`; `03_Datasets/reports/dataset_report.md`):
+The resulting five-dataset portfolio (`DS0001`–`DS0005`, version `v1.0`, complete 49-sample multi-dataset generator and demographic atlas in `FIG0031` and lowest- vs. highest-error diagnostic contrast in `FIG0032`) assigns a distinct scientific role to each corpus (`WR0013`; `KI0014`; `03_Datasets/metadata/datasets.csv`; `03_Datasets/reports/dataset_report.md`):
 
 | Dataset ID | Source Corpus | Role | Images (Validated / Processed) | Real / Fake | License | Generators & Structure | Figure Specs |
 |---|---|---|---|---|---|---|---|
@@ -1216,18 +1216,18 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ![FIG0031](../../09_Figures/assets/FIG0031_v1.png)
 
-- **Caption:** Representative preprocessed samples (`224 x 224` px) across the five public benchmark datasets, labeled `(a)` through `(j)`.
+- **Caption:** Preprocessed authentic and synthetic samples (`224 x 224` px) covering every generator, source, and demographic subgroup across `(a)` ArtiFact, `(b)` 140k Faces, `(c)` DiFF, `(d)` FairFace, and `(e)` Synthbuster.
 - **Specification:** `09_Figures/specs/FIG0031_spec.md`
-- **Data / Diagram Source:** `_processed_dataset/*/metadata/index.csv` and corresponding processed PNG assets.
-- **Responsible Script / Source:** 
+- **Data / Diagram Source:** `_processed_dataset/*/metadata/index.csv` and `_staging/DS0005_fairface/kaggle_upload/ds0005-fairface/raw/DS0005/fairface_label_val.csv`.
+- **Responsible Script / Source:** `09_Figures/scripts/render_figures.py` (`--only FIG0031`).
 
 ## FIG0032
 
 ![FIG0032](../../09_Figures/assets/FIG0032_v1.png)
 
-- **Caption:** Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators `(1)` through `(42)` across `DS0001`–`DS0005`.
+- **Caption:** Criterion-selected lowest-error `(a)`–`(e)` versus highest-error `(f)`–`(j)` diagnostic samples (`224 x 224` px) across `DS0001`–`DS0005`.
 - **Specification:** `09_Figures/specs/FIG0032_spec.md`
-- **Data / Diagram Source:** `_processed_dataset/processed_DS0001_PP0001` through `processed_DS0005_PP0005` (`SPLIT0001` test partitions).
+- **Data / Diagram Source:** `_processed_dataset/processed_DS0001_PP0001` through `processed_DS0005_PP0005`.
 - **Responsible Script / Source:** `09_Figures/scripts/render_figures.py` (`--only FIG0032`).
 
 ## FIG0033

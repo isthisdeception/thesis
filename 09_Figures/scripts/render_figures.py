@@ -578,28 +578,199 @@ def render_fig0025() -> None:
 
 
 def render_fig0031() -> None:
-    """Criterion-selected lowest-error vs highest-error representative samples across DS0001-DS0005."""
+    """Complete 49-sample Multi-Dataset Generator, Source, and Demographic Visual Atlas (a)-(e)."""
+    from matplotlib.patches import FancyBboxPatch, Rectangle
+    from PIL import Image
+
+    block_a = [
+        # Row 0 (3 Real + 5 Fake)
+        ("CelebA-HQ (Real)", "real", "_processed_dataset/processed_DS0001_PP0001/images/real/celebahq_img014719_34aa1389.png"),
+        ("FFHQ (Real)", "real", "_processed_dataset/processed_DS0001_PP0001/images/real/ffhq_img030575_2e0977e4.png"),
+        ("MetFaces (Real)", "real", "_processed_dataset/processed_DS0001_PP0001/images/real/metfaces_img001209_e74e89c7.png"),
+        ("CIPS", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/cips/cips_img004615_bcd1793a.png"),
+        ("FaceSynthetics", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/face_synthetics/face_synthetics_img001345_b87e843b.png"),
+        ("GANSformer", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/gansformer/gansformer_img008068_851786d7.png"),
+        ("LaMa", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/lama/lama_img010390_6fe308f2.png"),
+        ("MAT", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/mat/mat_img010865_8246e1af.png"),
+        # Row 1 (8 Fake)
+        ("Projected GAN", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/projected_gan/projected_gan_img008955_164597ad.png"),
+        ("SFHQ", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/sfhq/sfhq_img005196_f50c1754.png"),
+        ("Stable Diffusion", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stable_diffusion/stable_diffusion_img001397_1a5fa66d.png"),
+        ("StarGAN", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stargan/stargan_img005686_8499ab0d.png"),
+        ("StyleGAN1", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan1/stylegan1_img006632_7dd61c5f.png"),
+        ("StyleGAN2", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan2/stylegan2_img096586_9fe4c8fc.png"),
+        ("StyleGAN3", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan3/stylegan3_img004651_c48d0e09.png"),
+        ("Taming Transf.", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/taming_transformer/taming_transformer_img019071_e751c8ec.png"),
+    ]
+    block_b = [
+        ("FFHQ Real #1", "real", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/real/13336.png"),
+        ("FFHQ Real #2", "real", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/real/50534.png"),
+        ("StyleGAN Fake #1", "fake", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/fake/FN0WU9FH9U.png"),
+        ("StyleGAN Fake #2", "fake", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/fake/5ZO0D0ANIT.png"),
+    ]
+    block_c = [
+        ("CoDiff (FE)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/CoDiff/CoDiff/id_1564/6.jpg/id_1058_4.png/0C_interText_optDM_5_alpha=1.5.png"),
+        ("CycleDiff (FE)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/cycle_diff/cycle_diff/id_1743/seed_7/7.jpg_0/gene.png"),
+        ("Imagic (FE)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/Imagic/Imagic/id_2219/0.jpg_3/img_003.png"),
+        ("DCFace (FS)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/DCFace/DCFace/id_1764/051.png"),
+        ("DiffFace (FS)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/DiffFace/DiffFace/id_2246/0.jpg/id_2390/img_id_000_003.png"),
+        ("DreamBooth (I2I)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/DreamBooth/DreamBooth/id_1887/1024/img_db_022.png"),
+        ("FreeDoM-I (I2I)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/FreeDoM_I/FreeDoM_I/id_1844/save_segs/2.jpg/FreeDom_Gene.png"),
+        ("LoRA (I2I)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/LoRA/LoRA/id_1724/lora_001_000.png"),
+        ("FreeDoM-T (T2I)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/FreeDoM_T/FreeDoM_T/id_1844/clip_face_4/4291/FreeDom_Gene.png"),
+        ("HPS (T2I)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/HPS/HPS/id_1170/image_2/3.jpg/align_sd_nor_gene_003_000.png"),
+        ("Midjourney (T2I)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/Midjourney/Midjourney/id_1885/005.png"),
+        ("SDXL (T2I)", "fake", "_processed_dataset/processed_DS0002_PP0002/images/SDXL/SDXL/id_1292/images/M1_003/sd2_gene_1.png"),
+    ]
+    block_d = [
+        ("Black (Real)", "real", "_processed_dataset/processed_DS0005_PP0005/images/val/1979.png"),
+        ("East Asian (Real)", "real", "_processed_dataset/processed_DS0005_PP0005/images/val/1273.png"),
+        ("Indian (Real)", "real", "_processed_dataset/processed_DS0005_PP0005/images/val/270.png"),
+        ("Latino/Hisp. (Real)", "real", "_processed_dataset/processed_DS0005_PP0005/images/val/2370.png"),
+        ("Middle East. (Real)", "real", "_processed_dataset/processed_DS0005_PP0005/images/val/4218.png"),
+        ("SE Asian (Real)", "real", "_processed_dataset/processed_DS0005_PP0005/images/val/1908.png"),
+        ("White (Real)", "real", "_processed_dataset/processed_DS0005_PP0005/images/val/83.png"),
+    ]
+    block_e = [
+        ("RAISE (Real)", "real", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/r07f99a1at.png"),
+        ("DALL-E 2", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/dalle2/r0f137652t.png"),
+        ("DALL-E 3", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/dalle3/r180bcbd7t.png"),
+        ("Firefly", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/firefly/r185929e9t.png"),
+        ("GLIDE", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/glide/r057282fet.png"),
+        ("Midjourney v5", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/midjourney-v5/r1a020c3ft.png"),
+        ("SD v1.3", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-1-3/r0897d8aat.png"),
+        ("SD v1.4", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-1-4/r08b41f18t.png"),
+        ("SD v2", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-2/r1234de87t.png"),
+        ("SDXL", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-xl/r0b61ed37t.png"),
+    ]
+
+    w_fig, h_fig = 14.40, 9.37
+    s = 1.18
+    dx = 0.14
+    dx_e = (13.34 - 10 * s) / 9.0
+    fig = plt.figure(figsize=(w_fig, h_fig))
+    bg_ax = fig.add_axes([0.0, 0.0, 1.0, 1.0], zorder=-10)
+    bg_ax.set_xlim(0.0, w_fig)
+    bg_ax.set_ylim(0.0, h_fig)
+    bg_ax.axis("off")
+
+    def draw_card(x0: float, y0: float, w: float, h: float, title: str) -> None:
+        patch = FancyBboxPatch(
+            (x0, y0),
+            w,
+            h,
+            boxstyle="round,pad=0.0,rounding_size=0.09",
+            facecolor="#F8FAFC",
+            edgecolor="#CBD5E1",
+            linewidth=1.1,
+            zorder=-5,
+        )
+        bg_ax.add_patch(patch)
+        bg_ax.text(
+            x0 + 0.14,
+            y0 + h - 0.18,
+            title,
+            fontsize=8.8,
+            fontweight="bold",
+            color="#1E293B",
+            va="center",
+            ha="left",
+            zorder=-4,
+        )
+
+    def place_thumb(x_in: float, y_in: float, lbl: str, cls: str, rel_p: str) -> None:
+        img_path = ROOT / rel_p
+        if not img_path.exists():
+            raise FileNotFoundError(f"Missing sample image for FIG0031: {img_path}")
+        ax = fig.add_axes([x_in / w_fig, y_in / h_fig, s / w_fig, s / h_fig])
+        arr = np.asarray(Image.open(img_path).convert("RGB"))
+        ax.imshow(arr)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        col = PALETTE["real"] if cls == "real" else PALETTE["fake"]
+        for side in ("top", "right", "bottom", "left"):
+            ax.spines[side].set_visible(True)
+            ax.spines[side].set_color(col)
+            ax.spines[side].set_linewidth(2.0)
+        ax.set_title(lbl, fontsize=7.1, fontweight="bold", pad=2.8, color=col)
+
+    # Cards (x0, y0, width, height) in inches
+    draw_card(0.41, 5.88, 10.66, 3.35, "(a) ArtiFact In-Distribution Benchmark (3 Authentic Sources + 13 Synthetic Generators)")
+    draw_card(11.25, 5.88, 2.74, 3.35, "(b) 140k Faces (2 Subgroups)")
+    draw_card(0.41, 2.28, 8.02, 3.35, "(c) DiFF Unseen Face Diffusion Benchmark (12 Generators across FE, FS, I2I, T2I)")
+    draw_card(8.61, 2.28, 5.38, 3.35, "(d) FairFace Authentic Demographic Audit (7 Race Subgroups)")
+    draw_card(0.41, 0.14, 13.58, 1.89, "(e) Synthbuster Cross-Domain Benchmark (1 Authentic RAISE Camera Source + 9 Diffusion Generators)")
+
+    # Populate (a) 2 x 8
+    for idx, (lbl, cls, rel_p) in enumerate(block_a):
+        r, c = divmod(idx, 8)
+        y_in = 7.44 if r == 0 else 5.98
+        place_thumb(0.53 + c * (s + dx), y_in, lbl, cls, rel_p)
+
+    # Populate (b) 2 x 2
+    for idx, (lbl, cls, rel_p) in enumerate(block_b):
+        r, c = divmod(idx, 2)
+        y_in = 7.44 if r == 0 else 5.98
+        place_thumb(11.37 + c * (s + dx), y_in, lbl, cls, rel_p)
+
+    # Populate (c) 2 x 6
+    for idx, (lbl, cls, rel_p) in enumerate(block_c):
+        r, c = divmod(idx, 6)
+        y_in = 3.84 if r == 0 else 2.38
+        place_thumb(0.53 + c * (s + dx), y_in, lbl, cls, rel_p)
+
+    # Populate (d) 7 FairFace races + 1 Legend card in slot 7
+    for idx, (lbl, cls, rel_p) in enumerate(block_d):
+        r, c = divmod(idx, 4)
+        y_in = 3.84 if r == 0 else 2.38
+        place_thumb(8.73 + c * (s + dx), y_in, lbl, cls, rel_p)
+
+    # Slot (r=1, c=3) in Card (d): Clean Legend Key Tile
+    lx = 8.73 + 3 * (s + dx)
+    ly = 2.38
+    lax = fig.add_axes([lx / w_fig, ly / h_fig, s / w_fig, s / h_fig])
+    lax.set_facecolor("#FFFFFF")
+    lax.set_xticks([])
+    lax.set_yticks([])
+    for side in ("top", "right", "bottom", "left"):
+        lax.spines[side].set_visible(True)
+        lax.spines[side].set_color("#94A3B8")
+        lax.spines[side].set_linewidth(1.4)
+    lax.set_title("Frame Legend", fontsize=7.2, fontweight="bold", pad=2.8, color="#1E293B")
+    lax.add_patch(Rectangle((0.10, 0.68), 0.16, 0.14, facecolor="none", edgecolor=PALETTE["real"], lw=2.2))
+    lax.text(0.32, 0.75, "Authentic\n(Real)", fontsize=6.9, fontweight="bold", color=PALETTE["real"], va="center")
+    lax.add_patch(Rectangle((0.10, 0.38), 0.16, 0.14, facecolor="none", edgecolor=PALETTE["fake"], lw=2.2))
+    lax.text(0.32, 0.45, "Synthetic\n(Fake)", fontsize=6.9, fontweight="bold", color=PALETTE["fake"], va="center")
+    lax.text(0.50, 0.14, "224x224 RGB PNG\n49 Subgroups", fontsize=6.3, color="#475569", ha="center", va="center")
+
+    # Populate (e) 1 x 10
+    for c, (lbl, cls, rel_p) in enumerate(block_e):
+        place_thumb(0.53 + c * (s + dx_e), 0.24, lbl, cls, rel_p)
+
+    save_fig(fig, "FIG0031")
+
+
+def render_fig0032() -> None:
+    """Criterion-selected lowest-error (a)-(e) vs highest-error (f)-(j) diagnostic contrast across DS0001-DS0005."""
     from PIL import Image
 
     panels = [
-        # Top row (a)-(e): lowest-error / authentic baseline per dataset
-        ("(a) CelebA-HQ (Real, 7.0% FPR)", "real", "ArtiFact", "_processed_dataset/processed_DS0001_PP0001/images/real/celebahq_img000764_e337de19.png"),
-        ("(b) DCFace (Fake, 0.0% FNR)", "fake", "DiFF (Unseen)", "_processed_dataset/processed_DS0002_PP0002/images/DCFace/DCFace/id_0002/030.png"),
-        ("(c) FFHQ (Real, 30.4% FPR)", "real", "140k Faces", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/real/00037.png"),
-        ("(d) RAISE (Real, 76.7% FPR)", "real", "Synthbuster", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/r04e19833t.png"),
-        ("(e) FairFace (Real, True Neg.)", "real", "FairFace", "_processed_dataset/processed_DS0005_PP0005/images/train/1003.png"),
-        # Bottom row (f)-(j): highest-error / failure-mode subgroup per dataset
-        ("(f) StyleGAN3 (Fake, 43.7% FNR)", "fake", "ArtiFact", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan3/stylegan3_img000234_de786252.png"),
-        ("(g) FreeDoM_I (Fake, 81.5% FNR)", "fake", "DiFF (Unseen)", "_processed_dataset/processed_DS0002_PP0002/images/FreeDoM_I/FreeDoM_I/id_0190/save_segs_2/0.jpg/FreeDom_Gene.png"),
-        ("(h) StyleGAN (Fake, 9.2% FNR)", "fake", "140k Faces", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/fake/00BYVMEI3I.png"),
-        ("(i) DALL-E 3 (Fake, 46.9% FNR)", "fake", "Synthbuster", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/dalle3/r0282ca06t.png"),
-        ("(j) FairFace (Real, False Pos.)", "real", "FairFace", "_processed_dataset/processed_DS0005_PP0005/images/train/10120.png"),
+        ("(a) CelebA-HQ (Real, 7.0% FPR)", "real", "ArtiFact", "_processed_dataset/processed_DS0001_PP0001/images/real/celebahq_img000063_57dce938.png"),
+        ("(b) DCFace (Fake, 0.0% FNR)", "fake", "DiFF (Unseen)", "_processed_dataset/processed_DS0002_PP0002/images/DCFace/DCFace/id_0002/025.png"),
+        ("(c) FFHQ (Real, 30.4% FPR)", "real", "140k Faces", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/real/00138.png"),
+        ("(d) RAISE (Real, 76.7% FPR)", "real", "Synthbuster", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/r057282fet.png"),
+        ("(e) FairFace (Real, True Neg.)", "real", "FairFace", "_processed_dataset/processed_DS0005_PP0005/images/val/373.png"),
+        ("(f) StyleGAN3 (Fake, 43.7% FNR)", "fake", "ArtiFact", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan3/stylegan3_img000105_4a03d38b.png"),
+        ("(g) FreeDoM-I (Fake, 81.5% FNR)", "fake", "DiFF (Unseen)", "_processed_dataset/processed_DS0002_PP0002/images/FreeDoM_I/FreeDoM_I/id_0002/save_segs/5.jpg/FreeDom_Gene.png"),
+        ("(h) StyleGAN (Fake, 9.2% FNR)", "fake", "140k Faces", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/fake/03G1475ZA7.png"),
+        ("(i) DALL-E 3 (Fake, 46.9% FNR)", "fake", "Synthbuster", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/dalle3/r01170470t.png"),
+        ("(j) FairFace (Real, False Pos.)", "real", "FairFace", "_processed_dataset/processed_DS0005_PP0005/images/train/1002.png"),
     ]
     fig, axes = plt.subplots(2, 5, figsize=(11.2, 4.9))
     for idx, (ax, (sublbl, cls, col_hdr, rel_p)) in enumerate(zip(axes.flat, panels)):
         img_path = ROOT / rel_p
         if not img_path.exists():
-            raise FileNotFoundError(f"Missing sample image for FIG0031: {img_path}")
+            raise FileNotFoundError(f"Missing sample image for FIG0032: {img_path}")
         arr = np.asarray(Image.open(img_path).convert("RGB"))
         ax.imshow(arr)
         ax.set_xticks([])
@@ -613,73 +784,6 @@ def render_fig0031() -> None:
             ax.set_title(col_hdr, fontsize=10, fontweight="bold", pad=6, color="#212F3C")
         ax.set_xlabel(sublbl, fontsize=7.8, fontweight="bold", labelpad=5, color=border_col)
     fig.subplots_adjust(hspace=0.22, wspace=0.10, top=0.92, bottom=0.08, left=0.02, right=0.98)
-    save_fig(fig, "FIG0031")
-
-
-def render_fig0032() -> None:
-    """Complete 42-panel (6 x 7) Multi-Dataset Generator and Authentic Source Visual Atlas."""
-    from PIL import Image
-
-    atlas_items = [
-        ("ArtiFact: CelebA-HQ", "real", "_processed_dataset/processed_DS0001_PP0001/images/real/celebahq_img000764_e337de19.png"),
-        ("ArtiFact: FFHQ", "real", "_processed_dataset/processed_DS0001_PP0001/images/real/ffhq_img001202_a6a464a3.png"),
-        ("ArtiFact: MetFaces", "real", "_processed_dataset/processed_DS0001_PP0001/images/real/metfaces_img000282_d6288260.png"),
-        ("ArtiFact: CIPS", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/cips/cips_img000312_2d851fbc.png"),
-        ("ArtiFact: FaceSynth.", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/face_synthetics/face_synthetics_img001394_cfd88542.png"),
-        ("ArtiFact: GANSformer", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/gansformer/gansformer_img005477_6bf9c1a7.png"),
-        ("ArtiFact: LaMa", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/lama/lama_img000070_4f3c0127.png"),
-        ("ArtiFact: MAT", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/mat/mat_img000856_371b6efa.png"),
-        ("ArtiFact: Proj. GAN", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/projected_gan/projected_gan_img008185_bcc65884.png"),
-        ("ArtiFact: SFHQ", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/sfhq/sfhq_img000878_1fe39b18.png"),
-        ("ArtiFact: StableDiff.", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stable_diffusion/stable_diffusion_img000256_3aed6a92.png"),
-        ("ArtiFact: StarGAN", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stargan/stargan_img000616_1eca7f68.png"),
-        ("ArtiFact: StyleGAN1", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan1/stylegan1_img000913_6cf0b145.png"),
-        ("ArtiFact: StyleGAN2", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan2/stylegan2_img004988_654f15df.png"),
-        ("ArtiFact: StyleGAN3", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/stylegan3/stylegan3_img000234_de786252.png"),
-        ("ArtiFact: TamingTr.", "fake", "_processed_dataset/processed_DS0001_PP0001/images/fake/taming_transformer/taming_transformer_img001918_f0c7ed97.png"),
-        ("DiFF: CoDiff", "fake", "_processed_dataset/processed_DS0002_PP0002/images/CoDiff/CoDiff/id_0156/11.jpg/id_0630_1.png/0C_interText_optDM_2_alpha=0.0.png"),
-        ("DiFF: DCFace", "fake", "_processed_dataset/processed_DS0002_PP0002/images/DCFace/DCFace/id_0002/030.png"),
-        ("DiFF: DiffFace", "fake", "_processed_dataset/processed_DS0002_PP0002/images/DiffFace/DiffFace/id_0074/0.jpg/id_0233/img_id_002_000.png"),
-        ("DiFF: DreamBooth", "fake", "_processed_dataset/processed_DS0002_PP0002/images/DreamBooth/DreamBooth/id_0620/1024/img_db_001.png"),
-        ("DiFF: FreeDoM_I", "fake", "_processed_dataset/processed_DS0002_PP0002/images/FreeDoM_I/FreeDoM_I/id_0190/save_segs_2/0.jpg/FreeDom_Gene.png"),
-        ("DiFF: FreeDoM_T", "fake", "_processed_dataset/processed_DS0002_PP0002/images/FreeDoM_T/FreeDoM_T/id_0232/clip_face_4/8380/FreeDom_Gene.png"),
-        ("DiFF: HPS", "fake", "_processed_dataset/processed_DS0002_PP0002/images/HPS/HPS/id_0002/image_1/2.jpg/align_sd_gene_003_000.png"),
-        ("DiFF: Imagic", "fake", "_processed_dataset/processed_DS0002_PP0002/images/Imagic/Imagic/id_0224/1.jpg_0/img_003.png"),
-        ("DiFF: LoRA", "fake", "_processed_dataset/processed_DS0002_PP0002/images/LoRA/LoRA/id_0422/AnnaLynne_McCord_lora_013_000.png"),
-        ("DiFF: Midjourney", "fake", "_processed_dataset/processed_DS0002_PP0002/images/Midjourney/Midjourney/id_0482/008.png"),
-        ("DiFF: SDXL", "fake", "_processed_dataset/processed_DS0002_PP0002/images/SDXL/SDXL/id_0564/images_2/M1_006/sd2_gene_1.png"),
-        ("DiFF: CycleDiff", "fake", "_processed_dataset/processed_DS0002_PP0002/images/cycle_diff/cycle_diff/id_0354/seed_1/10.jpg_2/gene.png"),
-        ("140k: FFHQ (Real)", "real", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/real/00037.png"),
-        ("140k: StyleGAN", "fake", "_processed_dataset/processed_DS0003_PP0003/images/real-vs-fake/valid/fake/00BYVMEI3I.png"),
-        ("Synth: RAISE (Real)", "real", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/r04e19833t.png"),
-        ("Synth: DALL-E 2", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/dalle2/r0417f5e3t.png"),
-        ("Synth: DALL-E 3", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/dalle3/r0282ca06t.png"),
-        ("Synth: Firefly", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/firefly/r0341853dt.png"),
-        ("Synth: GLIDE", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/glide/r066358d3t.png"),
-        ("Synth: Midjourney v5", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/midjourney-v5/r03f70ccdt.png"),
-        ("Synth: SD v1.3", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-1-3/r065472d8t.png"),
-        ("Synth: SD v1.4", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-1-4/r03f70ccdt.png"),
-        ("Synth: SD v2", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-2/r043951a3t.png"),
-        ("Synth: SDXL", "fake", "_processed_dataset/DS0004_PP0006/DS0004_PP0006/images/stable-diffusion-xl/r01170470t.png"),
-        ("FairFace: Real (TN)", "real", "_processed_dataset/processed_DS0005_PP0005/images/train/1003.png"),
-        ("FairFace: Real (FP)", "real", "_processed_dataset/processed_DS0005_PP0005/images/train/10120.png"),
-    ]
-    fig, axes = plt.subplots(6, 7, figsize=(13.2, 12.2))
-    for idx, (ax, (lbl, cls, rel_p)) in enumerate(zip(axes.flat, atlas_items), 1):
-        img_path = ROOT / rel_p
-        if not img_path.exists():
-            raise FileNotFoundError(f"Missing atlas image {idx}: {img_path}")
-        arr = np.asarray(Image.open(img_path).convert("RGB"))
-        ax.imshow(arr)
-        ax.set_xticks([])
-        ax.set_yticks([])
-        col = PALETTE["real"] if cls == "real" else PALETTE["fake"]
-        for side in ("top", "right", "bottom", "left"):
-            ax.spines[side].set_visible(True)
-            ax.spines[side].set_color(col)
-            ax.spines[side].set_linewidth(1.6)
-        ax.set_title(f"({idx}) {lbl}", fontsize=7.0, fontweight="bold", pad=3, color=col)
-    fig.subplots_adjust(hspace=0.26, wspace=0.08, top=0.96, bottom=0.02, left=0.015, right=0.985)
     save_fig(fig, "FIG0032")
 
 

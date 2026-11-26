@@ -12,13 +12,13 @@ The full 28-method comparative matrix extracted from the 44 reviewed studies (`P
 
 ---
 
-## S2. Complete 42-Subgroup Dataset Visual Atlas and Exploratory Data Analysis (`FIG0032`, `FIG0001`–`FIG0010`)
+## S2. Diagnostic Lowest- vs. Highest-Error Case Contrast and Exploratory Data Analysis (`FIG0032`, `FIG0001`–`FIG0010`)
 
-Whereas Figure 1 (`FIG0031`) in the main manuscript contrasts the lowest-error and highest-error subgroups per dataset, Figure S1 (`FIG0032`) provides an exhaustive 42-panel (`6 x 7`) visual reference atlas displaying one preprocessed sample (`224 x 224` px) from every evaluated authentic source and synthetic generator across all five corpora: `DS0001` ArtiFact (3 authentic sources + 13 synthetic generators = 16), `DS0002` DiFF official test (12 unseen diffusion generators), `DS0003` 140k Real and Fake Faces (2 subgroups), `DS0004` Synthbuster (RAISE authentic + 9 diffusion generators = 10), and `DS0005` FairFace (true-negative and false-positive authentic portraits = 2).
+Whereas Figure 1 (`FIG0031`) in the main manuscript presents the complete 49-sample visual atlas covering every evaluated authentic source, synthetic generator, and demographic race subgroup across `DS0001`–`DS0005`, Figure S1 (`FIG0032`) provides a focused ten-panel (`2 x 5`) diagnostic contrast pairing the lowest-error subgroup `(a)`–`(e)` against the highest-error failure subgroup `(f)`–`(j)` within each corpus (`CelebA-HQ` `7.0%` FPR vs. `StyleGAN3` `43.7%` FNR in `DS0001`; `DCFace` `0.0%` FNR vs. `FreeDoM-I` `81.5%` FNR in `DS0002`; `FFHQ` `30.4%` FPR vs. `StyleGAN` `9.2%` FNR in `DS0003`; `RAISE` `76.7%` FPR vs. `DALL-E 3` `46.9%` FNR in `DS0004`; and `FairFace` true-negative vs. false-positive authentic portraits in `DS0005`).
 
-![FIG0032: Complete 42-subgroup visual atlas across DS0001-DS0005](../../09_Figures/assets/FIG0032_v1.png)
+![FIG0032: Diagnostic lowest-error vs highest-error contrast across DS0001-DS0005](../../09_Figures/assets/FIG0032_v1.png)
 
-*Figure S1 (`FIG0032`): Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators `(1)` through `(42)` across `DS0001`–`DS0005`.*
+*Figure S1 (`FIG0032`): Criterion-selected lowest-error `(a)`–`(e)` versus highest-error `(f)`–`(j)` diagnostic samples (`224 x 224` px) across `DS0001`–`DS0005`.*
 
 All five public corpora (`DS0001`–`DS0005`) were audited prior to modeling under deterministic preprocessing (`PP0001`–`PP0006`, seed `42`, EXIF stripped, minimum resolution `64 px`, RGB PNG conversion, `224 x 224` resizing without denoising) (`DEC0004`; `DEC0005`). Specifically, `FIG0001`–`FIG0006` document class, generator, and demographic distributions, while `FIG0007`–`FIG0010` audit resolution, brightness, contrast, and compression footprints. Figure S2 (`FIG0002`) illustrates the balanced 13-generator plus real composition of `DS0001` ArtiFact.
 

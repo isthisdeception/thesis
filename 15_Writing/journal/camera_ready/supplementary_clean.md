@@ -10,13 +10,13 @@ The complete 28-method comparative literature matrix extracted across the 44 rev
 
 ---
 
-## S2. Complete 42-Subgroup Dataset Visual Atlas and Exploratory Data Analysis
+## S2. Diagnostic Lowest- vs. Highest-Error Case Contrast and Exploratory Data Analysis
 
-Whereas Figure 1 in the main manuscript contrasts the lowest-error and highest-error subgroups per dataset, Figure S1 provides an exhaustive 42-panel ($6 \times 7$) visual reference atlas displaying one preprocessed sample ($224 \times 224$ px) from every evaluated authentic source and synthetic generator across all five corpora: ArtiFact (3 authentic sources and 13 synthetic generators), DiFF official test (12 unseen diffusion generators), 140k Real and Fake Faces (FFHQ real and StyleGAN fake), Synthbuster (RAISE authentic scenes and 9 diffusion generators), and FairFace (true-negative and false-positive authentic portraits).
+Whereas Figure 1 in the main manuscript presents the complete 49-sample visual atlas covering every evaluated authentic source, synthetic generator, and demographic race subgroup across all five corpora, Figure S1 provides a focused ten-panel ($2 \times 5$) diagnostic contrast pairing the lowest-error subgroup (a)–(e) against the highest-error failure subgroup (f)–(j) within each corpus (CelebA-HQ 7.0% FPR vs. StyleGAN3 43.7% FNR in ArtiFact; DCFace 0.0% FNR vs. FreeDoM-I 81.5% FNR in DiFF; FFHQ 30.4% FPR vs. StyleGAN 9.2% FNR in 140k Real and Fake Faces; RAISE 76.7% FPR vs. DALL-E 3 46.9% FNR in Synthbuster; and FairFace true-negative vs. false-positive authentic portraits).
 
-![Figure S1: Complete 42-Subgroup Dataset Visual Atlas](../../../09_Figures/assets/FIG0032_v1.png)
+![Figure S1: Diagnostic Lowest- vs. Highest-Error Case Contrast](../../../09_Figures/assets/FIG0032_v1.png)
 
-*Figure S1: Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators (1) through (42) across the five benchmark datasets.*
+*Figure S1: Criterion-selected lowest-error (a)–(e) versus highest-error (f)–(j) diagnostic samples ($224 \times 224$ px) across the five benchmark datasets.*
 
 All five public corpora were audited prior to modeling under deterministic seven-stage preprocessing (fixed seed 42, EXIF stripped, minimum resolution 64 px, RGB PNG conversion, and $224 \times 224$ bilinear resizing without spatial denoising). Figure S2 illustrates the 13-generator and authentic composition of the 50,000-image ArtiFact face benchmark.
 
