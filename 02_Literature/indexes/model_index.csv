@@ -1,45 +1,121 @@
 Model,Paper Count,Paper IDs
+14.21 GFLOPs): 3 deterministic RGB operators (ColorQuant,1,P0036
 2 transformer-based models,1,P0007
+2D DFT,1,P0040
+3D Gaussian Splatting),1,P0043
 8 supervised CNN architectures,1,P0007
+alpha,1,P0030
+and 8x8 DCT Laplace beta analysis,1,P0040
+and EfficientNet-B3+Attention with weakly supervised attention crop/drop augmentation (WS-DAN + Center Loss),1,P0040
+and L1 regression on gray-scale fakeness maps,1,P0042
+and shallow FPN-style weak-localization head,1,P0032
+and VGGNet13/16/19,1,P0041
+ARC-Net (EfficientNetB0 backbone + residual convolutional blocks + attention module + GAP + dense/softmax),1,P0039
+Artifact Purification Network (APN): Swin-Transformer-tiny spatial branch with learnable orthogonal basis decomposition + dual ResNet-18 frequency branch with Hermitian-symmetric DFT suspicious frequency-band proposals and 8-head self-attention scoring + training-only CLUB mutual information variational estimator + MLP classifier,1,P0035
+auxiliary CNN binary classifier,1,P0042
+Benchmark of 11 detectors (9 algorithms): HeadPose (SVM),1,P0044
+BioDeepAV evaluated on StA,1,P0043
+Capsule-Forensics-v2,1,P0038
+cascaded with Abnormality Module (V1/V2/V3 residual encoders + MLP),1,P0029
+compared with DenseNet121,1,P0039
 compared with VGG16,1,P0011
+Conv LSTM (InceptionV3+LSTM),1,P0044
+CUDA ViT + OpenCV + face recognition,1,P0031
 Custom CNN,1,P0002
 DCT-based frequency analysis + beta statistics classifier (lightweight,1,P0010
 DenseNet-121,1,P0002
+detection (CNN,1,P0043
+Diffusion,1,P0043
 Diffusion reconstruction error feature extraction,1,P0006
 DINO and CLIP self-supervised pre-training,1,P0007
+DIRE,1,P0037
+DistilDIRE,1,P0037
+Django,1,P0031
+DNF,1,P0037
+Dual-frequency branch (4-subband DWT window tiling + FFT phase-only) with Reconstructed Sliding Window Attention (LoAttention + GMLP) and ResNet-50 classifier,1,P0033
 Edge graph regularization approach,1,P0023
 EfficientNet-B4,1,P0016
 Ensemble model (multiple classifiers combined for robustness),1,P0013
+Evaluates 6 passive detectors (22 pretrained checkpoints): Ricker et al.,1,P0037
 Expectation-Maximization (EM) algorithm for convolutional trace extraction,1,P0005
+F3Net,1,P0043
+Face Parsing Module attention,1,P0042
+Face X-ray (HRNet-W48-C),1,P0044
+FakeLocator: DeepLabv3-ResNet101 encoder-decoder with Sigmoid limiting layer,1,P0042
+FFD (XceptionNet+Reg.Map),1,P0044
+filesystem storage),1,P0031
 frequency-domain methods,1,P0022
+FWA-ResNet50,1,P0044
+gamma) via sparse grouped convolutions in ResNet-18 and Wide ResNet28-10 backbones with Steganalysis-Rich Model (SRM) high-frequency input filter concatenation,1,P0030
 GAN + blockchain integration,1,P0012
 GAN fingerprint removal + detection evaluation,1,P0019
 GAN inversion + biometric trait analysis,1,P0008
 GAN-based detection model,1,P0017
 GAN-based face generation + blockchain,1,P0004
 GAN-based visible watermarking for proactive detection,1,P0020
+GCN/GAT,1,P0043
 GLFNet: dual-branch (local iris/pupil analysis + global ResNeSt residual extraction) with fusion classifier,1,P0015
+Grad-CAM,1,P0040
+Hierarchical ensemble of Xception,1,P0040
 Hierarchical multi-level pipeline based on ResNet-101 (Level 1: real/fake,1,P0018
+Hybrid CNN+Transformer/RNN,1,P0043
 Hybrid GAN + ResNet (GAN for feature learning,1,P0011
 IC-DGAN (latent diffusion + GAN hybrid),1,P0009
+InceptionV3,1,P0039
 Inpainting diffusion model + context-aware mask generation,1,P0001
+JPEGProbe) + shared ResNet18 encoder from scratch (256-D) + learnable operator embeddings + Reliability-Guided Fusion Gate (MLP + learnable global bias + temperature softmax + gate floor) + cross-operator context head (mean/max/std) + binary classifier,1,P0036
+LaDeDa,1,P0037
+LASTED: ResNet50x64 image encoder + CLIP Text Transformer encoder trained with dual-axis main/secondary contrastive loss + frozen Linear Probe (also compared with ConvNeXt,1,P0034
 Level 2: GAN/DM,1,P0018
 Level 3: specific architecture attribution),1,P0018
+LowBit,1,P0036
+MAAD-Face confidence-filtered annotation transfer + 3 evaluated CNN/capsule backbones: EfficientNetB0,1,P0038
+MesoInception-4,1,P0044
+Mesonet-4,1,P0044
+MiT,1,P0034
+MLP classification head,1,P0032
+MobileNetV2,1,P0039
+MRDF,1,P0043
 Multiple submitted detection methods (competition format),1,P0014
+Multiple-attention (EfficientNet-b4),1,P0044
+MySQL,1,P0031
+NeRF,1,P0043
+NN),1,P0034
 no deep learning,1,P0003
+no new detector proposed),1,P0037
 non-DL),1,P0010
+NPR (survey + empirical audit,1,P0037
+Patch-ResNet-Layer1,1,P0044
+Patch-Xception-Block2,1,P0044
 PCA/SVM,1,P0002
+PE-DD: Packed-Ensembles (M,1,P0030
+PORI-Gate (11.77M params,1,P0036
+Pre-trained Vision Transformer (ViT) integrated into a 5-layer Python-Django web system (HTML5/CSS3/JS,1,P0031
+RECCE,1,P0043
 ResNet for classification),1,P0011
 ResNet-101,1,P0016
-ResNet-50,1,P0011
+ResNet-50,2,P0011; P0039
+ResNet26/50/101,1,P0041
 Review: covers CNN-based detectors,1,P0022
+Space-Frequency Interactive Convolution (SFIConv) with Multichannel Constrained Separable Convolution (MCSConv) replacing vanilla convolutions in MobileNet,1,P0041
 spatial-domain methods,1,P0022
 Spectral analysis (high-pass residual + Fourier transform),1,P0003
+Survey & benchmark: generation (GAN,1,P0043
 Survey: covers CNN/RNN/GAN/Transformer/Hybrid approaches,1,P0024
 Survey: covers creation and detection methods for digital face manipulation,1,P0027
 Survey: covers deepfake detection methods for images and video,1,P0028
 Survey: covers generation and detection architectures,1,P0026
 Survey: StyleGAN family (StyleGAN/2/3/ADA and variants),1,P0025
+TALL,1,P0043
+traditional ML),1,P0043
+Transformer,1,P0043
+Two-stream network (pretrained vision content backbone + SRM/high-pass residual CNN stream) with channel-gating/1x1 fusion adapter,1,P0032
+U-Net4/U-Net5 Scorer (CNN autoencoder + 5-layer MLP head) and Tiny DeiT + VAE/AE attention-map reconstructor,1,P0029
+UCF,1,P0043
+VAE,1,P0043
 VGG19,1,P0002
 Vision Transformer (ViT) with patch-wise processing,1,P0021
-Xception,1,P0016
+ViT,1,P0034
+Xception,3,P0016; P0038; P0044
+Xception+Attention,1,P0040
+XceptionNet,1,P0043

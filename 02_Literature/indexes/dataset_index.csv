@@ -1,32 +1,150 @@
 Dataset,Paper Count,Paper IDs
+000 ADM train on LSUN-Bedroom,1,P0035
+000 fake across 8 generators: SD v1.4,1,P0035
+000 images across 11 models: GAN,1,P0029
+000 real + 40,1,P0035
+000 real + 8 generators eval),1,P0035
+012 fake train,1,P0036
+012 real/72,1,P0036
+1,1,P0035
+102-frame threshold subset (42 real,1,P0031
 1070 identities),1,P0023
+11 subsets),1,P0034
+122 fake) + surveillance-style low-light/compressed split + CelebA sanity checks + 6 paired counter-forensic transforms (jpeg,1,P0032
+167 ImageNet real + 1,1,P0035
+200 VIA-annotated XAI masks,1,P0039
+200-video user study pool,1,P0031
+240 held-out test pairs per split: 118 real,1,P0032
 2500+2500 for testing),1,P0015
+25697 fake / 25697 real images across >=13 methods incl. FSGAN & MegaFS) with 5 perturbations,1,P0044
+331,1,P0035
+350,1,P0035
+6 generators used in bias tests) + FairFace (ethnicity),1,P0037
+60 fake),1,P0031
+6229 videos),1,P0040
+7 standard datasets (UADFV,1,P0044
+7500 fake) from Celeb-DF,1,P0031
+800/800 val),1,P0036
 960 fake),1,P0011
+>700 fake audio clips,1,P0043
+A-Celeb-DF (9.2M labels),1,P0038
+A-DF-1.0 (38.3M labels) — 65.3M+ MAAD-Face annotations across 47 facial attributes (31 evaluated),1,P0038
+A-DFD (4.7M labels),1,P0038
+A-DFDC (4.6M labels),1,P0038
+A-FF++ (8.5M labels),1,P0038
+Adience (age) real faces,1,P0037
+ADM,1,P0035
+Adobe Firefly,1,P0037
 AI-Face-FairnessBench,1,P0016
-AttGAN,1,P0005
+and AIGIBench (65 generative models),1,P0033
+and DFDC,1,P0031
+AniTalker,1,P0043
+AttGAN,2,P0005; P0042
 Augmented Real and Fake Face Detection dataset,1,P0002
+BigGAN,1,P0035
+cat,1,P0036
+CDDB (82,1,P0029
+Celeb-DF,1,P0042
+Celeb-DF (OOD,1,P0040
+Celeb-DF v2 (CDFv2),1,P0030
+Celeb-DF-v2,1,P0044
+CelebA (202599 real) + FFHQ (70000 real) + 7-GAN PNG set (STGAN,1,P0042
 CelebA (real),2,P0005; P0015
 CelebA-HQ (25000 real + 25000 fake for training,1,P0015
+CelebA-HQ (gender),1,P0037
+CelebDF (120k sampled frames),1,P0041
 CelebDF-V2,1,P0007
+chair,1,P0036
 Challenge-specific dataset (multiple GAN architectures),1,P0014
+CIFAR-10 OpenOOD v1.5 benchmark (MNIST,1,P0029
+CIFAR-100,1,P0029
+Combined 1000 videos / 15000 frames (7500 real,1,P0031
+custom Content/Group/Mix OOD splits),1,P0029
 Custom dataset: 83000 images (balanced real/fake) from 9 GAN architectures + 4 diffusion models,1,P0018
 Custom industrial defect dataset,1,P0001
 Custom multiclass dataset (28802 training + 7198 validation) from Kaggle + Stable Diffusion + StyleGAN2,1,P0021
-DFDC,1,P0007
+DALL-E 3,1,P0037
+DeeperForensics-1.0,1,P0044
+Deepfake Database (19457),1,P0039
+Deepfake Dataset (142100),1,P0039
+DeepFakeFace (DFF: inpainting,1,P0032
+DF-TIMIT,1,P0044
+DFDC,3,P0007; P0030; P0044
+DFDC (120k sampled frames),1,P0041
+DFDC (5000-clip noisy test set from 128154-video corpus),1,P0040
+DFDCP,1,P0030
+DFFD,1,P0042
 DiFF dataset (500000+ images from 13 generation methods across 4 conditions,1,P0023
-FaceForensics++,2,P0005; P0007
+DiffSynFace (40k+ synthetic faces from SD 1.0/2.0/XL/XL-Turbo,1,P0037
+DiffusionForensics,2,P0033; P0036
+DiffusionForensics (40,1,P0035
+Evaluation: CrossGen-38 (38 subsets from Diffusion1kStep,1,P0036
+FaceForensics++,5,P0005; P0007; P0031; P0042; P0044
+FaceForensics++ (FF++ c23/c40 + SBI),1,P0030
+FaceForensics++ HQ/LQ (120k sampled frames),1,P0041
 FakeAVCeleb,1,P0007
+ForenSynths (4-class ProGAN training),1,P0033
+ForenSynths (Tgan,1,P0034
+ForenSynths test,1,P0036
+ForgeryNet) + proposed ID test set (976 fake / 2348 real videos,1,P0044
+gamma,1,P0032
+GANGen-Detection,1,P0036
+GANGen-Detection/Self-Synthesis (9 GANs),1,P0036
+GaussianTalker,1,P0043
 GDWCT,1,P0005
+GenImage (1,1,P0035
+GenImage (>1M pairs),1,P0030
+GenImage/AIGCDetectBenchmark,1,P0033
+GLIDE,1,P0035
+HFF (155k face images),1,P0041
+horse: 72,1,P0036
+Hybrid 140k Real and Fake Faces + 500 Bangladeshi real faces (140500 total),1,P0039
+IcGAN,1,P0042
+insight,1,P0032
+Midjourney,1,P0035
+MidJourney,1,P0037
 Multiple GAN architectures (tested across various generators),1,P0010
+non-GAN,1,P0029
+PGGAN,1,P0042
+plus 26k SD + 10k internet self-collected fusion ablation sets,1,P0030
+PolyGlotFake (PGF),1,P0030
 Real and Fake Face Detection dataset (2041 images: 1081 real,1,P0011
+real from HDTF & TalkingHead-1KH) + Celeb-HQ & FFHQ (generation benchmark),1,P0043
 real images from VoxCeleb2 + CelebA: 23661 images,1,P0023
-StarGAN,1,P0005
-StyleGAN,1,P0005
+real-world internet videos),1,P0040
+regrain,1,P0032
+SD v1.5,1,P0035
+seam,1,P0032
+StarGAN,2,P0005; P0042
+StyleGAN,2,P0005; P0042
 StyleGAN2 (fake),1,P0005
+StyleGAN2),1,P0042
 Survey paper (reviews detection datasets),1,P0028
 Survey paper (reviews face manipulation datasets),1,P0027
 Survey paper (reviews major deepfake datasets),1,P0026
 Survey paper (reviews multiple datasets),1,P0024
 Survey paper (reviews StyleGAN-related datasets),1,P0025
 Survey/review paper covering FaceForensics++ and other benchmarks,1,P0022
+Surveyed 24 datasets across image/video/audio/AV (Table 4) + proposed BioDeepAV (>1600 fake videos from EchoMimic,1,P0043
+SVHN,1,P0029
+SyncTalk,1,P0043
 Synthbuster dataset (9000 synthetic images from 9 diffusion models + RAISE-1k real images),1,P0003
+Tdf (46400 synthetic images + FFHQ with 5 anti-forensic/post-processing ops),1,P0034
+tested on GANGen-Detection,1,P0033
+text2img,1,P0032
+Textures,1,P0029
+Tfuse (800K train + 7 cross-domain test models),1,P0034
+TinyImageNet),1,P0029
+Training/Validation: ForenSynths 4-class (car,1,P0036
+transcode),1,P0032
+Twild (4000 platform synthetic + 2229 artist paintings),1,P0034
+UADFV,1,P0042
+UFD-aligned (15 subsets),1,P0036
+UniversalFakeDetect,1,P0033
+UniversalFakeDetect),1,P0036
+VQDM),1,P0035
+warp,1,P0032
+wiki,1,P0032
+WildDeepfake (OOD,1,P0040
+WildDeepfake (WDF),1,P0030
+Wukong,1,P0035

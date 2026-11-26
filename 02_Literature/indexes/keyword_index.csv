@@ -1,82 +1,166 @@
 Keyword,Paper Count,Paper IDs
+2D DFT,1,P0040
+abnormality module,1,P0029
 ACM Multimedia,1,P0023
 adversarial robustness,1,P0019
+age bias,1,P0037
+AI-generated image detection,3,P0033; P0035; P0036
 anti-forensics,1,P0019
+ARC-Net,1,P0039
 architecture,1,P0026
+artifact purification,1,P0035
+attack-aware detection,1,P0032
+attention heatmap,1,P0029
+attention residual network,1,P0039
+attribute bias,1,P0038
+AURC,1,P0032
 benchmark,1,P0014
 beta statistics,1,P0010
 bias,1,P0016
+BioDeepAV,1,P0043
 biometric traits,1,P0008
 blockchain,2,P0004; P0012
+Brier score,1,P0030
+CDDB,1,P0029
+Celeb-DF,1,P0038
 CelebA,1,P0005
 CelebA-HQ,1,P0015
 CelebDF,1,P0007
 challenge,1,P0014
-CLIP,1,P0007
+CLIP,2,P0007; P0034
 CNN,3,P0002; P0022; P0024
+CNN ensemble,1,P0040
+ColorQuant,1,P0036
 competition,1,P0014
+computational complexity,1,P0044
+confidence threshold,1,P0031
+constrained convolution,1,P0041
 content authentication,1,P0020
 context-aware mask,1,P0001
 convolutional traces,1,P0005
+corrected relative performance,1,P0038
+counter-forensics,1,P0032
+criminal justice,1,P0031
 cross-dataset,1,P0007
+cross-dataset generalization,1,P0041
+cross-domain generalization,2,P0034; P0035
+cross-generator generalization,2,P0033; P0036
+CrossGen-38,1,P0036
 data augmentation,1,P0002
 dataset,1,P0026
 DCT,1,P0010
+DCT Laplace beta,1,P0040
 deep learning,6,P0002; P0011; P0017; P0024; P0025; P0028
 deepfake,4,P0006; P0023; P0026; P0027
-deepfake detection,14,P0002; P0005; P0007; P0010; P0011; P0013; P0014; P0017; P0018; P0019; P0020; P0021; P0024; P0028
+deepfake benchmark,1,P0044
+deepfake detection,23,P0002; P0005; P0007; P0010; P0011; P0013; P0014; P0017; P0018; P0019; P0020; P0021; P0024; P0028; P0029; P0030; P0031; P0033; P0037; P0038; P0039; P0041; P0043
+deepfake forensics,1,P0040
+deepfake generation,1,P0043
+deepfake localization,1,P0042
+deepfake survey,1,P0043
+DeepFakeFace,1,P0032
+DeepLabv3,1,P0042
 defect detection,1,P0001
+degradation robustness,1,P0042
+demographic fairness,1,P0037
 DenseNet,1,P0002
 detection,2,P0026; P0027
-DFDC,1,P0007
+DFDC,3,P0007; P0038; P0040
 DiFF dataset,1,P0023
+DiffSynFace,1,P0037
 diffusion model,6,P0001; P0006; P0009; P0018; P0021; P0023
 diffusion model detection,2,P0003; P0016
+diffusion models,2,P0037; P0043
+DiffusionForensics,1,P0035
 digital forensics,1,P0027
 DINO,1,P0007
 distributed systems,1,P0004
+dual frequency branch,1,P0033
+DWT,1,P0033
 edge graph regularization,1,P0023
+EfficientNetB0,1,P0039
+Eigen-CAM,1,P0030
 EM algorithm,1,P0005
 ensemble model,1,P0013
+ethnicity bias,1,P0037
 evaluation,1,P0014
+expected calibration error,1,P0030
 explainability,2,P0010; P0016
 expression manipulation,1,P0009
 face detection,12,P0002; P0006; P0011; P0013; P0014; P0016; P0017; P0020; P0021; P0023; P0024; P0028
 face editing,1,P0025
-face forensics,1,P0015
+face forensics,2,P0015; P0044
 face generation,2,P0009; P0025
 face manipulation,1,P0027
+face parsing attention,1,P0042
 face recognition,1,P0004
-FaceForensics++,2,P0005; P0007
+FaceForensics++,4,P0005; P0007; P0038; P0041
 facial analysis,1,P0008
 facial forgery,1,P0023
 facial recognition,1,P0012
-fairness,1,P0016
+fairness,2,P0016; P0038
+fairness generalization,1,P0039
+FakeLocator,1,P0042
+FFT phase,1,P0033
 fingerprint removal,1,P0019
 Fourier transform,1,P0003
 frequency domain,3,P0003; P0010; P0022
+frequency-band proposal,1,P0035
 GAN,13,P0004; P0009; P0011; P0012; P0013; P0014; P0017; P0018; P0020; P0021; P0024; P0025; P0026
 GAN detection,3,P0015; P0016; P0022
 GAN fingerprint,3,P0005; P0010; P0019
 GAN inversion,1,P0008
+GAN upsampling artifacts,1,P0042
+gender bias,1,P0037
 generalization,1,P0007
+GenImage,1,P0035
 GLFNet,1,P0015
 global-local fusion,1,P0015
-Grad-CAM,1,P0016
+Grad-CAM,3,P0016; P0039; P0040
+gray-scale fakeness map,1,P0042
+heatmap visualization,1,P0031
 hierarchical classification,1,P0018
 high-resolution,1,P0009
+human-AI collaboration,1,P0031
 hybrid model,1,P0011
+ID test set,1,P0044
 IEEE Access,1,P0026
-image forensics,8,P0003; P0005; P0006; P0008; P0010; P0018; P0022; P0028
+image forensics,9,P0003; P0005; P0006; P0008; P0010; P0018; P0022; P0028; P0034
 image generation,1,P0001
 inpainting,1,P0001
 iris analysis,1,P0015
+JPEGProbe,1,P0036
+judicial evidence verification,1,P0031
+language-guided contrastive learning,1,P0034
 latent diffusion,1,P0009
+LIME,1,P0039
+linear probe,1,P0034
+low-level forensic cues,1,P0036
+MAAD-Face,1,P0038
+manipulation traces,1,P0041
+MCSConv,1,P0041
 multiclass classification,1,P0021
+multimodal fusion,1,P0043
+mutual information minimization,1,P0035
+operator-response fusion,1,P0036
+orthogonal decomposition,1,P0035
+out-of-distribution,2,P0039; P0040
+out-of-distribution detection,1,P0029
+out-of-distribution evaluation,1,P0037
+out-of-distribution generalization,2,P0043; P0044
+out-of-domain,1,P0030
+packed-ensembles,1,P0030
+partial data augmentation,1,P0042
 patch-wise,1,P0021
+person-of-interest detection,1,P0043
+perturbation robustness,1,P0044
 privacy,2,P0004; P0012
 proactive detection,1,P0020
+probability calibration,1,P0032
+randomized test-time defense,1,P0032
 reconstruction error,1,P0006
+reconstruction residual,1,P0029
+reliability-guided fusion,1,P0036
 residual features,1,P0015
 ResNet,1,P0011
 ResNet-101,1,P0018
@@ -85,21 +169,33 @@ RNN,1,P0024
 robustness,3,P0013; P0016; P0018
 security,2,P0004; P0012
 self-supervised learning,1,P0007
+SFIConv,1,P0041
+sliding window attention,1,P0033
 social media,2,P0013; P0017
 source attribution,1,P0018
+space-frequency interactive convolution,1,P0041
 spatial domain,1,P0022
 spectral analysis,1,P0003
+SRM filters,1,P0030
 StyleGAN,1,P0025
 survey,6,P0022; P0024; P0025; P0026; P0027; P0028
 Synthbuster,1,P0003
 synthetic face detection,2,P0008; P0022
 synthetic faces,1,P0012
+synthetic image detection,1,P0034
 systematic review,2,P0024; P0027
+textual label augmentation,1,P0034
 TPAMI,1,P0025
 transfer learning,1,P0007
 Transformer,1,P0024
+two-stream network,1,P0032
+U-Net,1,P0029
+uncertainty calibration,1,P0030
+uniform evaluation,1,P0044
 VGG19,1,P0002
 video forensics,1,P0028
-Vision Transformer,1,P0021
+Vision Transformer,3,P0021; P0029; P0031
 ViT,1,P0021
 watermarking,1,P0020
+weak localization,1,P0032
+weakly supervised attention,1,P0040
