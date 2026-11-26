@@ -6,7 +6,7 @@
 |---|---|
 | **Manuscript Version** | `1.0.0-rc1` (Assembled from Approved Chapters) |
 | **Assembly Date** | `2026-11-27` |
-| **Source Git Revision** | `004fba1` |
+| **Source Git Revision** | `9ab5067` |
 | **Research Direction** | Direction 1 : System-Level AI Forensic Analyst + Generalization Focus |
 | **Quality Gates Passed** | (Human-Confirmed) |
 | **Bibliography Source** | `15_Writing/references/references.bib` (`44` verified entries, [1]–[28]) |
@@ -100,8 +100,8 @@ This thesis manuscript is compiled deterministically from the ten approved secti
 | Figure 28 | Reliability-weighted evidence fusion (M7), four-dimensional validation-calibrated confidence estimation (M9,... | `09_Figures/specs/FIG0028_spec.md` | Exported (PNG + PDF) |
 | Figure 29 | Three-tier system architecture connecting the React 18 frontend (`12_Web`, M14, 14 pages, 24 accessible components), the seven-app Djan... | `09_Figures/specs/FIG0029_spec.md` | Exported (PNG + PDF) |
 | Figure 30 | Config-driven FastAI training and fault-tolerant checkpoint architecture (`17_Automation/training/`). Every run validates immutable YAML con... | `09_Figures/specs/FIG0030_spec.md` | Exported (PNG + PDF) |
-| Figure 31 | Representative preprocessed samples (`224 x 224` px) across the five public benchmark datasets, labeled `(a)` through `(j)`. | `09_Figures/specs/FIG0031_spec.md` | Exported (PNG + PDF) |
-| Figure 32 | Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators `(1)` through `(42)` across ArtiFact–`DS0... | `09_Figures/specs/FIG0032_spec.md` | Exported (PNG + PDF) |
+| Figure 31 | Preprocessed authentic and synthetic samples (`224 x 224` px) covering every generator, source, and demographic subgroup across `(a)` ArtiFa... | `09_Figures/specs/FIG0031_spec.md` | Exported (PNG + PDF) |
+| Figure 32 | Criterion-selected lowest-error `(a)`–`(e)` versus highest-error `(f)`–`(j)` diagnostic samples (`224 x 224` px) across ArtiFact–FairFace. | `09_Figures/specs/FIG0032_spec.md` | Exported (PNG + PDF) |
 | Figure 33 | End-to-end `M1`–`M18` governance across 2,700 cases comparing `(a)` standalone, single-specialist (`K = 1`), and multi-specialist (`K = 3`)... | `09_Figures/specs/FIG0033_spec.md` | Exported (PNG + PDF) |
 | Figure 34 | Multi-backbone comparison across ResNet-50, EfficientNet-B4, and ViT-B/16 showing `(a)` paired in-distribution ROC curves (`n = 7,505`) and... | `09_Figures/specs/FIG0034_spec.md` | Exported (PNG + PDF) |
 
@@ -308,7 +308,7 @@ These converging findings directly justify the selection of **Direction 1 (Evide
 
 To prevent the reproducibility bottlenecks and benchmark biases documented in the literature ([3]; [16]; [23]), dataset selection was governed by a strict public-only policy ratified in. Seventeen candidate corpora were scored across 16 Phase D2 dimensions in `03_Datasets/metadata/dataset_evaluation.csv` covering license permissiveness, open availability, generator diversity, resolution, and alignment with Version 1 static face forensics. Restricted or non-functional academic hosts (including Guarnera MFD), gated video face-swap benchmarks (FaceForensics++, Celeb-DF v2, DFDC, FakeAVCeleb), redundant subsets (Augmented Real and Fake), and low-resolution 32x32 corpora (CIFAKE) were explicitly excluded. During raw-lock verification, source inspection revealed that AI-Face-FairnessBench required a signed EULA under a CC BY-NC-ND 4.0 license forbidding derivative preprocessing; therefore replaced it with FairFace (CC BY 4.0, 97,698 real faces across seven demographic groups) to preserve open reproducibility while retaining demographic bias auditing.
 
-The resulting five-dataset portfolio (ArtiFact–FairFace, version `v1.0`, representative samples in Figure 31 and complete 42-subgroup atlas in Figure 32) assigns a distinct scientific role to each corpus (; `03_Datasets/metadata/datasets.csv`; `03_Datasets/reports/dataset_report.md`):
+The resulting five-dataset portfolio (ArtiFact–FairFace, version `v1.0`, complete 49-sample multi-dataset generator and demographic atlas in Figure 31 and lowest- vs. highest-error diagnostic contrast in Figure 32) assigns a distinct scientific role to each corpus (; `03_Datasets/metadata/datasets.csv`; `03_Datasets/reports/dataset_report.md`):
 
 | Dataset ID | Source Corpus | Role | Images (Validated / Processed) | Real / Fake | License | Generators & Structure | Figure Specs |
 |---|---|---|---|---|---|---|---|
@@ -1216,18 +1216,18 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 
 ![Figure 31](../../../09_Figures/assets/FIG0031_v1.png)
 
-- **Caption:** Representative preprocessed samples (`224 x 224` px) across the five public benchmark datasets, labeled `(a)` through `(j)`.
+- **Caption:** Preprocessed authentic and synthetic samples (`224 x 224` px) covering every generator, source, and demographic subgroup across `(a)` ArtiFact, `(b)` 140k Faces, `(c)` DiFF, `(d)` FairFace, and `(e)` Synthbuster.
 - **Specification:** `09_Figures/specs/FIG0031_spec.md`
-- **Data / Diagram Source:** `_processed_dataset/*/metadata/index.csv` and corresponding processed PNG assets.
-- **Responsible Script / Source:** 
+- **Data / Diagram Source:** `_processed_dataset/*/metadata/index.csv` and `_staging/FairFace_fairface/kaggle_upload/ds0005-fairface/raw/FairFace/fairface_label_val.csv`.
+- **Responsible Script / Source:** `09_Figures/scripts/render_figures.py` (`--only Figure 31).
 
 ## Figure 32
 
 ![Figure 32](../../../09_Figures/assets/FIG0032_v1.png)
 
-- **Caption:** Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators `(1)` through `(42)` across ArtiFact–FairFace.
+- **Caption:** Criterion-selected lowest-error `(a)`–`(e)` versus highest-error `(f)`–`(j)` diagnostic samples (`224 x 224` px) across ArtiFact–FairFace.
 - **Specification:** `09_Figures/specs/FIG0032_spec.md`
-- **Data / Diagram Source:** `_processed_dataset/processed_ArtiFact_preprocessing pipeline through `processed_FairFace_preprocessing pipeline (grouped random split test partitions).
+- **Data / Diagram Source:** `_processed_dataset/processed_ArtiFact_preprocessing pipeline through `processed_FairFace_preprocessing pipeline.
 - **Responsible Script / Source:** `09_Figures/scripts/render_figures.py` (`--only Figure 32).
 
 ## Figure 33

@@ -1,12 +1,12 @@
 # Figure Spec: FIG0031
 
-**Purpose:** Representative visual grid of preprocessed authentic and synthetic samples across all five benchmark datasets (`DS0001`–`DS0005`).  
-**Required data:** Ten verified `224 x 224` lossless PNG samples from `_processed_dataset/` (`DS0001` real CelebA-HQ & fake StyleGAN3; `DS0002` fake SDXL & fake Midjourney; `DS0003` real FFHQ & fake StyleGAN; `DS0004` real RAISE scene & fake DALL-E 3; `DS0005` two demographically diverse real portraits).  
-**Recommended chart type:** Two-row by five-column (`2 x 5`) image grid with explicit `(a)`–`(j)` subfigure labels beneath each panel and dataset headers above each column.  
-**Exact axes:** Axes ticks hidden; thin color-coded border (`#3B6D9A` for Real, `#B85C38` for Fake) framing each `224 x 224` panel.  
-**Legend:** Border color and panel sublabels indicate ground-truth class (`Real` vs. `Fake`) and generator/source provenance.  
-**Caption:** Representative preprocessed samples (`224 x 224` px) across the five public benchmark datasets, labeled `(a)` through `(j)`.  
+**Purpose:** Complete multi-dataset visual sample atlas across all five public benchmark corpora (`DS0001`–`DS0005`), covering every evaluated authentic source, synthetic generator, and demographic race subgroup directly in the main manuscript.  
+**Required data:** Forty-nine newly selected `224 x 224` lossless PNG samples from `_processed_dataset/`: `(a)` `DS0001` ArtiFact (`3` authentic sources + `13` synthetic generators = `16`), `(b)` `DS0003` 140k Real and Fake Faces (`2` FFHQ authentic + `2` StyleGAN synthetic = `4`), `(c)` `DS0002` DiFF official test (`12` unseen diffusion generators across `FE`, `FS`, `I2I`, `T2I`), `(d)` `DS0005` FairFace (`7` official demographic subgroups verified from `fairface_label_val.csv` + `1` legend key), and `(e)` `DS0004` Synthbuster (`1` RAISE authentic + `9` diffusion generators = `10`).  
+**Recommended chart type:** Structured five-block (`(a)`–`(e)`) `5 x 10` square-thumbnail layout with rounded dataset containers, subgroup headers, and embedded legend card.  
+**Exact axes:** Axes ticks hidden; class-coded frame (`#3B6D9A` for Authentic `Real`, `#B85C38` for Synthetic `Fake`) around each `224 x 224` panel.  
+**Legend:** Embedded legend card in block `(d)` indicating Authentic (`Real`) vs. Synthetic (`Fake`) frame colors and `224 x 224` lossless RGB preprocessing.  
+**Caption:** Preprocessed authentic and synthetic samples (`224 x 224` px) covering every generator, source, and demographic subgroup across `(a)` ArtiFact, `(b)` 140k Faces, `(c)` DiFF, `(d)` FairFace, and `(e)` Synthbuster.  
 **Color recommendations:** Real `#3B6D9A`; Fake `#B85C38`.  
-**Data source path:** `_processed_dataset/*/metadata/index.csv` and corresponding processed PNG assets.  
-**Responsible script:** `09_Figures/scripts/render_figures.py` (`--only FIG0031`).  
+**Data source path:** `_processed_dataset/*/metadata/index.csv` and `_staging/DS0005_fairface/kaggle_upload/ds0005-fairface/raw/DS0005/fairface_label_val.csv`.  
+**Responsible notebook:** `09_Figures/scripts/render_figures.py` (`--only FIG0031`).  
 **Expected output filename:** `09_Figures/assets/FIG0031_v1.png` and `09_Figures/assets/FIG0031_v1.pdf`

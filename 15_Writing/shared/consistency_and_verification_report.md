@@ -6,9 +6,9 @@
 
 ## 1. Automated Check Summary
 
-- **Thesis Files Checked:** 10 (`19,942` total words; `2,035` canonical ID citations)
-- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** Present (`25,097` words, 0 em-dashes, 0 AI filler, 0 unknown IDs)
-- **Journal Package (`15_Writing/journal/`):** Verified (`13,349` words across manuscript + supplementary, `44/44` P IDs, `18` verified figure embeds, 0 issues)
+- **Thesis Files Checked:** 10 (`19,949` total words; `2,035` canonical ID citations)
+- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** Present (`25,109` words, 0 em-dashes, 0 AI filler, 0 unknown IDs)
+- **Journal Package (`15_Writing/journal/`):** Verified (`13,391` words across manuscript + supplementary, `44/44` P IDs, `18` verified figure embeds, 0 issues)
 - **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs
 - **Bibliography (`15_Writing/references/references.bib`):** 44 entries, 0 duplicate keys, 0 duplicate DOIs, 44/44 Paper IDs matched to `papers.csv`
 - **Claim Database (`02_Literature/claims/claim_database.csv`):** 9/9 claims `verified` with supporting literature + experimental/figure/table evidence
@@ -25,7 +25,7 @@
 | `appendices_and_references.md` | `0.2.0` | 1,973 | 179 |
 | `chapter1_introduction.md` | `0.2.0` | 1,935 | 223 |
 | `chapter2_literature_review.md` | `0.2.0` | 2,620 | 348 |
-| `chapter3_methodology.md` | `0.3.0` | 2,954 | 273 |
+| `chapter3_methodology.md` | `0.3.0` | 2,961 | 273 |
 | `chapter4_implementation.md` | `0.3.0` | 2,235 | 153 |
 | `chapter5_evaluation.md` | `0.2.0` | 2,109 | 203 |
 | `chapter6_results.md` | `0.2.0` | 3,181 | 206 |
