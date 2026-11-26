@@ -1,0 +1,78 @@
+evaluation_id: EVAL0009
+experiment_id: EXP0007
+seed: 42
+model:
+  model_id: MODEL0003
+  export_name: MODEL0003_export.pkl
+  export_sha256: 8bc6b031d0e332b09e62ed079eb9498f1bd26bca23607dfea7de1cdf36573909
+  positive_class: fake
+  search:
+  - /kaggle/working/thesis/06_Experiments/EXP0007/notebook/checkpoints
+reference:
+  name: DS0001 SPLIT0001 test (EXP0007)
+  predictions: 08_Evaluation/EXP0007/predictions.csv
+  split: test
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0001-pp0001/DS0001_PP0001
+training_generators:
+- cips
+- face_synthetics
+- gansformer
+- lama
+- mat
+- projected_gan
+- sfhq
+- stable_diffusion
+- stargan
+- stylegan1
+- stylegan2
+- stylegan3
+- taming_transformer
+inference:
+  image_size: 224
+  resize_interpolation: bilinear
+  mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  std:
+  - 0.229
+  - 0.224
+  - 0.225
+  batch_size: 128
+  num_workers: 4
+  sanity_images: 200
+  sanity_atol: 0.002
+datasets:
+- name: DS0002
+  description: DiFF official test
+  assignments: 03_Datasets/splits/DS0002_PP0002_SPLIT0001/assignments.csv
+  partition: test
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0002-pp0002/DS0002_PP0002
+  max_images: null
+  relation: {}
+- name: DS0003
+  description: 140k Real and Fake Faces
+  assignments: 03_Datasets/splits/DS0003_PP0003_SPLIT0001/assignments.csv
+  partition: test
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0003-pp0003/DS0003_PP0003
+  max_images: null
+  relation:
+    stylegan: related
+- name: DS0004
+  description: Synthbuster
+  assignments: 03_Datasets/splits/DS0004_PP0006_SPLIT0001/assignments.csv
+  partition: test
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0004-pp0006/DS0004_PP0006
+  max_images: null
+  relation:
+    stable-diffusion-1-3: related
+    stable-diffusion-1-4: related
+    stable-diffusion-2: related
+    stable-diffusion-xl: related
+- name: DS0005
+  description: FairFace
+  assignments: 03_Datasets/splits/DS0005_PP0005_SPLIT0001/assignments.csv
+  partition: test
+  processed_root: /kaggle/input/datasets/isthisdeception/ds0005-pp0005/DS0005_PP0005
+  max_images: 10000
+  relation: {}

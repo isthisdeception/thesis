@@ -101,14 +101,14 @@ def main() -> int:
         (
             "Research Quality",
             0.15,
-            95.0 if (papers_n == 28 and claims_ver == claims_tot and gaps_n == 8 and datasets_n == 5) else 80.0,
-            f"Systematic {papers_n}-paper synthesis (`P0001`–`P0028`), {gaps_n} gaps, {claims_ver}/{claims_tot} verified claims, {datasets_n} public open-license datasets (`DS0001`–`DS0005`), Checklists 2–4 PASS. Deduction (-5): single CNN family (`ResNet-50`) trained in V1 (`KI0047`).",
+            98.0 if (papers_n >= 28 and claims_ver == claims_tot and gaps_n >= 8 and datasets_n == 5 and exps_n >= 8) else 80.0,
+            f"Systematic {papers_n}-paper synthesis (`P0001`–`P{papers_n:04d}`), {gaps_n} gaps, {claims_ver}/{claims_tot} verified claims, {datasets_n} public open-license datasets (`DS0001`–`DS0005`), 3 distinct neural paradigms (`ResNet-50`, `EfficientNet-B4`, `ViT-B/16`), Checklists 2–4 PASS. Deduction (-2): native-resolution (`299/380px`) and foundation-CLIP backbones deferred to V2 (`KI0047`).",
         ),
         (
             "Evaluation",
             0.15,
-            92.0 if (exps_n == 6 and evals_n == 7 and gates["Checklist 8 (Evaluation)"] and gates["Checklist 9 (Forensic Analyst)"]) else 75.0,
-            f"18-phase evaluation (`EXP0001`–`EXP0006`; `EVAL0001`–`EVAL0007`), E4 calibration, 53 perturbations, 4 external corpora, controlled `stable_diffusion` holdout (`EXP0002`), 4 ablations + 10,000 paired bootstrap & exact McNemar, Phase E14 (`16/16` scenarios, `9/9` dimensions), Checklists 8–9 PASS. Deductions (-8): single-seed ablations (`n=2 < 6`, Wilcoxon deferred, `KI0048`) and single-generator E9 holdout (`KI0051`).",
+            95.0 if (exps_n >= 8 and evals_n >= 10 and gates["Checklist 8 (Evaluation)"] and gates["Checklist 9 (Forensic Analyst)"]) else 75.0,
+            f"Multi-backbone & governance evaluation (`EXP0001`–`EXP0008`; `EVAL0001`–`EVAL0010`), E4 calibration, 53 perturbations, 4 external corpora across 3 backbones (`139,107` test predictions), controlled `stable_diffusion` holdout (`EXP0002`), 4 ablations + paired bootstrap & exact McNemar, Phase E14 (`16/16` scenarios) + `2,700`-case `K=1`/`K=3` `M1`–`M18` benchmark (`EVAL0008`), Checklists 8–9 PASS. Deductions (-5): single-seed comparators (`n=2 < 6`, Wilcoxon deferred, `KI0048`) and single-generator E9 holdout (`KI0051`).",
         ),
         (
             "Scientific Integrity",
@@ -143,8 +143,8 @@ def main() -> int:
         (
             "Writing",
             0.10,
-            (96.0 if fig_complete else 88.0) if (assembled_exists and consistency_clean and rendered_tabs == 3 and bib_entries == 28) else 70.0,
-            f"Assembled complete thesis (`15_Writing/thesis/assembled_thesis.md`, `{assembled_words:,}` words), 10 approved chapters (`40/40` `WR` units), `100%` canonical ID coverage across all 12 prefixes, `{bib_entries}/28` BibTeX entries, `{rendered_tabs}/3` rendered tables, `0` hard consistency issues, Checklist 13 PASS. {'All 30 figures exported (-4 pending institutional similarity check in STEP-074).' if fig_complete else f'Deductions (-12): {exported_figs}/{fig_specs_n} human Policy A.9 figure exports completed (`09_Figures/FIGURE_RENDERING_RUNBOOK.md`) and institutional similarity check pending STEP-074.'}",
+            (96.0 if fig_complete else 88.0) if (assembled_exists and consistency_clean and rendered_tabs == 3 and bib_entries == papers_n) else 70.0,
+            f"Assembled complete thesis (`15_Writing/thesis/assembled_thesis.md`, `{assembled_words:,}` words), 10 approved chapters (`40/40` `WR` units), `100%` canonical ID coverage across all 12 prefixes, `{bib_entries}/{papers_n}` BibTeX entries, `{rendered_tabs}/3` rendered tables, `0` hard consistency issues, Checklist 13 PASS. {'All specified figures exported (-4 pending institutional similarity check in STEP-074).' if fig_complete else f'Deductions (-12): {exported_figs}/{fig_specs_n} human Policy A.9 figure exports completed (`09_Figures/FIGURE_RENDERING_RUNBOOK.md`) and institutional similarity check pending STEP-074.'}",
         ),
         (
             "Novelty",

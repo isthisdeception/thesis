@@ -24,8 +24,15 @@ def resolve_arch(settings: TrainingSettings):
             import timm
         except ImportError as exc:
             raise TrainingConfigError("model.source is 'timm' but timm is not installed") from exc
-        if backbone not in timm.list_models(pretrained=bool(settings.get("model.pretrained"))):
-            raise TrainingConfigError(f"timm has no {'pretrained ' if settings.get('model.pretrained') else ''}model {backbone!r}")
+        want_pretrained = bool(settings.get("model.pretrained"))
+        in_listed = backbone in timm.list_models(pretrained=want_pretrained)
+        if not in_listed:
+            is_known = getattr(timm, "is_model", lambda _: False)(backbone)
+            has_weights = getattr(timm, "is_model_pretrained", lambda _: False)(backbone)
+            if not (is_known and (not want_pretrained or has_weights)):
+                raise TrainingConfigError(
+                    f"timm has no {'pretrained ' if want_pretrained else ''}model {backbone!r}"
+                )
         return backbone
     raise TrainingConfigError(f"unsupported model.source {source!r}")
 

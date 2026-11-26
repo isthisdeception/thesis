@@ -4,14 +4,14 @@ All files in this folder (`15_Writing/journal/camera_ready/`) and `15_Writing/th
 
 ---
 
-## Option 1: Instant Q1 Elsevier Journal PDF via Overleaf (Recommended — Zero Install!)
+## Option 1: Instant Q1 Elsevier Journal PDF via Overleaf (Recommended)
 
-1. Go to **https://www.overleaf.com** and log in (free account works).
-2. Click **New Project** → **Upload Project**.
-3. Upload **`15_Writing/journal/camera_ready/overleaf_bundle.zip`** (already pre-bundled with `manuscript_elsevier.tex`, `references.bib`, and all 8 vector `.pdf` figures inside `figures/`!).
-4. Edit lines 18–26 of `manuscript_elsevier.tex` to insert your real **Author Name**, **Email**, **Department/University**, **City**, and **Country**.
-5. Click **Recompile** → click **Download PDF**!
-   - *(Tip: Line 2 is single-column Elsevier review format `preprint,12pt`. Uncomment line 3 `final,5p,times,twocolumn` to preview the published two-column journal layout!)*
+1. Go to **https://www.overleaf.com** and log in.
+2. Click **New Project** -> **Upload Project**.
+3. Upload **`15_Writing/journal/camera_ready/overleaf_bundle.zip`** (pre-bundled with `manuscript_elsevier.tex`, `references.bib` containing all 44 verified BibTeX entries, and all 9 vector `.pdf` figures inside `figures/`, plus 2 native vector TikZ diagrams inside `manuscript_elsevier.tex`!).
+4. Verify the pre-populated 10-author and 6-affiliation frontmatter block in `manuscript_elsevier.tex` (lines 44–111).
+5. Click **Recompile** -> click **Download PDF**!
+   - *(Tip: Line 2 is set to the published two-column Elsevier Q1 journal layout `final,5p,times,twocolumn,numafflabel`. Swap with lines 4–5 `preprint,11pt,numafflabel` if single-column peer-review layout is requested during initial submission.)*
 
 ---
 
@@ -32,4 +32,4 @@ pandoc 15_Writing/journal/camera_ready/supplementary_clean.md --resource-path=15
 # 3. Clean Full Thesis (.docx)
 pandoc 15_Writing/thesis/camera_ready/thesis_clean.md --resource-path=15_Writing/thesis/camera_ready --toc -o thesis_clean.docx
 ```
-Open in Microsoft Word → add your cover page → **File → Save As → PDF**.
+Open in Microsoft Word -> add your cover page -> **File -> Save As -> PDF**.

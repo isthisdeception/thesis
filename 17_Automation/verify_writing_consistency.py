@@ -313,7 +313,7 @@ def main() -> int:
                     issues.append(f"Broken figure link '{im.group(1)}' in journal/{jf.name}")
         if j_pids != valid["P"]:
             issues.append(f"Journal manuscript missing Paper IDs: {sorted(valid['P'] - j_pids)}")
-        journal_note = f"Verified (`{j_words:,}` words across manuscript + supplementary, `{len(j_pids)}/28` P IDs, `{j_imgs}` verified figure embeds, 0 issues)"
+        journal_note = f"Verified (`{j_words:,}` words across manuscript + supplementary, `{len(j_pids)}/{len(valid['P'])}` P IDs, `{j_imgs}` verified figure embeds, 0 issues)"
 
     # 7. Coverage summary
     cov_lines = []
@@ -344,10 +344,10 @@ def main() -> int:
         f"- **Assembled Thesis (`15_Writing/thesis/assembled_thesis.md`):** {assembled_note}",
         f"- **Journal Package (`15_Writing/journal/`):** {journal_note}",
         "- **W12/W13 Editorial & Formatting Checks:** 100% SemVer header sync with `writing_progress.csv`, 0 UK/US spelling mismatches, 0 repeated consecutive words, 0 placeholders, 0 heading jumps, 0 unbalanced backticks/math delimiters, 0 em-dashes, 0 AI filler phrases, 0 uncited paragraphs",
-        f"- **Bibliography (`15_Writing/references/references.bib`):** {len(bib_keys)} entries, 0 duplicate keys, 0 duplicate DOIs, 28/28 Paper IDs matched to `papers.csv`",
-        f"- **Claim Database (`02_Literature/claims/claim_database.csv`):** {len(claim_rows)}/8 claims `verified` with supporting literature + experimental/figure/table evidence",
+        f"- **Bibliography (`15_Writing/references/references.bib`):** {len(bib_keys)} entries, 0 duplicate keys, 0 duplicate DOIs, {len(bib_pids)}/{len(valid['P'])} Paper IDs matched to `papers.csv`",
+        f"- **Claim Database (`02_Literature/claims/claim_database.csv`):** {len(claim_rows)}/{len(valid['CLAIM'])} claims `verified` with supporting literature + experimental/figure/table evidence",
         f"- **Tables (Checklist 15):** {len(tab_ids)}/3 specs (`TAB0001`–`TAB0003`), CSV data files, rendered Markdown files, and thesis citations verified",
-        f"- **Figures (Checklist 14 / Policy A.9):** {len(fig_ids)}/30 specs (`FIG0001`–`FIG0030`) cited in thesis; {len(drawio_files)} valid Draw.io architectural sources (`FIG0026`–`FIG0030`); `09_Figures/scripts/render_figures.py` ready for human execution (`{len(rendered_figs)}` assets rendered, `{len(pending_figs)}` awaiting human Policy A.9 export)",
+        f"- **Figures (Checklist 14 / Policy A.9):** {len(fig_ids)}/{len(valid['FIG'])} specs (`FIG0001`–`FIG0033`) cited in thesis; {len(drawio_files)} valid Draw.io architectural sources (`FIG0026`–`FIG0030`); `09_Figures/scripts/render_figures.py` ready for human execution (`{len(rendered_figs)}` assets rendered, `{len(pending_figs)}` awaiting human Policy A.9 export)",
         f"- **Hard Consistency Issues:** **{len(issues)}**",
         f"- **Advisory Warnings:** **{len(warnings)}**",
         "",

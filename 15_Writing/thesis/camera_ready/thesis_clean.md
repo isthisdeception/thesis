@@ -5,13 +5,13 @@
 | Metadata Field | Value |
 |---|---|
 | **Manuscript Version** | `1.0.0-rc1` (Assembled from Approved Chapters) |
-| **Assembly Date** | `2026-11-22` |
-| **Source Git Revision** | `9143198` |
+| **Assembly Date** | `2026-11-27` |
+| **Source Git Revision** | `004fba1` |
 | **Research Direction** | Direction 1 : System-Level AI Forensic Analyst + Generalization Focus |
 | **Quality Gates Passed** | (Human-Confirmed) |
-| **Bibliography Source** | `15_Writing/references/references.bib` (`28` verified entries, [1]–[28]) |
+| **Bibliography Source** | `15_Writing/references/references.bib` (`44` verified entries, [1]–[28]) |
 | **Rendered Tables Included** | Table 1–Table 3 (`10_Tables/rendered/`, PASS) |
-| **Figure Catalog Status ** | `30` specified (Figure 1–Figure 30), `30` exported in `09_Figures/assets/` |
+| **Figure Catalog Status ** | `34` specified (Figure 1–Figure 30), `34` exported in `09_Figures/assets/` |
 | **Assembler Script** | `17_Automation/assemble_thesis.py` (deterministic rebuild) |
 | **License** | MIT (strictly public-only datasets ArtiFact–FairFace) |
 
@@ -100,6 +100,10 @@ This thesis manuscript is compiled deterministically from the ten approved secti
 | Figure 28 | Reliability-weighted evidence fusion (M7), four-dimensional validation-calibrated confidence estimation (M9,... | `09_Figures/specs/FIG0028_spec.md` | Exported (PNG + PDF) |
 | Figure 29 | Three-tier system architecture connecting the React 18 frontend (`12_Web`, M14, 14 pages, 24 accessible components), the seven-app Djan... | `09_Figures/specs/FIG0029_spec.md` | Exported (PNG + PDF) |
 | Figure 30 | Config-driven FastAI training and fault-tolerant checkpoint architecture (`17_Automation/training/`). Every run validates immutable YAML con... | `09_Figures/specs/FIG0030_spec.md` | Exported (PNG + PDF) |
+| Figure 31 | Representative preprocessed samples (`224 x 224` px) across the five public benchmark datasets, labeled `(a)` through `(j)`. | `09_Figures/specs/FIG0031_spec.md` | Exported (PNG + PDF) |
+| Figure 32 | Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators `(1)` through `(42)` across ArtiFact–`DS0... | `09_Figures/specs/FIG0032_spec.md` | Exported (PNG + PDF) |
+| Figure 33 | End-to-end `M1`–`M18` governance across 2,700 cases comparing `(a)` standalone, single-specialist (`K = 1`), and multi-specialist (`K = 3`)... | `09_Figures/specs/FIG0033_spec.md` | Exported (PNG + PDF) |
+| Figure 34 | Multi-backbone comparison across ResNet-50, EfficientNet-B4, and ViT-B/16 showing `(a)` paired in-distribution ROC curves (`n = 7,505`) and... | `09_Figures/specs/FIG0034_spec.md` | Exported (PNG + PDF) |
 
 ---
 
@@ -149,9 +153,9 @@ This thesis manuscript is compiled deterministically from the ten approved secti
 
 Synthetic human face generation across Generative Adversarial Networks (GANs) and diffusion models has outpaced standalone black-box detectors, which routinely achieve high in-distribution accuracy yet degrade severely under unseen generators, dataset shift, and lossy post-processing (; [3]; [7]; [16]; [18]; [23];). To address both cross-generator brittleness and the lack of auditable forensic workflows, this thesis reframes synthetic face detection around a system-level primary contribution: the **AI Forensic Analyst**, an 18-module evidence-driven forensic platform (M1–M18) in which the deep learning detector operates as one isolated, replaceable specialist rather than an autonomous arbiter.
 
-First, we establish a strictly public-only, open-license benchmark spanning five validated datasets (ArtiFact–FairFace: ArtiFact face subset, DiFF official test, 140k Real and Fake Faces, Synthbuster, and FairFace), six versioned preprocessing pipelines (deterministic preprocessing pipeline), and ten leakage-checked grouped and leave-one-generator-out splits (grouped random split–leave-one-generator-out split). Second, we train and rigorously evaluate a standardized ResNet-50 baseline across six controlled GPU experiments (Baseline ResNet-50–160px Resolution Ablation; evaluation suite). On ArtiFact grouped random split test (`n=7,505`) at its validation-frozen threshold (`0.3951`), Baseline ResNet-50 attains ROC-AUC `0.9261`, PR-AUC `0.9348`, balanced accuracy `0.8483`, MCC `0.6978`, and ECE `0.0525`. However, stress testing quantifies severe standalone fragility: in-distribution false negative rates reach `43.7%` on `stylegan3`; fine-detail perturbations (`low_quality_upload`, downscaling, blur, noise, JPEG quality 10) collapse balanced accuracy toward `0.50` by driving false positive rates toward `1.0`; cross-dataset unseen-generator FNR rises to `48.1%` (`50.2%` on DiFF DiFF) while external real-face FPR reaches `30.4%` (140k Real and Fake Faces), `76.7%` (Synthbuster, ROC-AUC `0.5172`), and `82.6%` (FairFace FairFace); and controlled `stable_diffusion` holdout (LOGO Holdout; evaluation suite) drops recall from `96.3%` (Baseline ResNet-50, seen) to `13.7%` (LOGO Holdout ResNet-50, unseen) on the identical 299 test images (`15.2%` across all 1,923 held-out images). One-factor ablations (Seed-43 Replicate–160px Resolution Ablation) confirm that ImageNet pretraining (`-0.2243` ROC-AUC), 224-pixel resolution (`-0.0376`), and augmentation (`-0.0336`) all exceed the seed-repeatability noise floor (`+0.0011`), reported strictly as saved-run differences with `superiority_claim=none`.
+First, we establish a strictly public-only, open-license benchmark spanning five validated datasets (ArtiFact–FairFace: ArtiFact face subset, DiFF official test, 140k Real and Fake Faces, Synthbuster, and FairFace), six versioned preprocessing pipelines (deterministic preprocessing pipeline), and ten leakage-checked grouped and leave-one-generator-out splits (grouped random split–leave-one-generator-out split). Second, we train and rigorously evaluate eight controlled GPU experiments (Baseline ResNet-50–ViT-B/16 Comparator; evaluation suite, EfficientNet-B4 evaluation–ViT-B/16 evaluation) spanning three distinct neural paradigms: Baseline ResNet-50 (ResNet-50), EfficientNet-B4 (EfficientNet-B4), and ViT-B/16 (ViT-B/16 Vision Transformer). On ArtiFact grouped random split test (`n=7,505`), Baseline ResNet-50 attains ROC-AUC `0.9261` (balanced accuracy `0.8483`, ECE `0.0525`), EfficientNet-B4 attains ROC-AUC `0.8247` at fixed `224x224` input, and ViT-B/16 (`ViT-B/16`) exceeds the sanity bar with ROC-AUC `0.9750`, PR-AUC `0.9775`, balanced accuracy `0.9153`, MCC `0.8311`, and ECE `0.0211` (Figure 34). However, stress testing proves that scaling backbone capacity alone does not eliminate silent out-of-distribution failure: Baseline ResNet-50 suffers `43.7%` FNR on `stylegan3`, chance-level collapse (`~0.50` balanced accuracy) under fine-detail perturbations, `50.2%` FNR on DiFF DiFF, `82.6%` FPR on FairFace FairFace, and a paired recall drop from `96.3%` to `13.7%` on held-out `stable_diffusion` (LOGO Holdout; LOGO Holdout ResNet-50), while even the `0.9750`-AUC `ViT-B/16` (ViT-B/16) misses `64.0%` of unseen DiFF DiFF faces, `82.1%` of Synthbuster Synthbuster diffusion images, and falsely flags `62.5%` of FairFace FairFace authentic portraits (ViT-B/16 evaluation;). One-factor ablations (Seed-43 Replicate–160px Resolution Ablation) confirm that ImageNet pretraining (`-0.2243` ROC-AUC), 224-pixel resolution (`-0.0376`), and augmentation (`-0.0336`) all exceed the seed-repeatability noise floor (`+0.0011`), reported strictly as saved-run differences with `superiority_claim=none`.
 
-Third, we implement and validate the 18-module AI Forensic Analyst (`11_AI_Forensic_System/`), separating upload intake (M1), image validation (M2), nine independent non-detector collectors (M3), isolated deep learning inference (M4), an append-only `EV` registry (M5), non-destructive reliability grading (M6), replaceable rule-based fusion (M7), four-dimensional validation-calibrated confidence estimation (M9), an image-blind four-way Decision Engine (M8: `Real`, `Fake`, `Inconclusive`, `Unknown`), data-only explainability (M10), programmatically `EV`-verified reasoning (M11), provenance-stamped reporting (M12), audit logging (M15), structured failure handling across eight canonical modes (M16), and full-stack web delivery via a seven-app Django REST API (M13) and a 14-page, 24-component React application (M14). In Phase E14 whole-platform evaluation (whole-platform verification), the system passes all 9 quality dimensions and all 16 end-to-end scenarios (`135` verified reasoning sentences, `0` ungrounded leaks, mean latency `60.02 ms`), demonstrating that unusable supporting evidence overrides a `0.99` detector score into an explicit `Inconclusive` verdict while missing or timed-out specialists degrade cleanly to `Unknown` with `null` confidences. All 85 automated unit/API/frontend tests, live cross-tier integration tests, six automated UAT scenarios, and ten quality gates pass, establishing an honest, reproducible, and modality-extensible foundation for image-based digital forensics.
+Third, we implement and validate the 18-module AI Forensic Analyst (`11_AI_Forensic_System/`), separating upload intake (M1), image validation (M2), nine independent non-detector collectors (M3), isolated deep learning inference (M4), an append-only `EV` registry (M5), non-destructive reliability grading (M6), replaceable rule-based fusion (M7), four-dimensional validation-calibrated confidence estimation (M9), an image-blind four-way Decision Engine (M8: `Real`, `Fake`, `Inconclusive`, `Unknown`), data-only explainability (M10), programmatically `EV`-verified reasoning (M11), provenance-stamped reporting (M12), audit logging (M15), structured failure handling across eight canonical modes (M16), and full-stack web delivery via a seven-app Django REST API (M13) and a 14-page, 24-component React application (M14). Across Phase E14 whole-platform verification (whole-platform verification: 16/16 scenarios, 135 verified reasoning sentences, 0 ungrounded leaks, mean latency `60.02 ms`) and a 2,700-case nine-track governance benchmark (large-scale governance benchmark; Figure 33), multi-specialist (`K=3`) cross-paradigm fusion reduces silent erroneous verdicts to `3.0%` on clean ArtiFact (`95.3%` selective accuracy), `1.3%` on 140k Real and Fake Faces, `3.0%` on Synthbuster (`93.9%` reduction), `22.3%` on FairFace FairFace (`72.1%` reduction), and `33.3%` on unseen DiFF DiFF (`32.4%` reduction), while eliminating `48.7%` to `100.0%` of silent degradation errors.
 
 **Keywords:** AI-generated face detection, digital forensics, cross-generator generalization, evidence fusion, confidence calibration, explainable forensic reporting, GANs, diffusion models.
 
@@ -304,7 +308,7 @@ These converging findings directly justify the selection of **Direction 1 (Evide
 
 To prevent the reproducibility bottlenecks and benchmark biases documented in the literature ([3]; [16]; [23]), dataset selection was governed by a strict public-only policy ratified in. Seventeen candidate corpora were scored across 16 Phase D2 dimensions in `03_Datasets/metadata/dataset_evaluation.csv` covering license permissiveness, open availability, generator diversity, resolution, and alignment with Version 1 static face forensics. Restricted or non-functional academic hosts (including Guarnera MFD), gated video face-swap benchmarks (FaceForensics++, Celeb-DF v2, DFDC, FakeAVCeleb), redundant subsets (Augmented Real and Fake), and low-resolution 32x32 corpora (CIFAKE) were explicitly excluded. During raw-lock verification, source inspection revealed that AI-Face-FairnessBench required a signed EULA under a CC BY-NC-ND 4.0 license forbidding derivative preprocessing; therefore replaced it with FairFace (CC BY 4.0, 97,698 real faces across seven demographic groups) to preserve open reproducibility while retaining demographic bias auditing.
 
-The resulting five-dataset portfolio (ArtiFact–FairFace, version `v1.0`) assigns a distinct scientific role to each corpus (; `03_Datasets/metadata/datasets.csv`; `03_Datasets/reports/dataset_report.md`):
+The resulting five-dataset portfolio (ArtiFact–FairFace, version `v1.0`, representative samples in Figure 31 and complete 42-subgroup atlas in Figure 32) assigns a distinct scientific role to each corpus (; `03_Datasets/metadata/datasets.csv`; `03_Datasets/reports/dataset_report.md`):
 
 | Dataset ID | Source Corpus | Role | Images (Validated / Processed) | Real / Fake | License | Generators & Structure | Figure Specs |
 |---|---|---|---|---|---|---|---|
@@ -546,7 +550,7 @@ Because the thesis's primary contribution is the complete forensic platform rath
 - **`UAT-05` (Unsupported Format Rejection):** `.bmp` upload verifying synchronous `400 Bad Request` (`unsupported_format` at M1) with zero media bytes written to disk.
 - **`UAT-06` (Unavailable Specialist Degradation):** Valid PNG targeting an unregistered model fixture verifying M4 `model_unavailable` recovery into an explicit `Unknown` verdict with `prediction_confidence=null` and `decision_confidence=null`.
 
-Together, Phases E1–E18, Phase E14 (whole-platform verification), and `UAT-01`–`UAT-06` provide complete empirical and operational coverage whose observed outcomes are reported in Chapter 6 (Baseline ResNet-50; whole-platform verification).
+Together, Phases E1–E18, the multi-backbone comparator evaluations (EfficientNet-B4 Comparator EfficientNet-B4 EfficientNet-B4 in EfficientNet-B4 evaluation and ViT-B/16 Comparator ViT-B/16 ViT-B/16 in ViT-B/16 evaluation; Figure 34), Phase E14 (whole-platform verification), the 2,700-case nine-track `K=1` and `K=3` multi-specialist governance benchmark (large-scale governance benchmark; Figure 33), and `UAT-01`–`UAT-06` provide complete empirical and operational coverage whose observed outcomes are reported in Chapter 6 (Baseline ResNet-50; whole-platform verification).
 
 ---
 
@@ -657,9 +661,11 @@ All four one-factor ablations (Seed-43 Replicate–160px Resolution Ablation, Se
 
 Seed repeatability between Baseline ResNet-50 and Seed-43 Replicate establishes a narrow run-to-run noise floor (`ΔROC-AUC +0.0011`, `ΔBA -0.0002`, `ΔMCC 0.0000`, two-seed SD `0.0008` on ROC-AUC; decision agreement `0.9334`, Cohen's kappa `0.8662`, probability Pearson `r = 0.9662`, mean absolute probability difference `0.0601`; McNemar `b=251` vs `c=249`, `p = 0.964`) (evaluation suite). Every one of the three factor ablations degrades discrimination far beyond this seed noise floor with Bonferroni-adjusted 98.3% bootstrap intervals strictly excluding zero and highly significant McNemar decision disagreement (evaluation suite; evaluation suite; evaluation suite): removing ImageNet pretraining (No-Pretraining Ablation; evaluation suite) produces the largest collapse (`-0.2243` ROC-AUC, `-0.2032` BA, `-0.4065` MCC, `b=2,012` vs `c=491`), reducing spatial resolution to 160 pixels (160px Resolution Ablation) loses `-0.0376` ROC-AUC while worsening ECE by `+0.0420` (`0.0944`), and disabling train-only augmentation (No-Augmentation Ablation) loses `-0.0336` ROC-AUC and triggers early stopping at epoch 3 (20.1 minutes) due to faster overfitting ([7]; [16]). Because each factor has one seed and Wilcoxon signed-rank across seeds was not run (`n=2 < 6` pairs), `superiority_claim` remains `none` across all rows of Table 3`.
 
-## 6.6 AI Forensic Analyst Whole-Platform Phase E14 Evaluation and Full-Stack UAT Results
+To test whether modern convolutional and Vision Transformer backbones resolve cross-domain brittleness under identical ArtiFact grouped random split (`224x224`) fairness invariants, two additional comparators were trained on Kaggle Tesla T4 GPUs (EfficientNet-B4 Comparator EfficientNet-B4 EfficientNet-B4 in 77.4 min, best epoch 9, frozen threshold `0.5161`; ViT-B/16 Comparator ViT-B/16 ViT-B/16 in 89.7 min, best epoch 10, frozen threshold `0.4906`) and evaluated zero-shot across DiFF–FairFace (EfficientNet-B4 evaluation; ViT-B/16 evaluation; Figure 34; `08_Evaluation/comparison_report.md`). On ArtiFact test (`n=7,505`), `ViT-B/16` (ViT-B/16) surpasses the sanity bar with ROC-AUC `0.9750` (`+0.0489` over Baseline ResNet-50, 95% paired bootstrap CI `[+0.0439, +0.0541]`, exact McNemar `p = 5.20e-53`, `b=285 / c=788`), PR-AUC `0.9775`, balanced accuracy `0.9153`, MCC `0.8311`, and ECE `0.0211`, whereas `EfficientNet-B4` (EfficientNet-B4, native 320/380px pretraining) compresses to ROC-AUC `0.8247` (`-0.1014`, `p = 7.43e-81`), balanced accuracy `0.7429`, and ECE `0.0272`. Zero-shot cross-dataset evaluation (`46,369` test images per model; Figure 34) confirms that although `ViT-B/16` raises 140k Real and Fake Faces ROC-AUC to `0.9893` and cuts FFHQ FPR from `30.37%` to `0.99%`, it still suffers `64.03%` FNR on unseen DiFF DiFF (`68.20%` for EfficientNet-B4), `82.07%` FNR on Synthbuster Synthbuster (`ECE = 0.6806`, polarizing opposite to CNN FPRs of `76.67%` and `94.00%`), and `62.52%` FPR on FairFace FairFace (`76.53%` for EfficientNet-B4), proving that standalone backbone scaling cannot substitute for system-level abstention.
 
-Whole-platform evaluation (whole-platform verification, Phase E14) verified all 16 end-to-end scenarios across all nine quality dimensions (; `08_Evaluation/forensic_analyst_eval/e14_report.md`; `08_Evaluation/forensic_analyst_eval/e14_case_results.csv`; M1–M18):
+## 6.6 AI Forensic Analyst Whole-Platform Phase E14 Evaluation and Multi-Specialist Governance Benchmark (whole-platform verification–large-scale governance benchmark)
+
+Whole-platform evaluation (whole-platform verification, Phase E14, alongside the 2,700-case nine-track `K=1` and `K=3` quantitative abstention benchmark large-scale governance benchmark in Figure 33) verified all 16 end-to-end scenarios across all nine quality dimensions (; `08_Evaluation/forensic_analyst_eval/e14_report.md`; `08_Evaluation/forensic_analyst_eval/e14_case_results.csv`; M1–M18):
 
 | E14 Dimension | Observed Performance (whole-platform verification) | Status |
 |---|---|---|
@@ -700,7 +706,7 @@ In accordance with binding scientific honesty standards (§9.3), eight verified 
 
 | Limitation ID | Domain | Concrete Scope Boundary and Impact |
 |---|---|---|
-| | Backbone diversity | Only one CNN family (`ResNet-50`: Baseline ResNet-50, LOGO Holdout ResNet-50–160px ResNet-50) was trained in V1. Shortlisted comparators Xception (Xception), EfficientNet-B4 (EfficientNet-B4), and ViT-B/16 (ViT-B/16) were not trained under the V1 Kaggle compute budget, so no cross-architecture generalization claims are made (`05_Models/candidate_models.csv`; `08_Evaluation/comparison_report.md`). |
+| | Backbone diversity | Three distinct neural paradigms (`ResNet-50` Baseline ResNet-50, `EfficientNet-B4` EfficientNet-B4, and `ViT-B/16` ViT-B/16) were trained under the fixed `224x224` grouped random split fairness contract (Baseline ResNet-50, EfficientNet-B4 Comparator, ViT-B/16 Comparator; EfficientNet-B4 evaluation–ViT-B/16 evaluation; Figure 34). Remaining shortlisted candidates requiring non-224 native input resolutions (`Xception` Xception at `299px`, native-`380px` `EfficientNet-B4`) and vision-language CLIP encoders remain scheduled for V2 (`05_Models/candidate_models.csv`; `08_Evaluation/comparison_report.md`). |
 | | Statistical replication | Each ablation configuration ran for a single seed (two seeds total comparing Baseline ResNet-50 and Seed-43 Replicate). Because a two-sided Wilcoxon signed-rank test across seeds at `alpha = 0.05` requires at least six non-zero pairs, Wilcoxon was not run and every comparison in Table 3 reports saved-run differences with `superiority_claim=none`. Additionally, No-Pretraining Ablation reused Baseline ResNet-50's learning rate and 11-epoch budget, representing a controlled single-factor comparison rather than a separately tuned from-scratch schedule. |
 | | Detector readiness | Baseline detector Baseline ResNet-50 is explicitly marked `Deployment Ready=no` (`05_Models/model_registry.csv`): its `82.6%` FairFace FPR (FairFace), `50.2%` DiFF FNR (DiFF), `43.7%` StyleGAN3 FNR, and `15.2%` unseen `stable_diffusion` recall (LOGO Holdout ResNet-50) prove it cannot act as an autonomous real-world arbiter. |
 | | Robustness & calibration scope | Phase E7 perturbations were synthetic and applied post-preprocessing to 224-pixel PNG crops rather than original uploads (`08_Evaluation/evaluation suite/robustness/robustness_report.md`). Neither post-hoc validation calibration (such as temperature scaling) nor degradation-augmented retraining was executed in V1; either requires new `EXP` and `EVAL` identifiers. |
@@ -718,7 +724,7 @@ Documenting these eight boundaries transparently ensures that every claim in thi
 
 ## 8.1 Direct Answers to Research Questions and Summary of Validated Contributions
 
-This thesis set out under the Generalization Focus and Direction 1 to investigate cross-generator synthetic face detection and deliver an evidence-driven forensic platform. The completed literature synthesis, five-dataset benchmark, six controlled GPU experiments (Baseline ResNet-50–160px Resolution Ablation), seven evaluation suites (evaluation suite–whole-platform verification), and full-stack 18-module platform (M1–M18) yield direct, evidence-grounded answers to each research question (`02_Literature/research_question.md`):
+This thesis set out under the Generalization Focus and Direction 1 to investigate cross-generator synthetic face detection and deliver an evidence-driven forensic platform. The completed literature synthesis, five-dataset benchmark, eight controlled GPU experiments (Baseline ResNet-50–ViT-B/16 Comparator spanning Baseline ResNet-50 ResNet-50, EfficientNet-B4 EfficientNet-B4, and ViT-B/16 ViT-B/16), ten evaluation suites (evaluation suite–ViT-B/16 evaluation), and full-stack 18-module platform (M1–M18) yield direct, evidence-grounded answers to each research question (`02_Literature/research_question.md`):
 
 1. **Answer to Sub-Question 1 (Shared Forensic Artifacts Across Generative Architectures):** The systematic review ([3]; [5]; [10]; [18]; [23]) and baseline subgroup failure profile (evaluation suite) demonstrate that forensic artifacts are largely paradigm-specific rather than universally shared. GANs leave transposed-convolution ([5]) and DCT anomalies ([10]), whereas diffusion models introduce iterative-denoising spectral patterns ([3]), and physiological cues ([8]; [15]) lose reliability as high-fidelity generators improve ([25]). Even within ArtiFact training generators, Baseline ResNet-50 FNR spans `0.0%` (`stargan`, `cips`) to `43.7%` (`stylegan3`). Consequently, forensic reliability requires combining multiple independent evidence streams under a modular `EvidenceCollector` architecture (M3–M7) rather than relying on any single artifact signature.
 2. **Answer to Sub-Question 2 (Degradation on Novel Generators and External Real Sources):** Degradation on unseen architectures and out-of-distribution real images is severe. In cross-dataset evaluation (evaluation suite), Baseline ResNet-50 FNR rises from `18.3%` in-distribution to `48.1%` across 17 unseen generators (`50.2%` on DiFF DiFF diffusion faces, up to `81.5%` on `FreeDoM_I`), while external real-image FPR reaches `30.4%` (140k Real and Fake Faces FFHQ), `76.7%` (Synthbuster RAISE scenes, ROC-AUC `0.5172`), and `82.6%` (FairFace FairFace). In the controlled `stable_diffusion` leave-one-generator-out test (LOGO Holdout; evaluation suite), recall falls from `83.3%` on 12 seen generators to `15.2%` (`293/1,923`) on unseen `stable_diffusion`, and from `96.3%` (Baseline ResNet-50) to `13.7%` (LOGO Holdout ResNet-50) on the identical 299 test images ([7]; [16]; [23]).
@@ -860,9 +866,9 @@ All three publication tables (Table 1–Table 3) are embedded verbatim from `10_
 ## Table Table 1: Comparison of AI-Generated Face Detection Methods
 
 > **Table ID:** Table 1 | **Spec:** `10_Tables/specs/TAB0001_spec.md` | **Data:** `10_Tables/data/TAB0001.csv`
-> **Source:** `02_Literature/metadata/papers.csv` and `02_Literature/summaries/` (16 primary detection-method papers drawn from [1]–[28]; excludes surveys [22], [24], [26], [27], [28] and generation/privacy/proactive/superseded works [1], [4], [9], [12], [17], [20], [25]).
-> **Bold rows** indicate critical-relevance studies ([7], [16], [18], [23]).
-> **Legend:** `Domain` = Feature Domain (`S` Spatial, `F` Frequency, `T` Trace, `B` Biometric, `R` Reconstruction, `H` Hybrid/Hierarchical); `CG` = Cross-Generator; `CD` = Cross-Dataset; `Attr` = Source Attribution; `XAI` = Explainability; `Rob` = Robustness Tested; `Code/Data` = Public Code / Public Dataset.
+> **Source:** `02_Literature/metadata/papers.csv` and `02_Literature/summaries/` (28 primary detection-method papers drawn from [1]–[44]; excludes surveys/empirical audits [22], [24], [26], [27], [28], [37], [38], [43], [44] and generation/privacy/proactive/superseded works [1], [4], [9], [12], [17], [20], [25]).
+> **Bold rows** indicate critical-relevance detection-method studies ([7], [16], [18], [23], [30], [36], [40]).
+> **Legend:** `Domain` = Feature Domain (`S` Spatial, `F` Frequency, `T` Trace, `B` Biometric, `R` Reconstruction, `H` Hybrid/Hierarchical, `Att` Attention); `CG` = Cross-Generator; `CD` = Cross-Dataset; `Attr` = Source Attribution; `XAI` = Explainability; `Rob` = Robustness Tested; `Code/Data` = Public Code / Public Dataset.
 
 | Paper ID | Authors (Year) | Method / Architecture | Domain | GAN / DM Coverage | CG | CD | Attr | XAI | Rob | Best Reported Outcome | Code / Data |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -870,7 +876,7 @@ All three publication tables (Table 1–Table 3) are embedded verbatim from `10_
 | [3] | Bammey (2024) | Synthbuster (high-pass residual + FFT, non-DL) | F | None / 9 DMs | Partial | No | No | Inherent | Yes | Multi-DM detection across 9 models (training-free) | Yes / Yes |
 | [5] | Guarnera et al. (2020) | EM convolutional trace extraction | S/T | 5 GANs + FF++ / None | Partial | No | Yes | Inherent | Lim. | High acc. & GAN attribution across 5 GANs | Yes / Yes |
 | [6] | Zeng et al. (2025) | Latent diffusion reconstruction error | R | None / DMs | No | No | No | Partial | No | Feasibility shown (high inference latency) | Unk / Unk |
-| **[7]** | **Khan & Dang-Nguyen (2024)** | **8 CNNs + 2 Transformers (DINO, CLIP)** | **S** | **4 video benchmarks / None** | **Partial** | **Yes** | **No** | **None** | **No** | **>95% intra-dataset; 60–70% cross-dataset** | **Yes / Yes** |
+| **[7]** | **Khan & Dang-Nguyen (2024)** | **8 CNNs + 2 Transformers (DINO, CLIP)** | **S** | **4 video benchmarks / None** | **Partial** | **Yes** | **No** | **None** | **No** | **>95% intra-dataset; 60-70% cross-dataset** | **Yes / Yes** |
 | [8] | Pasquini et al. (2023) | GAN inversion + biometric traits | B | GAN faces / None | No | No | No | Inherent | No | Biometric + inversion signal (narrow eval) | Unk / Unk |
 | [10] | Giudice et al. (2021) | DCT anomalies + beta statistics (non-DL) | F | Multiple GANs / None | Partial | No | No | Inherent | Yes | Interpretable multi-GAN detection (JPEG-sensitive) | Yes / Yes |
 | [11] | Safwat et al. (2024) | Hybrid GAN + ResNet | S | Single GAN split / None | No | No | No | None | No | Competitive on 2,041-image split | Yes / No |
@@ -882,8 +888,20 @@ All three publication tables (Table 1–Table 3) are embedded verbatim from `10_
 | [19] | Alkishri et al. (2024) | GAN fingerprint removal audit | S/T | GAN faces / None | No | No | No | None | Yes (Adv) | Fingerprint removal degrades GAN detector accuracy | Yes / No |
 | [21] | Arshed et al. (2024) | Patch-wise multiclass ViT | S | StyleGAN2 / Stable Diffusion | Yes* | No | Partial | None | No | 99.90% F1 on custom 36k 4-class split | Yes / Yes |
 | **[23]** | **Cheng et al. (2024)** | **Edge graph regularization + DiFF** | **S/Graph** | **None / 13 DM methods** | **Partial** | **No** | **No** | **Partial** | **No** | **Existing detectors <30% acc. on DiFF (500k+ synth)** | **Yes / Yes** |
+| [29] | Maiano et al. (2026) | U-Net Scorer / Tiny DeiT + Abnormality OOD | H (S+R+Att) | CDDB GANs / non-GAN splits | Partial | Yes | No | Partial | Part. | 99.3% ID AUROC; 91.6%-93.77% Content OOD (60%-63% Group/Mix V2S) | Unk / Yes |
+| **[30]** | **Jin et al. (2025)** | **PE-DD (Packed-Ensembles + SRM calibration)** | **H (S+F)** | **FF++, CDFv2, DFDC, WDF / GenImage, SD** | **Yes** | **Yes** | **No** | **Yes (Eigen-CAM)** | **Yes** | **97.7%/98.8% AUC (0.020/0.005 ECE); lowest Brier across 4 unseen sets** | **Unk / Yes** |
+| [31] | Hydara et al. (2024) | Django + pre-trained ViT judicial prototype | S | Pooled FF++, CDF, DFDC / None | No | No | No | Yes (Heatmaps) | No | ~88-90% acc. at 80-85% threshold (recall collapses to 18%) | No / No |
+| [32] | Fatima et al. (2026) | Two-stream (semantic + SRM) + worst-of-K + TTD | H (S+F) | None / DFF (4 DM tasks) | No | No | No | Yes (Weak FPN) | Yes (Adv) | 1.0000 AUC, ECE <=0.0196, 99.17% worst-case acc. on DFF (n=240) | No / Yes |
+| [33] | Yan et al. (2026) | Dual-frequency (DWT + FFT phase) + RSWAttention | H (S+F) | ForenSynths, GANGen / DiffusionForensics, GenImage, AIGIBench | Yes | Yes | No | Partial | Yes | 92.1% mAcc / 94.1% mAP across 65 models (44-52% face-swap) | Yes / Yes |
+| [34] | Wu et al. (2026) | LASTED (CLIP language-guided contrastive + LP) | S (CLIP) | ForenSynths, Tfuse / Tdf, Twild | Yes | Yes | No | No | Yes | 0.974 (Tgan), 0.952 (Tdf), 0.913 (Tfuse), 0.941 (Twild) AP | Yes / Unk |
+| [35] | Meng et al. (2024) | APN (DFT bands + orthogonal basis + CLUB MI) | H (S+F) | BigGAN, ProGAN / GenImage, DiffusionForensics | Yes | Yes | No | Yes (Layer-CAM) | No | 80.4% GenImage; 98.7% DiffusionForensics; 99.5% cross-scene Acc | Unk / Yes |
+| **[36]** | **Shen & Tian (2026)** | **PORI-Gate (reliability-guided operator fusion)** | **S/T (3 ops)** | **ForenSynths, GANGen / CrossGen-38 (DM+GAN)** | **Yes** | **Yes** | **No** | **Yes (Gate+Probes)** | **Part.** | **92.86% mAcc / 97.23% mAUC CrossGen-38 (60.38% Improved-Diff.)** | **Unk / Yes** |
+| [39] | Reza et al. (2026) | ARC-Net (EfficientNetB0 + residual + attention) | S | 140k+BD, Deepfake Dataset, DF Database / None | No | Yes | No | Yes (Grad-CAM/LIME) | No | 99% ID; 92-94.2% OOD; cuts BD real FPR 22%->10% (IoU 0.84) | Unk / Part. |
+| **[40]** | **Silva et al. (2022)** | **Hierarchical CNN+Attention+WS-DAN+DFT/DCT** | **H (S+F)** | **DFDC, Celeb-DF, WildDeepfake / None** | **Partial** | **Yes** | **No** | **Yes (CAM+DFT/DCT)** | **Lim.** | **92.20% DFDC (AUC 0.9752), 93.64% Celeb-DF; 72.73% WildDeepfake** | **Unk / Yes** |
+| [41] | Guo et al. (2024) | SFIConv + MCSConv interactive CNN backbones | H (S+F) | HFF, FF++ HQ/LQ, DFDC, CelebDF / None | Partial | Yes | No | Partial (AFAM) | Yes | 96.47% FF++ LQ / 97.44% DFDC AUC; 70.7-71.0% CelebDF AUC | Yes / Yes |
+| [42] | Huang et al. (2022) | FakeLocator (DeepLabv3 + Face Parsing + L1) | S/T | 7 GANs, DFFD, FF++, UADFV, Celeb-DF / None | Partial | Part. | No | Yes (Fakeness map) | Yes | 0.9398 ACC / 0.9846 AUC FF++; 0.855-0.9995 across 7 GANs | Unk / Yes |
 
-*Notes:* `*` [21] covers only two generator families (StyleGAN2 and Stable Diffusion) without cross-dataset evaluation. [18] accuracy is conditional on its proprietary 83,000-image dataset with no cross-dataset evaluation reported. Units: percentages (%) where reported; publication year in YYYY.
+*Notes:* `*` [21] covers only two generator families (StyleGAN2 and Stable Diffusion) without cross-dataset evaluation. [18] accuracy is conditional on its proprietary 83,000-image dataset with no cross-dataset evaluation reported. [32] saturates at `1.0000` AUC on a small held-out DFF test set (`n=240`) without external SOTA comparisons. [33]–[36] train on general-image corpora (`ForenSynths`/`GenImage`) and include face subsets; [33] drops to `44.1%`–`52.1%` on AIGIBench face-swapping. Units: percentages (%) or `[0,1]` AUC/AP/ECE/Brier as reported per study; publication year in YYYY.
 
 ---
 
@@ -1193,3 +1211,39 @@ Every figure referenced in this thesis is cataloged below with its canonical `FI
 - **Specification:** `09_Figures/specs/FIG0030_spec.md`
 - **Data / Diagram Source:** `17_Automation/training/README.md`; `06_Experiments/Baseline ResNet-50/config.yaml`.
 - **Responsible Script / Source:** Editable Draw.io source `09_Figures/diagrams/FIG0030.drawio`.
+
+## Figure 31
+
+![Figure 31](../../../09_Figures/assets/FIG0031_v1.png)
+
+- **Caption:** Representative preprocessed samples (`224 x 224` px) across the five public benchmark datasets, labeled `(a)` through `(j)`.
+- **Specification:** `09_Figures/specs/FIG0031_spec.md`
+- **Data / Diagram Source:** `_processed_dataset/*/metadata/index.csv` and corresponding processed PNG assets.
+- **Responsible Script / Source:** 
+
+## Figure 32
+
+![Figure 32](../../../09_Figures/assets/FIG0032_v1.png)
+
+- **Caption:** Exhaustive 42-panel visual atlas covering all evaluated authentic sources and synthetic generators `(1)` through `(42)` across ArtiFact–FairFace.
+- **Specification:** `09_Figures/specs/FIG0032_spec.md`
+- **Data / Diagram Source:** `_processed_dataset/processed_ArtiFact_preprocessing pipeline through `processed_FairFace_preprocessing pipeline (grouped random split test partitions).
+- **Responsible Script / Source:** `09_Figures/scripts/render_figures.py` (`--only Figure 32).
+
+## Figure 33
+
+![Figure 33](../../../09_Figures/assets/FIG0033_v1.png)
+
+- **Caption:** End-to-end `M1`–`M18` governance across 2,700 cases comparing `(a)` standalone, single-specialist (`K = 1`), and multi-specialist (`K = 3`) erroneous verdict rates and `(b)` selective risk-coverage trajectories.
+- **Specification:** `09_Figures/specs/FIG0033_spec.md`
+- **Data / Diagram Source:** `08_Evaluation/large-scale governance benchmark/abstention_by_track.csv` and `08_Evaluation/large-scale governance benchmark/selective_risk_coverage.csv`.
+- **Responsible Script / Source:** `09_Figures/scripts/render_figures.py` (`--only Figure 33).
+
+## Figure 34
+
+![Figure 34](../../../09_Figures/assets/FIG0034_v1.png)
+
+- **Caption:** Multi-backbone comparison across ResNet-50, EfficientNet-B4, and ViT-B/16 showing `(a)` paired in-distribution ROC curves (`n = 7,505`) and `(b)` zero-shot cross-dataset FNR and FPR polarization (`n = 46,369` per model).
+- **Specification:** `09_Figures/specs/FIG0034_spec.md`
+- **Data / Diagram Source:** `08_Evaluation/cross_backbone_generalization.csv` and `06_Experiments/EXP000{1,7,8}/predictions/test_predictions.csv`.
+- **Responsible Script / Source:** `09_Figures/scripts/render_figures.py` (`--only Figure 34).

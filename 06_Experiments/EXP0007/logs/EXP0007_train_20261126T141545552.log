@@ -1,0 +1,31 @@
+2026-11-26 14:15:45,553 INFO training experiment EXP0007; config /kaggle/working/thesis/06_Experiments/EXP0007/config.yaml; config validation PASS
+2026-11-26 14:15:45,554 INFO training STEP START output guard
+2026-11-26 14:15:45,556 INFO training run mode: fresh
+2026-11-26 14:15:45,557 INFO training STEP DONE output guard in 0.0s
+2026-11-26 14:15:45,558 INFO training STEP START git provenance
+2026-11-26 14:15:45,564 INFO training git provenance: config commit 004fba1 is an ancestor of HEAD 004fba1fc0bb05797380013e3b25e73bdd3d72cf
+2026-11-26 14:15:45,564 INFO training STEP DONE git provenance in 0.0s
+2026-11-26 14:15:45,567 INFO training STEP START environment
+2026-11-26 14:15:45,569 INFO training environment {'python': '3.13.16', 'platform': 'Linux-6.18.55+-x86_64-with-glibc2.39', 'torch': '2.11.0+cu130', 'torchvision': '0.26.0+cu130', 'fastai': '2.8.12', 'cuda_available': True, 'cuda': '13.0', 'gpu': 'Tesla T4', 'gpu_memory_mb': 14912, 'plum_dispatch': '2.5.7'}
+2026-11-26 14:15:45,694 INFO training STEP DONE environment in 0.1s
+2026-11-26 14:15:45,696 INFO training STEP START dataset validation
+2026-11-26 14:15:48,857 INFO training partition train: 34993 rows {'fake': 17502, 'real': 17491}
+2026-11-26 14:15:48,859 INFO training partition val: 7502 rows {'real': 3783, 'fake': 3719}
+2026-11-26 14:15:48,861 INFO training partition test: 7505 rows {'fake': 3779, 'real': 3726}
+2026-11-26 14:15:48,870 INFO training STEP DONE dataset validation in 3.2s
+2026-11-26 14:15:48,871 INFO training STEP START dataloaders
+2026-11-26 14:15:50,694 INFO training vocab ['fake', 'real']; train batches 546; valid batches 59
+2026-11-26 14:15:50,695 INFO training STEP DONE dataloaders in 1.8s
+2026-11-26 14:15:50,696 INFO training STEP START learner
+2026-11-26 14:15:50,716 ERROR training STEP FAILED learner after 0.0s
+Traceback (most recent call last):
+  File "/kaggle/working/thesis/17_Automation/training/logs.py", line 151, in step
+    yield
+  File "/kaggle/working/thesis/17_Automation/training/pipeline.py", line 158, in prepare
+    learn = build_learner(settings, dls)
+  File "/kaggle/working/thesis/17_Automation/training/learner.py", line 102, in build_learner
+    resolve_arch(settings),
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/kaggle/working/thesis/17_Automation/training/learner.py", line 28, in resolve_arch
+    raise TrainingConfigError(f"timm has no {'pretrained ' if settings.get('model.pretrained') else ''}model {backbone!r}")
+training.settings.TrainingConfigError: timm has no pretrained model 'efficientnet_b4'
